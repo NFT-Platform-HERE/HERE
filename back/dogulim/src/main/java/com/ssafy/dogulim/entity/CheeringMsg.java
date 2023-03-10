@@ -15,7 +15,7 @@ public class CheeringMsg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
     @Column(name = "content", columnDefinition = "varchar(100)")

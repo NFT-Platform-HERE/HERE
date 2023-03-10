@@ -20,7 +20,7 @@ public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
     @JsonIgnore
@@ -52,6 +52,6 @@ public class Board {
     private int curQuantity;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "char(10) 'ACTIVE'", nullable = false)
+    @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'", nullable = false)
     private EnumBoardStatus status;
 }

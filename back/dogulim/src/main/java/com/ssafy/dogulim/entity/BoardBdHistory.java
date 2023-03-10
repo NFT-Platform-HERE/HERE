@@ -16,13 +16,13 @@ public class BoardBdHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
-    @Column(name = "board_id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "board_id", columnDefinition = "int unsigned", nullable = false)
     private Long boardId;
 
-    @Column(name = "sender_id", columnDefinition = "uuid", nullable = false)
+    @Column(name = "sender_id", columnDefinition = "binary(16)", nullable = false)
     private UUID senderId;
 
     @Column(name = "quantity", columnDefinition = "int", nullable = false)

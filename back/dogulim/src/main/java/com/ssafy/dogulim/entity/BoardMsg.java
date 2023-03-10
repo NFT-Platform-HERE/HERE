@@ -18,7 +18,7 @@ public class BoardMsg {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
     @JsonIgnore
@@ -26,10 +26,10 @@ public class BoardMsg {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @Column(name = "member_id", columnDefinition = "uuid", nullable = false)
+    @Column(name = "member_id", columnDefinition = "binary(16)", nullable = false)
     private UUID memberId;
 
-    @Column(name = "cheering_msg_id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "cheering_msg_id", columnDefinition = "int unsigned", nullable = false)
     private Long cheeringMsgId;
 
     @Column(name = "status", columnDefinition = "char(10)", nullable = false)

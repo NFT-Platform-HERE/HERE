@@ -20,13 +20,13 @@ import java.util.UUID;
 public class Member {
 
     @Id
+    @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(length = 36, nullable = false, updatable = false, columnDefinition = "uuid", name = "uuid")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", columnDefinition = "char(10) 'USER'", nullable = false)
+    @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
     private EnumMemberRole role;
 
     @Column(name = "wallet_address", columnDefinition = "char(100)", nullable = false, updatable = false)

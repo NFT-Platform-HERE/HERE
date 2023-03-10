@@ -19,7 +19,7 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

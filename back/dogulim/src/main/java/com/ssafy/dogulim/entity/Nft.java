@@ -22,10 +22,10 @@ public class Nft {
     @Column(name = "id", columnDefinition = "varchar(200)", nullable = false)
     private String id;
 
-    @Column(name = "owner_id", columnDefinition = "uuid", nullable = false)
+    @Column(name = "owner_id", columnDefinition = "binary(16)", nullable = false)
     private UUID ownerId;
 
-    @Column(name = "issuer_id", columnDefinition = "uuid", nullable = false)
+    @Column(name = "issuer_id", columnDefinition = "binary(16)", nullable = false)
     private UUID issuerId;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)

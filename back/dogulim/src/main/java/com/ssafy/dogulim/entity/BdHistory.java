@@ -19,15 +19,15 @@ import java.time.LocalDateTime;
 public class BdHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "unsigned int", nullable = false)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "place", columnDefinition = "char(50)", nullable = false)
+    @Column(name = "place", columnDefinition = "varchar(50)", nullable = false)
     private String place;
 
     @CreatedDate
@@ -35,6 +35,6 @@ public class BdHistory {
     private LocalDateTime issuedDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "char(10) 'INACTIVE'", nullable = false)
+    @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
     private EnumBdHistoryStatus status;
 }
