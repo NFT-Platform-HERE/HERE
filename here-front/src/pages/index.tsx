@@ -1,5 +1,5 @@
 import React from 'react'
-import CommonBtn from '@/components/CommonBtn'
+import CommonBtn from '@/components/Button/CommonBtn'
 
 export default function Home() {
   return (
