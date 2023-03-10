@@ -1,5 +1,3 @@
-const { join } = require('path');
-
 const px_to_rem = (x) => { return { ...Array.from(Array(x)).map((_, i) => `${i / 16}rem`) } };
 
 module.exports = {
