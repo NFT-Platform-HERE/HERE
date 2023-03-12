@@ -41,6 +41,9 @@ public class Member {
     @Column(name = "email", columnDefinition = "char(50)", nullable = false)
     private String email;
 
+    @Column(name = "pw", columnDefinition = "varchar(50)", nullable = false)
+    private String pw;
+
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
     private int level;
 
