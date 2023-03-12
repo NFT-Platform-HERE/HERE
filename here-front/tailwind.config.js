@@ -18,6 +18,15 @@ module.exports = {
       minHeight: px_to_rem(300),
       spacing: px_to_rem(50),
     },
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      'white': '#ffffff',
+      'red-0': '#ede1e1',
+      'red-1': '#eb9999',
+      'red-2': '#ff5050',
+      'red-3': '#ff2d54'
+    }
   },
   plugins: [],
 }
