@@ -1,9 +1,9 @@
-const px_to_rem = (x) => { return { ...Array.from(Array(x)).map((_, i) => `${i / 16}rem`) } };
+const px_to_rem = (x) => {
+  return { ...Array.from(Array(x + 1)).map((_, i) => `${i / 16}rem`) };
+};
 
 module.exports = {
-  content: [
-    "./src/**/*.{html,js,ts,jsx,tsx}"
-  ],
+  content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
       borderWidth: px_to_rem(100),
@@ -17,7 +17,10 @@ module.exports = {
       minWidth: px_to_rem(300),
       minHeight: px_to_rem(300),
       spacing: px_to_rem(50),
+      screens: {
+        mobile: { max: "480px" },
+      },
     },
   },
   plugins: [],
-}
+};
