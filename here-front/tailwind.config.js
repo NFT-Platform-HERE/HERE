@@ -23,7 +23,7 @@ module.exports = {
       current: 'currentColor',
       'white': '#ffffff',
       'red-0': '#ede1e1',
-      'red-1': '#eb9999',
+      'red-1': '#ff9999',
       'red-2': '#ff5050',
       'red-3': '#ff2d54'
     }
