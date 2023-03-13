@@ -3,8 +3,7 @@ import CommonBtn from '@/components/Button/CommonBtn'
 
 export default function HomePage() {
   return (
-    <div>
-      <CommonBtn width={200} height={70} onClick={ () => console.log('click!') }> Button</CommonBtn>
+    <div className="sm:bg-[url('/next.svg')] bg-[url('/vercel.svg')] w-100 h-50 bg-no-repeat">
     </div>
   )
 }
