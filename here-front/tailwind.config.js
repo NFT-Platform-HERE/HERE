@@ -21,6 +21,16 @@ module.exports = {
         mobile: { max: "480px" },
       },
     },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#ffffff",
+      "red-0": "#ede1e1",
+      "red-1": "#eb9999",
+      "red-2": "#ff5050",
+      "red-3": "#ff2d54",
+      'pink': "#FFF3F3",
+    },
   },
   plugins: [],
 };

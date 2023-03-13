@@ -42,13 +42,13 @@ export default function HomePage() {
           <img src="mainItems/mainNFT.png" alt="mainNFT" className="w-440" />
         </div>
       </div>
-      <div className="my-80 flex justify-center bg-red-100 py-80">
+      <div className="bg-pink my-80 flex justify-center py-80">
         <img
           src="mainItems/mainTitle3.png"
           alt="mainTitle3"
           className="my-auto inline-block h-160 w-200 mobile:h-100 mobile:w-125"
         />
-        <div className="inline-block h-500 w-800 bg-stone-400">
+        <div className="bg-stone-400 inline-block h-500 w-800">
           헌혈 이미지 들어감
         </div>
       </div>
