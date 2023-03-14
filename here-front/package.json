@@ -43,6 +43,7 @@
     "react-query": "^3.39.3",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
+    "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "typescript": "4.9.5"
   },
