@@ -47,7 +47,7 @@ export default function DonateCard({
   nickname,
   expirationDate,
   donatePercent,
-  representativeImageUrl = "/images/default_image.png",
+  representativeImageUrl = "/images/logo.svg",
   isCompleted,
 }: Iprops) {
   timeago.register("ko", koLocale);
