@@ -3,20 +3,22 @@ import tw from 'twin.macro'
 interface Iprops {
   width: number
   height: number
-  children: string
+  fontSize: number
   count: number
   imgUrl: string
+  children: string
   onClick: () => void
 }
 
-export default function CheerBtn({ width, height, children, count, imgUrl, onClick }: Iprops) {
+export default function CheerBtn({ width, height, fontSize, count, imgUrl, children, onClick }: Iprops) {
   return (
     <button
       css={[
-        tw`flex items-center justify-between font-medium text-white px-18 bg-red-1 rounded-50 text-15 hover:text-red-3`,
+        tw`flex items-center justify-between font-medium text-white px-18 bg-red-1 rounded-50 hover:text-red-3`,
         {
           width: width,
           height: height,
+          fontSize: fontSize
         },
       ]}
       onClick={onClick}

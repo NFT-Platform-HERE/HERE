@@ -1,4 +1,4 @@
-const px_to_rem = (x) => { return { ...Array.from(Array(x+1)).map((_, i) => `${i / 16}rem`) } };
+const px_to_rem = (x) => { return { ...Array.from(Array(x + 1)).map((_, i) => `${i / 16}rem`) } };
 
 module.exports = {
   content: [
@@ -17,12 +17,16 @@ module.exports = {
       minWidth: px_to_rem(300),
       minHeight: px_to_rem(300),
       spacing: px_to_rem(50),
+      screens: {
+        mobile: { max: "480px" },
+      },
     },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      'black': '#000000',
       'white': '#ffffff',
-      'red-0': '#ede1e1', 
+      'red-0': '#ede1e1',
       'red-1': '#ff9999',
       'red-2': '#ff5050',
       'red-3': '#ff2d54',
