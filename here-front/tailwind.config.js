@@ -18,22 +18,22 @@ module.exports = {
       screens: {
         mobile: { max: "480px" },
       },
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        'white': '#ffffff',
+        'red-0': '#ede1e1', 
+        'red-1': '#ff9999',
+        'red-2': '#ff5050',
+        'red-3': '#ff2d54',
+        'pink-0': "#fff6f6",
+        'pink-1': "#ffe4e4",
+        'pink-2': "#fadbda",
+        'pen-0': "#e5e5e5",
+        'pen-1': "#9f9f9f",
+        'pen-2': "#655f5f"
+      }
     },
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      'white': '#ffffff',
-      'red-0': '#ede1e1', 
-      'red-1': '#ff9999',
-      'red-2': '#ff5050',
-      'red-3': '#ff2d54',
-      'pink-0': "#fff6f6",
-      'pink-1': "#ffe4e4",
-      'pink-2': "#fadbda",
-      'pen-0': "#e5e5e5",
-      'pen-1': "#9f9f9f",
-      'pen-2': "#655f5f"
-    }
   },
   plugins: [],
 };

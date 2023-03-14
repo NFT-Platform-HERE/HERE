@@ -21,13 +21,13 @@ export default function HomePage() {
           <div className="mx-5 inline-block aspect-[1/1.34] w-300 bg-[url('/mainItems/mainInfoWeb4.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile4.png')]"></div>
         </div>
       </section>
-
       <img
         src="mainItems/mainWave.png"
         alt="mainWave"
         className="mx-auto w-[77rem] mobile:hidden"
       />
-      <div className="my-99 flex justify-center">
+
+      <section className="my-99 flex justify-center flex-wrap">
         <div className="mx-20 flex w-440 flex-col items-center">
           <img
             src="mainItems/mainTitle2.png"
@@ -43,18 +43,20 @@ export default function HomePage() {
         <div className="mx-20">
           <img src="mainItems/mainNFT.png" alt="mainNFT" className="w-440" />
         </div>
-      </div>
-      <div className="bg-pink my-80 flex justify-center py-80">
+      </section>
+
+      <section className="bg-pink-0 my-80 flex justify-center py-80">
         <img
           src="mainItems/mainTitle3.png"
           alt="mainTitle3"
-          className="my-auto inline-block h-160 w-200 mobile:h-100 mobile:w-125"
+          className="my-auto inline-block h-160 w-200 mobile:h-100 mobile:w-125 mobile:ml-8"
         />
         <div className="bg-stone-400 inline-block h-500 w-800">
           헌혈 이미지 들어감
         </div>
-      </div>
-      <div className="mb-90">
+      </section>
+
+      <section className="mb-90">
         <img
           src="mainItems/mainTitle4.png"
           alt="mainTitle4"
@@ -64,20 +66,20 @@ export default function HomePage() {
           <img
             src="mainItems/mainBottom1.png"
             alt="mainBottom1"
-            className="my-auto inline-block h-300 w-300"
+            className="my-auto inline-block h-300 w-300 mobile:w-250 mobile:h-250"
           />
           <img
             src="mainItems/mainBottom2.png"
             alt="mainBottom2"
-            className="mx-40 inline-block w-350"
+            className="mx-40 inline-block w-350 mobile:w-280 mobile:h-280 mobile:-my-35 z-10"
           />
           <img
             src="mainItems/mainBottom3.png"
             alt="mainBottom3"
-            className="my-auto inline-block w-300"
+            className="my-auto inline-block w-300 mobile:w-250 mobile:h-250"
           />
         </div>
-      </div>
+      </section>
       <Footer />
       {/* <CheerBtn width={200} height={50} count={5} imgUrl={'/next.svg'} onClick={() => console.log('click!')}>응원해요</CheerBtn>
       <div className='flex flex-wrap w-full gap-20 p-20'>
