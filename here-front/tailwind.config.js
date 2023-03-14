@@ -17,9 +17,11 @@ module.exports = {
       minWidth: px_to_rem(300),
       minHeight: px_to_rem(300),
       spacing: px_to_rem(50),
+      screens: {
+        mobile: { max: "480px" },
+      },
       colors: {
-        transparent: "transparent",
-        current: "currentColor",
+        black: "#000000",
         white: "#ffffff",
         "red-0": "#ede1e1",
         "red-1": "#ff9999",
@@ -33,9 +35,6 @@ module.exports = {
         "pen-2": "#655f5f",
         "pen-3": "#443B3B",
         "pen-4": "#868E96",
-      },
-      screens: {
-        mobile: { max: "480px" },
       },
     },
   },
