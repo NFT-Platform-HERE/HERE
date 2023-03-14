@@ -6,12 +6,21 @@
   /* 
 - 사용 예시:
 <DonateCard
-title="제목"
-nickname="닉네임"
-expirationDate={"2023-03-14 16:46:08"}
-donatePercent={25}
-representativeImageUrl={"/next.svg"}
-isCompleted={false}
+  title="제목"
+  nickname="닉네임"
+  expirationDate={"2023-03-14 16:46:08"}
+  donatePercent={25}
+  representativeImageUrl={"/next.svg"}
+  isCompleted={false}
+/>
+
+<DonateCardMobile
+  title="제목"
+  nickname="닉네임"
+  expirationDate={"2023-03-14 16:46:08"}
+  donatePercent={25}
+  representativeImageUrl={"/next.svg"}
+  isCompleted={false}
 />
 
 - 특이 사항:
@@ -29,7 +38,7 @@ interface Iprops {
   nickname: string;
   expirationDate: string;
   donatePercent: number;
-  representativeImageUrl: string;
+  representativeImageUrl?: string;
   isCompleted: boolean;
 }
 
@@ -38,7 +47,7 @@ export default function DonateCard({
   nickname,
   expirationDate,
   donatePercent,
-  representativeImageUrl,
+  representativeImageUrl = "/images/default_image.png",
   isCompleted,
 }: Iprops) {
   timeago.register("ko", koLocale);
@@ -46,7 +55,7 @@ export default function DonateCard({
   return (
     <div
       onClick={() => console.log("click!")}
-      className={`m-8 flex h-440 w-300 flex-col rounded-30 border border-pen-0 p-16 ${
+      className={`m-8 flex h-440 w-300 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
         isCompleted ? "bg-gray-300" : "bg-white"
       }`}
     >
@@ -69,6 +78,49 @@ export default function DonateCard({
           height={40}
           percent={donatePercent}
         />
+      </div>
+    </div>
+  );
+}
+
+export function DonateCardMobile({
+  title,
+  nickname,
+  expirationDate,
+  donatePercent,
+  representativeImageUrl = "/images/logo.svg",
+  isCompleted,
+}: Iprops) {
+  timeago.register("ko", koLocale);
+
+  return (
+    <div
+      onClick={() => console.log("click!")}
+      className={`m-8 flex h-95 w-339 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
+        isCompleted ? "bg-gray-300" : "bg-white"
+      }`}
+    >
+      <div className="mx-5 mt-8 ml-12">
+        <img src={representativeImageUrl} className="h-51 w-51"></img>
+      </div>
+      <div className="flex w-full flex-col">
+        <div className="flex justify-end text-7 font-medium text-pen-2">
+          <TimeAgo datetime={expirationDate} locale="ko" />
+        </div>
+        <div className="mb-3 flex justify-start text-11 font-bold text-pen-3">
+          {title}
+        </div>
+        <div className="mb-5 flex justify-start text-8 font-light text-pen-4">
+          {nickname}
+        </div>
+        <div className="flex justify-center">
+          <CommonBar
+            fontSize={6}
+            width={237}
+            height={18}
+            percent={donatePercent}
+          />
+        </div>
       </div>
     </div>
   );
