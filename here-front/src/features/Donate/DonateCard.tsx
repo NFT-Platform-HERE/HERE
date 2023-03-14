@@ -1,50 +1,59 @@
-import tw from "twin.macro";
+/**
+ * @author JeongOn
+ */
+
+{
+  /* 
+- 사용 예시:
+<DonateCard
+title="제목"
+nickname="닉네임"
+expirationTime={3}
+donatePercent={25}
+representativeImageUrl={"/next.svg"}
+isCompleted={false}
+/> */
+}
 
 interface Iprops {
   title: string;
   nickname: string;
-  expirationTime: Date;
-  danatePercent: number;
+  expirationTime: number;
+  donatePercent: number;
   representativeImageUrl: string;
   isCompleted: boolean;
-  onClick: () => void;
 }
 
-export default function DonateCard() {
+export default function DonateCard({
+  title,
+  nickname,
+  expirationTime,
+  donatePercent,
+  representativeImageUrl,
+  isCompleted,
+}: Iprops) {
   return (
-    <>
-      <div className="border-neutral-200 relative h-[440px] w-[300px] overflow-hidden rounded-[30px] border bg-white">
-        <p className="absolute left-[223px] top-[25px] text-center text-sm text-[#655f5f]">
-          3일 남음
-        </p>
-        <p className="absolute left-[27px] top-[273px] w-[258px] text-left text-lg font-bold text-[#443b3b]">
-          <span className="w-[258px] text-left text-lg font-bold text-[#443b3b]">
-            엄마 수술을 앞두고 헌혈증이{" "}
-          </span>
-          <br />
-          <span className="w-[258px] text-left text-lg font-bold text-[#443b3b]">
-            필요해요
-          </span>
-        </p>
-        <div
-          className="absolute left-[27px] top-[369px] h-10 w-[249px]"
-          style={{ filter: "drop-shadow(0px 4px 4px rgba(0,0,0,0.25))" }}
-        >
-          <div className="absolute left-[-1px] top-[-1px] h-10 w-[249px] rounded-[20px] bg-white" />
-          <div className="absolute left-[-1px] top-[-1px] h-10 w-[62.25px] rounded-tl-[20px] rounded-bl-[20px] bg-[#ff5050]" />
-          <p className="absolute left-[62.25px] top-1 h-[31px] w-[43.57px] text-center text-xl font-bold text-[#ff5050]">
-            25%
-          </p>
-        </div>
-        <p className="absolute left-[30px] top-[325px] text-left text-base text-[#868e96]/80">
-          닉네임
-        </p>
-        {/* <img
-          src="image-2.png"
-          className="absolute left-[35px] top-[71px] h-[171px] w-[231px] object-cover"
-        /> */}
+    <div
+      onClick={() => console.log("click!")}
+      className={`m-8 flex h-440 w-300 flex-col rounded-30 border border-pen-0 p-16 mobile:h-95 mobile:w-339 mobile:flex-row ${
+        isCompleted ? "bg-red-400" : "bg-white"
+      }`}
+    >
+      <div className="mb-30 flex justify-end text-14 font-medium text-pen-2 mobile:text-7">
+        3일남음
       </div>
-      ;
-    </>
+      <div className="mb-30 flex justify-center">
+        <img
+          src={representativeImageUrl}
+          className="m-5 h-171 w-231 p-5 mobile:h-51 mobile:w-51"
+        ></img>
+      </div>
+      <div className="mb-8 flex justify-start text-18 font-bold text-pen-3  mobile:text-11">
+        {title}
+      </div>
+      <div className="mb-25 flex justify-start text-16 font-light text-pen-4 mobile:text-8">
+        {nickname}
+      </div>
+    </div>
   );
 }
