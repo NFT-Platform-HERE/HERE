@@ -44,14 +44,17 @@ export default function DonateSearchInputBox({
       ]}
     >
       <input
-        className="flex-grow pl-44 outline-none"
+        className="flex-grow pl-44 outline-none mobile:pl-20"
         type="text"
         onChange={onChange}
         value={value}
         size={fontSize}
         placeholder="작성자, 제목, 내용을 검색하세요"
       />
-      <img src={"/icons/search-icon.svg"} className="mr-25" />
+      <img
+        src={"/icons/search-icon.svg"}
+        className="mr-25 mobile:mr-10 mobile:h-20 mobile:w-20 "
+      />
     </div>
   );
 }
