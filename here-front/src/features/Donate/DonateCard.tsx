@@ -56,7 +56,7 @@ export default function DonateCard({
     <div
       onClick={() => console.log("click!")}
       className={`m-8 flex h-440 w-300 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
-        isCompleted ? "bg-gray-300" : "bg-white"
+        isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
       <div className="mb-30 flex justify-end text-14 font-medium text-pen-2">
@@ -97,7 +97,7 @@ export function DonateCardMobile({
     <div
       onClick={() => console.log("click!")}
       className={`m-8 flex h-95 w-339 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
-        isCompleted ? "bg-gray-300" : "bg-white"
+        isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
       <div className="mx-5 mt-8 ml-12">
