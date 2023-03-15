@@ -16,121 +16,126 @@ export default function DonatePage() {
     setValue(event.target.value);
   };
 
-  const testTimeJson = [
+  const testTimeJson: any[] = [
     {
-      title: "제목1",
-      nickname: "닉네임1",
+      id: 1,
+      title: "헌혈증으로 사랑을 나눠요",
+      nickname: "구스구스",
       expirationDate: "2023-03-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      donatePercent: 45,
       isCompleted: false,
     },
     {
-      title: "제목2",
-      nickname: "닉네임2",
-      expirationDate: "2020-05-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      id: 2,
+      title: "헌혈증 NFT로 기부를 편리하게",
+      nickname: "규나카",
+      expirationDate: "2023-03-13 16:46:08",
+      donatePercent: 53,
       isCompleted: false,
     },
     {
-      title: "제목3",
-      nickname: "닉네임3",
-      expirationDate: "2021-06-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      id: 3,
+      title: "헌혈증 NFT 플랫폼 HERE",
+      nickname: "언도",
+      expirationDate: "2023-03-12 16:46:08",
+      donatePercent: 70,
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      id: 4,
+      title: "Heart Share",
+      nickname: "용용",
+      expirationDate: "2023-03-10 16:46:08",
+      donatePercent: 67,
       isCompleted: false,
     },
   ];
 
-  const testJson = [
+  const testJson: any[] = [
     {
+      id: 1,
       title: "제목1",
       nickname: "닉네임1",
       expirationDate: "2023-03-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      representativeImageUrl: "/test/test-01.jpg",
       isCompleted: false,
     },
     {
+      id: 2,
       title: "제목2",
       nickname: "닉네임2",
       expirationDate: "2020-05-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
       isCompleted: false,
     },
     {
+      id: 3,
       title: "제목3",
       nickname: "닉네임3",
       expirationDate: "2021-06-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      representativeImageUrl: "/test/test-02.jpg",
       isCompleted: false,
     },
     {
+      id: 4,
       title: "제목4",
       nickname: "닉네임4",
       expirationDate: "2022-12-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      representativeImageUrl: "/test/test-03.jpg",
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 5,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      representativeImageUrl: "/test/test-04.jpg",
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 6,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
+      donatePercent: 100,
+      representativeImageUrl: "/test/test-05.jpg",
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 7,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 8,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
       donatePercent: 25,
-      representativeImageUrl: "/next.svg",
       isCompleted: false,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 9,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
-      isCompleted: false,
+      donatePercent: 90,
+      isCompleted: true,
     },
     {
-      title: "제목4",
-      nickname: "닉네임4",
+      id: 10,
+      title: "제목",
+      nickname: "닉네임",
       expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/next.svg",
-      isCompleted: false,
+      donatePercent: 100,
+      isCompleted: true,
     },
   ];
 
@@ -165,19 +170,23 @@ export default function DonatePage() {
             {testTimeJson.map((item) =>
               width < breakpoint ? (
                 <DonateCardMobile
+                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
                   donatePercent={item.donatePercent}
                   expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
                 />
               ) : (
                 <DonateCard
+                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
                   donatePercent={item.donatePercent}
                   expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
                 />
               ),
             )}
@@ -229,19 +238,23 @@ export default function DonatePage() {
             {testJson.map((item) =>
               width < breakpoint ? (
                 <DonateCardMobile
+                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
                   donatePercent={item.donatePercent}
                   expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
                 />
               ) : (
                 <DonateCard
+                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
                   donatePercent={item.donatePercent}
                   expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
                 />
               ),
             )}
