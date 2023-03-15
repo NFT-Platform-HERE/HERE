@@ -63,7 +63,7 @@ export default function DonateCard({
         <TimeAgo datetime={expirationDate} locale="ko" />
       </div>
       <div className="mb-30 flex justify-center">
-        <img src={representativeImageUrl} className="m-5 h-171 w-231 p-5"></img>
+        <img src={representativeImageUrl} className="h-171 w-231"></img>
       </div>
       <div className="mb-8 flex justify-start text-18 font-bold text-pen-3">
         {title}
@@ -101,7 +101,10 @@ export function DonateCardMobile({
       }`}
     >
       <div className="mx-5 mt-8 ml-12">
-        <img src={representativeImageUrl} className="h-51 w-51"></img>
+        <img
+          src={representativeImageUrl}
+          className="h-51 w-51 rounded-10 border"
+        ></img>
       </div>
       <div className="flex w-full flex-col">
         <div className="flex justify-end text-7 font-medium text-pen-2">
