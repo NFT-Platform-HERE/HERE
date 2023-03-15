@@ -5,14 +5,16 @@ import React, { useState, useEffect } from "react";
 import BDimg from "../assets/exImg1.jpg";
 
 export default function HomePage() {
-  const [width, setWidth] = useState<number>(window.innerWidth);
+  const [width, setWidth] = useState<number>(0); // 최초 화면 로딩 시 에러 때문에 초기값 0으로 세팅
   const breakpoint: number = 480;
 
   useEffect(() => {
+    setWidth(window.innerWidth);
     const handleWindowResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
+  console.log(width);
 
   return (
     <div>
