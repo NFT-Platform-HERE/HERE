@@ -1,3 +1,4 @@
+import CommonBtn from "@/components/Button/CommonBtn";
 import { useState } from "react";
 
 export default function SignupStep1() {
@@ -6,18 +7,24 @@ export default function SignupStep1() {
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
 
+  const goToNext = (): void => {
+    // 모든 입력값 유효한지 확인 후
+    console.log("다음 스텝으로 넘어가기");
+  };
+
   return (
     <div>
       <img
         src="signup/step1.svg"
         alt="step1"
-        className="inline-block w-600 min-w-[600px]"
+        className="inline-block w-640 min-w-[640px]"
       />
+      <div>dkdkdk</div>
       <div className="mx-auto mt-50 w-600">
         <div className="my-20">
           <label
             htmlFor="email"
-            className="inline-block w-180 text-left text-18 font-light"
+            className="inline-block w-160 text-left text-18 font-light"
           >
             * 이메일
           </label>
@@ -35,7 +42,7 @@ export default function SignupStep1() {
         <div className="my-20">
           <label
             htmlFor="password"
-            className="inline-block w-180 text-left text-18 font-light"
+            className="inline-block w-160 text-left text-18 font-light"
           >
             * 비밀번호
           </label>
@@ -53,7 +60,7 @@ export default function SignupStep1() {
         <div className="my-20">
           <label
             htmlFor="password-check"
-            className="inline-block w-180 text-left text-18 font-light"
+            className="inline-block w-160 text-left text-18 font-light"
           >
             * 비밀번호 확인
           </label>
@@ -68,10 +75,10 @@ export default function SignupStep1() {
             className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0"
           />
         </div>
-        <div className="my-20">
+        <div className="mt-20 mb-50">
           <label
             htmlFor="nickname"
-            className="inline-block w-180 text-left text-18 font-light"
+            className="inline-block w-160 text-left text-18 font-light"
           >
             * 닉네임
           </label>
@@ -87,6 +94,13 @@ export default function SignupStep1() {
           />
         </div>
       </div>
+      <CommonBtn
+        width={240}
+        height={55}
+        fontSize={18}
+        children={"다음"}
+        onClick={goToNext}
+      />
     </div>
   );
 }
