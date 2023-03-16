@@ -156,14 +156,14 @@ export default function DonatePage() {
         <div className="col-span-6 mobile:col-span-8">
           <div className="mr-5 mt-5 flex justify-end mobile:hidden">
             <CommonBtn
-              width={200}
-              height={70}
-              fontSize={22}
+              width={150}
+              height={55}
+              fontSize={18}
               children={"글 작성하기"}
               onClick={() => {}}
             />
           </div>
-          <div className="mb-62 flex justify-center text-28 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
+          <div className="mb-62 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
             종료가 얼마 남지 않았어요!
           </div>
           <div className="flex flex-wrap justify-start mobile:justify-center">
@@ -191,7 +191,7 @@ export default function DonatePage() {
               ),
             )}
           </div>
-          <div className="mb-27 flex justify-center text-28 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
+          <div className="mb-27 flex justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
             전체 목록
           </div>
           <div className="mb-11 mr-25 hidden  mobile:flex mobile:justify-end ">
@@ -211,24 +211,18 @@ export default function DonatePage() {
             </label>
           </div>
           <div className="mb-83 flex items-center justify-center mobile:mb-14">
-            <DonateSearchInputBox
-              width={width < breakpoint ? 290 : 827}
-              height={width < breakpoint ? 35 : 84}
-              fontSize={width < breakpoint ? 11 : 24}
-              value={value}
-              onChange={handleChange}
-            />
+            <DonateSearchInputBox value={value} onChange={handleChange} />
 
-            <label className="ml-30 mobile:hidden">
+            <label className="ml-18 mobile:hidden">
               <div className="flex items-center ">
                 <input
                   type="checkbox"
-                  className="h-33 w-33 mobile:h-16 mobile:w-16"
+                  className="h-25 w-25 mobile:h-16 mobile:w-16"
                   // disabled={disabled}
                   // checked={checked}
                   // onChange={({ target: { checked } }) => onChange(checked)}
                 />
-                <span className="ml-8 text-20 font-normal text-pen-2 mobile:text-10">
+                <span className="ml-8 text-16 font-normal text-pen-2 mobile:text-10">
                   내 글 보기
                 </span>
               </div>
