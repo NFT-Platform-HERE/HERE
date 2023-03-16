@@ -33,6 +33,8 @@ module.exports = {
         "pen-0": "#e5e5e5",
         "pen-1": "#9f9f9f",
         "pen-2": "#655f5f",
+        "pen-3": "#443B3B",
+        "pen-4": "#868E96",
       },
     },
   },
