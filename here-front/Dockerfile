@@ -6,6 +6,8 @@ WORKDIR /app
 COPY package.json .
 # 명령어 실행 (의존성 설치)
 RUN npm install
+# 명령어 실행 (프로젝트 빌드)
+RUN npm run build
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
 COPY . .
 
