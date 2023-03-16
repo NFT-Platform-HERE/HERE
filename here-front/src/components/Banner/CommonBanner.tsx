@@ -1,21 +1,48 @@
 interface Iprops {
+  width: number;
+  height: number;
+  marginTop: number;
   bgColor: string;
   imgUrl: string;
 }
 
-export default function CommonBanner({ bgColor, imgUrl }: Iprops) {
+export default function CommonBanner({
+  width,
+  height,
+  marginTop,
+  bgColor,
+  imgUrl,
+}: Iprops) {
   return (
     <div className="flex h-350 w-full flex-col items-center">
       <div
-        className="h-300 w-full min-w-[1200px]"
+        className="h-300 w-full"
         css={[
           {
             backgroundColor: bgColor,
+            minWidth: width,
+            height: height,
           },
         ]}
       ></div>
-      <div className="-mt-[250px] h-300 w-[1200px]">
-        <img src={imgUrl} className="h-300 w-[1200px]" />
+      <div
+        css={[
+          {
+            width: width,
+            height: height,
+            marginTop: -(height - marginTop) + "px",
+          },
+        ]}
+      >
+        <img
+          src={imgUrl}
+          css={[
+            {
+              width: width,
+              height: height,
+            },
+          ]}
+        />
       </div>
     </div>
   );
