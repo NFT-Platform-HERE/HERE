@@ -168,9 +168,8 @@ export default function DonatePage() {
           </div>
           <div className="flex  flex-wrap justify-start  mobile:justify-center">
             {testTimeJson.map((item) => (
-              <div className="mobile:hidden">
+              <div className="mobile:hidden" key={item.id}>
                 <DonateCard
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -181,9 +180,8 @@ export default function DonatePage() {
               </div>
             ))}
             {testJson.map((item) => (
-              <div className="hidden mobile:inline-block">
+              <div className="hidden mobile:inline-block" key={item.id}>
                 <DonateCardMobile
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -237,9 +235,8 @@ export default function DonatePage() {
           </div>
           <div className="flex  flex-wrap justify-start mobile:justify-center">
             {testJson.map((item) => (
-              <div className="mobile:hidden">
+              <div className="mobile:hidden" key={item.id}>
                 <DonateCard
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -250,9 +247,8 @@ export default function DonatePage() {
               </div>
             ))}
             {testJson.map((item) => (
-              <div className="hidden mobile:inline-block">
+              <div className="hidden mobile:inline-block" key={item.id}>
                 <DonateCardMobile
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
