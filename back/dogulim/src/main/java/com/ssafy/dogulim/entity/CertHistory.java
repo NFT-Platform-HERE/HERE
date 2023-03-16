@@ -40,4 +40,10 @@ public class CertHistory {
     @Column(name = "create_date", updatable = false, nullable = false)
     private LocalDateTime createDate;
 
+    @Column(name = "reason", columnDefinition = "varchar(50)")
+    private String reason;
+
+    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
+    private String hashValue;
+
 }
