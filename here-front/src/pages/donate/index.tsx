@@ -19,6 +19,12 @@ export default function DonatePage() {
     setValue(event.target.value);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      console.log(event.code);
+    }
+  };
+
   const testTimeJson: any[] = [
     {
       id: 1,
@@ -143,9 +149,9 @@ export default function DonatePage() {
   ];
 
   useEffect(() => {
-    console.log("width", window.innerWidth);
-    setWidth(window.innerWidth);
-    const handleWindowResize = () => setWidth(window.innerWidth);
+    console.log("width", window.screen.width);
+    setWidth(window.screen.width);
+    const handleWindowResize = () => setWidth(window.screen.width);
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
@@ -214,7 +220,11 @@ export default function DonatePage() {
             </label>
           </div>
           <div className="mb-83 flex items-center justify-center mobile:mb-14">
-            <DonateSearchInputBox value={value} onChange={handleChange} />
+            <DonateSearchInputBox
+              value={value}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+            />
 
             <label className="ml-18 mobile:hidden">
               <div className="flex items-center ">
