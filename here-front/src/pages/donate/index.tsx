@@ -4,10 +4,14 @@ import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
 import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
+import { useRouter } from "next/navigation";
 
 export default function DonatePage() {
   const [value, setValue] = useState<string>("");
   const [width, setWidth] = useState<number>(0); // 최초 화면 로딩 시 에러 때문에 초기값 0으로 세팅
+
+  const router = useRouter();
+
   const breakpoint: number = 480;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +163,7 @@ export default function DonatePage() {
               fontSize={18}
               children={"글 작성하기"}
               isDisabled={false}
-              onClick={() => {}}
+              onClick={() => router.push("/donate/write")}
             />
           </div>
           <div className="mb-62 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
