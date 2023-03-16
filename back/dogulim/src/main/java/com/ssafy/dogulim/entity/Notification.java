@@ -35,7 +35,7 @@ public class Notification {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "char(10)")
+    @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'")
     private EnumNotificationStatus status;
 
     @CreatedDate
