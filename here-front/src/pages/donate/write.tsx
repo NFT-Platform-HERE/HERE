@@ -3,17 +3,17 @@ import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 
+const QuillWrapper = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
+
 export default function DonateWritePage() {
   const [value, setValue] = useState("");
 
   function printVal() {
     console.log("value", value);
   }
-
-  const QuillWrapper = dynamic(() => import("react-quill"), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-  });
 
   return (
     <div className="mt-25 w-full">
@@ -39,8 +39,7 @@ export default function DonateWritePage() {
                 className="text-20 text-pen-2 outline-none mobile:text-13"
               />
               <button onClick={printVal}>내용 확인</button>
-              <QuillWrapper theme="snow" />
-              {/* <ReactQuill theme="snow" value={value} onChange={setValue} /> */}
+              <QuillWrapper theme="snow" value={value} onChange={setValue} />
             </div>
             <div className="mobile:hidden"></div>
           </div>
