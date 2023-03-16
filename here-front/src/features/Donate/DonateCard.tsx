@@ -55,27 +55,27 @@ export default function DonateCard({
   return (
     <div
       onClick={() => console.log("click!")}
-      className={`mr-48 mb-100 flex h-440 w-300 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
+      className={`mr-48 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
         isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
-      <div className="mb-30 flex justify-end text-14 font-medium text-pen-2">
+      <div className="mb-20 flex justify-end text-12 font-medium text-pen-2">
         <TimeAgo datetime={expirationDate} locale="ko" />
       </div>
-      <div className="mb-30 flex justify-center">
-        <img src={representativeImageUrl} className="h-171 w-231"></img>
+      <div className="mb-12 flex justify-center">
+        <img src={representativeImageUrl} className="h-160 w-160"></img>
       </div>
-      <div className="mb-8 flex justify-start text-18 font-bold text-pen-3">
+      <div className="mb-3 flex justify-start text-14 font-bold text-pen-3">
         {title}
       </div>
-      <div className="mb-25 flex justify-start text-16 font-light text-pen-4">
+      <div className="mb-15 flex justify-start text-12 font-light text-pen-4">
         {nickname}
       </div>
       <div className="mb-31 flex justify-center">
         <CommonBar
-          fontSize={20}
-          width={249}
-          height={40}
+          fontSize={16}
+          width={200}
+          height={30}
           percent={donatePercent}
         />
       </div>
@@ -100,13 +100,12 @@ export function DonateCardMobile({
         isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
-      <div className="mx-5 mt-8 ml-12">
-        <img
-          src={representativeImageUrl}
-          className="h-51 w-51 rounded-10 border"
-        ></img>
-      </div>
-      <div className="flex w-full flex-col">
+      <img
+        src={representativeImageUrl}
+        className="ml-8 mr-12 mt-10 h-50 w-50 rounded-10 border"
+      />
+
+      <div className="mr-3 flex w-full flex-col">
         <div className="flex justify-end text-7 font-medium text-pen-2">
           <TimeAgo datetime={expirationDate} locale="ko" />
         </div>
@@ -119,7 +118,7 @@ export function DonateCardMobile({
         <div className="flex justify-center">
           <CommonBar
             fontSize={6}
-            width={237}
+            width={225}
             height={18}
             percent={donatePercent}
           />
