@@ -1,6 +1,7 @@
 package com.ssafy.hereauth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,8 @@ public class Stamp {
 
     @Column(name = "step", columnDefinition = "int default 1", nullable = false)
     private int step;
+
+    public void createStamp(Member member) {
+        this.member = member;
+    }
 }

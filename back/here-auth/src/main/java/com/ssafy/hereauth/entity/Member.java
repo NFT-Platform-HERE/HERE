@@ -1,5 +1,6 @@
 package com.ssafy.hereauth.entity;
 
+import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.enumeration.member.EnumMemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,5 +56,14 @@ public class Member {
     @CreatedDate
     @Column(name = "create_date", updatable = false, nullable = false)
     private LocalDateTime createDate;
+
+    public void createMember(SignupRequestDto signupRequestDto) {
+        this.role = EnumMemberRole.USER;
+        this.walletAddress = signupRequestDto.getWalletAddress();
+        this.name = signupRequestDto.getName();
+        this.nickname = signupRequestDto.getNickname();
+        this.email = signupRequestDto.getEmail();
+        this.pw = signupRequestDto.getPw();
+    }
 
 }

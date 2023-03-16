@@ -1,6 +1,8 @@
 package com.ssafy.hereauth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.hereauth.dto.member.SignupRequestDto;
+import com.ssafy.hereauth.enumeration.member.EnumMemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +32,11 @@ public class MemberCharacter {
 
     @Column(name = "name", columnDefinition = "char(20)", nullable = false)
     private String name;
+
+    public void createMemberCharacter(Member member, Character character, String characterName) {
+        this.member = member;
+        this.name = characterName;
+        this.character = character;
+
+    }
 }
