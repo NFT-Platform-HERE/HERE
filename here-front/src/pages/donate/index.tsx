@@ -4,15 +4,24 @@ import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
 import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
+import { useRouter } from "next/navigation";
 
 export default function DonatePage() {
   const [value, setValue] = useState<string>("");
-  const [width, setWidth] = useState<number>(0); // 최초 화면 로딩 시 에러 때문에 초기값 0으로 세팅
+
+  const router = useRouter();
+
   const breakpoint: number = 480;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("event.target.value", event.target.value);
     setValue(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      console.log(event.code);
+    }
   };
 
   const testTimeJson: any[] = [
@@ -138,20 +147,12 @@ export default function DonatePage() {
     },
   ];
 
-  useEffect(() => {
-    console.log("width", window.innerWidth);
-    setWidth(window.innerWidth);
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
-
   return (
     <div className="mt-60 w-full">
       {/* <CommonBanner /> */}
       <div className="grid grid-cols-8 gap-2">
         <div className="mobile:hidden"></div>
-        <div className="col-span-6 mobile:col-span-8">
+        <div className="col-span-6 min-w-[1200px] mobile:col-span-8 mobile:min-w-[350px]">
           <div className="mr-5 mt-5 flex justify-end mobile:hidden">
             <CommonBtn
               width={150}
@@ -159,27 +160,16 @@ export default function DonatePage() {
               fontSize={18}
               children={"글 작성하기"}
               isDisabled={false}
-              onClick={() => {}}
+              onClick={() => router.push("/donate/write")}
             />
           </div>
-          <div className="mb-62 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
+          <div className="mb-62 flex  justify-center text-22 font-bold text-pen-2 mobile:mb-14  mobile:text-16">
             종료가 얼마 남지 않았어요!
           </div>
-          <div className="flex flex-wrap justify-start mobile:justify-center">
-            {testTimeJson.map((item) =>
-              width < breakpoint ? (
-                <DonateCardMobile
-                  key={item.id}
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
-                />
-              ) : (
+          <div className="flex  flex-wrap justify-start  mobile:justify-center">
+            {testTimeJson.map((item) => (
+              <div className="mobile:hidden" key={item.id}>
                 <DonateCard
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -187,10 +177,22 @@ export default function DonatePage() {
                   expirationDate={item.expirationDate}
                   representativeImageUrl={item.representativeImageUrl}
                 />
-              ),
-            )}
+              </div>
+            ))}
+            {testJson.map((item) => (
+              <div className="hidden mobile:inline-block" key={item.id}>
+                <DonateCardMobile
+                  title={item.title}
+                  nickname={item.nickname}
+                  isCompleted={item.isCompleted}
+                  donatePercent={item.donatePercent}
+                  expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
+                />
+              </div>
+            ))}
           </div>
-          <div className="mb-27 flex justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
+          <div className="mb-27 flex  justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27  mobile:text-16">
             전체 목록
           </div>
           <div className="mb-11 mr-25 hidden  mobile:flex mobile:justify-end ">
@@ -209,8 +211,12 @@ export default function DonatePage() {
               </div>
             </label>
           </div>
-          <div className="mb-83 flex items-center justify-center mobile:mb-14">
-            <DonateSearchInputBox value={value} onChange={handleChange} />
+          <div className="mb-83 flex  items-center justify-center mobile:mb-14 ">
+            <DonateSearchInputBox
+              value={value}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+            />
 
             <label className="ml-18 mobile:hidden">
               <div className="flex items-center ">
@@ -227,21 +233,10 @@ export default function DonatePage() {
               </div>
             </label>
           </div>
-          <div className="flex flex-wrap justify-start mobile:justify-center">
-            {testJson.map((item) =>
-              width < breakpoint ? (
-                <DonateCardMobile
-                  key={item.id}
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
-                />
-              ) : (
+          <div className="flex  flex-wrap justify-start mobile:justify-center">
+            {testJson.map((item) => (
+              <div className="mobile:hidden" key={item.id}>
                 <DonateCard
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -249,8 +244,20 @@ export default function DonatePage() {
                   expirationDate={item.expirationDate}
                   representativeImageUrl={item.representativeImageUrl}
                 />
-              ),
-            )}
+              </div>
+            ))}
+            {testJson.map((item) => (
+              <div className="hidden mobile:inline-block" key={item.id}>
+                <DonateCardMobile
+                  title={item.title}
+                  nickname={item.nickname}
+                  isCompleted={item.isCompleted}
+                  donatePercent={item.donatePercent}
+                  expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div className="mobile:hidden"></div>
