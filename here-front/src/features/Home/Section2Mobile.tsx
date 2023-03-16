@@ -1,7 +1,7 @@
 export default function Section2Mobile() {
   return (
-    <section className="my-20 flex flex-wrap justify-center">
-      <div className="-mb-96 h-200 w-full bg-pink-0">
+    <section className="my-20 flex w-full min-w-[300px] flex-wrap justify-center">
+      <div className="-mb-[9.5rem] h-256 w-full bg-pink-0">
         <img
           src="mainItems/mainTitle2.png"
           alt="mainTitle2"

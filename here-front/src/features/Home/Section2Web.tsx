@@ -1,6 +1,6 @@
 export default function Section2Web() {
   return (
-    <section className="my-99 flex flex-wrap justify-center">
+    <section className="my-99 mx-auto flex w-[75rem] justify-center mobile:w-0">
       <div className="mx-20 flex w-440 flex-col items-center">
         <img
           src="mainItems/mainTitle2.png"

@@ -14,33 +14,36 @@ export default function HomePage() {
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
+
   console.log(width);
 
   return (
     <div>
       <h1 className="py-20">헤더 자리...</h1>
-      <div className="aspect-[3.2/1] w-full bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
-      <section className="my-80 mobile:my-50">
+      <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
+      <section className="my-80 min-w-[1200px] mobile:my-50 mobile:w-full mobile:min-w-[300px]">
         <img
           src="mainItems/mainTitle1.png"
           alt="mainTitle1"
-          className="mx-auto w-400 mobile:w-300"
+          className="mx-auto w-400"
         />
         <div className="my-30 flex flex-wrap justify-center">
-          <div className="mx-5 inline-block aspect-[1/1.34] w-300 bg-[url('/mainItems/mainInfoWeb1.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile1.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-300 bg-[url('/mainItems/mainInfoWeb2.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile2.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-300 bg-[url('/mainItems/mainInfoWeb3.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile3.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-300 bg-[url('/mainItems/mainInfoWeb4.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile4.png')]"></div>
+          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb1.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile1.png')]"></div>
+          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb2.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile2.png')]"></div>
+          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb3.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile3.png')]"></div>
+          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb4.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile4.png')]"></div>
         </div>
       </section>
+
       <img
         src="mainItems/mainWave.png"
         alt="mainWave"
-        className="mx-auto w-[77rem] mobile:hidden"
+        className="mx-auto w-[75rem] min-w-[75rem] mobile:hidden"
       />
+
       {width < breakpoint ? <Section2Mobile /> : <Section2Web />}
 
-      <section className="my-80 flex justify-center bg-pink-0 py-80 mobile:my-50 ">
+      <section className="my-80 flex min-w-[1200px] justify-center bg-pink-0 py-80 mobile:my-50 mobile:w-full mobile:min-w-[300px]">
         <img
           src="mainItems/mainTitle3.png"
           alt="mainTitle3"
@@ -52,7 +55,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mb-90">
+      <section className="mb-90 min-w-[1200px] mobile:w-full mobile:min-w-[300px]">
         <img
           src="mainItems/mainTitle4.png"
           alt="mainTitle4"
