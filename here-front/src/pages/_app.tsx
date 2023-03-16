@@ -1,11 +1,11 @@
 import "../index.css";
 import type { AppProps } from "next/app";
-import WebHeader from "@/components/Header/WebHeader";
+import Header from "@/components/Header/Header";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <WebHeader />
+      <Header />
       <Component {...pageProps} />
     </>
   );
