@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
-import WebHeader from "@/components/Header/WebHeader";
 import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
 
@@ -148,9 +147,8 @@ export default function DonatePage() {
   }, []);
 
   return (
-    <div className="w-full">
-      <WebHeader />
-      <CommonBanner />
+    <div className="mt-60 w-full">
+      {/* <CommonBanner /> */}
       <div className="grid grid-cols-8 gap-2">
         <div className="mobile:hidden"></div>
         <div className="col-span-6 mobile:col-span-8">
@@ -160,6 +158,7 @@ export default function DonatePage() {
               height={55}
               fontSize={18}
               children={"글 작성하기"}
+              isDisabled={false}
               onClick={() => {}}
             />
           </div>
