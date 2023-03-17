@@ -55,7 +55,7 @@ export default function DonateCard({
   return (
     <div
       onClick={() => console.log("click!")}
-      className={`mr-48 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
+      className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
         isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
