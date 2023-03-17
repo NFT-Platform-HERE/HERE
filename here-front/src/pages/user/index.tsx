@@ -33,7 +33,6 @@ export default function SignUpPage() {
 
   return (
     <>
-      <div className="h-60 w-full bg-pink-0">헤더자리...</div>
       <div className="mx-auto w-700 text-center mobile:w-full mobile:min-w-[300px]">
         <p className="mx-auto mt-30 inline-block text-28 mobile:hidden">
           회원정보 입력
