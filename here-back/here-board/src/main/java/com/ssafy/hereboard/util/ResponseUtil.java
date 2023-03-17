@@ -3,6 +3,7 @@ package com.ssafy.hereboard.util;
 import com.ssafy.hereboard.dto.common.response.ErrorContentDto;
 import com.ssafy.hereboard.dto.common.response.ResponseErrorDto;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
+import com.ssafy.hereboard.enumeration.response.HereStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +12,12 @@ import java.util.TimeZone;
 
 @Component
 public class ResponseUtil<T> {
-    public ResponseSuccessDto<T> successResponse(T data) {
+    public ResponseSuccessDto<T> successResponse(T data, HereStatus status) {
         ResponseSuccessDto<T> res = ResponseSuccessDto
                 .<T>builder()
                 .timeStamp(ZonedDateTime.now(TimeZone.getTimeZone("UTC").toZoneId()))
                 .code(HttpStatus.OK.value())
-                .status(HttpStatus.OK.name())
+                .status(status.name())
                 .data(data)
                 .build();
         return res;
