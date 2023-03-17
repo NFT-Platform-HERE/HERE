@@ -44,13 +44,13 @@ public class Member {
     private String email;
 
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
-    private int level;
+    private int level = 1;
 
     @Column(name = "cur_exp", columnDefinition = "int default 0", nullable = false)
     private int curExp;
 
     @Column(name = "goal_exp", columnDefinition = "int default 50", nullable = false)
-    private int goalExp;
+    private int goalExp = 50;
 
     @CreatedDate
     @Column(name = "create_date", updatable = false, nullable = false)
