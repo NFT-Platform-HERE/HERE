@@ -4,15 +4,24 @@ import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
 import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
+import { useRouter } from "next/navigation";
 
 export default function DonatePage() {
   const [value, setValue] = useState<string>("");
-  const [width, setWidth] = useState<number>(0); // 최초 화면 로딩 시 에러 때문에 초기값 0으로 세팅
+
+  const router = useRouter();
+
   const breakpoint: number = 480;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("event.target.value", event.target.value);
     setValue(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      console.log(event.code);
+    }
   };
 
   const testTimeJson: any[] = [
@@ -138,48 +147,28 @@ export default function DonatePage() {
     },
   ];
 
-  useEffect(() => {
-    console.log("width", window.innerWidth);
-    setWidth(window.innerWidth);
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
-
   return (
-    <div className="mt-60 w-full">
+    <div className="mt-60 flex w-full justify-center">
       {/* <CommonBanner /> */}
-      <div className="grid grid-cols-8 gap-2">
-        <div className="mobile:hidden"></div>
-        <div className="col-span-6 mobile:col-span-8">
-          <div className="mr-5 mt-5 flex justify-end mobile:hidden">
-            <CommonBtn
-              width={150}
-              height={55}
-              fontSize={18}
-              children={"글 작성하기"}
-              isDisabled={false}
-              onClick={() => {}}
-            />
-          </div>
-          <div className="mb-62 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
-            종료가 얼마 남지 않았어요!
-          </div>
-          <div className="flex flex-wrap justify-start mobile:justify-center">
-            {testTimeJson.map((item) =>
-              width < breakpoint ? (
-                <DonateCardMobile
-                  key={item.id}
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
-                />
-              ) : (
+      <div className="min-w-1200 mobile:min-w-350">
+        <div className="mr-10 mt-7 flex justify-end mobile:hidden">
+          <CommonBtn
+            width={150}
+            height={55}
+            fontSize={18}
+            children={"글 작성하기"}
+            isDisabled={false}
+            onClick={() => router.push("/donate/write")}
+          />
+        </div>
+        <div className="mb-55 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
+          종료가 얼마 남지 않았어요!
+        </div>
+        <div className="flex justify-center">
+          <div className="flex w-1200 flex-wrap justify-start mobile:justify-center">
+            {testTimeJson.map((item) => (
+              <div className="mobile:hidden" key={item.id}>
                 <DonateCard
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -187,51 +176,11 @@ export default function DonatePage() {
                   expirationDate={item.expirationDate}
                   representativeImageUrl={item.representativeImageUrl}
                 />
-              ),
-            )}
-          </div>
-          <div className="mb-27 flex justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
-            전체 목록
-          </div>
-          <div className="mb-11 mr-25 hidden  mobile:flex mobile:justify-end ">
-            <label>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="h-16 w-16"
-                  // disabled={disabled}
-                  // checked={checked}
-                  // onChange={({ target: { checked } }) => onChange(checked)}
-                />
-                <span className="ml-5 text-10 font-normal text-pen-2">
-                  내 글 보기
-                </span>
               </div>
-            </label>
-          </div>
-          <div className="mb-83 flex items-center justify-center mobile:mb-14">
-            <DonateSearchInputBox value={value} onChange={handleChange} />
-
-            <label className="ml-18 mobile:hidden">
-              <div className="flex items-center ">
-                <input
-                  type="checkbox"
-                  className="h-25 w-25 mobile:h-16 mobile:w-16"
-                  // disabled={disabled}
-                  // checked={checked}
-                  // onChange={({ target: { checked } }) => onChange(checked)}
-                />
-                <span className="ml-8 text-16 font-normal text-pen-2 mobile:text-10">
-                  내 글 보기
-                </span>
-              </div>
-            </label>
-          </div>
-          <div className="flex flex-wrap justify-start mobile:justify-center">
-            {testJson.map((item) =>
-              width < breakpoint ? (
+            ))}
+            {testJson.map((item) => (
+              <div className="hidden mobile:inline-block" key={item.id}>
                 <DonateCardMobile
-                  key={item.id}
                   title={item.title}
                   nickname={item.nickname}
                   isCompleted={item.isCompleted}
@@ -239,22 +188,81 @@ export default function DonatePage() {
                   expirationDate={item.expirationDate}
                   representativeImageUrl={item.representativeImageUrl}
                 />
-              ) : (
-                <DonateCard
-                  key={item.id}
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
-                />
-              ),
-            )}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="mobile:hidden"></div>
+        <div className="mb-27 flex justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
+          전체 목록
+        </div>
+        <div className="mb-11 mr-25 hidden  mobile:flex mobile:justify-end ">
+          <label>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="h-16 w-16"
+                // disabled={disabled}
+                // checked={checked}
+                // onChange={({ target: { checked } }) => onChange(checked)}
+              />
+              <span className="ml-5 text-10 font-normal text-pen-2">
+                내 글 보기
+              </span>
+            </div>
+          </label>
+        </div>
+        <div className="mb-55 flex items-center justify-center mobile:mb-14 ">
+          <DonateSearchInputBox
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+
+          <label className="ml-18 mobile:hidden">
+            <div className="flex items-center ">
+              <input
+                type="checkbox"
+                className="h-25 w-25 mobile:h-16 mobile:w-16"
+                // disabled={disabled}
+                // checked={checked}
+                // onChange={({ target: { checked } }) => onChange(checked)}
+              />
+              <span className="ml-8 text-16 font-normal text-pen-2 mobile:text-10">
+                내 글 보기
+              </span>
+            </div>
+          </label>
+        </div>
+        <div className="flex justify-center">
+          <div className="flex w-1200 flex-wrap justify-start mobile:justify-center">
+            {testJson.map((item) => (
+              <div className="mobile:hidden" key={item.id}>
+                <DonateCard
+                  title={item.title}
+                  nickname={item.nickname}
+                  isCompleted={item.isCompleted}
+                  donatePercent={item.donatePercent}
+                  expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
+                />
+              </div>
+            ))}
+            {testJson.map((item) => (
+              <div className="hidden mobile:inline-block" key={item.id}>
+                <DonateCardMobile
+                  title={item.title}
+                  nickname={item.nickname}
+                  isCompleted={item.isCompleted}
+                  donatePercent={item.donatePercent}
+                  expirationDate={item.expirationDate}
+                  representativeImageUrl={item.representativeImageUrl}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
       <div className="fixed bottom-13 right-13 hidden mobile:inline-block">
         <img src="/icons/floating-action-button.svg" />
       </div>

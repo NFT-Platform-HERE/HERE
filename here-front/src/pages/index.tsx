@@ -2,21 +2,8 @@ import Footer from "@/components/Footer/Footer";
 import Section2Mobile from "@/features/Home/Section2Mobile";
 import Section2Web from "@/features/Home/Section2Web";
 import React, { useState, useEffect } from "react";
-import BDimg from "../assets/exImg1.jpg";
 
 export default function HomePage() {
-  const [width, setWidth] = useState<number>(0); // 최초 화면 로딩 시 에러 때문에 초기값 0으로 세팅
-  const breakpoint: number = 480;
-
-  useEffect(() => {
-    setWidth(window.innerWidth);
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
-
-  console.log(width);
-
   return (
     <div>
       <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
@@ -40,7 +27,12 @@ export default function HomePage() {
         className="mx-auto w-[75rem] min-w-[75rem] mobile:hidden"
       />
 
-      {width < breakpoint ? <Section2Mobile /> : <Section2Web />}
+      <div className="hidden mobile:block">
+        <Section2Mobile />
+      </div>
+      <div className="mobile:hidden">
+        <Section2Web />
+      </div>
 
       <section className="my-80 flex min-w-[1200px] justify-center bg-pink-0 py-80 mobile:my-50 mobile:w-full mobile:min-w-[300px]">
         <img

@@ -17,9 +17,14 @@ import React from "react";
 interface Iprops {
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-export default function DonateSearchInputBox({ value, onChange }: Iprops) {
+export default function DonateSearchInputBox({
+  value,
+  onChange,
+  onKeyDown,
+}: Iprops) {
   return (
     <div className="flex h-65 w-700 items-center rounded-55 border border-pen-0 mobile:h-35 mobile:w-290">
       <input
@@ -28,6 +33,7 @@ export default function DonateSearchInputBox({ value, onChange }: Iprops) {
         onChange={onChange}
         value={value}
         placeholder="작성자, 제목, 내용을 검색하세요"
+        onKeyDown={onKeyDown}
       />
       <img
         src={"/icons/search-icon.svg"}

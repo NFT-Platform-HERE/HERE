@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER = 'sudo docker'
+    }
+   
+    stages {
+        stage('Clone Repository') {
+            steps {
+                checkout scm
+                echo 'Checkout Scm'
+            }
+        }
+        
+        stage('Build image') {
+            steps {         
+                sh 'ls -al'       
+                sh 'npm -v'
+                sh 'node -v'
+                dir('here-front'){
+                    sh 'ls -al'
+                    sh 'docker build -t dev-front-img .'    
+                }                                                
+                echo 'Build image...'
+            }
+        }
+
+        stage('Remove Previous image') {        
+            steps {
+                script {
+                    try {
+                            sh 'docker stop dev-front-container'
+                            sh 'docker rm dev-front-container'                        
+                    } catch (e) {
+                        echo 'fail to stop and remove container'
+                    }    
+                }                
+            }
+            
+        }
+        stage('Run New image') {
+            steps {
+                dir('here-front'){
+                    sh 'ls -al'
+                    sh 'docker run --name dev-front-container -d -p 3000:3000 dev-front-img'
+                    echo 'Run New image'
+                }                
+            }
+        }
+
+    }
+}
