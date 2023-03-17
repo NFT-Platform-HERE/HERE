@@ -106,6 +106,7 @@ export default function SignUpPage() {
           height={55}
           fontSize={18}
           children={"다음"}
+          isDisabled={false}
           onClick={finishUserInfo}
         />
       </div>
