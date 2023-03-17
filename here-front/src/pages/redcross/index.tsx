@@ -1,4 +1,5 @@
 import CommonBtn from "@/components/Button/CommonBtn";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 interface publishedNFT {
@@ -32,6 +33,7 @@ const testList = [
 
 // 페이지네이션은 FE-2003 merge 후 구현
 export default function RedCrossPage() {
+  const router = useRouter();
   const [nftList, setNftList] = useState<publishedNFT[]>([]);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function RedCrossPage() {
 
   const moveToCreate = () => {
     console.log("이동");
+    router.push("/redcross/publish");
   };
   return (
     <div className="mx-auto mt-50 w-1000 text-center">

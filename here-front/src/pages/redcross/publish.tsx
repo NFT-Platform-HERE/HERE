@@ -1,7 +1,40 @@
 import CommonBtn from "@/components/Button/CommonBtn";
+import { useState } from "react";
 
-// 헤더 닫았다고 말하기
 export default function RedCrossPublishPage() {
+  const [inputs, setInputs] = useState({
+    name: "",
+    sex: "",
+    bloodType: "",
+    wallet: "",
+    birth: "",
+    createdDate: new Date().toISOString().substring(0, 10),
+    place: "",
+  });
+
+  const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
+
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  // const onReset = () => {
+  //   setInputs({
+  //     name: "",
+  //     sex: "",
+  //     bloodType: "",
+  //     wallet: "",
+  //     birth: "",
+  //     createdDate: new Date().toISOString().substring(0, 10),
+  //     place: "",
+  //   });
+  // };
+
   const publishNFT = () => {
     console.log("발행하기");
   };
@@ -15,6 +48,9 @@ export default function RedCrossPublishPage() {
           <input
             type="text"
             id="name"
+            name="name"
+            value={name}
+            onChange={onChangeValue}
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
@@ -31,6 +67,7 @@ export default function RedCrossPublishPage() {
               value="male"
               id="male"
               name="sex"
+              onChange={onChangeValue}
               className="m-10 mr-30 w-20"
             />
             <label htmlFor="female" className="text-18">
@@ -41,52 +78,62 @@ export default function RedCrossPublishPage() {
               value="female"
               id="female"
               name="sex"
-              className="m-10 w-20"
+              onChange={onChangeValue}
+              className="focus:ring-rounded-10 m-10 w-20 cursor-pointer rounded-full border before:text-pink-500 checked:text-pink-500"
             />
           </div>
         </div>
         <div className="my-20 flex justify-between">
           <label htmlFor="bloodType">헌혈 종류</label>
           <div className="flex w-500 justify-start">
-            <input
-              type="radio"
-              value="whole"
-              id="whole"
-              name="bloodType"
-              className="hidden"
-            />
-            <label
-              htmlFor="whole"
-              className="inline-block h-45 w-100 border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white"
-            >
-              전혈
-            </label>
-            <input
-              type="radio"
-              value="plasma"
-              id="plasma"
-              name="bloodType"
-              className="hidden"
-            />
-            <label
-              htmlFor="plasma"
-              className="inline-block h-45 w-100 border-t-3 border-b-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white"
-            >
-              혈장
-            </label>
-            <input
-              type="radio"
-              value="platelets"
-              id="platelets"
-              className="hidden"
-              name="bloodType"
-            />
-            <label
-              htmlFor="platelets"
-              className="inline-block h-45 w-100 border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white"
-            >
-              혈소판
-            </label>
+            <div>
+              <input
+                type="radio"
+                value="whole"
+                id="whole"
+                name="bloodType"
+                className="peer hidden"
+                onChange={onChangeValue}
+              />
+              <label
+                htmlFor="whole"
+                className="inline-block h-45 w-100 cursor-pointer border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white peer-checked:bg-red-2 peer-checked:font-medium"
+              >
+                전혈
+              </label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                value="plasma"
+                id="plasma"
+                name="bloodType"
+                className="peer hidden"
+                onChange={onChangeValue}
+              />
+              <label
+                htmlFor="plasma"
+                className="inline-block h-45 w-100 cursor-pointer border-t-3 border-b-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white peer-checked:bg-red-2 peer-checked:font-medium"
+              >
+                혈장
+              </label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                value="platelets"
+                id="platelets"
+                className="peer hidden"
+                name="bloodType"
+                onChange={onChangeValue}
+              />
+              <label
+                htmlFor="platelets"
+                className="inline-block h-45 w-100 cursor-pointer border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white peer-checked:bg-red-2 peer-checked:font-medium"
+              >
+                혈소판
+              </label>
+            </div>
           </div>
         </div>
         <div className="my-20 flex justify-between ">
@@ -94,6 +141,9 @@ export default function RedCrossPublishPage() {
           <input
             type="text"
             id="wallet"
+            name="wallet"
+            value={wallet}
+            onChange={onChangeValue}
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
@@ -102,6 +152,9 @@ export default function RedCrossPublishPage() {
           <input
             type="date"
             id="birth"
+            name="birth"
+            value={birth}
+            onChange={onChangeValue}
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
@@ -110,6 +163,9 @@ export default function RedCrossPublishPage() {
           <input
             type="date"
             id="date"
+            name="createdDate"
+            value={createdDate}
+            onChange={onChangeValue}
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
@@ -118,6 +174,9 @@ export default function RedCrossPublishPage() {
           <input
             type="text"
             id="place"
+            name="place"
+            value={place}
+            onChange={onChangeValue}
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
