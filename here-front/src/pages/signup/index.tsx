@@ -1,5 +1,4 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import SignupStep1 from "@/features/SignUp/SignupStep1";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
