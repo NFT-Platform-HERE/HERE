@@ -1,6 +1,7 @@
 package com.ssafy.hereauth.service;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
+import com.ssafy.hereauth.dto.member.IsMemberResponseDto;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.dto.member.SignupResponseDto;
 import com.ssafy.hereauth.entity.Character;
@@ -32,6 +33,7 @@ public class MemberService {
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
 
+    // 회원가입
     public ResponseSuccessDto<SignupResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
 
         /**
@@ -65,10 +67,25 @@ public class MemberService {
         return res;
     }
 
+    // email 중복 체크
     public ResponseSuccessDto<Boolean> checkEmailDuplicate(String email) {
         Boolean isEmailDuplicated = memberRepository.existsByEmail(email);
         System.out.println("이메일 중복됨" + email + isEmailDuplicated);
         return responseUtil.successResponse(isEmailDuplicated);
+    }
+
+    // nickname 중복 체크
+    public ResponseSuccessDto<Boolean> checkNicknameDuplicate(String nickname) {
+        Boolean isNicknameDuplicated = memberRepository.existsByNickname(nickname);
+        System.out.println("이메일 중복됨" + nickname + isNicknameDuplicated);
+        return responseUtil.successResponse(isNicknameDuplicated);
+    }
+
+    // 존재하는 회원인지 체크
+    public ResponseSuccessDto<IsMemberResponseDto> checkIsMember(String walletAddress) {
+        Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
+        System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
+        return responseUtil.successResponse(isMember);
     }
 
     // 회원가입시 이메일 중복 이중 체크 용 메소드

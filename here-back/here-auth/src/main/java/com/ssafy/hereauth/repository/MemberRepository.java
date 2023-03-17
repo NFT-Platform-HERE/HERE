@@ -7,4 +7,8 @@ import java.util.UUID;
 
 public interface MemberRepository extends JpaRepository<Member, UUID> {
     boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
+
+    Boolean existsByWalletAddress(String walletAddress);
 }
