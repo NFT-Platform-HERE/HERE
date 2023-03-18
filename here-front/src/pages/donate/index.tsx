@@ -5,152 +5,155 @@ import CommonBtn from "@/components/Button/CommonBtn";
 import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
 import { useRouter } from "next/navigation";
+import { Donation } from "@/types/Donation";
 
 export default function DonatePage() {
-  const [value, setValue] = useState<string>("");
+  const testTimeJson: Donation[] = [
+    {
+      boardId: 1,
+      title: "헌혈증으로 사랑을 나눠요",
+      nickname: "구스구스",
+      dDay: "2023-03-14 16:46:08",
+      percentage: 45,
+      status: false,
+    },
+    {
+      boardId: 2,
+      title: "헌혈증 NFT로 기부를 편리하게",
+      nickname: "규나카",
+      dDay: "2023-03-13 16:46:08",
+      percentage: 53,
+      status: false,
+    },
+    {
+      boardId: 3,
+      title: "헌혈증 NFT 플랫폼 HERE",
+      nickname: "언도",
+      dDay: "2023-03-12 16:46:08",
+      percentage: 70,
+      status: false,
+    },
+    {
+      boardId: 4,
+      title: "Heart Share",
+      nickname: "용용",
+      dDay: "2023-03-10 16:46:08",
+      percentage: 67,
+      status: false,
+    },
+  ];
+
+  const testJson: Donation[] = [
+    {
+      boardId: 1,
+      title: "제목1",
+      nickname: "닉네임1",
+      dDay: "2023-03-14 16:46:08",
+      percentage: 25,
+      boardImgUrl: "/test/test-01.jpg",
+      status: false,
+    },
+    {
+      boardId: 2,
+      title: "제목2",
+      nickname: "닉네임2",
+      dDay: "2020-05-14 16:46:08",
+      percentage: 25,
+      status: false,
+    },
+    {
+      boardId: 3,
+      title: "제목3",
+      nickname: "닉네임3",
+      dDay: "2021-06-14 16:46:08",
+      percentage: 25,
+      boardImgUrl: "/test/test-02.jpg",
+      status: false,
+    },
+    {
+      boardId: 4,
+      title: "제목4",
+      nickname: "닉네임4",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 25,
+      boardImgUrl: "/test/test-03.jpg",
+      status: false,
+    },
+    {
+      boardId: 5,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 25,
+      boardImgUrl: "/test/test-04.jpg",
+      status: false,
+    },
+    {
+      boardId: 6,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 100,
+      boardImgUrl: "/test/test-05.jpg",
+      status: false,
+    },
+    {
+      boardId: 7,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 25,
+      status: false,
+    },
+    {
+      boardId: 8,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 25,
+      status: false,
+    },
+    {
+      boardId: 9,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 90,
+      status: true,
+    },
+    {
+      boardId: 10,
+      title: "제목",
+      nickname: "닉네임",
+      dDay: "2022-12-14 16:46:08",
+      percentage: 100,
+      status: true,
+    },
+  ];
+
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const router = useRouter();
 
-  const breakpoint: number = 480;
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     console.log("event.target.value", event.target.value);
-    setValue(event.target.value);
+    setSearchValue(event.target.value);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+  const handleSearchInputKeyDown = (
+    event: React.KeyboardEvent<HTMLElement>,
+  ) => {
     if (event.code === "Enter") {
       console.log(event.code);
     }
   };
 
-  const testTimeJson: any[] = [
-    {
-      id: 1,
-      title: "헌혈증으로 사랑을 나눠요",
-      nickname: "구스구스",
-      expirationDate: "2023-03-14 16:46:08",
-      donatePercent: 45,
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "헌혈증 NFT로 기부를 편리하게",
-      nickname: "규나카",
-      expirationDate: "2023-03-13 16:46:08",
-      donatePercent: 53,
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "헌혈증 NFT 플랫폼 HERE",
-      nickname: "언도",
-      expirationDate: "2023-03-12 16:46:08",
-      donatePercent: 70,
-      isCompleted: false,
-    },
-    {
-      id: 4,
-      title: "Heart Share",
-      nickname: "용용",
-      expirationDate: "2023-03-10 16:46:08",
-      donatePercent: 67,
-      isCompleted: false,
-    },
-  ];
-
-  const testJson: any[] = [
-    {
-      id: 1,
-      title: "제목1",
-      nickname: "닉네임1",
-      expirationDate: "2023-03-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/test/test-01.jpg",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "제목2",
-      nickname: "닉네임2",
-      expirationDate: "2020-05-14 16:46:08",
-      donatePercent: 25,
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "제목3",
-      nickname: "닉네임3",
-      expirationDate: "2021-06-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/test/test-02.jpg",
-      isCompleted: false,
-    },
-    {
-      id: 4,
-      title: "제목4",
-      nickname: "닉네임4",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/test/test-03.jpg",
-      isCompleted: false,
-    },
-    {
-      id: 5,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      representativeImageUrl: "/test/test-04.jpg",
-      isCompleted: false,
-    },
-    {
-      id: 6,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 100,
-      representativeImageUrl: "/test/test-05.jpg",
-      isCompleted: false,
-    },
-    {
-      id: 7,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      isCompleted: false,
-    },
-    {
-      id: 8,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 25,
-      isCompleted: false,
-    },
-    {
-      id: 9,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 90,
-      isCompleted: true,
-    },
-    {
-      id: 10,
-      title: "제목",
-      nickname: "닉네임",
-      expirationDate: "2022-12-14 16:46:08",
-      donatePercent: 100,
-      isCompleted: true,
-    },
-  ];
-
   return (
-    <div className="mt-60 flex w-full justify-center">
+    <div className="mt-60 w-full mobile:flex">
       {/* <CommonBanner /> */}
-      <div className="min-w-1200 mobile:min-w-350">
+      <div className="mx-auto w-1200 mobile:min-w-350">
         <div className="mr-10 mt-7 flex justify-end mobile:hidden">
           <CommonBtn
             width={150}
@@ -167,26 +170,26 @@ export default function DonatePage() {
         <div className="flex justify-center">
           <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
             {testTimeJson.map((item) => (
-              <div className="mobile:hidden" key={item.id}>
+              <div className="mobile:hidden" key={item.boardId}>
                 <DonateCard
                   title={item.title}
                   nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
+                  isCompleted={item.status}
+                  donatePercent={item.percentage}
+                  expirationDate={item.dDay}
+                  representativeImageUrl={item.boardImgUrl}
                 />
               </div>
             ))}
             {testJson.map((item) => (
-              <div className="hidden mobile:inline-block" key={item.id}>
+              <div className="hidden mobile:inline-block" key={item.boardId}>
                 <DonateCardMobile
                   title={item.title}
                   nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
+                  isCompleted={item.status}
+                  donatePercent={item.percentage}
+                  expirationDate={item.dDay}
+                  representativeImageUrl={item.boardImgUrl}
                 />
               </div>
             ))}
@@ -213,9 +216,9 @@ export default function DonatePage() {
         </div>
         <div className="mb-55 flex items-center justify-center mobile:mb-14 ">
           <DonateSearchInputBox
-            value={value}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
+            value={searchValue}
+            onChange={handleSearchInputChange}
+            onKeyDown={handleSearchInputKeyDown}
           />
 
           <label className="ml-18 mobile:hidden">
@@ -236,26 +239,26 @@ export default function DonatePage() {
         <div className="flex justify-center">
           <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
             {testJson.map((item) => (
-              <div className="mobile:hidden" key={item.id}>
+              <div className="mobile:hidden" key={item.boardId}>
                 <DonateCard
                   title={item.title}
                   nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
+                  isCompleted={item.status}
+                  donatePercent={item.percentage}
+                  expirationDate={item.dDay}
+                  representativeImageUrl={item.boardImgUrl}
                 />
               </div>
             ))}
             {testJson.map((item) => (
-              <div className="hidden mobile:inline-block" key={item.id}>
+              <div className="hidden mobile:inline-block" key={item.boardId}>
                 <DonateCardMobile
                   title={item.title}
                   nickname={item.nickname}
-                  isCompleted={item.isCompleted}
-                  donatePercent={item.donatePercent}
-                  expirationDate={item.expirationDate}
-                  representativeImageUrl={item.representativeImageUrl}
+                  isCompleted={item.status}
+                  donatePercent={item.percentage}
+                  expirationDate={item.dDay}
+                  representativeImageUrl={item.boardImgUrl}
                 />
               </div>
             ))}
