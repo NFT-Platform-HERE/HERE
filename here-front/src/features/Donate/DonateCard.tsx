@@ -59,16 +59,16 @@ export default function DonateCard({
         isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
-      <div className="mb-20 flex justify-end text-12 font-medium text-pen-2">
+      <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
         <TimeAgo datetime={expirationDate} locale="ko" />
       </div>
-      <div className="mb-12 flex justify-center">
+      <div className="mb-14 flex justify-center">
         <img src={representativeImageUrl} className="h-160 w-160"></img>
       </div>
-      <div className="mb-3 flex justify-start text-14 font-bold text-pen-3">
+      <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">
         {title}
       </div>
-      <div className="mb-15 flex justify-start text-12 font-light text-pen-4">
+      <div className="mb-8 ml-1 flex justify-start text-12 font-light text-pen-4">
         {nickname}
       </div>
       <div className="mb-31 flex justify-center">
