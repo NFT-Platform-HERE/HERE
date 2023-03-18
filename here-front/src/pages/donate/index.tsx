@@ -151,9 +151,9 @@ export default function DonatePage() {
   };
 
   return (
-    <div className="mt-60 flex w-full justify-center">
+    <div className="mt-60 w-full mobile:flex">
       {/* <CommonBanner /> */}
-      <div className="min-w-1200 mobile:min-w-350">
+      <div className="mx-auto w-1200 mobile:min-w-350">
         <div className="mr-10 mt-7 flex justify-end mobile:hidden">
           <CommonBtn
             width={150}
