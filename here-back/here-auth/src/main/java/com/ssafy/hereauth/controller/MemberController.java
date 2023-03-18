@@ -5,6 +5,7 @@ import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -62,8 +63,8 @@ public class MemberController {
 
     /* 이메일로 회원 조회 */
     @ApiOperation(value = "이메일로 회원 조회", notes = "이메일로 회원 정보를 조회한다.")
-    @GetMapping("/{member_id}")
-    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("member_id") String memberId) {
-        return ResponseEntity.ok(memberService.getProfile(memberId));
+    @GetMapping("/search/{email}")
+    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable String email) {
+        return ResponseEntity.ok(memberService.getMemberInfo(email));
     }
 }
