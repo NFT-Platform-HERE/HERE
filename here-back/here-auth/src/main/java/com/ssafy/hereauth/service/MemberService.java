@@ -26,6 +26,7 @@ public class MemberService {
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
     private final CertHistoryRepository certHistoryRepository;
+    private final BdHistoryRepository bdHistoryRepository;
 
     // 회원가입
     public ResponseSuccessDto<SignupResponseDto> signup(SignupRequestDto signupRequestDto) {
@@ -192,7 +193,7 @@ public class MemberService {
 //    }
 
     /**
-     * (임의) CertHistory 생성
+     * (임시) CertHistory 생성
      */
     public ResponseSuccessDto<CertHistoryCreateResponseDto> createCertHistory(CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
 
@@ -211,6 +212,25 @@ public class MemberService {
         // 리턴
         CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
         ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto);
+        return res;
+    }
+
+    /**
+     * (임의) BdHistory 생성
+     */
+    public ResponseSuccessDto<BdHistoryCreateResponseDto> createBdHistory(BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
+
+        // 멤버 가져오기
+        Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+
+        BdHistory bdHistory = new BdHistory();
+        bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
+        bdHistoryRepository.save(bdHistory);
+
+        // 리턴
+        BdHistoryCreateResponseDto bdHistoryCreateResponseDto = new BdHistoryCreateResponseDto("헌혈 기록 등록 완료되었습니다.");
+        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto);
         return res;
     }
 
