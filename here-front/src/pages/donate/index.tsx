@@ -267,7 +267,10 @@ export default function DonatePage() {
       </div>
 
       <div className="fixed bottom-13 right-13 hidden mobile:inline-block">
-        <img src="/icons/floating-action-button.svg" />
+        <img
+          src="/icons/floating-action-button.svg"
+          onClick={() => router.push("/donate/write")}
+        />
       </div>
     </div>
   );
