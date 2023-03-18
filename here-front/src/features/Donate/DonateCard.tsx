@@ -96,7 +96,7 @@ export function DonateCardMobile({
   return (
     <div
       onClick={() => console.log("click!")}
-      className={`m-8 flex h-95 w-339 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
+      className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
         isCompleted ? "opacity-30" : "bg-white"
       }`}
     >
@@ -106,7 +106,7 @@ export function DonateCardMobile({
       />
 
       <div className="mr-3 flex w-full flex-col">
-        <div className="flex justify-end text-7 font-medium text-pen-2">
+        <div className="flex justify-end text-9 font-medium text-pen-2">
           <TimeAgo datetime={expirationDate} locale="ko" />
         </div>
         <div className="mb-3 flex justify-start text-11 font-bold text-pen-3">
