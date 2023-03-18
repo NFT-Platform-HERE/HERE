@@ -1,0 +1,14 @@
+server:
+  port: 9001
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+test: local

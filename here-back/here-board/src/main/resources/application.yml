@@ -8,11 +8,13 @@ server:
       force: true
 
 spring:
+  profiles:
+    default: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/here?serverTimezone=Asia/Seoul
     username: root
-    password: 1234
+    password:
 
   mvc:
     pathmatch:
@@ -26,4 +28,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+    show_sql: true
