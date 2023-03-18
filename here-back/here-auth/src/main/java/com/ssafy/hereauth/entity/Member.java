@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,7 +25,8 @@ public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "varchar(36)")
+    @Type(type="uuid-char")
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -53,8 +55,8 @@ public class Member {
     private int goalExp = 50;
 
     @CreatedDate
-    @Column(name = "create_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private LocalDateTime createdDate;
 
     public void createMember(SignupRequestDto signupRequestDto) {
         this.role = EnumMemberRole.USER;
@@ -63,5 +65,4 @@ public class Member {
         this.nickname = signupRequestDto.getNickname();
         this.email = signupRequestDto.getEmail();
     }
-
 }
