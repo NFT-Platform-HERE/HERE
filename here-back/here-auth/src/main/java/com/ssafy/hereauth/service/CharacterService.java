@@ -27,7 +27,7 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     // 캐릭터 임의 생성
-    public ResponseSuccessDto<CharacterResponseDto> postCharacter(@RequestBody CharacterRequestDto characterRequestDto) {
+    public ResponseSuccessDto<CharacterResponseDto> postCharacter(CharacterRequestDto characterRequestDto) {
         Character character = new Character();
         character.createCharacter(characterRequestDto);
         characterRepository.save(character);
@@ -39,7 +39,7 @@ public class CharacterService {
 
 
     public ResponseSuccessDto<List<CharacterStartingResponseDto>> findCharacters() {
-        List<Character> characters = characterRepository.findCharacterStarting(0);
+        List<Character> characters = characterRepository.findCharacterStarting(1);
         List<CharacterStartingResponseDto> result = characters.stream()
                 .map(c -> new CharacterStartingResponseDto(c))
                 .collect(Collectors.toList());
