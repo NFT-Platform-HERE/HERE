@@ -1,25 +1,24 @@
-# 가져올 이미지를 정의
-FROM node:14
-# 경로 설정하기
+FROM node:16-alpine AS base
+
+# 만약 컨테이너 안의 이미지의 경로가 /app 이런식으로 되어있다면 작업할 div 경로를 설정할 수도 있다.
+# 설정해주면 COPY 의 두번째 경로를 ./ 이것으로 했을 때 자동으로 /app 경로가 된다.
 WORKDIR /app
-# package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
-COPY package.json .
-# 명령어 실행 (의존성 설치)
+
+# package.json 파일을 복사한다. 만약 다시 빌드할 때 변경사항이 없을 경우 npm install까지 그냥 넘어간다.
+COPY package.json /app
+
+# 이미지를 받으면 npm install을 자동으로 해줌
 RUN npm install
-# 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
-COPY . .
 
-# 각각의 명령어들은 한줄 한줄씩 캐싱되어 실행된다.
-# package.json의 내용은 자주 바뀌진 않을 거지만
-# 소스 코드는 자주 바뀌는데
-# npm install과 COPY . . 를 동시에 수행하면
-# 소스 코드가 조금 달라질때도 항상 npm install을 수행해서 리소스가 낭비된다.
+# 어떤 파일이 이미지에 들어가야 하는지 
+# 첫 번째 .은 이 프로젝트의 모든 폴더 및 파일들 (Dockerfile을 제외한)
+# 두 번째 .은 파일을 저장할 컨테이너 내부 경로 (ex /app)
+COPY . /app
 
-# 3000번 포트 노출
+RUN npm run build
+
 EXPOSE 3000
 
-# npm start 스크립트 실행
-CMD ["npm", "start"]
+ENV PORT 3000
 
-# 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
-# $ docker build .
+CMD ["node", "server.js"]
