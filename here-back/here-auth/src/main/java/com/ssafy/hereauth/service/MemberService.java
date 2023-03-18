@@ -4,6 +4,7 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.IsMemberResponseDto;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.dto.member.SignupResponseDto;
+import com.ssafy.hereauth.dto.member.ValidateEmailResponseDto;
 import com.ssafy.hereauth.entity.Character;
 import com.ssafy.hereauth.entity.Member;
 import com.ssafy.hereauth.entity.MemberCharacter;
@@ -16,10 +17,12 @@ import com.ssafy.hereauth.util.ResponseUtil;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -62,17 +65,25 @@ public class MemberService {
         stampRepository.save(stamp);
 
         // 리턴
-        SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 성공적으로 완료되었습니다.");
+        SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 완료되었습니다.");
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto);
         return res;
     }
 
     // email 중복 체크
-    public ResponseSuccessDto<Boolean> checkEmailDuplicate(String email) {
-        Boolean isEmailDuplicated = memberRepository.existsByEmail(email);
-        System.out.println("이메일 중복됨" + email + isEmailDuplicated);
-        return responseUtil.successResponse(isEmailDuplicated);
-    }
+//    public ResponseSuccessDto<ValidateEmailResponseDto> checkEmailDuplicate(String email) {
+//        Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
+//        System.out.println("이메일 중복됨" + email + isEmailDuplicate);
+//
+//        if (isEmailDuplicate) {
+//            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
+//        } else {
+//            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
+//        }
+//
+//        ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
+//        return res;
+//    }
 
     // nickname 중복 체크
     public ResponseSuccessDto<Boolean> checkNicknameDuplicate(String nickname) {
@@ -83,9 +94,24 @@ public class MemberService {
 
     // 존재하는 회원인지 체크
     public ResponseSuccessDto<IsMemberResponseDto> checkIsMember(String walletAddress) {
+        Optional<Member> byWalletAddress = memberRepository.findByWalletAddress(walletAddress);
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
         System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
-        return responseUtil.successResponse(isMember);
+
+        if (byWalletAddress.isEmpty()) {
+            System.out.println("여기여기" + byWalletAddress);
+            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
+            ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+            return res;
+//        } else {
+//            System.out.println("여기여기" + byWalletAddress);
+//            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.getRole(), "회원 정보가 없습니다");
+
+        }
+        System.out.println("여기여기" + byWalletAddress);
+        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
+        ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+        return res;
     }
 
     // 회원가입시 이메일 중복 이중 체크 용 메소드

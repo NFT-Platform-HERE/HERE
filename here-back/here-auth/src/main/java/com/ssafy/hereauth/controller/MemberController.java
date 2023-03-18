@@ -4,6 +4,7 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.IsMemberResponseDto;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.dto.member.SignupResponseDto;
+import com.ssafy.hereauth.dto.member.ValidateEmailResponseDto;
 import com.ssafy.hereauth.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,12 +29,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
-    /* 중복 이메일 검사 */
-    @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
-    @GetMapping("/check/email/{email}")
-    public ResponseEntity<ResponseSuccessDto<Boolean>> checkEmailDuplicate(@PathVariable String email) {
-        return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
-    }
+//    /* 중복 이메일 검사 */
+//    @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
+//    @GetMapping("/check/email/{email}")
+//    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable String email) {
+//        return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
+//    }
 
     /* 중복 닉네임 검사 */
     @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 검사를 한다.")
