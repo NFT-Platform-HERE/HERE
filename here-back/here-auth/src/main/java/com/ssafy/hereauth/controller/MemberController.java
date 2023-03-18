@@ -52,4 +52,18 @@ public class MemberController {
     public ResponseEntity<ResponseSuccessDto<IsMemberResponseDto>> checkIsMember(@PathVariable String walletAddress) {
         return ResponseEntity.ok(memberService.checkIsMember(walletAddress));
     }
+
+    /* 멤버 명함 조회 */
+    @ApiOperation(value = "멤버 명험 조회", notes = "회원의 기본 정보를 조회한다.")
+    @GetMapping("/{member_id}")
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("member_id") String memberId) {
+        return ResponseEntity.ok(memberService.getProfile(memberId));
+    }
+
+    /* 이메일로 회원 조회 */
+    @ApiOperation(value = "이메일로 회원 조회", notes = "이메일로 회원 정보를 조회한다.")
+    @GetMapping("/{member_id}")
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("member_id") String memberId) {
+        return ResponseEntity.ok(memberService.getProfile(memberId));
+    }
 }

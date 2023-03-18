@@ -11,15 +11,14 @@ import com.ssafy.hereauth.repository.MemberCharacterRepository;
 import com.ssafy.hereauth.repository.MemberRepository;
 import com.ssafy.hereauth.repository.StampRepository;
 import com.ssafy.hereauth.util.ResponseUtil;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -65,6 +64,16 @@ public class MemberService {
         SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 완료되었습니다.");
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto);
         return res;
+    }
+
+    /**
+     * 멤버 명함 조회
+     */
+    public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
+        Member member = memberRepository.findById(UUID.fromString(memberId))
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+        System.out.println(member);
+        return null;
     }
 
     // email 중복 체크
