@@ -165,7 +165,7 @@ export default function DonatePage() {
           종료가 얼마 남지 않았어요!
         </div>
         <div className="flex justify-center">
-          <div className="flex w-1200 flex-wrap justify-start mobile:justify-center">
+          <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
             {testTimeJson.map((item) => (
               <div className="mobile:hidden" key={item.id}>
                 <DonateCard
@@ -234,7 +234,7 @@ export default function DonatePage() {
           </label>
         </div>
         <div className="flex justify-center">
-          <div className="flex w-1200 flex-wrap justify-start mobile:justify-center">
+          <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
             {testJson.map((item) => (
               <div className="mobile:hidden" key={item.id}>
                 <DonateCard
