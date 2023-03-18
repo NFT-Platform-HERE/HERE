@@ -2,19 +2,13 @@ package com.ssafy.hereauth.service;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
+import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
-import com.ssafy.hereauth.entity.Member;
-import com.ssafy.hereauth.entity.MemberCharacter;
-import com.ssafy.hereauth.entity.Stamp;
-import com.ssafy.hereauth.repository.CharacterRepository;
-import com.ssafy.hereauth.repository.MemberCharacterRepository;
-import com.ssafy.hereauth.repository.MemberRepository;
-import com.ssafy.hereauth.repository.StampRepository;
+import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -31,9 +25,10 @@ public class MemberService {
     private final MemberCharacterRepository memberCharacterRepository;
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
+    private final CertHistoryRepository certHistoryRepository;
 
     // 회원가입
-    public ResponseSuccessDto<SignupResponseDto> signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseSuccessDto<SignupResponseDto> signup(SignupRequestDto signupRequestDto) {
 
         /**
          * email 중복 체크
@@ -72,8 +67,23 @@ public class MemberService {
     public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
         Member member = memberRepository.findById(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-        System.out.println(member);
-        return null;
+        System.out.println("멤버 셀렉트" + member);
+
+        // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
+        MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
+        Character character = characterRepository.findById(memberCharacter.getCharacter().getId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 캐릭터ID입니다."));
+
+        String characterImgUrl = character.getImgUrl();
+
+        // 헌혈기록 리스트 뽑기
+
+
+        // DTO에 넣기
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl);
+        ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto);
+        return res;
     }
 
     /**
@@ -167,4 +177,42 @@ public class MemberService {
     public Boolean isEmailDuplicate(String email) {
         return memberRepository.existsByEmail(email);
     }
+
+    /**
+     * 증명 승인/미승인 목록 조회(기관)
+     */
+//    public ResponseSuccessDto<MemberInfoResponseDto> getCertListAgency(String email) {
+//        Member member = memberRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
+//        System.out.println(member);
+//
+//        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getName(), member.getWalletAddress());
+//        ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto);
+//        return res;
+//    }
+
+    /**
+     * (임의) CertHistory 생성
+     */
+    public ResponseSuccessDto<CertHistoryCreateResponseDto> createCertHistory(CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
+
+        // 멤버 가져오기
+        Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+
+        // 기관 가져오기
+        Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
+                .orElseThrow(() -> new RuntimeException("잘못된 기관 ID입니다."));
+
+        CertHistory certHistory = new CertHistory();
+        certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
+        certHistoryRepository.save(certHistory);
+
+        // 리턴
+        CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
+        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto);
+        return res;
+    }
+
+
 }

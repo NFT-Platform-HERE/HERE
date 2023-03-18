@@ -5,7 +5,6 @@ import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class MemberController {
     /* 회원가입 */
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(SignupRequestDto signupRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody SignupRequestDto signupRequestDto) {
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
@@ -66,5 +65,19 @@ public class MemberController {
     @GetMapping("/search/{email}")
     public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable String email) {
         return ResponseEntity.ok(memberService.getMemberInfo(email));
+    }
+
+    /* 증명 승인/미승인 목록 조회(기관) */
+//    @ApiOperation(value = "증명 승인/미승인 목록 조회(기관)", notes = "기관의 승인/미승인 상태의 제출 기록을 조회한다.")
+//    @GetMapping("{agency_id}/{status}")
+//    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getCertListAgency(@PathVariable("agency_id") String agencyId, @PathVariable("status")) {
+//        return ResponseEntity.ok(memberService.getMemberInfo(email));
+//    }
+
+    /* CertHistory 생성 */
+    @ApiOperation(value = "제출 기록 생성", notes = "헌혈증 증명 제출 기록을 생성한다.")
+    @PostMapping("/nft/agency")
+    public ResponseEntity<ResponseSuccessDto<CertHistoryCreateResponseDto>> createBdHistory(@RequestBody CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
+        return ResponseEntity.ok(memberService.createCertHistory(certHistoryCreateRequestDto));
     }
 }
