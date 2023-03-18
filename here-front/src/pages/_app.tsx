@@ -8,6 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>HERE, 헌혈 NFT 플랫폼</title>
+        <link rel="icon" type="image/svg+xml" href="/icons/logo.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <Header />
