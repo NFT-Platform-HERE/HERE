@@ -1,10 +1,7 @@
 package com.ssafy.hereauth.service;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereauth.dto.member.IsMemberResponseDto;
-import com.ssafy.hereauth.dto.member.SignupRequestDto;
-import com.ssafy.hereauth.dto.member.SignupResponseDto;
-import com.ssafy.hereauth.dto.member.ValidateEmailResponseDto;
+import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.Character;
 import com.ssafy.hereauth.entity.Member;
 import com.ssafy.hereauth.entity.MemberCharacter;
@@ -75,6 +72,24 @@ public class MemberService {
 //        Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
 //        System.out.println("이메일 중복됨" + email + isEmailDuplicate);
 //
+//        Optional<Member> byEmail = memberRepository.findByEmail(email);
+//        Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
+//        System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
+//
+//        if (byWalletAddress.isEmpty()) {
+//            System.out.println("여기여기" + byWalletAddress);
+//            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
+//            ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+//            return res;
+////        } else {
+////            System.out.println("여기여기" + byWalletAddress);
+////            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.getRole(), "회원 정보가 없습니다");
+//
+//        }
+//        System.out.println("여기여기" + byWalletAddress);
+//        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
+//        ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+//        return res;
 //        if (isEmailDuplicate) {
 //            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
 //        } else {
@@ -85,11 +100,27 @@ public class MemberService {
 //        return res;
 //    }
 
-    // nickname 중복 체크
-    public ResponseSuccessDto<Boolean> checkNicknameDuplicate(String nickname) {
+    // nickname 중복 체크(초기)
+//    public ResponseSuccessDto<Boolean> checkNicknameDuplicated(String nickname) {
+//        Boolean isNicknameDuplicated = memberRepository.existsByNickname(nickname);
+//        System.out.println("이메일 중복됨" + nickname + isNicknameDuplicated);
+//        ResponseSuccessDto<Boolean> res = responseUtil.successResponse(isNicknameDuplicated);
+//        return res;
+//    }
+    // nickname 중복 체크(수정)
+    public ResponseSuccessDto<ValidateNicknameResponseDto> checkNicknameDuplicated(String nickname) {
         Boolean isNicknameDuplicated = memberRepository.existsByNickname(nickname);
         System.out.println("이메일 중복됨" + nickname + isNicknameDuplicated);
-        return responseUtil.successResponse(isNicknameDuplicated);
+        if (isNicknameDuplicated) {
+            ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("이미 사용중인 닉네임입니다.");
+            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
+            return res;
+        } else {
+            ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("사용 가능한 닉네임입니다.");
+            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
+            return res;
+        }
+
     }
 
     // 존재하는 회원인지 체크
@@ -103,10 +134,6 @@ public class MemberService {
             IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
             ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
             return res;
-//        } else {
-//            System.out.println("여기여기" + byWalletAddress);
-//            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.getRole(), "회원 정보가 없습니다");
-
         }
         System.out.println("여기여기" + byWalletAddress);
         IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");

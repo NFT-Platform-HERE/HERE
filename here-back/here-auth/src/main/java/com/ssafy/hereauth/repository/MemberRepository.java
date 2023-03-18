@@ -11,7 +11,7 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
     boolean existsByNickname(String nickname);
 
-    Boolean existsByWalletAddress(String walletAddress);
-
-    Optional<Member> findByWalletAddress(String email);
+    boolean existsByWalletAddress(String walletAddress);
+    Optional<Member> findByEmail(String email);
+    Optional<Member> findByWalletAddress(String walletAddress);
 }
