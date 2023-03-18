@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,10 +81,16 @@ public class MemberService {
         String characterImgUrl = character.getImgUrl();
 
         // 헌혈기록 리스트 뽑기
+        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberId(UUID.fromString(memberId));
+        System.out.println("확인" + bdHistoryList);
+        // 헌혈 카운트
+        Integer bdHistoryCnt = bdHistoryList.size();
+        // 최근 헌혈일
+        LocalDateTime recentBdDate = bdHistoryList.get(bdHistoryCnt - 1).getIssuedDate();
 
 
         // DTO에 넣기
-        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl);
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, bdHistoryCnt, recentBdDate);
         ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto);
         return res;
     }
