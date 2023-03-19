@@ -190,27 +190,28 @@ public class MemberService {
     /**
      * 경험치 상승
      */
-//    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
-//        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
-//                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
-//        int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
-//        System.out.println("멤버" + member);
-//        System.out.println("현재 경험지" + curExp);
-//
-//        int goalExp = member.getGoalExp();
-//        int level = member.getLevel();
-//
-//        if (curExp >= member.getGoalExp()) {
-//            goalExp *= 2;
-//            level += 1;
-//        }
-//
-//        member.updateMemberExp(curExp, goalExp, level); // 이거 중복되는 거 빼고싶음...
-//
-//        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(member.getLevel(), "경험치가 상승하였습니다.");
-//        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
-//        return res;
-//    }
+    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
+        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+
+        int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
+        System.out.println("멤버" + member);
+        System.out.println("현재 경험지" + curExp);
+
+        int goalExp = member.getGoalExp();
+        int level = member.getLevel();
+
+        if (curExp >= member.getGoalExp()) {
+            goalExp += 50;
+            level += 1;
+        }
+
+        member.updateMemberExp(curExp, goalExp, level);
+
+        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(level, "경험치가 상승하였습니다.");
+        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
+        return res;
+    }
 
     /**
      * 증명 승인/미승인 목록 조회(기관)
