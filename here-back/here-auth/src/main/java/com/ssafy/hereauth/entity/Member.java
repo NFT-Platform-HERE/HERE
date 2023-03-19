@@ -1,5 +1,6 @@
 package com.ssafy.hereauth.entity;
 
+import com.ssafy.hereauth.dto.member.ExpUpdateRequestDto;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.enumeration.member.EnumMemberRole;
 import lombok.AllArgsConstructor;
@@ -64,5 +65,12 @@ public class Member {
         this.name = signupRequestDto.getName();
         this.nickname = signupRequestDto.getNickname();
         this.email = signupRequestDto.getEmail();
+    }
+
+    public void updateMemberExp(ExpUpdateRequestDto expUpdateRequestDto, int curExp, int goalExp, int level) {
+        this.curExp = curExp + expUpdateRequestDto.getExp();
+        this.goalExp = goalExp;
+        this.level = level;
+
     }
 }

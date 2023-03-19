@@ -6,6 +6,7 @@ import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -185,6 +186,32 @@ public class MemberService {
     // 회원가입시 이메일 중복 이중 체크 용 메소드
     public Boolean isEmailDuplicate(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    /**
+     * 경험치 상승
+     */
+    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
+        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+        int curExp = member.getCurExp();
+        System.out.println("멤버" + member);
+        System.out.println("현재 경험지" + curExp);
+
+        if (curExp + expUpdateRequestDto.getExp() >= member.getGoalExp()) {
+            int goalExp = member.getGoalExp() * 2;
+            int level = member.getLevel() + 1;
+
+            member.updateMemberExp(expUpdateRequestDto, curExp, goalExp, level); // 이거 중복되는 거 빼고싶음...
+        } else {
+            int goalExp = member.getGoalExp();
+            int level = member.getLevel();
+
+            member.updateMemberExp(expUpdateRequestDto, curExp, goalExp, level);
+        }
+        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(member.getLevel(), "경험치가 상승하였습니다.");
+        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
+        return res;
     }
 
     /**
