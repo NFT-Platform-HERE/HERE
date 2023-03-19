@@ -2,11 +2,15 @@ import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-import Image from "next/image";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const QuillWrapper = dynamic(async () => await import("react-quill"), {
+const QuillWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => (
+    <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
+      <CircularProgress color="error" />
+    </div>
+  ),
 });
 
 export default function DonateWritePage() {
