@@ -10,5 +10,7 @@ spring:
     hibernate:
       ddl-auto: update
 
-
-test: local
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: https://meeting.ssafy.com/hooks/zqmjek3mi7fgmg4zh5knfu3ndy

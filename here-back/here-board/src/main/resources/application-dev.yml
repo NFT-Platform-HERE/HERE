@@ -10,9 +10,6 @@ spring:
     hibernate:
       ddl-auto: none
 
-test: dev
-
-
 notification:
   mattermost:
     enabled: true

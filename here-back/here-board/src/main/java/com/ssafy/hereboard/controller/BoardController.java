@@ -17,18 +17,9 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @Value("${test}")
-    private String testValue;
-
-    @GetMapping("/test")
-    public String test() {
-        return testValue;
-    }
-
     @GetMapping("/error")
     public String error() {
         boardService.test();
         return "error";
     }
-
 }
