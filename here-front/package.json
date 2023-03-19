@@ -42,11 +42,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
-    "react-js-pagination": "^3.0.3",
+    "react-js-pagination": "^3.0.2",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
+    "swiper": "^9.1.1",
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "typescript": "4.9.5"
