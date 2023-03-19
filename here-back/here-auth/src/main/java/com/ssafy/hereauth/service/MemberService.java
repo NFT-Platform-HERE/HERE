@@ -74,26 +74,35 @@ public class MemberService {
         Member member = memberRepository.findById(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 
-        log.debug(member.toString());
-
         // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
         MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
 
         Character character = memberCharacter.getCharacter();
+
         String characterImgUrl = character.getImgUrl();
 
         // 헌혈기록 리스트 뽑기
-        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberId(UUID.fromString(memberId));
-        System.out.println("확인" + bdHistoryList);
+        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
+
         // 헌혈 카운트
         Integer bdHistoryCnt = bdHistoryList.size();
-        // 최근 헌혈일
-        LocalDateTime recentBdDate = bdHistoryList.get(bdHistoryCnt - 1).getIssuedDate();
 
+        // 최근 헌혈일과 다음 헌혈 가능 날짜 구하기
+        LocalDateTime recentBdDate;
+        int nextWholeBdDays = 0;
+        int nextNotWholeBdDays = 0;
+
+        if (bdHistoryCnt >= 1) {
+            recentBdDate = bdHistoryList.get(bdHistoryCnt - 1).getIssuedDate();
+
+        } else {
+            recentBdDate = null;
+        }
+        // 다음 헌혈 가능 날짜 구하기
 
         // DTO에 넣기
-        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, bdHistoryCnt, recentBdDate);
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
         ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto);
         return res;
     }
@@ -112,50 +121,28 @@ public class MemberService {
     }
 
     // email 중복 체크
-//    public ResponseSuccessDto<ValidateEmailResponseDto> checkEmailDuplicate(String email) {
-//        Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
-//        System.out.println("이메일 중복됨" + email + isEmailDuplicate);
-//
-//        Optional<Member> byEmail = memberRepository.findByEmail(email);
-//        Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
-//        System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
-//
-//        if (byWalletAddress.isEmpty()) {
-//            System.out.println("여기여기" + byWalletAddress);
-//            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
-//            ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
-//            return res;
-////        } else {
-////            System.out.println("여기여기" + byWalletAddress);
-////            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.getRole(), "회원 정보가 없습니다");
-//
-//        }
-//        System.out.println("여기여기" + byWalletAddress);
-//        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
-//        ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
-//        return res;
-//        if (isEmailDuplicate) {
-//            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
-//        } else {
-//            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
-//        }
-//
-//        ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
-//        return res;
-//    }
+    public ResponseSuccessDto<ValidateEmailResponseDto> checkEmailDuplicate(String email) {
+        Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
+        System.out.println("이메일 중복됨" + email + isEmailDuplicate);
 
-    // nickname 중복 체크(초기)
-//    public ResponseSuccessDto<Boolean> checkNicknameDuplicated(String nickname) {
-//        Boolean isNicknameDuplicated = memberRepository.existsByNickname(nickname);
-//        System.out.println("이메일 중복됨" + nickname + isNicknameDuplicated);
-//        ResponseSuccessDto<Boolean> res = responseUtil.successResponse(isNicknameDuplicated);
-//        return res;
-//    }
+//        Optional<Member> byEmail = memberRepository.findByEmail(email);
+
+        if (isEmailDuplicate) {
+            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
+            return res;
+        } else {
+            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
+            return res;
+        }
+    }
+
     // nickname 중복 체크(수정)
-    public ResponseSuccessDto<ValidateNicknameResponseDto> checkNicknameDuplicated(String nickname) {
-        Boolean isNicknameDuplicated = memberRepository.existsByNickname(nickname);
-        System.out.println("이메일 중복됨" + nickname + isNicknameDuplicated);
-        if (isNicknameDuplicated) {
+    public ResponseSuccessDto<ValidateNicknameResponseDto> checkNicknameDuplicate(String nickname) {
+        Boolean isNicknameDuplicate = memberRepository.existsByNickname(nickname);
+        System.out.println("닉네임 중복됨" + nickname + isNicknameDuplicate);
+        if (isNicknameDuplicate) {
             ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("이미 사용중인 닉네임입니다.");
             ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
             return res;
@@ -164,10 +151,9 @@ public class MemberService {
             ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
             return res;
         }
-
     }
 
-    // 존재하는 회원인지 체크
+    // 회원가입 여부 확인
     public ResponseSuccessDto<IsMemberResponseDto> checkIsMember(String walletAddress) {
         Optional<Member> byWalletAddress = memberRepository.findByWalletAddress(walletAddress);
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
@@ -191,17 +177,30 @@ public class MemberService {
     }
 
     /**
-     * 증명 승인/미승인 목록 조회(기관)
+     * 경험치 상승
      */
-//    public ResponseSuccessDto<MemberInfoResponseDto> getCertListAgency(String email) {
-//        Member member = memberRepository.findByEmail(email)
-//                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
-//        System.out.println(member);
-//
-//        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getName(), member.getWalletAddress());
-//        ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto);
-//        return res;
-//    }
+    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
+        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+
+        int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
+        System.out.println("멤버" + member);
+        System.out.println("현재 경험지" + curExp);
+
+        int goalExp = member.getGoalExp();
+        int level = member.getLevel();
+
+        if (curExp >= member.getGoalExp()) {
+            goalExp += 50;
+            level += 1;
+        }
+
+        member.updateMemberExp(curExp, goalExp, level);
+
+        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(level, "경험치가 상승하였습니다.");
+        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
+        return res;
+    }
 
     /**
      * (임시) CertHistory 생성

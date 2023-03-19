@@ -26,24 +26,18 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
-//    /* 중복 이메일 검사 */
-//    @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
-//    @GetMapping("/check/email/{email}")
-//    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable String email) {
-//        return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
-//    }
+    /* 중복 이메일 검사 */
+    @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
+    @GetMapping("/check/email/{email}")
+    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable String email) {
+        return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
+    }
 
-//    /* 중복 닉네임 검사 */
-//    @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 검사를 한다.")
-//    @GetMapping("/check/nickname/{nickname}")
-//    public ResponseEntity<ResponseSuccessDto<Boolean>> checkNicknameDuplicate(@PathVariable String nickname) {
-//        return ResponseEntity.ok(memberService.checkNicknameDuplicated(nickname));
-//    }
     /* 중복 닉네임 검사 */
     @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 검사를 한다.")
     @GetMapping("/check/nickname/{nickname}")
     public ResponseEntity<ResponseSuccessDto<ValidateNicknameResponseDto>> checkNicknameDuplicate(@PathVariable String nickname) {
-        return ResponseEntity.ok(memberService.checkNicknameDuplicated(nickname));
+        return ResponseEntity.ok(memberService.checkNicknameDuplicate(nickname));
     }
 
     /* 회원가입 여부 확인 */
@@ -65,6 +59,13 @@ public class MemberController {
     @GetMapping("/search/{email}")
     public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable String email) {
         return ResponseEntity.ok(memberService.getMemberInfo(email));
+    }
+
+    /* 경험치 상승 */
+    @ApiOperation(value = "경험치 상승", notes = "회원 경험치를 갱신한다.")
+    @PatchMapping("/update/exp")
+    public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
+        return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
     }
 
     /* 증명 승인/미승인 목록 조회(기관) */

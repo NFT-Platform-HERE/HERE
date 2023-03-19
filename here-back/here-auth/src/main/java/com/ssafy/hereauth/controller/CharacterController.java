@@ -37,10 +37,5 @@ public class CharacterController {
     @GetMapping
     private ResponseEntity<ResponseSuccessDto<List<CharacterStartingResponseDto>>> findCharacterList() {
         return ResponseEntity.ok(characterService.findCharacters());
-//        List<Character> characters = characterRepository.findAllByZero();
-//        List<CharacterStartingResponseDto> result = characters.stream()
-//                .map(c -> new CharacterStartingResponseDto(c))
-//                .collect(toList());
-//        return ResponseEntity.ok(result);
     }
 }

@@ -65,4 +65,10 @@ public class Member {
         this.nickname = signupRequestDto.getNickname();
         this.email = signupRequestDto.getEmail();
     }
+
+    public void updateMemberExp(int curExp, int goalExp, int level) {
+        this.curExp = curExp;
+        this.goalExp = goalExp;
+        this.level = level;
+    }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BdHistoryRepository extends JpaRepository<BdHistory, Long> {
-//    @Query("select bdh from BdHistory bdh where bdh.member.id= member_id")
-    List<BdHistory> findAllByMemberId(UUID memberId);
+    //    @Query("select bdh from BdHistory bdh where bdh.member.id= member_id")
+    List<BdHistory> findAllByMemberIdOrderByIssuedDate(UUID memberId);
 }
