@@ -1,5 +1,7 @@
 package com.ssafy.hereauth.dto.member;
 
+import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryStatus;
+import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +16,8 @@ import java.util.UUID;
 public class CertHistoryCreateRequestDto {
     private UUID memberId;
     private UUID agencyId;
-//    private String type;
+    private EnumCertHistoryType type;
+    private EnumCertHistoryStatus status;
     private String reason;
     private String hashValue;
 }

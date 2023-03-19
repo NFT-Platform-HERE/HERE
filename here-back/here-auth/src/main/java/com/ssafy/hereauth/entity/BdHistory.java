@@ -3,6 +3,7 @@ package com.ssafy.hereauth.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.ssafy.hereauth.enumeration.member.EnumBdHistoryStatus;
 import com.ssafy.hereauth.dto.member.BdHistoryCreateRequestDto;
+import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryStatus;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -37,12 +38,14 @@ public class BdHistory {
     @Column(name = "issued_date", updatable = false, nullable = false)
     private LocalDateTime issuedDate;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
-//    private EnumBdHistoryStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
+    private EnumBdHistoryStatus status;
+
     public void createBdHistory(Member member, BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
         this.member = member;
         this.place = bdHistoryCreateRequestDto.getPlace();
+        this.status = EnumBdHistoryStatus.ACTIVE;
     }
 }
 

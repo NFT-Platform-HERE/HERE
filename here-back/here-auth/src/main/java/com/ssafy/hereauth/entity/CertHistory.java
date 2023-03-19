@@ -3,8 +3,10 @@ package com.ssafy.hereauth.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.ssafy.dogulim.enumeration.certHistory.EnumCertHistoryType;
 //import com.ssafy.dogulim.enumeration.paperBdCert.EnumPaperBdCertType;
-import com.ssafy.hereauth.dto.character.CharacterRequestDto;
 import com.ssafy.hereauth.dto.member.CertHistoryCreateRequestDto;
+import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryStatus;
+import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryStatus;
+import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,9 +38,13 @@ public class CertHistory {
     @JoinColumn(name = "agency_id", nullable = false)
     private Member agency;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "type", columnDefinition = "char(20)")
-//    private EnumCertHistoryType type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", columnDefinition = "char(20)")
+    private EnumCertHistoryType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "char(20)")
+    private EnumCertHistoryStatus status;
 
     @CreatedDate
     @Column(name = "create_date", updatable = false, nullable = false)
@@ -53,6 +59,8 @@ public class CertHistory {
     public void createCertHistory(Member member, Member agency, CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
         this.member = member;
         this.agency = agency;
+        this.type = certHistoryCreateRequestDto.getType();
+        this.status = EnumCertHistoryStatus.ACTIVE;
         this.reason = certHistoryCreateRequestDto.getReason();
         this.hashValue = certHistoryCreateRequestDto.getHashValue();
     }
