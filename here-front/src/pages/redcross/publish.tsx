@@ -1,6 +1,10 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 export default function RedCrossPublishPage() {
   const [inputs, setInputs] = useState({
@@ -30,18 +34,18 @@ export default function RedCrossPublishPage() {
 
   const findWallet = () => {
     const title = "사용자 이메일을 입력해주세요";
-    Swal.fire({
-      title: <span className="text-10 font-semibold">${title}</span>,
+    MySwal.fire({
+      title: <span className="text-20 font-medium">{title}</span>,
       input: "email",
       inputAttributes: {
         autocapitalize: "off",
-        inputBoxColor: "#FF8BA1",
       },
       width: "28rem",
       padding: "1rem",
       customClass: {
-        title: "text-10",
-        input: "w-100 h-100 border-2 border-black bg-red-2", // 안써짐.....
+        container: "p-4 bg-gray-100 rounded-lg",
+        title: "bg-red-1", // 얘는 왜 될까....
+        input: "bg-green-500 text-white font-bold rounded", // 안써짐.....
       },
       confirmButtonColor: "#FF8BA1",
       confirmButtonText: "검색하기",
