@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.Duration;
 
 @Slf4j
 @Service
@@ -95,6 +96,15 @@ public class MemberService {
 
         if (bdHistoryCnt >= 1) {
             recentBdDate = bdHistoryList.get(bdHistoryCnt - 1).getIssuedDate();
+
+            LocalDateTime nextW = recentBdDate.plusWeeks(8);
+            LocalDateTime nextNW = recentBdDate.plusWeeks(2);
+
+            Long longNextW = Duration.between(LocalDateTime.now(), nextW).toDays();
+            Long longNextNW = Duration.between(LocalDateTime.now(), nextNW).toDays();
+
+            nextWholeBdDays = Long.valueOf(longNextW).intValue();
+            nextNotWholeBdDays = Long.valueOf(longNextNW).intValue();
 
         } else {
             recentBdDate = null;
