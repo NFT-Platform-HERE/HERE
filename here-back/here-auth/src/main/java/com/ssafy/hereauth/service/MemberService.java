@@ -8,6 +8,7 @@ import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,7 +31,9 @@ public class MemberService {
     private final CertHistoryRepository certHistoryRepository;
     private final BdHistoryRepository bdHistoryRepository;
 
-    // 회원가입
+    /**
+     * 회원가입
+     */
     public ResponseSuccessDto<SignupResponseDto> signup(SignupRequestDto signupRequestDto) {
 
         /**
@@ -70,14 +73,14 @@ public class MemberService {
     public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
         Member member = memberRepository.findById(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-        System.out.println("멤버 셀렉트" + member);
+
+        log.debug(member.toString());
 
         // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
         MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
-        Character character = characterRepository.findById(memberCharacter.getCharacter().getId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 캐릭터ID입니다."));
 
+        Character character = memberCharacter.getCharacter();
         String characterImgUrl = character.getImgUrl();
 
         // 헌혈기록 리스트 뽑기
