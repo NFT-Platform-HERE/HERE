@@ -71,19 +71,18 @@ public class MemberService {
     public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
         Member member = memberRepository.findById(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-        System.out.println("멤버 셀렉트" + member);
 
         // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
         MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
-        Character character = characterRepository.findById(memberCharacter.getCharacter().getId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 캐릭터ID입니다."));
+
+        Character character = memberCharacter.getCharacter();
 
         String characterImgUrl = character.getImgUrl();
 
         // 헌혈기록 리스트 뽑기
-        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberId(UUID.fromString(memberId));
-        System.out.println("확인" + bdHistoryList);
+        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
+
         // 헌혈 카운트
         Integer bdHistoryCnt = bdHistoryList.size();
         // 최근 헌혈일
@@ -191,28 +190,27 @@ public class MemberService {
     /**
      * 경험치 상승
      */
-    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
-        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
-        int curExp = member.getCurExp();
-        System.out.println("멤버" + member);
-        System.out.println("현재 경험지" + curExp);
-
-        if (curExp + expUpdateRequestDto.getExp() >= member.getGoalExp()) {
-            int goalExp = member.getGoalExp() * 2;
-            int level = member.getLevel() + 1;
-
-            member.updateMemberExp(expUpdateRequestDto, curExp, goalExp, level); // 이거 중복되는 거 빼고싶음...
-        } else {
-            int goalExp = member.getGoalExp();
-            int level = member.getLevel();
-
-            member.updateMemberExp(expUpdateRequestDto, curExp, goalExp, level);
-        }
-        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(member.getLevel(), "경험치가 상승하였습니다.");
-        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
-        return res;
-    }
+//    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
+//        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
+//                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+//        int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
+//        System.out.println("멤버" + member);
+//        System.out.println("현재 경험지" + curExp);
+//
+//        int goalExp = member.getGoalExp();
+//        int level = member.getLevel();
+//
+//        if (curExp >= member.getGoalExp()) {
+//            goalExp *= 2;
+//            level += 1;
+//        }
+//
+//        member.updateMemberExp(curExp, goalExp, level); // 이거 중복되는 거 빼고싶음...
+//
+//        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(member.getLevel(), "경험치가 상승하였습니다.");
+//        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
+//        return res;
+//    }
 
     /**
      * 증명 승인/미승인 목록 조회(기관)

@@ -68,11 +68,11 @@ public class MemberController {
     }
 
     /* 경험치 상승 */
-    @ApiOperation(value = "경험치 상승", notes = "회원 경험치를 갱신한다.")
-    @PatchMapping("/update/exp")
-    public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
-        return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
-    }
+//    @ApiOperation(value = "경험치 상승", notes = "회원 경험치를 갱신한다.")
+//    @PatchMapping("/update/exp")
+//    public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
+//        return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
+//    }
 
     /* 증명 승인/미승인 목록 조회(기관) */
 //    @ApiOperation(value = "증명 승인/미승인 목록 조회(기관)", notes = "기관의 승인/미승인 상태의 제출 기록을 조회한다.")
