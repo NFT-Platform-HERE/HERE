@@ -1,44 +1,53 @@
 import CommonBtn from "@/components/Button/CommonBtn";
+import Paging from "@/components/Pagination/Paging";
+import usePagination from "@/hooks/organization/usePagination";
+import { Confirm } from "@/types/Confirm";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-interface publishedNFT {
-  id: number;
-  user: string;
-  date: string;
-}
-
 const testList = [
   {
-    id: 1,
-    user: "이경택",
-    date: "2023-02-12",
+    memberName: "이경택",
+    createdDate: "2023-02-07",
   },
   {
-    id: 2,
-    user: "이경택",
-    date: "2023-02-12",
+    memberName: "이경택",
+    createdDate: "2023-02-08",
   },
   {
-    id: 3,
-    user: "이경택",
-    date: "2023-02-12",
+    memberName: "이경택",
+    createdDate: "2023-02-09",
   },
   {
-    id: 4,
-    user: "이경택",
-    date: "2023-02-12",
+    memberName: "이경택",
+    createdDate: "2023-02-10",
+  },
+  {
+    memberName: "이경택",
+    createdDate: "2023-02-11",
+  },
+  {
+    memberName: "이경택",
+    createdDate: "2023-02-12",
+  },
+  {
+    memberName: "이경택",
+    createdDate: "2023-02-13",
   },
 ];
 
 // 페이지네이션은 FE-2003 merge 후 구현
 export default function RedCrossPage() {
   const router = useRouter();
-  const [nftList, setNftList] = useState<publishedNFT[]>([]);
+  const [nftList, setNftList] = useState<Confirm[]>(testList);
 
   useEffect(() => {
     setNftList(testList);
   }, []);
+
+  const { page, currentList, postPerPage, handlePageChange } = usePagination({
+    confirmList: nftList,
+  });
 
   const moveToCreate = () => {
     console.log("이동");
@@ -58,7 +67,7 @@ export default function RedCrossPage() {
         />
       </div>
       <div className="mx-auto flex h-70 w-1000 justify-between bg-pink-0 text-center">
-        <p className="ml-40 inline-block w-100 text-18 font-medium leading-70">
+        <p className="ml-40 mr-56 inline-block w-100 text-18 font-medium leading-70">
           번호
         </p>
         <p className="inline-block w-100 text-18 font-medium leading-70">
@@ -68,22 +77,29 @@ export default function RedCrossPage() {
           발행일
         </p>
       </div>
-      {nftList?.map((item) => (
-        <div key={item.id}>
+      {currentList?.map((item, idx) => (
+        <div key={idx}>
           <div className="flex h-70 w-1000 justify-between text-center">
-            <p className="ml-40 inline-block w-100 font-light leading-70">
-              {item.id}
+            <p className="ml-40 mr-56 inline-block w-100 font-light leading-70">
+              {(page - 1) * postPerPage + idx + 1}
             </p>
             <p className="inline-block w-100 font-light leading-70">
-              {item.user}
+              {item.memberName}
             </p>
             <p className="mr-[6rem] inline-block w-100 font-light leading-70">
-              {item.date}
+              {item.createdDate}
             </p>
           </div>
           <hr />
         </div>
       ))}
+      <Paging
+        totalCount={nftList.length}
+        page={page}
+        postPerPage={postPerPage}
+        pageRangeDisplayed={5}
+        handlePageChange={(newPage: number) => handlePageChange(newPage)}
+      />
     </div>
   );
 }
