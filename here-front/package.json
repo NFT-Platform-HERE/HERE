@@ -19,6 +19,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.13",
     "@next/eslint-plugin-next": "^13.2.3",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.14.6",
