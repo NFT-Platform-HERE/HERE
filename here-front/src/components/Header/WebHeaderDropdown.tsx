@@ -1,6 +1,6 @@
 export default function WebHeaderDropdown() {
   return (
-    <div className="flex h-250 w-200 flex-col items-center justify-center shadow-md">
+    <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
       <div>
         <img src="/icons/character.svg" className="mt-10 h-120 w-120"></img>
       </div>
