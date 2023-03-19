@@ -26,4 +26,11 @@ public class BoardImg {
 
     @Column(name = "img_url", columnDefinition = "varchar(200)")
     private String imgUrl;
+
+    public BoardImg createBoardImg(Board board, String imgUrl) {
+        BoardImg boardImg = new BoardImg();
+        boardImg.board = board;
+        boardImg.imgUrl = imgUrl;
+        return boardImg;
+    }
 }

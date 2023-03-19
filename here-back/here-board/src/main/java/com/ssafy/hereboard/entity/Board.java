@@ -1,5 +1,6 @@
 package com.ssafy.hereboard.entity;
 
+import com.ssafy.hereboard.dto.board.SaveBoardRequestDto;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,15 +45,25 @@ public class Board {
     private LocalDateTime updatedDate;
 
     @Column(name = "deadline", nullable = false)
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     @Column(name = "goal_quantity", columnDefinition = "int", nullable = false)
     private int goalQuantity;
 
     @Column(name = "cur_quantity", columnDefinition = "int default 0", nullable = false)
-    private int curQuantity;
+    private int curQuantity = 0;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'", nullable = false)
     private EnumBoardStatus status;
+
+    public Board createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
+        Board board = new Board();
+        board.member = member;
+        board.title = saveBoardRequestDto.getTitle();
+        board.content = saveBoardRequestDto.getContent();
+        board.deadline = saveBoardRequestDto.getDeadline();
+        board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
+        return board;
+    }
 }
