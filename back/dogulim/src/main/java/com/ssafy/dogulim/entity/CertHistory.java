@@ -51,4 +51,10 @@ public class CertHistory {
     private EnumCertHistoryType status;
 
 
+    @Column(name = "reason", columnDefinition = "varchar(50)")
+    private String reason;
+
+    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
+    private String hashValue;
+
 }
