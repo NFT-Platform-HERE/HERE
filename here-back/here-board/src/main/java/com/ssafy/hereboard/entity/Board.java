@@ -74,4 +74,12 @@ public class Board {
         board.title = updateBoardRequestDto.getTitle();
         board.content = updateBoardRequestDto.getContent();
     }
+
+    public void deleteBoard() {
+        this.status = EnumBoardStatus.DELETE;
+    }
+
+    public void closeBoard() {
+        this.status = EnumBoardStatus.INACTIVE;
+    }
 }

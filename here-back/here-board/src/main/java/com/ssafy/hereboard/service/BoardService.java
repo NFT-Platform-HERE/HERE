@@ -5,6 +5,7 @@ import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.entity.BoardImg;
 import com.ssafy.hereboard.entity.Member;
+import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereboard.repository.BoardImgRepository;
@@ -95,7 +96,7 @@ public class BoardService {
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
         // 게시글의 title, content 수정
-        board.updateBoard(board, updateBoardRequestDto);
+        board.updateBoard(board, updateBoardRequestDto); // 굳이 board를 넣어줄 필요가...?
 
         // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
@@ -114,7 +115,46 @@ public class BoardService {
                 .message("게시글 수정 성공")
                 .build();
 
-        ResponseSuccessDto<UpdateBoardResponseDto> res = responseUtil.successResponse(updateBoardResponseDto, HereStatus.HERE_UPATE_BOARD);
+        ResponseSuccessDto<UpdateBoardResponseDto> res = responseUtil.successResponse(updateBoardResponseDto, HereStatus.HERE_UPDATE_BOARD);
+        return res;
+    }
+
+    /* 게시글 삭제 */
+    public ResponseSuccessDto<DeleteBoardResponseDto> deleteBoard(Long boardId) {
+        // 삭제할 게시글 가져오기
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+
+        // 해당 게시글을 status를 DELETE로 변경
+        board.deleteBoard();
+
+        DeleteBoardResponseDto deleteBoardResponseDto = DeleteBoardResponseDto.builder()
+                .boardId(board.getId())
+                .message("게시글 삭제 성공")
+                .build();
+
+        ResponseSuccessDto<DeleteBoardResponseDto> res = responseUtil.successResponse(deleteBoardResponseDto, HereStatus.HERE_DELETE_BOARD);
+        return res;
+    }
+
+    /* 게시글 마감 */
+    public ResponseSuccessDto<CloseBoardResponseDto> closeBoard(Long boardId) {
+        // 마감할 게시글 가져오기
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+
+//        if (board.getStatus() == EnumBoardStatus.DELETE) {
+//        } 이런 작업은 안 필요한가요? 그리고 삭제, 마감) 실제 작성자인지 확인하는 로직은 어디 넣는 게 적합?
+
+        // 해당 게시글을 status를 INACTIVE로 변경
+        board.closeBoard();
+
+        CloseBoardResponseDto closeBoardResponseDto = CloseBoardResponseDto.builder()
+                .boardId(board.getId())
+                .message("게시글 마감 성공")
+                .build();
+
+        ResponseSuccessDto<CloseBoardResponseDto> res = responseUtil.successResponse(closeBoardResponseDto, HereStatus.HERE_CLOSE_BOARD);
         return res;
     }
 

@@ -39,4 +39,16 @@ public class BoardController {
     public ResponseEntity<ResponseSuccessDto<UpdateBoardResponseDto>> updateBoard(@RequestBody UpdateBoardRequestDto updateBoardRequestDto) {
         return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto));
     }
+
+    @ApiOperation(value = "board 삭제", notes = "board를 삭제합니다.")
+    @PatchMapping("/{boardId}/delete")
+    public ResponseEntity<ResponseSuccessDto<DeleteBoardResponseDto>> deleteBoard(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardId));
+    }
+
+    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
+    @PatchMapping("/{boardId}/close")
+    public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok(boardService.closeBoard(boardId));
+    }
 }

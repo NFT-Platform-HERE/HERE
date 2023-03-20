@@ -5,5 +5,9 @@ public enum HereStatus {
     HERE_WRITE_BOARD,
     HERE_FIND_BOARD_DETAIL,
     // 게시글 수정 성공
-    HERE_UPATE_BOARD,
+    HERE_UPDATE_BOARD,
+    // 게시글 삭제 성공
+    HERE_DELETE_BOARD,
+    // 게시글 마감 성공
+    HERE_CLOSE_BOARD
 }
