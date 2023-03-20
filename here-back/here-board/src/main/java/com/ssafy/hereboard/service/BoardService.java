@@ -60,6 +60,19 @@ public class BoardService {
         return res;
     }
 
+    /* 종료 임박 게시글 조회 */
+//    public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList(UUID memberId) {
+//
+//        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateAsc(memberId);
+//
+//        List<BoardResponseDto> memberBoardList = boards.stream()
+//                .map(mb -> new BoardResponseDto(mb))
+//                .collect(Collectors.toList());
+//
+//        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(memberBoardList, HereStatus.HERE_FIND_BOARD);
+//        return res;
+//    }
+
 
     /* 게시글 생성 */
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {

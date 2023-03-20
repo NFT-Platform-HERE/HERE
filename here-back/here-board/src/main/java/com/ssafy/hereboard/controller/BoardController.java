@@ -65,4 +65,10 @@ public class BoardController {
     public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
     }
+
+//    @ApiOperation(value = "종료 임박 board 조회", notes = "종료가 임박한 board를 조회합니다.")
+//    @GetMapping("/deadline")
+//    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getDeadlineBoardList() {
+//        return ResponseEntity.ok(boardService.getDeadlineBoardList());
+//    }
 }
