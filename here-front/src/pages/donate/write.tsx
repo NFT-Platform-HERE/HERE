@@ -2,16 +2,57 @@ import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-import Image from "next/image";
+import CircularProgress from "@mui/material/CircularProgress";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const QuillWrapper = dynamic(async () => await import("react-quill"), {
+const QuillWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => (
+    <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
+      <CircularProgress color="error" />
+    </div>
+  ),
 });
+
+interface DateButtonProps {
+  onClick: () => void;
+  value: Date;
+}
 
 export default function DonateWritePage() {
   const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+
+  function printKorDate(date: Date) {
+    const koreaDate = new Date(date);
+    const dateString = koreaDate.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    return dateString;
+  }
+
+  const DateButton = ({ onClick, value }: DateButtonProps) => {
+    const transferDate = printKorDate(value);
+
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className="mr-3 flex h-55 w-230 items-center justify-start rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-38 mobile:w-151 mobile:text-11"
+      >
+        <img
+          src={"/icons/calendar.svg"}
+          className="ml-15 mr-10 mb-5 h-38 w-38 mobile:ml-15 mobile:mr-12 mobile:h-23 mobile:w-23"
+        />
+        {transferDate}
+      </button>
+    );
+  };
 
   function printVal() {
     console.log("value", value);
@@ -30,7 +71,7 @@ export default function DonateWritePage() {
   return (
     <div className="mt-25 w-full">
       <div className="mx-auto w-1200 mobile:w-360">
-        <div className="mx-auto w-1100 mobile:w-340">
+        <div className="mx-auto w-950 mobile:w-340">
           <div className="mt-15 mb-15 mr-15 flex justify-end mobile:hidden ">
             <CommonBtn
               width={95}
@@ -79,12 +120,14 @@ export default function DonateWritePage() {
             <div className="mr-31 text-18 font-normal text-pen-2 mobile:text-14">
               * 마감기한
             </div>
-            <div className="mr-8 flex h-55 w-220 items-center justify-start rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-38 mobile:w-151 mobile:text-6">
-              <img
-                src={"/icons/calendar.svg"}
-                className="ml-20 mr-40 mb-5 h-38 w-38 mobile:mr-25 mobile:ml-15 mobile:h-23 mobile:w-23"
+            <div className="flex-auto">
+              <DatePicker
+                selected={startDate}
+                onChange={(date: Date) => setStartDate(date)}
+                customInput={
+                  <DateButton value={startDate} onClick={() => {}} />
+                }
               />
-              날짜 선택
             </div>
           </div>
           {/* <button onClick={printVal}>내용 확인</button> */}
