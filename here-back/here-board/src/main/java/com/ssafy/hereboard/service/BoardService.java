@@ -33,6 +33,19 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
 
+    /* 전체 게시글 조회 */
+    public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
+
+        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateAsc();
+
+        List<BoardResponseDto> boardList = boards.stream()
+                .map(b -> new BoardResponseDto(b))
+                .collect(Collectors.toList());
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(boardList, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
+
     /* 게시글 생성 */
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
@@ -61,7 +74,7 @@ public class BoardService {
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
         int curQ = board.getCurQuantity();
         int goalQ = board.getGoalQuantity();
-        int percentage = curQ / goalQ;
+        int percentage = curQ / goalQ * 100;
 
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
 //        List<String> imgUrlList = boardImgs.stream()

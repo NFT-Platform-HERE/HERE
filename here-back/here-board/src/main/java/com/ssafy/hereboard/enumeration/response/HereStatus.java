@@ -9,5 +9,7 @@ public enum HereStatus {
     // 게시글 삭제 성공
     HERE_DELETE_BOARD,
     // 게시글 마감 성공
-    HERE_CLOSE_BOARD
+    HERE_CLOSE_BOARD,
+    // 전체 게시글 조회 성공
+    HERE_FIND_BOARD,
 }

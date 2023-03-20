@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api("기부해요 컨트롤러 V1")
 @RestController
@@ -50,5 +51,11 @@ public class BoardController {
     @PatchMapping("/{boardId}/close")
     public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
         return ResponseEntity.ok(boardService.closeBoard(boardId));
+    }
+
+    @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
+    @GetMapping()
+    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getBoardList() {
+        return ResponseEntity.ok(boardService.getBoardList());
     }
 }
