@@ -2,6 +2,7 @@ package com.ssafy.hereboard.dto.board;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
 @Builder
 public class SaveBoardRequestDto {
 

@@ -1,8 +1,6 @@
 package com.ssafy.hereboard.service;
 
-import com.ssafy.hereboard.dto.board.GetBoardResponseDto;
-import com.ssafy.hereboard.dto.board.SaveBoardRequestDto;
-import com.ssafy.hereboard.dto.board.SaveBoardResponseDto;
+import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.entity.BoardImg;
@@ -34,6 +32,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
 
+    /* 게시글 생성 */
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
@@ -55,6 +54,7 @@ public class BoardService {
         return res;
     }
 
+    /* 게시글 상세 조회 */
     public ResponseSuccessDto<GetBoardResponseDto> getBoard(Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
@@ -86,6 +86,35 @@ public class BoardService {
                 .build();
 
         ResponseSuccessDto<GetBoardResponseDto> res = responseUtil.successResponse(getBoardResponseDto, HereStatus.HERE_FIND_BOARD_DETAIL);
+        return res;
+    }
+
+    /* 게시글 수정 */
+    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+        // 수정할 게시글 가져오기
+        Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
+                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+        // 게시글의 title, content 수정
+        board.updateBoard(board, updateBoardRequestDto);
+
+        // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
+
+        for (BoardImg boardImg : boardImgs) {
+            boardImgRepository.delete(boardImg);
+        }
+
+        // 새롭게 들어온 이미지 리스트로 db에 추가
+        for (String img : updateBoardRequestDto.getImgUrlList()) {
+            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
+            boardImgRepository.save(boardImg);
+        }
+        UpdateBoardResponseDto updateBoardResponseDto = UpdateBoardResponseDto.builder()
+                .boardId(board.getId())
+                .message("게시글 수정 성공")
+                .build();
+
+        ResponseSuccessDto<UpdateBoardResponseDto> res = responseUtil.successResponse(updateBoardResponseDto, HereStatus.HERE_UPATE_BOARD);
         return res;
     }
 

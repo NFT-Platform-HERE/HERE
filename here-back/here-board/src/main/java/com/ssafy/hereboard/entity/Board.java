@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.entity;
 
 import com.ssafy.hereboard.dto.board.SaveBoardRequestDto;
+import com.ssafy.hereboard.dto.board.UpdateBoardRequestDto;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -67,5 +68,10 @@ public class Board {
         board.deadline = saveBoardRequestDto.getDeadline();
         board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
         return board;
+    }
+
+    public void updateBoard(Board board, UpdateBoardRequestDto updateBoardRequestDto) {
+        board.title = updateBoardRequestDto.getTitle();
+        board.content = updateBoardRequestDto.getContent();
     }
 }
