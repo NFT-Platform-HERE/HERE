@@ -1,0 +1,16 @@
+server:
+  port: 9011
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: https://meeting.ssafy.com/hooks/yghzwyag6fnmtqwmpoqmufxn6h
