@@ -181,7 +181,7 @@ export default function DonatePage() {
                 />
               </div>
             ))}
-            {testJson.map((item) => (
+            {testTimeJson.map((item) => (
               <div className="hidden mobile:inline-block" key={item.boardId}>
                 <DonateCardMobile
                   title={item.title}
