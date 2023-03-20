@@ -49,12 +49,4 @@ public class CertHistory {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(20)", nullable = false)
     private EnumCertHistoryType status;
-
-
-    @Column(name = "reason", columnDefinition = "varchar(50)")
-    private String reason;
-
-    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
-    private String hashValue;
-
 }
