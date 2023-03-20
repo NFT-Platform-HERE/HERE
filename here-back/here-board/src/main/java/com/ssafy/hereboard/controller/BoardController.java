@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.controller;
 
 
+import com.ssafy.hereboard.dto.board.GetBoardResponseDto;
 import com.ssafy.hereboard.dto.board.SaveBoardRequestDto;
 import com.ssafy.hereboard.dto.board.SaveBoardResponseDto;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
@@ -24,8 +25,14 @@ public class BoardController {
     private final BoardService boardService;
 
     @ApiOperation(value = "board 등록", notes = "board를 등록합니다.")
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(@RequestBody @Valid SaveBoardRequestDto saveBoardRequestDto) {
         return ResponseEntity.ok(boardService.save(saveBoardRequestDto));
+    }
+
+    @ApiOperation(value = "board 상세 조회", notes = "board의 상세 정보를 조회합니다.")
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResponseSuccessDto<GetBoardResponseDto>> getBoard(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok(boardService.getBoard(boardId));
     }
 }

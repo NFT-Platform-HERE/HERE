@@ -56,8 +56,8 @@ public class Board {
     private int curQuantity = 0;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'", nullable = false)
-    private EnumBoardStatus status;
+    @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'")
+    private EnumBoardStatus status = EnumBoardStatus.ACTIVE;
 
     public Board createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
         Board board = new Board();
