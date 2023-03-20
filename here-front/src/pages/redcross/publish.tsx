@@ -44,10 +44,11 @@ export default function RedCrossPublishPage() {
       padding: "1rem",
       customClass: {
         container: "p-4 bg-gray-100 rounded-lg",
-        title: "bg-red-1", // 얘는 왜 될까....
-        input: "bg-green-500 text-white font-bold rounded", // 안써짐.....
+        title: "", // 얘는 왜 될까....
+        input: "bg-red-1 text-white font-bold", // 안써짐.....
+        confirmButton: "rounded-50 bg-red-1",
       },
-      confirmButtonColor: "#FF8BA1",
+      // confirmButtonColor: "#FF8BA1",
       confirmButtonText: "검색하기",
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
