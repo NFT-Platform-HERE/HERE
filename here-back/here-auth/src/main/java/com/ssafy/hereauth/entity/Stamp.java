@@ -24,10 +24,10 @@ public class Stamp {
     private Member member;
 
     @Column(name = "stage", columnDefinition = "int default 1", nullable = false)
-    private int stage;
+    private int stage = 1;
 
     @Column(name = "step", columnDefinition = "int default 1", nullable = false)
-    private int step;
+    private int step = 1;
 
     public void createStamp(Member member) {
         this.member = member;
