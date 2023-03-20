@@ -2,8 +2,14 @@ import "../index.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@/components/Header/Header";
+import { Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const getLibrary = (provider: any) => {
+    return new Web3Provider(provider);
+  };
+
   return (
     <>
       <Head>
@@ -35,8 +41,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Header />
-      <Component {...pageProps} />
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Header />
+        <Component {...pageProps} />
+      </Web3ReactProvider>
     </>
   );
 }
