@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer/Footer";
-import Section1 from "@/features/Home/Section1";
+import Section1Mobile from "@/features/Home/Section1Mobile";
+import Section1Web from "@/features/Home/Section1Web";
 import Section2Mobile from "@/features/Home/Section2Mobile";
 import Section2Web from "@/features/Home/Section2Web";
 import Section3 from "@/features/Home/Section3";
@@ -10,7 +11,27 @@ export default function HomePage() {
   return (
     <div>
       <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
-      <Section1 />
+      <section className="my-80 min-w-[1200px] mobile:my-50 mobile:w-full mobile:min-w-[300px]">
+        <div className="relative mx-auto mb-30 h-60 w-500 text-center mobile:w-300 ">
+          <img
+            src="mainItems/heart.png"
+            alt="heart"
+            className="absolute left-99 top-4 z-0 h-50 w-60 mobile:left-44 mobile:top-0 mobile:h-40 mobile:w-45"
+          />
+          <div className="relative z-10">
+            <span className="text-36 font-medium text-red-3 before:content-['HE:RE'] hover:before:content-[''] hover:after:duration-150 hover:after:ease-in-out hover:after:content-['HEART:SHARE'] mobile:text-24"></span>
+            <span className="text-32 font-medium mobile:text-22">
+              에서 할 수 있어요
+            </span>
+          </div>
+        </div>
+        <div className="hidden mobile:block">
+          <Section1Mobile />
+        </div>
+        <div className="mobile:hidden">
+          <Section1Web />
+        </div>
+      </section>
 
       <img
         src="mainItems/mainWave.png"

@@ -6,8 +6,8 @@ export default function Section2Web() {
           <div className="absolute top-20 left-0 z-0 h-28 w-190 rounded-5 bg-pink-3"></div>
         </div>
         <div className="z-10 mb-20">
-          <p className="inline-block text-30 font-semibold text-red-3">NFT</p>
-          <p className="mx-8 inline-block text-24 font-medium">헌혈증서</p>
+          <span className="text-30 font-semibold text-red-3">NFT</span>
+          <span className="mx-8 text-24 font-medium">헌혈증서</span>
         </div>
         <img
           src="mainItems/mainNFTInfo.png"

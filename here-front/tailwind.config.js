@@ -38,6 +38,11 @@ module.exports = {
         "pen-2": "#655f5f",
         "pen-3": "#443B3B",
         "pen-4": "#868E96",
+        "icon-1": "#FFD8D9",
+        "icon-2": "#FFC6CC",
+        "icon-3": "#FFF4EF",
+        "icon-4": "#FFE2E5",
+        "icon-5": "#FFF0F0",
       },
       keyframes: {
         wave: {
@@ -48,9 +53,27 @@ module.exports = {
             transform: "translate(2%, 10%)",
           },
         },
+        blob: {
+          "0%": {
+            "border-radius": "65% 60% 35% 50% / 65% 38% 75% 36%",
+          },
+          "25%": {
+            "border-radius": "89% 54% 62% 42% / 83% 45% 75% 63%",
+          },
+          "50%": {
+            "border-radius": "65% 60% 35% 50% / 65% 38% 75% 36%",
+          },
+          "75%": {
+            "border-radius": "46% 54% 50% 50% / 35% 61% 39% 65%",
+          },
+          "100%": {
+            "border-radius": "65% 60% 35% 50% / 65% 38% 75% 36%",
+          },
+        },
       },
       animation: {
         wave: "wave 5s ease-in-out infinite",
+        blob: "blob 15s ease-in-out infinite",
       },
     },
   },
