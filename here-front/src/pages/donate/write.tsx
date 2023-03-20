@@ -6,14 +6,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// const ReactQuill = dynamic(() => import("react-quill"), {
-//   ssr: false,
-//   loading: () => (
-//     <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
-//       <CircularProgress color="error" />
-//     </div>
-//   ),
-// });
+const ReactQuill = dynamic(async () => await import("react-quill"), {
+  ssr: false,
+  loading: () => (
+    <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
+      <CircularProgress color="error" />
+    </div>
+  ),
+});
 
 interface DateButtonProps {
   onClick: () => void;
@@ -24,15 +24,6 @@ export default function DonateWritePage() {
   const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
   const [startDate, setStartDate] = useState<Date>(new Date());
-
-  const ReactQuill = dynamic(() => import("react-quill"), {
-    ssr: false,
-    loading: () => (
-      <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
-        <CircularProgress color="error" />
-      </div>
-    ),
-  });
 
   function printKorDate(date: Date) {
     const koreaDate = new Date(date);
