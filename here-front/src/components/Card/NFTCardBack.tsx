@@ -1,16 +1,15 @@
 interface Iprops {
-  width: number;
   height: number;
   fontSize: number;
 }
 
-export default function NFTCard({ width, height, fontSize }: Iprops) {
+export default function NFTCardBack({ height, fontSize }: Iprops) {
   return (
     <div
-      className="relative overflow-hidden rounded-20 shadow-lg"
+      className="relative overflow-hidden rounded-20 bg-white shadow-lg"
       css={[
         {
-          width: width,
+          width: height * 1.618,
           height: height,
         },
       ]}
@@ -38,7 +37,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -48,7 +47,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -59,7 +58,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 2,
+                width: ((height * 1.618 - 40) * 1) / 2,
                 height: (height * 1) / 10,
               },
             ]}
@@ -69,7 +68,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -79,7 +78,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -90,7 +89,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -100,7 +99,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -112,7 +111,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           className="border-separate border-spacing-0 overflow-hidden rounded-10 border-1 border-black text-center"
           css={[
             {
-              width: width - 40,
+              width: height * 1.618 - 40,
               height: (height * 2) / 7,
               fontSize: fontSize - 2,
             },
@@ -161,7 +160,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -171,7 +170,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -182,7 +181,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 2,
+                width: ((height * 1.618 - 40) * 1) / 2,
                 height: (height * 1) / 10,
               },
             ]}
@@ -192,7 +191,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -202,7 +201,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -213,7 +212,7 @@ export default function NFTCard({ width, height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((width - 40) * 1) / 2,
+                width: ((height * 1.618 - 40) * 1) / 2,
                 height: (height * 1) / 10,
               },
             ]}

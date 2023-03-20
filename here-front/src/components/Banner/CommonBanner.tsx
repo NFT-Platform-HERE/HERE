@@ -14,13 +14,19 @@ export default function CommonBanner({
   imgUrl,
 }: Iprops) {
   return (
-    <div className="flex h-350 w-full flex-col items-center">
+    <div
+      className="flex h-350 w-full flex-col items-center"
+      css={[
+        {
+          minWidth: width,
+        },
+      ]}
+    >
       <div
-        className="h-300 w-full"
+        className="w-full"
         css={[
           {
             backgroundColor: bgColor,
-            minWidth: width,
             height: height,
           },
         ]}
