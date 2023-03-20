@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import WebHeaderDropdown from "./WebHeaderDropdown";
+import HeaderTag from "../Tag/HeaderTag";
 
 export default function WebHeader() {
-  const [hashTag, setHashTag] = useState<boolean>(false);
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
@@ -33,17 +33,41 @@ export default function WebHeader() {
           onClick={() => movePage("/")}
         ></img>
         <div className="flex h-65 w-665 items-center justify-around text-18 font-medium">
-          <div className="cursor-pointer" onClick={() => movePage("/donate")}>
+          <div
+            className="group relative cursor-pointer"
+            onClick={() => movePage("/donate")}
+          >
             기부해요
+            <div className="absolute -left-35 hidden group-hover:block">
+              <HeaderTag>#헌혈증서 #나눔</HeaderTag>
+            </div>
           </div>
-          <div className="cursor-pointer" onClick={() => movePage("/blood")}>
+          <div
+            className="group relative cursor-pointer"
+            onClick={() => movePage("/blood")}
+          >
             헌혈해요
+            <div className="absolute -left-35 hidden group-hover:block">
+              <HeaderTag>#나의헌혈정보</HeaderTag>
+            </div>
           </div>
-          <div className="cursor-pointer" onClick={() => movePage("/submit")}>
+          <div
+            className="group relative cursor-pointer"
+            onClick={() => movePage("/submit")}
+          >
             제출해요
+            <div className="absolute -left-35 hidden group-hover:block">
+              <HeaderTag>#병원 #기관</HeaderTag>
+            </div>
           </div>
-          <div className="cursor-pointer" onClick={() => movePage("/my-nft")}>
+          <div
+            className="group relative cursor-pointer"
+            onClick={() => movePage("/my-nft")}
+          >
             나의 NFT
+            <div className="absolute -left-35 hidden group-hover:block">
+              <HeaderTag>#SNS #등록</HeaderTag>
+            </div>
           </div>
         </div>
         <div
