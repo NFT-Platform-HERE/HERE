@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,6 +46,20 @@ public class BoardService {
         ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(boardList, HereStatus.HERE_FIND_BOARD);
         return res;
     }
+
+    /* 내 게시글 조회 */
+    public ResponseSuccessDto<List<BoardResponseDto>> getMemberBoardList(UUID memberId) {
+
+        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateAsc(memberId);
+
+        List<BoardResponseDto> memberBoardList = boards.stream()
+                .map(mb -> new BoardResponseDto(mb))
+                .collect(Collectors.toList());
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(memberBoardList, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
+
 
     /* 게시글 생성 */
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {

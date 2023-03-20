@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @Api("기부해요 컨트롤러 V1")
 @RestController
@@ -57,5 +58,11 @@ public class BoardController {
     @GetMapping()
     public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getBoardList() {
         return ResponseEntity.ok(boardService.getBoardList());
+    }
+
+    @ApiOperation(value = "내 board 조회", notes = "회원이 작성한 board를 조회합니다.")
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
     }
 }
