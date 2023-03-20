@@ -36,7 +36,7 @@ public class Board {
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "updated_date", updatable = false, nullable = false)
@@ -49,7 +49,7 @@ public class Board {
     private int goalQuantity;
 
     @Column(name = "cur_quantity", columnDefinition = "int default 0", nullable = false)
-    private int curQuantity;
+    private int curQuantity = 0;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'", nullable = false)

@@ -24,7 +24,7 @@ public class Character {
     private EnumCharacterType type;
 
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
-    private int level;
+    private int level = 1;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;

@@ -2,6 +2,7 @@ package com.ssafy.dogulim.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.dogulim.enumeration.bdHistory.EnumBdHistoryStatus;
+import com.ssafy.dogulim.enumeration.bdHistory.EnumBdHistoryType;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -37,4 +38,8 @@ public class BdHistory {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
     private EnumBdHistoryStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "bd_type", columnDefinition = "char(20)", nullable = false)
+    private EnumBdHistoryType bdType;
 }

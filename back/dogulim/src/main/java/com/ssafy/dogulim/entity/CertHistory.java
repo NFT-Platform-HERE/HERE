@@ -37,7 +37,18 @@ public class CertHistory {
     private EnumCertHistoryType type;
 
     @CreatedDate
-    @Column(name = "create_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private LocalDateTime createdDate;
+
+    @Column(name = "reason", columnDefinition = "varchar(50)", nullable = false)
+    private String reason;
+
+    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
+    private String hashValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "char(20)", nullable = false)
+    private EnumCertHistoryType status;
+
 
 }

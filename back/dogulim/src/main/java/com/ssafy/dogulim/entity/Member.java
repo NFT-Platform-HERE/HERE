@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -22,7 +23,8 @@ public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -42,16 +44,16 @@ public class Member {
     private String email;
 
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
-    private int level;
+    private int level = 1;
 
     @Column(name = "cur_exp", columnDefinition = "int default 0", nullable = false)
-    private int curExp;
+    private int curExp = 0;
 
     @Column(name = "goal_exp", columnDefinition = "int default 50", nullable = false)
-    private int goalExp;
+    private int goalExp = 50;
 
     @CreatedDate
-    @Column(name = "create_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private LocalDateTime createdDate;
 
 }

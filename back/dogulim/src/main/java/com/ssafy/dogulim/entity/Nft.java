@@ -36,6 +36,6 @@ public class Nft {
     private EnumNftType type;
 
     @CreatedDate
-    @Column(name = "create_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private LocalDateTime createdDate;
 }
