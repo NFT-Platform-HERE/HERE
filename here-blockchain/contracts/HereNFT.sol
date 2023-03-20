@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity >=0.4.22 <0.9.0;
 
 import "./token/ERC721/ERC721.sol";
 import "./utils/Counters.sol";
 import "./utils/Strings.sol";
+import "./NFTTransactionLogger.sol";
 
 /**
  * PJT Ⅰ - 과제 2) NFT Creator 구현
