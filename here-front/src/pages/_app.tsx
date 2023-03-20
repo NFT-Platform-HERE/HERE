@@ -41,8 +41,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Header />
       <Web3ReactProvider getLibrary={getLibrary}>
+        <Header />
         <Component {...pageProps} />
       </Web3ReactProvider>
     </>
