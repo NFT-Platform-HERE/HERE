@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Run New image') {
             steps {
-                sh 'docker run --name dev-back-auth-container -d -p 8080:8080 dev-back-auth-img'
+                sh 'docker run --name dev-back-auth-container -d -p 9010:9010 dev-back-auth-img'
                 echo 'Run New image'
             }
         }
