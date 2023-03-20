@@ -4,11 +4,14 @@ import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.entity.BoardImg;
+import com.ssafy.hereboard.entity.BoardMsg;
 import com.ssafy.hereboard.entity.Member;
+import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereboard.repository.BoardImgRepository;
+import com.ssafy.hereboard.repository.BoardMsgRepository;
 import com.ssafy.hereboard.repository.BoardRepository;
 import com.ssafy.hereboard.repository.MemberRepository;
 import com.ssafy.hereboard.util.ResponseUtil;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,6 +37,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
+    private final BoardMsgRepository boardMsgRepository;
 
     /* 전체 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
@@ -73,29 +78,6 @@ public class BoardService {
 //        return res;
 //    }
 
-
-    /* 게시글 생성 */
-    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
-        Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
-                .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        Board board = new Board().createBoard(member, saveBoardRequestDto);
-        boardRepository.save(board);
-
-        // 이미지 리스트 넣어주기
-        for (String img : saveBoardRequestDto.getImgUrlList()) {
-            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
-            boardImgRepository.save(boardImg);
-        }
-
-        SaveBoardResponseDto saveBoardResponseDto = SaveBoardResponseDto.builder()
-                .boardId(board.getId())
-                .message("게시글 등록 성공")
-                .build();
-
-        ResponseSuccessDto<SaveBoardResponseDto> res = responseUtil.successResponse(saveBoardResponseDto, HereStatus.HERE_WRITE_BOARD);
-        return res;
-    }
-
     /* 게시글 상세 조회 */
     public ResponseSuccessDto<GetBoardResponseDto> getBoard(Long boardId) {
         Board board = boardRepository.findById(boardId)
@@ -128,6 +110,28 @@ public class BoardService {
                 .build();
 
         ResponseSuccessDto<GetBoardResponseDto> res = responseUtil.successResponse(getBoardResponseDto, HereStatus.HERE_FIND_BOARD_DETAIL);
+        return res;
+    }
+
+    /* 게시글 생성 */
+    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
+        Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
+                .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+        Board board = new Board().createBoard(member, saveBoardRequestDto);
+        boardRepository.save(board);
+
+        // 이미지 리스트 넣어주기
+        for (String img : saveBoardRequestDto.getImgUrlList()) {
+            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
+            boardImgRepository.save(boardImg);
+        }
+
+        SaveBoardResponseDto saveBoardResponseDto = SaveBoardResponseDto.builder()
+                .boardId(board.getId())
+                .message("게시글 등록 성공")
+                .build();
+
+        ResponseSuccessDto<SaveBoardResponseDto> res = responseUtil.successResponse(saveBoardResponseDto, HereStatus.HERE_WRITE_BOARD);
         return res;
     }
 
@@ -196,6 +200,52 @@ public class BoardService {
                 .build();
 
         ResponseSuccessDto<CloseBoardResponseDto> res = responseUtil.successResponse(closeBoardResponseDto, HereStatus.HERE_CLOSE_BOARD);
+        return res;
+    }
+
+    /* 응원 메시지 수정 */
+    public ResponseSuccessDto<UpdateMsgResponseDto> updateMsg(UpdateMsgRequestDto updateMsgRequestDto) {
+        // 일단 request로 들어온 memberId에 해당하는 멤버가 이 board의 cheeringMsg를 누른 적 있는지 확인
+        Long boardId = updateMsgRequestDto.getBoardId();
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 게시글입니다."));
+
+        UUID memberId = updateMsgRequestDto.getMemberId();
+
+        Long cheeringMsgId = updateMsgRequestDto.getCheeringMsgId();
+
+        // 리포로 가서 해당 조합 게시글메시지 객체 찾기!
+        Optional<BoardMsg> boardCheeringMsg = boardMsgRepository.findByBoardAndMemberIdAndMsgId(board, memberId, cheeringMsgId);
+
+        // 리포에서 ACTIVE인 애들 개수 세기
+        List<BoardMsg> cheeringMsgs = boardMsgRepository.findAllByStatus();
+        int count = cheeringMsgs.size();
+
+        // 만약 아예 db에 게시글메시지 객체가 없으면 insert, 아니면 update
+        if (boardCheeringMsg.isEmpty()) {
+            BoardMsg boardMsg = new BoardMsg();
+            boardMsg.createBoardMsg(board, memberId, cheeringMsgId);
+            boardMsgRepository.save(boardMsg);
+            count += 1;
+
+
+        } else {
+            boardCheeringMsg.get().updateBoardMsg(boardCheeringMsg.get().getStatus());
+
+            if (boardCheeringMsg.get().getStatus() == EnumBoardMsgStatus.ACTIVE) {
+                count -= 1;
+            } else {
+                count += 1;
+            }
+        }
+//        // 있으면? -> -1 / 없으면? -> + 1 count 해주고 그걸 테이블에 반영
+//        // count한 결과를 resposne로 주기
+//
+        UpdateMsgResponseDto updateMsgResponseDto = UpdateMsgResponseDto.builder()
+                .cnt(count)
+                .build();
+
+        ResponseSuccessDto<UpdateMsgResponseDto> res = responseUtil.successResponse(updateMsgResponseDto, HereStatus.HERE_UPDATE_CHEERING_MSG_CNT);
         return res;
     }
 

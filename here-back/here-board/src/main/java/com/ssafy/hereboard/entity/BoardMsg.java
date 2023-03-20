@@ -33,5 +33,20 @@ public class BoardMsg {
     private Long cheeringMsgId;
 
     @Column(name = "status", columnDefinition = "char(10)", nullable = false)
-    private EnumBoardMsgStatus status;
+    private EnumBoardMsgStatus status = EnumBoardMsgStatus.ACTIVE;
+
+    public void createBoardMsg(Board board, UUID memberId, Long cheeringMsgId) {
+        this.board = board;
+        this.memberId = memberId;
+        this.cheeringMsgId = cheeringMsgId;
+
+    }
+
+    public void updateBoardMsg(EnumBoardMsgStatus status) {
+        if (status == EnumBoardMsgStatus.ACTIVE) {
+            this.status = EnumBoardMsgStatus.INACTIVE;
+        } else {
+            this.status = EnumBoardMsgStatus.ACTIVE;
+        }
+    }
 }

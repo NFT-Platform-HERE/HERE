@@ -71,4 +71,10 @@ public class BoardController {
 //    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getDeadlineBoardList() {
 //        return ResponseEntity.ok(boardService.getDeadlineBoardList());
 //    }
+
+    @ApiOperation(value = "응원 메시지 수정", notes = "응원 메시지를 수정합니다.")
+    @PatchMapping("/msg")
+    public ResponseEntity<ResponseSuccessDto<UpdateMsgResponseDto>> updateMsg(@RequestBody UpdateMsgRequestDto updateMsgRequestDto) {
+        return ResponseEntity.ok(boardService.updateMsg(updateMsgRequestDto));
+    }
 }
