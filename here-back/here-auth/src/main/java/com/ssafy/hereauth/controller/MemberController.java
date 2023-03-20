@@ -10,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+
 @Api("Member Controller v1")
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class MemberController {
     /* 회원가입 */
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
@@ -49,8 +52,8 @@ public class MemberController {
 
     /* 멤버 명함 조회 */
     @ApiOperation(value = "멤버 명험 조회", notes = "회원의 기본 정보를 조회한다.")
-    @GetMapping("/{member_id}")
-    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("member_id") String memberId) {
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok(memberService.getProfile(memberId));
     }
 
