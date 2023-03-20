@@ -32,11 +32,25 @@ module.exports = {
         "pink-0": "#fff6f6",
         "pink-1": "#ffe4e4",
         "pink-2": "#fadbda",
+        "pink-3": "#FFC6CC",
         "pen-0": "#e5e5e5",
         "pen-1": "#9f9f9f",
         "pen-2": "#655f5f",
         "pen-3": "#443B3B",
         "pen-4": "#868E96",
+      },
+      keyframes: {
+        wave: {
+          "0%, 50%, 100%": {
+            transform: "translate(0%, -10%)",
+          },
+          "25%, 75%": {
+            transform: "translate(2%, 10%)",
+          },
+        },
+      },
+      animation: {
+        wave: "wave 5s ease-in-out infinite",
       },
     },
   },
