@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const QuillWrapper = dynamic(() => import("react-quill"), {
+const QuillWrapper = dynamic(import("react-quill"), {
   ssr: false,
   loading: () => (
     <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
