@@ -31,7 +31,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
-    private EnumMemberRole role;
+    private EnumMemberRole role = EnumMemberRole.USER;
 
     @Column(name = "wallet_address", columnDefinition = "char(100)", nullable = false, updatable = false)
     private String walletAddress;

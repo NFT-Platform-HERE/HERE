@@ -22,7 +22,7 @@ public class MemberProfileResponseDto {
     private int nextWholeBdDays;
     private int nextNotWholeBdDays;
 
-    public MemberProfileResponseDto(Member member, String characterImgUrl, Integer bdHistoryCnt, LocalDateTime recentBdDate, int nextWholeBdDays, int nextNotWholeBdDays) {
+    public MemberProfileResponseDto(Member member, String characterImgUrl, int bdHistoryCnt, LocalDateTime recentBdDate, int nextWholeBdDays, int nextNotWholeBdDays) {
         this.email = member.getEmail();
         this.nickname = member.getNickname();
         this.characterImgUrl = characterImgUrl;

@@ -30,6 +30,12 @@ dependencies {
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 
+	// gson
+	implementation 'com.google.code.gson:gson:2.10.1'
+
+	// spring-boot-configuration-processor
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'

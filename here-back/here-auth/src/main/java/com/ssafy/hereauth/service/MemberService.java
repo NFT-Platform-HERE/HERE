@@ -4,6 +4,7 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class MemberService {
 
         // 멤버_캐릭터 : 멤버 만들고 멤버 만들면 자동으로 만들어지는 것? (원투원 매핑)
         MemberCharacter memberCharacter = new MemberCharacter();
-        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new RuntimeException("없는 캐릭터입니다."));
+        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
         memberCharacter.createMemberCharacter(member, character, signupRequestDto.getCharacterName());
         memberCharacterRepository.save(memberCharacter);
 
@@ -73,11 +74,11 @@ public class MemberService {
      */
     public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
         Member member = memberRepository.findById(UUID.fromString(memberId))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
         // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
         MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 멤버의 캐릭터 정보입니다."));
 
         Character character = memberCharacter.getCharacter();
 
@@ -87,7 +88,7 @@ public class MemberService {
         List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
 
         // 헌혈 카운트
-        Integer bdHistoryCnt = bdHistoryList.size();
+        int bdHistoryCnt = bdHistoryList.size();
 
         // 최근 헌혈일과 다음 헌혈 가능 날짜 구하기
         LocalDateTime recentBdDate;
@@ -122,7 +123,7 @@ public class MemberService {
      */
     public ResponseSuccessDto<MemberInfoResponseDto> getMemberInfo(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 이메일입니다."));
         System.out.println(member);
 
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getName(), member.getWalletAddress());
@@ -191,7 +192,7 @@ public class MemberService {
      */
     public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
         Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("올바르지 않은 멤버ID입니다."));
 
         int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
         System.out.println("멤버" + member);
@@ -219,11 +220,11 @@ public class MemberService {
 
         // 멤버 가져오기
         Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
 
         // 기관 가져오기
         Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
-                .orElseThrow(() -> new RuntimeException("잘못된 기관 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 기관 ID입니다."));
 
         CertHistory certHistory = new CertHistory();
         certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
@@ -242,7 +243,7 @@ public class MemberService {
 
         // 멤버 가져오기
         Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
 
         BdHistory bdHistory = new BdHistory();
         bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
