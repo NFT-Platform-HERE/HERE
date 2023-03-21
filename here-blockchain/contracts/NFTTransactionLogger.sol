@@ -11,13 +11,13 @@ contract NFTTransactionLogger {
         address buyer;
         address seller;
         uint256 tokenId;
-        uint256 price;
         uint256 timestamp;
     }
 
     // 이벤트 배열
     TransactionLog[] public transactionLogs;
 
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
     // ERC-721 토큰
     //IERC721 private nftToken;
     //ERC721 private nftToken;
@@ -33,7 +33,6 @@ contract NFTTransactionLogger {
         address _buyer,
         address _seller,
         uint256 _tokenId,
-        uint256 _price,
         uint256 _timestamp
     ) external {
         require(
@@ -45,11 +44,10 @@ contract NFTTransactionLogger {
                 buyer: _buyer,
                 seller: _seller,
                 tokenId: _tokenId,
-                price: _price,
                 timestamp: _timestamp
             })
         );
-        
+        emit Transfer(_seller, _buyer, _tokenId);
     }
 
     // 특정 NFT의 거래 기록을 조회하는 함수
