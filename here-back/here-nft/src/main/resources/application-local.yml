@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9002
 
 spring:
   config:
@@ -16,12 +16,12 @@ spring:
         show_sql: true
         format_sql: true
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/here?serverTimezone=Asia/Seoul
     username: root
     password: 1234
-
 
 notification:
   mattermost:

@@ -1,14 +1,14 @@
 server:
-  port: 9001
+  port: 9012
 
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -16,14 +16,14 @@ spring:
         show_sql: true
         format_sql: true
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/here?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://j8b209.p.ssafy.io:3306/here?serverTimezone=Asia/Seoul
     username: root
-    password: 1234
-
+    password: B209HERE
 
 notification:
   mattermost:
     enabled: true
-    webhook-url: https://meeting.ssafy.com/hooks/zqmjek3mi7fgmg4zh5knfu3ndy
+    webhook-url: https://meeting.ssafy.com/hooks/yghzwyag6fnmtqwmpoqmufxn6h
