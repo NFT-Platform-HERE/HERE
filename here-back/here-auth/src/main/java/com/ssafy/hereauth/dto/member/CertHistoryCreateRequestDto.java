@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.dto.member;
 
-import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryStatus;
-import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryType;
+import com.ssafy.hereauth.enumeration.EnumCertHistoryStatus;
+import com.ssafy.hereauth.enumeration.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

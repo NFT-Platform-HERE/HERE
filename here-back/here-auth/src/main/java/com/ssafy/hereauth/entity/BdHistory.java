@@ -1,13 +1,10 @@
 package com.ssafy.hereauth.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.ssafy.hereauth.enumeration.member.EnumBdHistoryStatus;
 import com.ssafy.hereauth.dto.member.BdHistoryCreateRequestDto;
-import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryStatus;
-import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryType;
+import com.ssafy.hereauth.enumeration.EnumBdHistoryStatus;
+import com.ssafy.hereauth.enumeration.EnumBdHistoryType;
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
-import lombok.Getter;
+        import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

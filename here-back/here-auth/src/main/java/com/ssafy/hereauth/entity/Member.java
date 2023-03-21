@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.entity;
 
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
-import com.ssafy.hereauth.enumeration.member.EnumMemberRole;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

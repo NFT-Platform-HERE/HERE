@@ -1,12 +1,9 @@
 package com.ssafy.hereauth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.ssafy.dogulim.enumeration.certHistory.EnumCertHistoryType;
-//import com.ssafy.dogulim.enumeration.paperBdCert.EnumPaperBdCertType;
 import com.ssafy.hereauth.dto.member.CertHistoryCreateRequestDto;
-import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryStatus;
-import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryStatus;
-import com.ssafy.hereauth.enumeration.certHistory.EnumCertHistoryType;
+import com.ssafy.hereauth.enumeration.EnumCertHistoryStatus;
+import com.ssafy.hereauth.enumeration.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
