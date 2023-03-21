@@ -42,8 +42,7 @@ export default function WebHeader() {
   };
 
   const [walletAddress, setWalletAddress] = useState<string>("");
-  const isMember = useCheckMemberQuery(walletAddress);
-  console.log(isMember);
+  useCheckMemberQuery(walletAddress);
 
   useEffect(() => {
     if (account) {

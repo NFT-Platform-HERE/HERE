@@ -2,6 +2,7 @@ import { MEMBER_SERVER_URL } from "@/utils/urls";
 import axios from "axios";
 import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
+import { useRouter } from "next/router";
 
 const fetcher = (walletAddress: string) =>
   axios
@@ -9,11 +10,19 @@ const fetcher = (walletAddress: string) =>
     .then(({ data }) => data);
 
 const useCheckMemberQuery = (walletAddress: string) => {
-  console.log("쿼리안", walletAddress);
+  const router = useRouter();
+
   return useQuery(
     [queryKeys.MEMBER_CHECK, walletAddress],
     () => fetcher(walletAddress),
-    { enabled: !!walletAddress },
+    {
+      enabled: !!walletAddress,
+      onSuccess: (data) => {
+        if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
+          router.push("/member");
+        }
+      },
+    },
   );
 };
 
