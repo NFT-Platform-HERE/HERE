@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Email;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/member")
+@Validated
 public class MemberController {
 
     private final MemberService memberService;
@@ -31,8 +33,8 @@ public class MemberController {
 
     /* 중복 이메일 검사 */
     @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
-    @GetMapping("/check/email/{email}")
-    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable String email) {
+    @GetMapping("/check/email/{email:.+}/")
+    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
     }
 
@@ -59,8 +61,8 @@ public class MemberController {
 
     /* 이메일로 회원 조회 */
     @ApiOperation(value = "이메일로 회원 조회", notes = "이메일로 회원 정보를 조회한다.")
-    @GetMapping("/search/{email}")
-    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable String email) {
+    @GetMapping("/search/{email:.+}/")
+    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.getMemberInfo(email));
     }
 
