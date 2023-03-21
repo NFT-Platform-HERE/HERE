@@ -68,7 +68,6 @@ public class BoardService {
         } else {
             return "noThumbnail";
         }
-
     }
 
     /* 내 게시글 조회 */
@@ -95,19 +94,6 @@ public class BoardService {
         ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
-
-    /* 종료 임박 게시글 조회 */
-//    public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList(UUID memberId) {
-//
-//        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateAsc(memberId);
-//
-//        List<BoardResponseDto> memberBoardList = boards.stream()
-//                .map(mb -> new BoardResponseDto(mb))
-//                .collect(Collectors.toList());
-//
-//        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(memberBoardList, HereStatus.HERE_FIND_BOARD);
-//        return res;
-//    }
 
     /* 게시글 상세 조회 */
     public ResponseSuccessDto<GetBoardResponseDto> getBoard(Long boardId) {
@@ -332,14 +318,17 @@ public class BoardService {
         List<SearchBoardResponseDto> result = new ArrayList<>();
 
         for (Board searched : searchedList) {
+            String thumbnail = findThumbnail(searched.getId());
+
             int curQ = searched.getCurQuantity();
             int goalQ = searched.getGoalQuantity();
             int percentage = curQ / goalQ * 100;
+
             SearchBoardResponseDto searchBoardResponseDto = SearchBoardResponseDto.builder()
                     .boardId(searched.getId())
                     .title(searched.getTitle())
                     .nickname(searched.getMember().getNickname())
-                    .boardImgUrl("imgUrl")
+                    .boardImgUrl(thumbnail)
                     .status(searched.getStatus())
                     .dDay(searched.getDeadline())
                     .percentage(percentage)
