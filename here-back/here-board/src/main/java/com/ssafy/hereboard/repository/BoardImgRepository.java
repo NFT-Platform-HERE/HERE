@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface BoardImgRepository extends JpaRepository<BoardImg, Long> {
     List<BoardImg> findAllByBoardId(Long boardId);
-    String findByBoardId(Long boardId);
 }

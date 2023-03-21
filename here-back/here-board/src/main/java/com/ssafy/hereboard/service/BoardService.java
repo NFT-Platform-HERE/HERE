@@ -37,13 +37,38 @@ public class BoardService {
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
 
         List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateAsc();
+//        List<BoardResponseDto> boardList = boards.stream()
+//                .map(b -> new BoardResponseDto(b))
+//                .collect(Collectors.toList());
+        List<BoardResponseDto> result = new ArrayList<>();
 
-        List<BoardResponseDto> boardList = boards.stream()
-                .map(b -> new BoardResponseDto(b))
-                .collect(Collectors.toList());
+        for (Board board : boards) {
+            String thumbnail = findThumbnail(board.getId());
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .boardId(board.getId())
+                    .title(board.getTitle())
+                    .nickname(board.getMember().getNickname())
+                    .boardImgUrl(thumbnail)
+                    .status(board.getStatus())
+                    .dDay(board.getDeadline())
+                    .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                    .build();
+            result.add(boardResponseDto);
+        }
 
-        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(boardList, HereStatus.HERE_FIND_BOARD);
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
+    }
+
+    private String findThumbnail(Long boardId) {
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+
+        if (boardImgs.size() > 0) {
+            return boardImgs.get(0).getImgUrl();
+        } else {
+            return "noThumbnail";
+        }
+
     }
 
     /* 내 게시글 조회 */
@@ -51,11 +76,23 @@ public class BoardService {
 
         List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateAsc(memberId);
 
-        List<BoardResponseDto> memberBoardList = boards.stream()
-                .map(mb -> new BoardResponseDto(mb))
-                .collect(Collectors.toList());
+        List<BoardResponseDto> result = new ArrayList<>();
 
-        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(memberBoardList, HereStatus.HERE_FIND_BOARD);
+        for (Board board : boards) {
+            String thumbnail = findThumbnail(board.getId());
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .boardId(board.getId())
+                    .title(board.getTitle())
+                    .nickname(board.getMember().getNickname())
+                    .boardImgUrl(thumbnail)
+                    .status(board.getStatus())
+                    .dDay(board.getDeadline())
+                    .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                    .build();
+            result.add(boardResponseDto);
+        }
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
 
@@ -312,4 +349,6 @@ public class BoardService {
         ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
+
+    /* 종료 임박 게시글 목록 조회 */
 }
