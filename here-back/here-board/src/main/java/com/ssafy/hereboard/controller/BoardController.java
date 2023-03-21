@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -96,8 +97,15 @@ public class BoardController {
 
     @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")
     @PatchMapping("/bd-history")
-    public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> searchBoard(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
-        System.out.println("들어오나");
+    public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> updateBoardBdHistory(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
         return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
+    }
+
+    @ApiOperation(value = "기부 내역 조회", notes = "기부한 내역을 조회합니다.")
+    @GetMapping("/nft/{senderId}/{quantity}")
+    public ResponseEntity<ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>>> getBoardBdHistory(
+            @PathVariable("senderId") UUID senderId,
+            @PathVariable("quantity") int quantity) {
+        return ResponseEntity.ok(boardService.getBoardBdHistory(senderId, quantity));
     }
 }

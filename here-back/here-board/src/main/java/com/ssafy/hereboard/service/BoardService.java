@@ -343,7 +343,6 @@ public class BoardService {
     /* 종료 임박 게시글 목록 조회 */
 
     /* 기부 내역 등록 */
-    // 이게 언제 호출될 건지?
     public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
 
         // 지금 기부하려는 게시글 보고!
@@ -383,6 +382,14 @@ public class BoardService {
 
         ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
         return res;
+    }
+
+    /* 기부 데이터 조회 */
+    public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
+
+//        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+//        return res;
+        return null;
     }
 
 }
