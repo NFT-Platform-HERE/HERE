@@ -1,23 +1,67 @@
 import Footer from "@/components/Footer/Footer";
+import Section1Mobile from "@/features/Home/Section1Mobile";
+import Section1Web from "@/features/Home/Section1Web";
 import Section2Mobile from "@/features/Home/Section2Mobile";
 import Section2Web from "@/features/Home/Section2Web";
-import React, { useState, useEffect } from "react";
+import Section3 from "@/features/Home/Section3";
+import Section4 from "@/features/Home/Section4";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+import { BsChevronDoubleDown } from "react-icons/bs";
 
 export default function HomePage() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
+  const goToDown = () => {
+    const element = document.getElementById(
+      "section1",
+    ) as HTMLInputElement | null;
+    if (element != null) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  };
+
   return (
     <div>
       <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
-      <section className="my-80 min-w-[1200px] mobile:my-50 mobile:w-full mobile:min-w-[300px]">
-        <img
-          src="mainItems/mainTitle1.png"
-          alt="mainTitle1"
-          className="mx-auto w-400"
-        />
-        <div className="my-30 flex flex-wrap justify-center">
-          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb1.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile1.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb2.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile2.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb3.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile3.png')]"></div>
-          <div className="mx-5 inline-block aspect-[1/1.34] w-280 bg-[url('/mainItems/mainInfoWeb4.png')] bg-contain bg-no-repeat mobile:my-10 mobile:aspect-[1.3/1] mobile:bg-[url('/mainItems/mainInfoMobile4.png')]"></div>
+      <div className="flex h-[calc(100vh-(100vw/3.2)-65px)] w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
+        <button onClick={goToDown} className="my-auto">
+          <BsChevronDoubleDown className="text-70 text-pen-0" />
+        </button>
+      </div>
+      <section
+        id="section1"
+        // data-aos="fade-up"
+        // data-aos-duration="3000"
+        className="my-50 min-w-[1200px] mobile:my-50 mobile:w-full mobile:min-w-[300px]"
+      >
+        <div className="relative mx-auto mb-30 h-60 w-500 text-center mobile:w-300 ">
+          <img
+            src="mainItems/heart.png"
+            alt="heart"
+            className="absolute left-99 top-4 z-0 h-50 w-60 mobile:left-44 mobile:top-0 mobile:h-40 mobile:w-45"
+          />
+          <div className="relative z-10">
+            <span className="text-36 font-medium text-red-3 mobile:text-24">
+              HE:RE
+            </span>
+            <span className="text-32 font-medium mobile:text-22">
+              에서 할 수 있어요
+            </span>
+          </div>
+        </div>
+        <div className="hidden mobile:block">
+          <Section1Mobile />
+        </div>
+        <div className="pb-30 mobile:hidden">
+          <Section1Web />
         </div>
       </section>
 
@@ -33,43 +77,9 @@ export default function HomePage() {
       <div className="mobile:hidden">
         <Section2Web />
       </div>
+      <Section3 />
 
-      <section className="my-80 flex min-w-[1200px] justify-center bg-pink-0 py-80 mobile:my-50 mobile:w-full mobile:min-w-[300px]">
-        <img
-          src="mainItems/mainTitle3.png"
-          alt="mainTitle3"
-          className="my-auto inline-block h-160 w-200 mobile:ml-8 mobile:h-100 mobile:w-125"
-        />
-        {/* <img src={BDimg} alt="BDimg" className="inline-block h-500 w-800"/> */}
-        <div className="inline-block h-500 w-800 bg-stone-400">
-          헌혈 이미지 들어감
-        </div>
-      </section>
-
-      <section className="mb-90 min-w-[1200px] mobile:w-full mobile:min-w-[300px]">
-        <img
-          src="mainItems/mainTitle4.png"
-          alt="mainTitle4"
-          className="mx-auto w-400 mobile:w-300"
-        />
-        <div className="my-50 flex flex-wrap justify-center">
-          <img
-            src="mainItems/mainBottom1.png"
-            alt="mainBottom1"
-            className="my-auto inline-block h-300 w-300 mobile:h-250 mobile:w-250"
-          />
-          <img
-            src="mainItems/mainBottom2.png"
-            alt="mainBottom2"
-            className="z-10 mx-40 inline-block w-350 mobile:-my-35 mobile:h-280 mobile:w-280"
-          />
-          <img
-            src="mainItems/mainBottom3.png"
-            alt="mainBottom3"
-            className="my-auto inline-block w-300 mobile:h-250 mobile:w-250"
-          />
-        </div>
-      </section>
+      <Section4 />
       <Footer />
     </div>
   );
