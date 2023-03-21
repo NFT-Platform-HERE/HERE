@@ -45,7 +45,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\n// OpenZeppelin Contracts v4.3.2 (token/ERC721/IERC721Receiver.sol)\r\n\r\npragma solidity ^0.8.0;\r\n\r\n/**\r\n * @title ERC721 token receiver interface\r\n * @dev Interface for any contract that wants to support safeTransfers\r\n * from ERC721 asset contracts.\r\n */\r\ninterface IERC721Receiver {\r\n    /**\r\n     * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}\r\n     * by `operator` from `from`, this function is called.\r\n     *\r\n     * It must return its Solidity selector to confirm the token transfer.\r\n     * If any other value is returned or the interface is not implemented by the recipient, the transfer will be reverted.\r\n     *\r\n     * The selector can be obtained in Solidity with `IERC721.onERC721Received.selector`.\r\n     */\r\n    function onERC721Received(\r\n        address operator,\r\n        address from,\r\n        uint256 tokenId,\r\n        bytes calldata data\r\n    ) external returns (bytes4);\r\n}\r\n",
-  "sourcePath": "C:\\SSAFY\\workspace\\blockchain\\S08P22B209\\here-blockchain\\contracts\\token\\ERC721\\IERC721Receiver.sol",
+  "sourcePath": "C:\\SSAFY\\workspace\\work-blockchain\\S08P22B209\\here-blockchain\\contracts\\token\\ERC721\\IERC721Receiver.sol",
   "ast": {
     "absolutePath": "project:/contracts/token/ERC721/IERC721Receiver.sol",
     "exportedSymbols": {
@@ -498,7 +498,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2023-03-21T08:15:40.754Z",
+  "updatedAt": "2023-03-21T10:56:59.531Z",
   "devdoc": {
     "details": "Interface for any contract that wants to support safeTransfers from ERC721 asset contracts.",
     "kind": "dev",

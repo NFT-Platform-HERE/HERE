@@ -41,7 +41,7 @@ contract HereNFT is ERC721 {
         address _to,
         uint256 _tokenId,
         uint256 _timestamp
-    ) public {
+    ) public payable {
         require(_from != address(0), "Invalid buyer address");
         require(_to != address(0), "Invalid seller address");
         require(_tokenId != 0, "Invalid token ID");
