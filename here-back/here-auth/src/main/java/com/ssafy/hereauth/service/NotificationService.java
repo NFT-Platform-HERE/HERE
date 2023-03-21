@@ -72,7 +72,7 @@ public class NotificationService {
                 .message("알림 읽은 처리 완료")
                 .build();
 
-        ResponseSuccessDto<UpdateNotificationResponseDto> res = responseUtil.successResponse(updateNotificationRequestDto, HereStatus.HERE_READ_NOTIFICATION);
+        ResponseSuccessDto<UpdateNotificationResponseDto> res = responseUtil.successResponse(updateNotificationResponseDto, HereStatus.HERE_READ_NOTIFICATION);
         return res;
     }
 }
