@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     environment {
@@ -27,7 +26,7 @@ pipeline {
                             sh 'ls -al'
                             sh 'chmod +x ./gradlew'
                             sh './gradlew build'
-                            sh 'docker build -t dev-back-auth-img .'
+                            sh 'docker build -t ${HERE_AUTH_IMAGE} .'
                         }
                         echo 'Build image...'
                     }
@@ -44,7 +43,7 @@ pipeline {
                             sh 'ls -al'
                             sh 'chmod +x ./gradlew'
                             sh './gradlew build'
-                            sh 'docker build -t dev-back-board-img .'
+                            sh 'docker build -t ${HERE_BOARD_IMAGE} .'
                         }
                         echo 'Build image...'
                     }
@@ -61,7 +60,7 @@ pipeline {
                             sh 'ls -al'
                             sh 'chmod +x ./gradlew'
                             sh './gradlew build'
-                            sh 'docker build -t dev-back-nft-img .'
+                            sh 'docker build -t ${HERE_NFT_IMAGE} .'
                         }
                         echo 'Build image...'
                     }
@@ -80,8 +79,8 @@ pipeline {
                     steps {
                         script {
                             try {
-                                sh 'docker stop dev-back-auth-container'
-                                sh 'docker rm dev-back-auth-container'
+                                sh 'docker stop ${HERE_AUTH_CONTAINER}'
+                                sh 'docker rm ${HERE_AUTH_CONTAINER}'
                             } catch (e) {
                                 echo 'fail to stop and remove container'
                             }
@@ -97,8 +96,8 @@ pipeline {
                     steps {
                         script {
                             try {
-                                sh 'docker stop dev-back-board-container'
-                                sh 'docker rm dev-back-board-container'
+                                sh 'docker stop ${HERE_BOARD_CONTAINER}'
+                                sh 'docker rm ${HERE_BOARD_CONTAINER}'
                             } catch (e) {
                                 echo 'fail to stop and remove container'
                             }
@@ -114,8 +113,8 @@ pipeline {
                     steps {
                         script {
                             try {
-                                sh 'docker stop dev-back-nft-container'
-                                sh 'docker rm dev-back-nft-container'
+                                sh 'docker stop ${HERE_NFT_CONTAINER}'
+                                sh 'docker rm ${HERE_NFT_CONTAINER}'
                             } catch (e) {
                                 echo 'fail to stop and remove container'
                             }
@@ -133,7 +132,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name dev-back-auth-container -d -p 9010:9010 dev-back-auth-img'
+                        sh 'docker run --name ${HERE_AUTH_CONTAINER} -d -p 9010:9010 ${HERE_AUTH_IMAGE}'
                         echo 'Run New image'
                     }
                 }
@@ -144,7 +143,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name dev-back-board-container -d -p 9011:9011 dev-back-board-img'
+                        sh 'docker run --name ${HERE_BOARD_CONTAINER} -d -p 9011:9011 ${HERE_BOARD_IMAGE}'
                         echo 'Run New image'
                     }
                 }
@@ -155,7 +154,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name dev-back-nft-container -d -p 9012:9012 dev-back-nft-img'
+                        sh 'docker run --name ${HERE_NFT_CONTAINER} -d -p 9012:9012 ${HERE_NFT_CONTAINER}'
                         echo 'Run New image'
                     }
                 }
