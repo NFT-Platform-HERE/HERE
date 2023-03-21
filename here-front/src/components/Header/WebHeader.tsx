@@ -4,6 +4,7 @@ import WebHeaderDropdown from "./WebHeaderDropdown";
 import HeaderTag from "../Tag/HeaderTag";
 import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
+import useCheckMemberQuery from "@/hooks/member/useCheckMemberQuery";
 
 export default function WebHeader() {
   const [dropDown, setDropDown] = useState<boolean>(false);
@@ -23,7 +24,6 @@ export default function WebHeader() {
   } = useWeb3React();
 
   const Injected = new InjectedConnector({});
-
   const handleConnect = () => {
     if ((window as any).ethereum === undefined) {
       // 지갑이 설치 안되어있으면 설치 페이지를 오픈한다. 일단 메타마스크만.
@@ -40,6 +40,16 @@ export default function WebHeader() {
     activate(Injected);
     // activate 함수로, App에서 만든 Injected란 이름의 connector 인스턴스를 넘겨준다
   };
+
+  const [walletAddress, setWalletAddress] = useState<string>("");
+  const isMember = useCheckMemberQuery(walletAddress);
+  console.log(isMember);
+
+  useEffect(() => {
+    if (account) {
+      setWalletAddress(account);
+    }
+  }, [account]);
 
   const movePage = (path: string) => {
     router.push(path);

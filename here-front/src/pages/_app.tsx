@@ -4,8 +4,11 @@ import Head from "next/head";
 import Header from "@/components/Header/Header";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   const getLibrary = (provider: any) => {
     return new Web3Provider(provider);
   };
@@ -41,10 +44,14 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <Header />
-        <Component {...pageProps} />
-      </Web3ReactProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Header />
+            <Component {...pageProps} />
+          </Web3ReactProvider>
+        </Hydrate>
+      </QueryClientProvider>
     </>
   );
 }
