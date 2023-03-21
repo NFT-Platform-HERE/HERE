@@ -16,7 +16,12 @@ export default function Section3() {
           <p className="text-28 font-medium mobile:text-18">같이 해요</p>
         </div>
       </div>
-      <div className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288">
+      <div
+        // data-aos="fade-right"
+        // data-aos-easing="linear"
+        // data-aos-duration="1500"
+        className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288"
+      >
         <img
           src="images/exImg1.jpg"
           alt="BDimg"

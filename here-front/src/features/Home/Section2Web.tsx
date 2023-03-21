@@ -1,7 +1,19 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 export default function Section2Web() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <section className="my-99 mx-auto flex w-[75rem] justify-center mobile:w-0">
-      <div className="mx-20 flex w-440 flex-col items-center">
+      <div
+        data-aos="fade-right"
+        data-aos-duration="1500"
+        className="mx-20 flex w-440 flex-col items-center"
+      >
         <div className="relative h-0 w-200">
           <div className="absolute top-20 left-0 z-0 h-28 w-190 rounded-5 bg-pink-3"></div>
         </div>
@@ -15,7 +27,7 @@ export default function Section2Web() {
           className="w-320"
         />
       </div>
-      <div className="mx-20">
+      <div className="mx-20" data-aos="fade-left" data-aos-duration="1500">
         <img src="mainItems/mainNFT.png" alt="mainNFT" className="w-440" />
       </div>
     </section>

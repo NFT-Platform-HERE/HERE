@@ -1,6 +1,10 @@
 export default function Section1Web() {
   return (
-    <div className="my-50 flex flex-wrap justify-center">
+    <div
+      className="mt-80 mb-50 flex flex-wrap justify-center"
+      // data-aos="fade-up"
+      // data-aos-duration="1500"
+    >
       <div className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center ">
         <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold italic text-red-3">
           01

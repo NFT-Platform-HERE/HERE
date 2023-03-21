@@ -4,11 +4,12 @@ const px_to_rem = (x) => {
 
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+  mode: "jit",
   theme: {
     extend: {
       borderWidth: px_to_rem(100),
       borderRadius: px_to_rem(100),
-      fontSize: px_to_rem(50),
+      fontSize: px_to_rem(100),
       lineHeight: px_to_rem(100),
       width: px_to_rem(1500),
       height: px_to_rem(1500),

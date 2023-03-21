@@ -1,4 +1,12 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 export default function Section4() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <section className="mb-90 min-w-[1200px] mobile:w-full mobile:min-w-[300px]">
       <div className="mx-auto h-70 w-350 text-center mobile:w-300">
@@ -15,7 +23,11 @@ export default function Section4() {
         />
       </div>
       <div className="my-50 flex flex-wrap justify-center text-center">
-        <div className="my-auto h-300 w-300 rounded-full bg-icon-3 mobile:h-250 mobile:w-250">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="1500"
+          className="my-auto h-300 w-300 rounded-full bg-icon-3 mobile:h-250 mobile:w-250"
+        >
           <img
             src="mainItems/mainBottom1.svg"
             alt="mainBottom1"
@@ -26,7 +38,11 @@ export default function Section4() {
             <b>생명을 구하는 </b>유일한 수단
           </p>
         </div>
-        <div className="z-10 mx-40 my-auto h-350 w-350 rounded-full bg-icon-4 mobile:-my-35 mobile:h-280 mobile:w-280">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="1000"
+          className="z-10 mx-40 my-auto h-350 w-350 rounded-full bg-icon-4 mobile:-my-35 mobile:h-280 mobile:w-280"
+        >
           <img
             src="mainItems/mainBottom2.svg"
             alt="mainBottom2"
@@ -38,7 +54,11 @@ export default function Section4() {
             <b>지속적이고 꾸준한 헌혈</b>이 필요
           </p>
         </div>
-        <div className="my-auto h-300 w-300 rounded-full bg-icon-5 mobile:h-250 mobile:w-250">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="2000"
+          className="my-auto h-300 w-300 rounded-full bg-icon-5 mobile:h-250 mobile:w-250"
+        >
           <img
             src="mainItems/mainBottom3.svg"
             alt="mainBottom3"
