@@ -1,4 +1,4 @@
-package com.ssafy.hereauth.enumeration.certHistory;
+package com.ssafy.hereauth.enumeration;
 
 public enum EnumCertHistoryStatus {
     ACTIVE, INACTIVE

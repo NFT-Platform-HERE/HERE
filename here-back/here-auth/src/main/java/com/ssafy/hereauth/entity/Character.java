@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.entity;
 
 import com.ssafy.hereauth.dto.character.CharacterRequestDto;
-import com.ssafy.hereauth.enumeration.character.EnumCharacterType;
+import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
