@@ -14,6 +14,6 @@ public interface BoardMsgRepository extends JpaRepository<BoardMsg, Long> {
     @Query("select bm from BoardMsg bm where bm.board = :board and bm.memberId = :memberId and bm.cheeringMsgId = :cheeringMsgId")
     Optional<BoardMsg> findByBoardAndMemberIdAndMsgId(Board board, UUID memberId, Long cheeringMsgId);
 
-    @Query("select bm from BoardMsg bm where bm.status= 'ACTIVE'")
-    List<BoardMsg> findAllByStatus();
+    @Query("select bm from BoardMsg bm where bm.board= :board and bm.status= 'ACTIVE' and bm.cheeringMsgId= :cheeringMsgId")
+    List<BoardMsg> findAllByBoardAndCheeringMsgIdAndStatusActive(Board board, Long cheeringMsgId);
 }

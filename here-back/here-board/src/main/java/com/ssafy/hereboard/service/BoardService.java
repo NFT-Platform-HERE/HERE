@@ -215,29 +215,29 @@ public class BoardService {
         Long cheeringMsgId = updateMsgRequestDto.getCheeringMsgId();
 
         // 리포로 가서 해당 조합 게시글메시지 객체 찾기!
-        Optional<BoardMsg> boardCheeringMsg = boardMsgRepository.findByBoardAndMemberIdAndMsgId(board, memberId, cheeringMsgId);
 
-        // 리포에서 ACTIVE인 애들 개수 세기
-        List<BoardMsg> cheeringMsgs = boardMsgRepository.findAllByStatus();
-        int count = cheeringMsgs.size();
+        Optional<BoardMsg> boardCheeringMsg = boardMsgRepository.findByBoardAndMemberIdAndMsgId(board, memberId, cheeringMsgId);
+        System.out.println("객체 찾기 완료!");
 
         // 만약 아예 db에 게시글메시지 객체가 없으면 insert, 아니면 update
         if (boardCheeringMsg.isEmpty()) {
             BoardMsg boardMsg = new BoardMsg();
             boardMsg.createBoardMsg(board, memberId, cheeringMsgId);
+            System.out.println("db에 없을 때 createBoardMsg 완료!");
             boardMsgRepository.save(boardMsg);
-            count += 1;
-
+            boardMsgRepository.flush();
+            System.out.println("db에 없을 때 리포에 save 완료!");
 
         } else {
             boardCheeringMsg.get().updateBoardMsg(boardCheeringMsg.get().getStatus());
-
-            if (boardCheeringMsg.get().getStatus() == EnumBoardMsgStatus.ACTIVE) {
-                count -= 1;
-            } else {
-                count += 1;
-            }
+            System.out.println("db에 있을 때, updateBoardMsg 환료!");
         }
+
+        // 리포에서 ACTIVE인 애들 개수 세기
+        List<BoardMsg> cheeringMsgs = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
+        int count = cheeringMsgs.size();
+        System.out.println("해당 board에서의 cherringMsgs 개수 세기 완료!");
+
 //        // 있으면? -> -1 / 없으면? -> + 1 count 해주고 그걸 테이블에 반영
 //        // count한 결과를 resposne로 주기
 //
