@@ -42,6 +42,7 @@ public class ServiceExceptionResolver {
         return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, objectError.getDefaultMessage(), request.getRequestURI());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
     public ResponseErrorDto<?> handle(Exception e, HttpServletRequest request) {
         e.printStackTrace();
