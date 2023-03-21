@@ -21,6 +21,18 @@ const swiperList = [
   {
     index: 5,
   },
+  {
+    index: 6,
+  },
+  {
+    index: 7,
+  },
+  {
+    index: 8,
+  },
+  {
+    index: 9,
+  },
 ];
 
 const swiperStyle = `            
@@ -117,7 +129,7 @@ export default function MyNFTPage() {
           </div>
 
           <div className="relative flex w-983 justify-center gap-43">
-            <div className="absolute -top-50 right-0">
+            <div className="absolute right-0 -top-50">
               <InstaBtn
                 width={195}
                 height={40}
