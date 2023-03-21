@@ -94,88 +94,108 @@ export default function MyNFTPage() {
   }, []);
 
   return (
-    <div className="w-min-[1200px] relative">
-      <div className="flex w-full min-w-[1200px] justify-center">
-        <div className="flex w-[1200px] items-center justify-between">
-          <div className="relative flex h-630 w-137 items-center justify-center">
-            <Swiper
-              slidesPerView={3}
-              navigation={true}
-              modules={[Navigation]}
-              direction={"vertical"}
-              className="static flex h-520 w-137"
-              css={[swiperStyle]}
-            >
-              {swiperList.map((item, index) => (
-                <SwiperSlide
-                  className="relative mt-8 -mb-8 flex justify-center"
-                  key={index}
-                  onClick={() => handleSetSelectedCardList(item.index)}
+    <div>
+      <div className="mobile:hidden">
+        <div className="w-min-[1200px]">
+          <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center">
+            <div className="relative flex h-full w-[1200px] items-center justify-between">
+              <div className="absolute right-0 top-20">
+                <InstaBtn
+                  width={195}
+                  height={40}
+                  onClick={() => console.log("click!")}
+                  fontSize={18}
                 >
-                  <NFTCardFront
-                    width={100}
-                    imgUrl={`/NFT_bg_${item.index}.gif`}
-                  />
-
-                  {selectedCardList.includes(item.index) && (
-                    <img
-                      src="/icons/check.svg"
-                      className="absolute -top-8 right-15 h-25 w-25"
-                    />
-                  )}
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          <div className="relative flex w-983 justify-center gap-43">
-            <div className="absolute right-0 -top-50">
-              <InstaBtn
-                width={195}
-                height={40}
-                onClick={() => console.log("click!")}
-                fontSize={18}
-              >
-                SNS 공유하기
-              </InstaBtn>
-            </div>
-            <Swiper
-              slidesPerView={3}
-              navigation={true}
-              centeredSlides={true}
-              modules={[Navigation]}
-              className="static flex w-900 items-center justify-center"
-              css={[navigatorStyle]}
-            >
-              {selectedCardList.map((item, index) => (
-                <SwiperSlide className="z-0 flex items-center justify-center">
-                  {({ isActive }) => (
-                    <div
-                      onClick={() => setNFTCardBackIndex(item)}
-                      className={isActive ? "z-20" : "blur-sm"}
+                  SNS 공유하기
+                </InstaBtn>
+              </div>
+              <div className="relative flex h-630 w-137 items-center justify-center">
+                <Swiper
+                  slidesPerView={3}
+                  navigation={true}
+                  modules={[Navigation]}
+                  direction={"vertical"}
+                  className="static flex h-520 w-137"
+                  css={[swiperStyle]}
+                >
+                  {swiperList.map((item, index) => (
+                    <SwiperSlide
+                      className="relative mt-8 -mb-8 flex justify-center"
+                      key={index}
+                      onClick={() => handleSetSelectedCardList(item.index)}
                     >
                       <NFTCardFront
-                        width={isActive ? 300 : 250}
-                        key={index}
-                        imgUrl={`/NFT_bg_${item}.gif`}
+                        width={100}
+                        imgUrl={`/NFT_bg_${item.index}.gif`}
                       />
-                    </div>
-                  )}
-                </SwiperSlide>
-              ))}
-            </Swiper>
+
+                      {selectedCardList.includes(item.index) && (
+                        <img
+                          src="/icons/check.svg"
+                          className="absolute -top-8 right-15 h-25 w-25"
+                        />
+                      )}
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+
+              <div className="relative flex w-983 justify-center gap-43">
+                <Swiper
+                  slidesPerView={3}
+                  navigation={true}
+                  centeredSlides={true}
+                  modules={[Navigation]}
+                  className="static flex w-900 items-center justify-center"
+                  css={[navigatorStyle]}
+                >
+                  {selectedCardList.map((item, index) => (
+                    <SwiperSlide className="z-0 flex items-center justify-center">
+                      {({ isActive }) => (
+                        <div
+                          onClick={() => setNFTCardBackIndex(item)}
+                          className={isActive ? "z-20" : "blur-sm"}
+                        >
+                          <NFTCardFront
+                            width={isActive ? 300 : 250}
+                            key={index}
+                            imgUrl={`/NFT_bg_${item}.gif`}
+                          />
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
           </div>
+          {NFTCardBackIndex !== 0 && (
+            <div>
+              <Background onClick={() => setNFTCardBackIndex(0)} />
+
+              <div className="fixed top-[calc(50%-175px)] left-[calc(50%-283px)] z-30">
+                <NFTCardBack height={350} fontSize={18}></NFTCardBack>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      {NFTCardBackIndex !== 0 && (
-        <div>
-          <Background onClick={() => setNFTCardBackIndex(0)} />
+      <div className="hidden mobile:block">
+        <div className="flex flex-col">
+          <div></div>
+          <div></div>
+          <div></div>
+          {NFTCardBackIndex !== 0 && (
+            <div>
+              <Background onClick={() => setNFTCardBackIndex(0)} />
 
-          <div className="fixed top-[calc(50%-175px)] left-[calc(50%-283px)] z-30">
-            <NFTCardBack height={350} fontSize={18}></NFTCardBack>
-          </div>
+              <div className="fixed top-[calc(50%-175px)] left-[calc(50%-283px)] z-30">
+                <NFTCardBack height={350} fontSize={18}></NFTCardBack>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
