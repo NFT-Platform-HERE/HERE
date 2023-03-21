@@ -1,0 +1,165 @@
+
+pipeline {
+    agent any
+    environment {
+        DOCKER = 'sudo docker'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                checkout scm
+                echo 'Checkout Scm'
+            }
+        }
+
+        stage('Build image') {
+            parallel {
+                stage('build-here-auth') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-auth/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'ls -al'
+                        dir('here-back/here-auth'){
+                            sh 'ls -al'
+                            sh 'chmod +x ./gradlew'
+                            sh './gradlew build'
+                            sh 'docker build -t dev-back-auth-img .'
+                        }
+                        echo 'Build image...'
+                    }
+                }
+                stage('build-here-board') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-board/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'ls -al'
+                        dir('here-back/here-board'){
+                            sh 'ls -al'
+                            sh 'chmod +x ./gradlew'
+                            sh './gradlew build'
+                            sh 'docker build -t dev-back-board-img .'
+                        }
+                        echo 'Build image...'
+                    }
+                }
+                stage('build-here-nft') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-nft/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'ls -al'
+                        dir('here-back/here-anft'){
+                            sh 'ls -al'
+                            sh 'chmod +x ./gradlew'
+                            sh './gradlew build'
+                            sh 'docker build -t dev-back-nft-img .'
+                        }
+                        echo 'Build image...'
+                    }
+                }
+            }
+        }
+
+        stage('Remove Previous image') {
+            parallel {
+                stage('remove-here-auth') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-auth/**/*"
+                        }
+                    }
+                    steps {
+                        script {
+                            try {
+                                sh 'docker stop dev-back-auth-container'
+                                sh 'docker rm dev-back-auth-container'
+                            } catch (e) {
+                                echo 'fail to stop and remove container'
+                            }
+                        }
+                    }
+                }
+                stage('remove-here-board') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-board/**/*"
+                        }
+                    }
+                    steps {
+                        script {
+                            try {
+                                sh 'docker stop dev-back-board-container'
+                                sh 'docker rm dev-back-board-container'
+                            } catch (e) {
+                                echo 'fail to stop and remove container'
+                            }
+                        }
+                    }
+                }
+                stage('remove-here-nft') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-nft/**/*"
+                        }
+                    }
+                    steps {
+                        script {
+                            try {
+                                sh 'docker stop dev-back-nft-container'
+                                sh 'docker rm dev-back-nft-container'
+                            } catch (e) {
+                                echo 'fail to stop and remove container'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stage('Run New image') {
+            parallel {
+                stage('run-here-auth') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-auth/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'docker run --name dev-back-auth-container -d -p 9010:9010 dev-back-auth-img'
+                        echo 'Run New image'
+                    }
+                }
+                stage('run-here-board') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-board/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'docker run --name dev-back-board-container -d -p 9011:9011 dev-back-board-img'
+                        echo 'Run New image'
+                    }
+                }
+                stage('run-here-nft') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-nft/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'docker run --name dev-back-nft-container -d -p 9012:9012 dev-back-nft-img'
+                        echo 'Run New image'
+                    }
+                }
+            }
+        }
+    }
+}
