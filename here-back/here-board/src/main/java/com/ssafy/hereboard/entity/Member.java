@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AutoCloseable.class)
 public class Member {
 
     @Id
@@ -45,13 +44,13 @@ public class Member {
     private String email;
 
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
-    private int level = 1;
+    private int level;
 
     @Column(name = "cur_exp", columnDefinition = "int default 0", nullable = false)
-    private int curExp = 0;
+    private int curExp;
 
     @Column(name = "goal_exp", columnDefinition = "int default 50", nullable = false)
-    private int goalExp = 50;
+    private int goalExp;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)

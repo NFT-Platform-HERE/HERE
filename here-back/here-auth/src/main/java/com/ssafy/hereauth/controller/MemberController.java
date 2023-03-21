@@ -8,13 +8,18 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 @Api("Member Controller v1")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/member")
+@Validated
 public class MemberController {
 
     private final MemberService memberService;
@@ -22,14 +27,14 @@ public class MemberController {
     /* 회원가입 */
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
     /* 중복 이메일 검사 */
     @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
-    @GetMapping("/check/email/{email}")
-    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable String email) {
+    @GetMapping("/check/email/{email:.+}/")
+    public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
     }
 
@@ -49,15 +54,15 @@ public class MemberController {
 
     /* 멤버 명함 조회 */
     @ApiOperation(value = "멤버 명험 조회", notes = "회원의 기본 정보를 조회한다.")
-    @GetMapping("/{member_id}")
-    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("member_id") String memberId) {
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok(memberService.getProfile(memberId));
     }
 
     /* 이메일로 회원 조회 */
     @ApiOperation(value = "이메일로 회원 조회", notes = "이메일로 회원 정보를 조회한다.")
-    @GetMapping("/search/{email}")
-    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable String email) {
+    @GetMapping("/search/{email:.+}/")
+    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.getMemberInfo(email));
     }
 

@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.entity;
 
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
-import com.ssafy.hereauth.enumeration.member.EnumMemberRole;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
-    private EnumMemberRole role;
+    private EnumMemberRole role = EnumMemberRole.USER;
 
     @Column(name = "wallet_address", columnDefinition = "char(100)", nullable = false, updatable = false)
     private String walletAddress;

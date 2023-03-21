@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER = 'sudo docker'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                checkout scm
+                echo 'Checkout Scm'
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                sh 'ls -al'
+                dir('here-back/here-auth'){
+                    sh 'ls -al'
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew build'
+                    sh 'docker build -t dev-back-auth-img .'
+                }
+                echo 'Build image...'
+            }
+        }
+
+        stage('Remove Previous image') {
+            steps {
+                script {
+                    try {
+                            sh 'docker stop dev-back-auth-container'
+                            sh 'docker rm dev-back-auth-container'
+                    } catch (e) {
+                        echo 'fail to stop and remove container'
+                    }
+                }
+            }
+
+        }
+        stage('Run New image') {
+            steps {
+                sh 'docker run --name dev-back-auth-container -d -p 9010:9010 dev-back-auth-img'
+                echo 'Run New image'
+            }
+        }
+
+    }
+}
+

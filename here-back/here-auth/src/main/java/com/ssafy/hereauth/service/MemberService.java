@@ -4,6 +4,8 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.enumeration.response.HereStatus;
+import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +55,7 @@ public class MemberService {
 
         // 멤버_캐릭터 : 멤버 만들고 멤버 만들면 자동으로 만들어지는 것? (원투원 매핑)
         MemberCharacter memberCharacter = new MemberCharacter();
-        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new RuntimeException("없는 캐릭터입니다."));
+        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
         memberCharacter.createMemberCharacter(member, character, signupRequestDto.getCharacterName());
         memberCharacterRepository.save(memberCharacter);
 
@@ -64,7 +66,7 @@ public class MemberService {
 
         // 리턴
         SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 완료되었습니다.");
-        ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto);
+        ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
         return res;
     }
 
@@ -73,11 +75,11 @@ public class MemberService {
      */
     public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
         Member member = memberRepository.findById(UUID.fromString(memberId))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
         // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
         MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버의 캐릭터 정보입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 멤버의 캐릭터 정보입니다."));
 
         Character character = memberCharacter.getCharacter();
 
@@ -87,7 +89,7 @@ public class MemberService {
         List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
 
         // 헌혈 카운트
-        Integer bdHistoryCnt = bdHistoryList.size();
+        int bdHistoryCnt = bdHistoryList.size();
 
         // 최근 헌혈일과 다음 헌혈 가능 날짜 구하기
         LocalDateTime recentBdDate;
@@ -113,7 +115,7 @@ public class MemberService {
 
         // DTO에 넣기
         MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
-        ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto);
+        ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
 
@@ -122,11 +124,10 @@ public class MemberService {
      */
     public ResponseSuccessDto<MemberInfoResponseDto> getMemberInfo(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
-        System.out.println(member);
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 이메일입니다."));
 
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getName(), member.getWalletAddress());
-        ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto);
+        ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
 
@@ -139,11 +140,11 @@ public class MemberService {
 
         if (isEmailDuplicate) {
             ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
-            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
             return res;
         } else {
             ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
-            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto);
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
             return res;
         }
     }
@@ -154,11 +155,11 @@ public class MemberService {
         System.out.println("닉네임 중복됨" + nickname + isNicknameDuplicate);
         if (isNicknameDuplicate) {
             ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("이미 사용중인 닉네임입니다.");
-            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
+            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto, HereStatus.HERE_DUPLICATED_NICKNAME);
             return res;
         } else {
             ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("사용 가능한 닉네임입니다.");
-            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto);
+            ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto, HereStatus.HERE_NOT_DUPLICATED_NICKNAME);
             return res;
         }
     }
@@ -172,12 +173,12 @@ public class MemberService {
         if (byWalletAddress.isEmpty()) {
             System.out.println("여기여기" + byWalletAddress);
             IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
-            ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+            ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
             return res;
         }
         System.out.println("여기여기" + byWalletAddress);
         IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
-        ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto);
+        ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
 
@@ -191,7 +192,7 @@ public class MemberService {
      */
     public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
         Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("올바르지 않은 멤버ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("올바르지 않은 멤버ID입니다."));
 
         int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
         System.out.println("멤버" + member);
@@ -200,15 +201,17 @@ public class MemberService {
         int goalExp = member.getGoalExp();
         int level = member.getLevel();
 
-        if (curExp >= member.getGoalExp()) {
+        boolean isLevelUp = false;
+        if (curExp >= goalExp) {
             goalExp += 50;
             level += 1;
+            isLevelUp = true;
         }
 
         member.updateMemberExp(curExp, goalExp, level);
 
         ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(level, "경험치가 상승하였습니다.");
-        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto);
+        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto, isLevelUp? HereStatus.HERE_UPDATE_LEVEL : HereStatus.HERE_UPDATE_EXP);
         return res;
     }
 
@@ -219,11 +222,11 @@ public class MemberService {
 
         // 멤버 가져오기
         Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
 
         // 기관 가져오기
         Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
-                .orElseThrow(() -> new RuntimeException("잘못된 기관 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 기관 ID입니다."));
 
         CertHistory certHistory = new CertHistory();
         certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
@@ -231,7 +234,7 @@ public class MemberService {
 
         // 리턴
         CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
-        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto);
+        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
         return res;
     }
 
@@ -242,7 +245,7 @@ public class MemberService {
 
         // 멤버 가져오기
         Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("잘못된 회원 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
 
         BdHistory bdHistory = new BdHistory();
         bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
@@ -250,7 +253,7 @@ public class MemberService {
 
         // 리턴
         BdHistoryCreateResponseDto bdHistoryCreateResponseDto = new BdHistoryCreateResponseDto("헌혈 기록 등록 완료되었습니다.");
-        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto);
+        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
         return res;
     }
 
