@@ -289,4 +289,27 @@ public class BoardService {
         return res;
     }
 
+    /* 게시글 검색 */
+    public ResponseSuccessDto<List<SearchBoardResponseDto>> searchBoard(String query) {
+        List<Board> searchedList = boardRepository.findAllBySearch(query);
+        List<SearchBoardResponseDto> result = new ArrayList<>();
+
+        for (Board searched : searchedList) {
+            int curQ = searched.getCurQuantity();
+            int goalQ = searched.getGoalQuantity();
+            int percentage = curQ / goalQ * 100;
+            SearchBoardResponseDto searchBoardResponseDto = SearchBoardResponseDto.builder()
+                    .boardId(searched.getId())
+                    .title(searched.getTitle())
+                    .nickname(searched.getMember().getNickname())
+                    .boardImgUrl("imgUrl")
+                    .status(searched.getStatus())
+                    .dDay(searched.getDeadline())
+                    .percentage(percentage)
+                    .build();
+            result.add(searchBoardResponseDto);
+        }
+        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
 }

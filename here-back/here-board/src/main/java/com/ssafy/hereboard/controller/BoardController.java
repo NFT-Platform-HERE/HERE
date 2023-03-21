@@ -3,6 +3,7 @@ package com.ssafy.hereboard.controller;
 
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
+import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,17 +43,19 @@ public class BoardController {
         return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto));
     }
 
-    @ApiOperation(value = "board 삭제", notes = "board를 삭제합니다.")
-    @PatchMapping("/{boardId}/delete")
-    public ResponseEntity<ResponseSuccessDto<DeleteBoardResponseDto>> deleteBoard(@PathVariable("boardId") Long boardId) {
-        return ResponseEntity.ok(boardService.deleteBoard(boardId));
+    @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
+    @PatchMapping("/{boardId}/{status}")
+    public ResponseEntity<ResponseSuccessDto<UpdateBoardStatusResponseDto>> updateBoardStatus(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("status") EnumBoardStatus status) {
+        return ResponseEntity.ok(boardService.updateBoardStatus(boardId, status));
     }
 
-    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
-    @PatchMapping("/{boardId}/close")
-    public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
-        return ResponseEntity.ok(boardService.closeBoard(boardId));
-    }
+//    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
+//    @PatchMapping("/{boardId}/close")
+//    public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
+//        return ResponseEntity.ok(boardService.closeBoard(boardId));
+//    }
 
     @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
     @GetMapping()
@@ -83,5 +86,11 @@ public class BoardController {
     @GetMapping("/{boardId}/msg")
     public ResponseEntity<ResponseSuccessDto<List<GetBoardMsgResponseDto>>> getBoardMsgList(@PathVariable("boardId") Long boardId) {
         return ResponseEntity.ok(boardService.getBoardMsgList(boardId));
+    }
+
+    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")
+    @GetMapping("/search")
+    public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
+        return ResponseEntity.ok(boardService.searchBoard(query));
     }
 }
