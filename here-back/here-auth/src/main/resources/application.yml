@@ -6,6 +6,11 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: B209HERE
+    key-store-type: PKCS12
 
 spring:
   profiles:
