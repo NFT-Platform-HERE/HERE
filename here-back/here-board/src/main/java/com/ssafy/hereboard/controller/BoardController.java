@@ -93,4 +93,11 @@ public class BoardController {
     public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
         return ResponseEntity.ok(boardService.searchBoard(query));
     }
+
+    @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")
+    @PatchMapping("/bd-history")
+    public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> searchBoard(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
+        System.out.println("들어오나");
+        return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
+    }
 }

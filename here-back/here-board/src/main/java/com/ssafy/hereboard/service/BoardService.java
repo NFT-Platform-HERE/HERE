@@ -32,6 +32,7 @@ public class BoardService {
     private final BoardImgRepository boardImgRepository;
     private final BoardMsgRepository boardMsgRepository;
     private final CheeringMsgRepository cheeringMsgRepository;
+    private final BoardBdHistoryRepository boardBdHistoryRepository;
 
     /* 전체 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
@@ -340,4 +341,48 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
+
+    /* 기부 내역 등록 */
+    // 이게 언제 호출될 건지?
+    public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
+
+        // 지금 기부하려는 게시글 보고!
+        Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
+        UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
+        // 주인공 boardBdHistory 가져오자
+        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
+
+        System.out.println("찾았다 주인공" + subjectBoardBdHistory);
+
+//        // sender가 이미 여기에 기부했던 적 있는지 확인!
+//        // 지금 이 게시글에 기부했다고 등록된 boardBdHistory 다 가져오자
+//        List<String> donators = boardBdHistoryRepository.findAllSenderIdByBoardId(boardId);
+//        System.out.println("확인" + donators);
+//        System.out.println("이것" + updateBoardBdHistoryRequestDto.getSenderId());
+//
+//        boolean isDonate = false;
+//
+//        for (String donator : donators) {
+//            if (updateBoardBdHistoryRequestDto.getSenderId().toString().equals(donator)) {
+//                isDonate = true;
+//            }
+//        }
+//        System.out.println("이 사람이 이미 기부자 목록에 있나요?" + isDonate);
+
+        if (subjectBoardBdHistory == null) {
+            // 이 게시글에 아직 기부한 적 없는 사람
+            BoardBdHistory boardBdHistory = new BoardBdHistory().createBoardBdHistory(updateBoardBdHistoryRequestDto);
+            boardBdHistoryRepository.save(boardBdHistory);
+        } else {
+            int newQuantity = subjectBoardBdHistory.getQuantity() + updateBoardBdHistoryRequestDto.getQuantity();
+            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
+        }
+        UpdateBoardBdHistoryResponseDto updateBoardBdHistoryResponseDto = UpdateBoardBdHistoryResponseDto.builder()
+                .message("기부리스트 등록 성공")
+                .build();
+
+        ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
+        return res;
+    }
+
 }
