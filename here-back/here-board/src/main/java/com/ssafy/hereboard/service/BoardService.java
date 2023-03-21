@@ -3,9 +3,9 @@ package com.ssafy.hereboard.service;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
-import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
+import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereboard.repository.*;
 import com.ssafy.hereboard.util.ResponseUtil;
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -159,44 +158,57 @@ public class BoardService {
         return res;
     }
 
-    /* 게시글 삭제 */
-    public ResponseSuccessDto<DeleteBoardResponseDto> deleteBoard(Long boardId) {
+    /* 게시글 삭제/마감 */
+    public ResponseSuccessDto<UpdateBoardStatusResponseDto> updateBoardStatus(Long boardId, EnumBoardStatus status) {
+        if (status.equals(EnumBoardStatus.ACTIVE)) {
+            throw new BadRequestVariableException("게시글 상태값 요청이 올바르지 않습니다.");
+        }
         // 삭제할 게시글 가져오기
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
-        // 해당 게시글을 status를 DELETE로 변경
-        board.deleteBoard();
+        // 해당 게시글을 status를 프론트에서 준 status로 변경
+        board.updateBoardStatus(status);
 
-        DeleteBoardResponseDto deleteBoardResponseDto = DeleteBoardResponseDto.builder()
-                .boardId(board.getId())
-                .message("게시글 삭제 성공")
+        String message = "";
+        HereStatus hereStatus = null;
+
+        if (status == EnumBoardStatus.INACTIVE) {
+            message = "게시글 마감 성공";
+            hereStatus = HereStatus.HERE_CLOSE_BOARD;
+        } else {
+            message = "게시글 삭제 성공";
+            hereStatus = HereStatus.HERE_DELETE_BOARD;
+        }
+        UpdateBoardStatusResponseDto updateBoardStatusResponseDto = UpdateBoardStatusResponseDto.builder()
+                .boardId(boardId)
+                .message(message)
                 .build();
 
-        ResponseSuccessDto<DeleteBoardResponseDto> res = responseUtil.successResponse(deleteBoardResponseDto, HereStatus.HERE_DELETE_BOARD);
+        ResponseSuccessDto<UpdateBoardStatusResponseDto> res = responseUtil.successResponse(updateBoardStatusResponseDto, hereStatus);
         return res;
     }
 
-    /* 게시글 마감 */
-    public ResponseSuccessDto<CloseBoardResponseDto> closeBoard(Long boardId) {
-        // 마감할 게시글 가져오기
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
-
-//        if (board.getStatus() == EnumBoardStatus.DELETE) {
-//        } 이런 작업은 안 필요한가요? 그리고 삭제, 마감) 실제 작성자인지 확인하는 로직은 어디 넣는 게 적합?
-
-        // 해당 게시글을 status를 INACTIVE로 변경
-        board.closeBoard();
-
-        CloseBoardResponseDto closeBoardResponseDto = CloseBoardResponseDto.builder()
-                .boardId(board.getId())
-                .message("게시글 마감 성공")
-                .build();
-
-        ResponseSuccessDto<CloseBoardResponseDto> res = responseUtil.successResponse(closeBoardResponseDto, HereStatus.HERE_CLOSE_BOARD);
-        return res;
-    }
+//    /* 게시글 마감 */
+//    public ResponseSuccessDto<CloseBoardResponseDto> closeBoard(Long boardId) {
+//        // 마감할 게시글 가져오기
+//        Board board = boardRepository.findById(boardId)
+//                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+//
+////        if (board.getStatus() == EnumBoardStatus.DELETE) {
+////        } 이런 작업은 안 필요한가요? 그리고 삭제, 마감) 실제 작성자인지 확인하는 로직은 어디 넣는 게 적합?
+//
+//        // 해당 게시글을 status를 INACTIVE로 변경
+//        board.closeBoard();
+//
+//        CloseBoardResponseDto closeBoardResponseDto = CloseBoardResponseDto.builder()
+//                .boardId(board.getId())
+//                .message("게시글 마감 성공")
+//                .build();
+//
+//        ResponseSuccessDto<CloseBoardResponseDto> res = responseUtil.successResponse(closeBoardResponseDto, HereStatus.HERE_CLOSE_BOARD);
+//        return res;
+//    }
 
     /* 응원 메시지 수정 */
     public ResponseSuccessDto<UpdateMsgResponseDto> updateMsg(UpdateMsgRequestDto updateMsgRequestDto) {

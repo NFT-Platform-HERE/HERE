@@ -75,11 +75,11 @@ public class Board {
         board.content = updateBoardRequestDto.getContent();
     }
 
-    public void deleteBoard() {
-        this.status = EnumBoardStatus.DELETE;
+    public void updateBoardStatus(EnumBoardStatus status) {
+        this.status = status;
     }
 
-    public void closeBoard() {
-        this.status = EnumBoardStatus.INACTIVE;
-    }
+//    public void closeBoard() {
+//        this.status = EnumBoardStatus.INACTIVE;
+//    }
 }

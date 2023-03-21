@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class DeleteBoardResponseDto {
+public class UpdateBoardStatusResponseDto {
     private Long boardId;
     private String message;
 }
