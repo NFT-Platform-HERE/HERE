@@ -4,6 +4,7 @@ import com.ssafy.dogulim.enumeration.nft.EnumNftType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -22,10 +23,12 @@ public class Nft {
     @Column(name = "id", columnDefinition = "varchar(200)", nullable = false)
     private String id;
 
-    @Column(name = "owner_id", columnDefinition = "binary(16)", nullable = false)
+    @Column(name = "owner_id", columnDefinition = "varchar(36)", nullable = false)
+    @Type(type = "uuid-char")
     private UUID ownerId;
 
-    @Column(name = "issuer_id", columnDefinition = "binary(16)", nullable = false)
+    @Column(name = "issuer_id", columnDefinition = "varchar(36)", nullable = false)
+    @Type(type = "uuid-char")
     private UUID issuerId;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)

@@ -5,6 +5,7 @@ import com.ssafy.dogulim.enumeration.board.EnumBoardMsgStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -26,7 +27,8 @@ public class BoardMsg {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @Column(name = "member_id", columnDefinition = "binary(16)", nullable = false)
+    @Column(name = "member_id", columnDefinition = "varchar(36)", nullable = false)
+    @Type(type = "uuid-char")
     private UUID memberId;
 
     @Column(name = "cheering_msg_id", columnDefinition = "int unsigned", nullable = false)
