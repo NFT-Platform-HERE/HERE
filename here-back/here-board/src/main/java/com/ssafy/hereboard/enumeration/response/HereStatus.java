@@ -16,5 +16,7 @@ public enum HereStatus {
     HERE_UPDATE_CHEERING_MSG_CNT,
     // 응원 메시지 조회 성공
     HERE_FIND_CHEERING_MSG,
+    // 기부리스트 등록 성공
+    HERE_CREATE_DONATION,
 
 }
