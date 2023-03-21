@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.entity;
 
 import com.ssafy.hereboard.dto.board.SaveBoardRequestDto;
+import com.ssafy.hereboard.dto.board.UpdateBoardRequestDto;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "board")
+@EntityListeners(AuditingEntityListener.class)
 public class Board {
 
     @Id
@@ -38,7 +41,7 @@ public class Board {
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "updated_date", updatable = false, nullable = false)
@@ -54,8 +57,8 @@ public class Board {
     private int curQuantity = 0;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'", nullable = false)
-    private EnumBoardStatus status;
+    @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'")
+    private EnumBoardStatus status = EnumBoardStatus.ACTIVE;
 
     public Board createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
         Board board = new Board();
@@ -66,4 +69,17 @@ public class Board {
         board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
         return board;
     }
+
+    public void updateBoard(Board board, UpdateBoardRequestDto updateBoardRequestDto) {
+        board.title = updateBoardRequestDto.getTitle();
+        board.content = updateBoardRequestDto.getContent();
+    }
+
+    public void updateBoardStatus(EnumBoardStatus status) {
+        this.status = status;
+    }
+
+//    public void closeBoard() {
+//        this.status = EnumBoardStatus.INACTIVE;
+//    }
 }
