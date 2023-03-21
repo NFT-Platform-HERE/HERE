@@ -14,5 +14,7 @@ public enum HereStatus {
     HERE_FIND_BOARD,
     // 응원 메시지 수정 성공
     HERE_UPDATE_CHEERING_MSG_CNT,
+    // 응원 메시지 조회 성공
+    HERE_FIND_CHEERING_MSG,
 
 }

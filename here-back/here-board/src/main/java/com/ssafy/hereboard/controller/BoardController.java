@@ -78,4 +78,10 @@ public class BoardController {
         System.out.println("멤버아이디 확인" + updateMsgRequestDto.getMemberId());
         return ResponseEntity.ok(boardService.updateMsg(updateMsgRequestDto));
     }
+
+    @ApiOperation(value = "응원 메시지 수정", notes = "응원 메시지를 수정합니다.")
+    @GetMapping("/{boardId}/msg")
+    public ResponseEntity<ResponseSuccessDto<List<GetBoardMsgResponseDto>>> getBoardMsgList(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok(boardService.getBoardMsgList(boardId));
+    }
 }

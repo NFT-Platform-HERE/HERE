@@ -2,18 +2,12 @@ package com.ssafy.hereboard.service;
 
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereboard.entity.Board;
-import com.ssafy.hereboard.entity.BoardImg;
-import com.ssafy.hereboard.entity.BoardMsg;
-import com.ssafy.hereboard.entity.Member;
+import com.ssafy.hereboard.entity.*;
 import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
-import com.ssafy.hereboard.repository.BoardImgRepository;
-import com.ssafy.hereboard.repository.BoardMsgRepository;
-import com.ssafy.hereboard.repository.BoardRepository;
-import com.ssafy.hereboard.repository.MemberRepository;
+import com.ssafy.hereboard.repository.*;
 import com.ssafy.hereboard.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +32,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
     private final BoardMsgRepository boardMsgRepository;
+    private final CheeringMsgRepository cheeringMsgRepository;
 
     /* 전체 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
@@ -246,6 +241,39 @@ public class BoardService {
                 .build();
 
         ResponseSuccessDto<UpdateMsgResponseDto> res = responseUtil.successResponse(updateMsgResponseDto, HereStatus.HERE_UPDATE_CHEERING_MSG_CNT);
+        return res;
+    }
+
+    /* 응원 메시지별 카운트 조회 */
+    public ResponseSuccessDto<List<GetBoardMsgResponseDto>> getBoardMsgList(Long boardId) {
+
+        // 댓글 목록 가져올 주인공 게시글 가져오기
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+
+//        List<BoardMsg> boardMsgs = boardMsgRepository.findAllByBoard(board);
+//        System.out.println("리스트 확인" + boardMsgs);
+//
+//        List<?> test = boardMsgRepository.findAllByBoardGroupByCheeringMsgId(board);
+//        System.out.println("테스트" + test);
+        List<CheeringMsg> cheeringMsgList = cheeringMsgRepository.findAll();
+        List<GetBoardMsgResponseDto> result = new ArrayList<>();
+
+        for (CheeringMsg cheeringMsg : cheeringMsgList) {
+            Long cheeringMsgId = cheeringMsg.getId();
+            String content = cheeringMsg.getContent();
+
+            // cnt를 위해서 리포지토리에 접근!
+            int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+
+            GetBoardMsgResponseDto getBoardMsgResponseDto = GetBoardMsgResponseDto.builder()
+                    .cheeringMsgId(cheeringMsgId)
+                    .content(content)
+                    .cnt(cnt)
+                    .build();
+            result.add(getBoardMsgResponseDto);
+        }
+        ResponseSuccessDto<List<GetBoardMsgResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_CHEERING_MSG);
         return res;
     }
 
