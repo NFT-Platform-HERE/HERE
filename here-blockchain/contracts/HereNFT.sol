@@ -25,6 +25,13 @@ contract HereNFT is ERC721 {
 
     constructor() ERC721("HERE-NFT", "TBD") {}
 
+    // NFT 구조체
+    struct NFT {
+        string tokenURI;
+        bytes32 hashValue;
+    }
+    mapping(uint256 => NFT) public nfts;
+
     // 이벤트 구조체
     struct TransactionLog {
         address from;
@@ -96,18 +103,49 @@ contract HereNFT is ERC721 {
     }
 
     function create(address to, string memory _tokenURI) public returns (uint256) {
+
         // TODO
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
         _mint(to, newItemId);
         tokenURIs[newItemId] = _tokenURI;
-        emit createNFT(newItemId, to);
+
+        bytes32 hashValue = keccak256(bytes(_tokenURI));
+        NFT memory nft = NFT({
+            tokenURI: _tokenURI,
+            hashValue: hashValue
+        });
+        nfts[newItemId] = nft;
+        //emit createNFT(newItemId, to);
         return newItemId;
     }
 
-    function verifyNFT(uint256 tokenId, bytes32 message, uint8 v, bytes32 r, bytes32 s) public view returns (bool) {
-        address signer = ecrecover(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)), v, r, s);
-        return signer == ownerOf(tokenId);
+    function getHashValue(uint256 tokenId) public view returns(bytes32) {
+        return nfts[tokenId].hashValue;
+    }
+
+    event NFTVerified(uint256 indexed tokenId, string metadataURI, bytes metadata, bytes32 metadataHash, bytes32 inputHash);
+
+    function verifyNFT(uint256 tokenId, bytes32 hash) public view returns (bool) {
+        require(_exists(tokenId), "NFT does not exist");
+
+        // NFT Metadata URI 가져오기
+        string memory metadataURI = tokenURI(tokenId);
+
+        // Metadata URI로부터 JSON 데이터 가져오기
+        //bytes memory metadata = abi.encodePacked(metadataURI);
+        //bytes32 transactionHash = keccak256(abi.encodePacked(metadataURI));
+        bytes32 transactionHash = keccak256(bytes(metadataURI));
+        // JSON 데이터의 해시값 계산
+        //bytes32 metadataHash = sha256(metadata);
+
+        //NFT memory nft = NFT(tokenId, metadataURI,transactionHash,hash);
+
+         // 계산된 해시값과 입력된 해시값이 일치하는지 확인
+        bool verified = transactionHash == hash;
+
+
+        return verified;
     }
 }
