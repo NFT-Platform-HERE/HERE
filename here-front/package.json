@@ -53,6 +53,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "react-js-pagination": "^3.0.2",
+    "react-lottie-player": "^1.5.4",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",

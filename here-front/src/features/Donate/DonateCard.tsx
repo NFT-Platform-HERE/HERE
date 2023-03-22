@@ -32,8 +32,10 @@ import CommonBar from "@/components/Bar/CommonBar";
 import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
+import { useRouter } from "next/navigation";
 
 interface Iprops {
+  boardId: number;
   title: string;
   nickname: string;
   expirationDate: string;
@@ -49,12 +51,14 @@ export default function DonateCard({
   donatePercent,
   representativeImageUrl = "/images/logo.svg",
   isCompleted,
+  boardId,
 }: Iprops) {
+  const router = useRouter();
   timeago.register("ko", koLocale);
 
   return (
     <div
-      onClick={() => console.log("click!")}
+      onClick={() => router.push(`/donate/${boardId}`)}
       className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
         isCompleted ? "opacity-30" : "bg-white"
       }`}
@@ -90,12 +94,14 @@ export function DonateCardMobile({
   donatePercent,
   representativeImageUrl = "/images/logo.svg",
   isCompleted,
+  boardId,
 }: Iprops) {
+  const router = useRouter();
   timeago.register("ko", koLocale);
 
   return (
     <div
-      onClick={() => console.log("click!")}
+    onClick={() => router.push(`/donate/${boardId}`)}
       className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
         isCompleted ? "opacity-30" : "bg-white"
       }`}
