@@ -39,7 +39,10 @@ export default function SelectedNFTList({ selectedCardList }: Iprops) {
         css={[navigatorStyle]}
       >
         {selectedCardList.map((item: any, index: number) => (
-          <SwiperSlide className="z-0 flex items-center justify-center">
+          <SwiperSlide
+            className="z-0 flex items-center justify-center"
+            key={index}
+          >
             {({ isActive }) => (
               <div
                 onClick={() => dispatch(selectNFT(item))}
@@ -48,14 +51,12 @@ export default function SelectedNFTList({ selectedCardList }: Iprops) {
                 <div className="mobile:hidden">
                   <NFTCardFront
                     width={isActive ? 300 : 250}
-                    key={index}
                     imgUrl={`/NFT_bg_${item}.gif`}
                   />
                 </div>
                 <div className="hidden mobile:block">
                   <NFTCardFront
                     width={isActive ? 100 : 70}
-                    key={index}
                     imgUrl={`/NFT_bg_${item}.gif`}
                   />
                 </div>

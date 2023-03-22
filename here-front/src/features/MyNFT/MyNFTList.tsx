@@ -51,7 +51,6 @@ export default function MyNFTList({ myNFTList }: Iprops) {
     if (myNFTList) {
       dispatch(addNFT(myNFTList[0].index));
     }
-    console.log(selectedCardList);
   }, []);
 
   return (
