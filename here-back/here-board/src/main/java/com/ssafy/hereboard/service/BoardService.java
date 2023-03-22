@@ -140,6 +140,10 @@ public class BoardService {
         Board board = new Board().createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
 
+        if(imgUrlList.size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
+
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
             for (String img : imgUrlList) {
@@ -164,6 +168,10 @@ public class BoardService {
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
+
+        if(updateBoardRequestDto.getImgUrlList().size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
 
         // 게시글의 title, content 수정
         board.updateBoard(updateBoardRequestDto);
@@ -334,6 +342,28 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
+    public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
+
+        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateAsc();
+        List<BoardResponseDto> result = new ArrayList<>();
+
+        for (Board board : boards) {
+            String thumbnail = findThumbnail(board.getId());
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .boardId(board.getId())
+                    .title(board.getTitle())
+                    .nickname(board.getMember().getNickname())
+                    .boardImgUrl(thumbnail)
+                    .status(board.getStatus())
+                    .dDay(board.getDeadline())
+                    .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                    .build();
+            result.add(boardResponseDto);
+        }
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
 
     /* 기부 내역 등록 */
     public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
