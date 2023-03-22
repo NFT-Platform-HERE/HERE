@@ -2,8 +2,21 @@ import "../index.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@/components/Header/Header";
+import { Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import store from "@/stores/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
+  const getLibrary = (provider: any) => {
+    return new Web3Provider(provider);
+  };
+
   return (
     <>
       <Head>
@@ -35,8 +48,18 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Header />
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistStore(store)}>
+                <Header />
+                <Component {...pageProps} />
+              </PersistGate>
+            </Provider>
+          </Web3ReactProvider>
+        </Hydrate>
+      </QueryClientProvider>
     </>
   );
 }
