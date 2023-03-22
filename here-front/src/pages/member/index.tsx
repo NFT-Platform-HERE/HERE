@@ -32,21 +32,27 @@ export default function SignUpPage() {
     });
   }, 1000);
 
-  const isValidEmail = useCheckMemberEmailQuery(email);
-  const isValidNickname = useCheckMemberNicknameQuery(nickname);
-  console.log("회원 정보 입력", isValidEmail, isValidNickname);
+  const isValidEmail = useCheckMemberEmailQuery({
+    email,
+    setEmailMessage,
+  });
+  const isValidNickname = useCheckMemberNicknameQuery({
+    nickname,
+    setNicknameMessage,
+  });
 
   useEffect(() => {
     if (isValidEmail.isError) {
       setEmailMessage("유효하지 않은 이메일입니다");
+    } else {
+      setEmailMessage("");
     }
   }, [isValidEmail]);
 
   const finishUserInfo = () => {
     // 어느 상황에서 유효하지 않은지, 중복인지 체크 후 다시 작성
-    if (!isValidEmail.isSuccess && emailRef.current) {
+    if (emailMessage && emailRef.current) {
       emailRef.current.focus();
-      setEmailMessage("이메일 안돼 돌아가");
       return;
     }
     if (nickname.length < 2 && nicknameRef.current) {
@@ -54,14 +60,12 @@ export default function SignUpPage() {
       setNicknameMessage("닉네임의 길이가 너무 짧습니다");
       return;
     }
-    // isSuccess 인 경우가 아님 -> 수정 필요
+
     if (!isValidNickname.isSuccess && nicknameRef.current) {
       nicknameRef.current.focus();
-      setNicknameMessage("중복된 닉네임입니다");
       return;
     }
-    setEmailMessage("");
-    setNicknameMessage("");
+
     // 캐릭터도 선택시켜
     router.push("/");
   };
