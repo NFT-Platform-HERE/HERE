@@ -2,6 +2,10 @@ const px_to_rem = (x) => {
   return { ...Array.from(Array(x + 1)).map((_, i) => `${i / 16}rem`) };
 };
 
+const num = (x) => {
+  return { ...Array.from(Array(x + 1)).map((_, i) => `${i}`) };
+};
+
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   mode: "jit",
@@ -18,6 +22,7 @@ module.exports = {
       minWidth: px_to_rem(1500),
       minHeight: px_to_rem(1500),
       spacing: px_to_rem(300),
+      zIndex: num(300),
       screens: {
         mobile: { max: "480px" },
       },

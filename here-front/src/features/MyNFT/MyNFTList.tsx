@@ -32,6 +32,33 @@ const swiperStyle = `
     transform:rotate(90deg);
   }`;
 
+const mobileStyle = `
+.swiper-wrapper{
+  width: 100%;
+  height: 50%;
+}
+.swiper-button-prev{
+  width: 20px;
+  height: 20px;
+  left: 20px;
+  margin-top: -5px;
+  color: #ff5050;
+}
+.swiper-button-next{         
+  width: 20px;
+  height: 20px;
+  right: 20px;
+  margin-top: -5px;
+  color: #ff5050;
+}
+.swiper-button-prev:after{
+  font-size: 20px;
+}
+.swiper-button-next:after{
+  font-size: 20px;
+}
+`;
+
 export default function MyNFTList({ myNFTList }: Iprops) {
   const dispatch = useDispatch();
   const selectedCardList = useSelector((state: RootState) => {
@@ -54,30 +81,60 @@ export default function MyNFTList({ myNFTList }: Iprops) {
   }, []);
 
   return (
-    <Swiper
-      slidesPerView={3}
-      navigation={true}
-      modules={[Navigation]}
-      direction={"vertical"}
-      className="static flex h-520 w-137"
-      css={[swiperStyle]}
-    >
-      {myNFTList.map((item: any, index: number) => (
-        <SwiperSlide
-          className="relative mt-8 -mb-8 flex justify-center"
-          key={index}
-          onClick={() => handleSetSelectedCardList(item.index)}
+    <div className="w-full">
+      <div className="mobile:hidden">
+        <Swiper
+          slidesPerView={3}
+          navigation={true}
+          modules={[Navigation]}
+          direction={"vertical"}
+          className="static flex h-520 w-123"
+          css={[swiperStyle]}
         >
-          <NFTCardFront width={100} imgUrl={`/NFT_bg_${item.index}.gif`} />
+          {myNFTList.map((item: any, index: number) => (
+            <SwiperSlide
+              className="relative mt-8 -mb-8 flex justify-center"
+              key={index}
+              onClick={() => handleSetSelectedCardList(item.index)}
+            >
+              <NFTCardFront width={100} imgUrl={`/NFT_bg_${item.index}.gif`} />
 
-          {selectedCardList.includes(item.index) && (
-            <img
-              src="/icons/check.svg"
-              className="absolute -top-8 right-15 h-25 w-25"
-            />
-          )}
-        </SwiperSlide>
-      ))}
-    </Swiper>
+              {selectedCardList.includes(item.index) && (
+                <img
+                  src="/icons/check.svg"
+                  className="absolute -top-8 right-15 h-25 w-25"
+                />
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      <div className="hidden w-full mobile:block">
+        <Swiper
+          slidesPerView={3}
+          navigation={true}
+          modules={[Navigation]}
+          className="static flex h-137 w-[calc(100%-100px)]"
+          css={[mobileStyle]}
+        >
+          {myNFTList.map((item: any, index: number) => (
+            <SwiperSlide
+              className="relative mt-8 -mb-8 flex justify-center"
+              key={index}
+              onClick={() => handleSetSelectedCardList(item.index)}
+            >
+              <NFTCardFront width={80} imgUrl={`/NFT_bg_${item.index}.gif`} />
+
+              {selectedCardList.includes(item.index) && (
+                <img
+                  src="/icons/check.svg"
+                  className="absolute -top-8 right-15 h-25 w-25"
+                />
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
   );
 }
