@@ -9,6 +9,7 @@ import useCheckMemberQuery from "@/hooks/member/useCheckMemberQuery";
 export default function WebHeader() {
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [walletAddress, setWalletAddress] = useState<string>("");
 
   const router = useRouter();
 
@@ -41,14 +42,7 @@ export default function WebHeader() {
     // activate 함수로, App에서 만든 Injected란 이름의 connector 인스턴스를 넘겨준다
   };
 
-  const [walletAddress, setWalletAddress] = useState<string>("");
   useCheckMemberQuery(walletAddress);
-
-  useEffect(() => {
-    if (account) {
-      setWalletAddress(account);
-    }
-  }, [account]);
 
   const movePage = (path: string) => {
     router.push(path);
@@ -64,6 +58,12 @@ export default function WebHeader() {
       !(router.asPath !== "/organization" && router.asPath !== "/redcross"),
     );
   }, []);
+
+  useEffect(() => {
+    if (account) {
+      setWalletAddress(account);
+    }
+  }, [account]);
 
   return isDisabled ? null : (
     <div className="justify-content flex h-65 w-full  min-w-[1200px] justify-center shadow-sm">
