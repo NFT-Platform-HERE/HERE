@@ -3,8 +3,8 @@ import WebHeader from "./WebHeader";
 
 export default function Header() {
   return (
-    <div>
-      <div className="mobile:hidden">
+    <div className="relative z-30">
+      <div className="bg-white mobile:hidden">
         <WebHeader />
       </div>
       <div className="hidden mobile:block">

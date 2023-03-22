@@ -30,12 +30,16 @@ export default function MobileHeader() {
         className="h-30 w-30"
         onClick={handleMenuDropDown}
       ></img>
-      <div className="absolute top-60 left-0 h-270 w-full">
-        {profileDropDown && <MobileHeaderProfileDropdown />}
-      </div>
-      <div className="absolute top-60 right-0 h-270 w-full">
-        {menuDropDown && <MobileHeaderMenuDropdown />}
-      </div>
+      {profileDropDown && (
+        <div className="absolute top-60 left-0 h-270 w-full">
+          <MobileHeaderProfileDropdown />
+        </div>
+      )}
+      {menuDropDown && (
+        <div className="absolute top-60 right-0 h-270 w-full">
+          <MobileHeaderMenuDropdown />
+        </div>
+      )}
     </div>
   );
 }

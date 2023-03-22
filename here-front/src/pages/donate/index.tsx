@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
-import DonateCard, { DonateCardMobile } from "@/features/Donate/DonateCard";
 import DonateSearchInputBox from "@/features/Donate/DonateSearchInputBox";
 import { useRouter } from "next/navigation";
 import { Donation } from "@/types/Donation";
+import DonateFloatingActionButton from "@/features/Donate/DonateFloatingActionButton";
+import DonateTitle from "@/features/Donate/DonateTitle";
+import DonateCheckBox from "@/features/Donate/DonateCheckBox";
+import DonateCardList from "./../../features/Donate/DonateCardList";
 
 export default function DonatePage() {
   const testTimeJson: Donation[] = [
@@ -131,9 +134,14 @@ export default function DonatePage() {
     },
   ];
 
-  const [searchValue, setSearchValue] = useState<string>("");
-
   const router = useRouter();
+
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+  };
 
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -164,114 +172,36 @@ export default function DonatePage() {
             onClick={() => router.push("/donate/write")}
           />
         </div>
-        <div className="mb-55 flex justify-center text-22 font-bold text-pen-2 mobile:mb-14 mobile:text-16">
-          종료가 얼마 남지 않았어요!
-        </div>
-        <div className="flex justify-center">
+        <DonateTitle title={"종료가 얼마 남지 않았어요!"} />
+        <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-10">
           <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-            {testTimeJson.map((item) => (
-              <div className="mobile:hidden" key={item.boardId}>
-                <DonateCard
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.status}
-                  donatePercent={item.percentage}
-                  expirationDate={item.dDay}
-                  representativeImageUrl={item.boardImgUrl}
-                />
-              </div>
-            ))}
-            {testTimeJson.map((item) => (
-              <div className="hidden mobile:inline-block" key={item.boardId}>
-                <DonateCardMobile
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.status}
-                  donatePercent={item.percentage}
-                  expirationDate={item.dDay}
-                  representativeImageUrl={item.boardImgUrl}
-                />
-              </div>
-            ))}
+            <DonateCardList items={testTimeJson} />
           </div>
         </div>
-        <div className="mb-27 flex justify-center text-22 font-bold text-pen-2 mobile:mb-1 mobile:mt-27 mobile:text-16">
-          전체 목록
+        <DonateTitle title={"전체 목록"} />
+        <div className="mb-10 mr-25 hidden mobile:flex mobile:justify-end ">
+          <DonateCheckBox onChange={handleCheckboxChange} checked={isChecked} />
         </div>
-        <div className="mb-11 mr-25 hidden  mobile:flex mobile:justify-end ">
-          <label>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                className="h-16 w-16"
-                // disabled={disabled}
-                // checked={checked}
-                // onChange={({ target: { checked } }) => onChange(checked)}
-              />
-              <span className="ml-5 text-10 font-normal text-pen-2">
-                내 글 보기
-              </span>
-            </div>
-          </label>
-        </div>
-        <div className="mb-55 flex items-center justify-center mobile:mb-14 ">
+        <div className="mb-55 mt-27 flex items-center justify-center mobile:mt-5 mobile:mb-5 ">
           <DonateSearchInputBox
             value={searchValue}
             onChange={handleSearchInputChange}
             onKeyDown={handleSearchInputKeyDown}
           />
-
-          <label className="ml-18 mobile:hidden">
-            <div className="flex items-center ">
-              <input
-                type="checkbox"
-                className="h-25 w-25 mobile:h-16 mobile:w-16"
-                // disabled={disabled}
-                // checked={checked}
-                // onChange={({ target: { checked } }) => onChange(checked)}
-              />
-              <span className="ml-8 text-16 font-normal text-pen-2 mobile:text-10">
-                내 글 보기
-              </span>
-            </div>
-          </label>
+          <div className="ml-15 flex mobile:hidden">
+            <DonateCheckBox
+              onChange={handleCheckboxChange}
+              checked={isChecked}
+            />
+          </div>
         </div>
         <div className="flex justify-center">
           <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-            {testJson.map((item) => (
-              <div className="mobile:hidden" key={item.boardId}>
-                <DonateCard
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.status}
-                  donatePercent={item.percentage}
-                  expirationDate={item.dDay}
-                  representativeImageUrl={item.boardImgUrl}
-                />
-              </div>
-            ))}
-            {testJson.map((item) => (
-              <div className="hidden mobile:inline-block" key={item.boardId}>
-                <DonateCardMobile
-                  title={item.title}
-                  nickname={item.nickname}
-                  isCompleted={item.status}
-                  donatePercent={item.percentage}
-                  expirationDate={item.dDay}
-                  representativeImageUrl={item.boardImgUrl}
-                />
-              </div>
-            ))}
+            <DonateCardList items={testJson} />
           </div>
         </div>
       </div>
-
-      <div className="fixed bottom-13 right-13 hidden mobile:inline-block">
-        <img
-          src="/icons/floating-action-button.svg"
-          onClick={() => router.push("/donate/write")}
-        />
-      </div>
+      <DonateFloatingActionButton />
     </div>
   );
 }
