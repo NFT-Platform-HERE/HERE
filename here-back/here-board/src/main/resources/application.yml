@@ -7,12 +7,6 @@ server:
       enabled: true
       force: true
 
-  ssl:
-    enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: B209HERE
-    key-store-type: PKCS12
-
 spring:
   profiles:
     default: local
@@ -25,8 +19,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIAYZZXAQTVAKCQ4ZJB
-      secret-key: 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
+      accessKey: AKIAYZZXAQTVAKCQ4ZJB
+      secretKey: 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
     s3:
       bucket: here-bucket
     stack:
