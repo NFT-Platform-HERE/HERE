@@ -33,7 +33,7 @@ public class MemberController {
 
     /* 중복 이메일 검사 */
     @ApiOperation(value = "이메일 중복 검사", notes = "이메일 중복 검사를 한다.")
-    @GetMapping("/check/email/{email:.+}/")
+    @GetMapping("/check/email/{email:.+}")
     public ResponseEntity<ResponseSuccessDto<ValidateEmailResponseDto>> checkEmailDuplicate(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.checkEmailDuplicate(email));
     }
@@ -61,7 +61,7 @@ public class MemberController {
 
     /* 이메일로 회원 조회 */
     @ApiOperation(value = "이메일로 회원 조회", notes = "이메일로 회원 정보를 조회한다.")
-    @GetMapping("/search/{email:.+}/")
+    @GetMapping("/search/{email:.+}")
     public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getMemberInfo(@PathVariable @Email(message = "이메일 형식을 지켜주세요!") String email) {
         return ResponseEntity.ok(memberService.getMemberInfo(email));
     }
