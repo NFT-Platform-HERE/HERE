@@ -55,7 +55,11 @@ export default function WebHeader() {
 
   useEffect(() => {
     setIsDisabled(
-      !(router.asPath !== "/organization" && router.asPath !== "/redcross"),
+      !(
+        router.asPath !== "/organization" &&
+        router.asPath !== "/redcross" &&
+        router.asPath !== "/redcross/publish"
+      ),
     );
   }, []);
 
