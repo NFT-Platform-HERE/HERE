@@ -9,18 +9,23 @@ export default function DonateDetailPage() {
 
   return (
     <div className="flex w-full justify-center ">
-      <div className="flex w-1200 justify-center   mobile:w-360">
-        <div className="inline-block h-1300 w-900 border border-pen-0 pt-45 pl-40 pr-40">
-          <div className="mb-18 h-36 w-97 rounded-15 bg-red-1 text-center text-16 font-normal leading-36 text-white">
+      <div className="flex w-1200 justify-center mobile:h-450 mobile:w-360 mobile:flex-col">
+        <div className="inline-block h-1300 w-900 border border-pen-0 p-40 mobile:h-350 mobile:w-360 mobile:p-5">
+          <div className="mb-18 h-36 w-97 rounded-15 bg-red-1 text-center text-16 font-normal leading-36 text-white mobile:h-24 mobile:w-57 mobile:text-11 mobile:leading-24">
             3일 남음
           </div>
-          <div className="mb-35 text-22 font-light">
+          <div className="mb-35 text-22 font-light mobile:text-18">
             엄마 수술을 앞두고 헌혈증이 필요해요
           </div>
           <div className="flex justify-start">
-            <HeartBar width={735} height={12} fontSize={15} percent={25} />
+            <div className="mobile:hidden">
+              <HeartBar width={735} height={12} fontSize={15} percent={25} />
+            </div>
+            <div className="hidden mobile:block">
+              <HeartBar width={300} height={8} fontSize={11} percent={25} />
+            </div>
           </div>
-          <div className="mt-35 mb-72 flex justify-between">
+          <div className="mt-35 mb-72 flex justify-between mobile:mb-5">
             <span className="text-16 font-medium text-pen-3">
               현재 수량: 8개
             </span>
@@ -32,12 +37,15 @@ export default function DonateDetailPage() {
             <button>
               <img src="/icons/expand_left_light.svg" />
             </button>
-            <img src={"/images/logo.svg"} className="h-370 w-450"></img>
+            <img
+              src={"/images/logo.svg"}
+              className="h-370 w-450 mobile:h-168 mobile:w-228"
+            ></img>
             <button>
               <img src="/icons/expand_right_light.svg" />
             </button>
           </div>
-          <p className="text-16 font-extralight">
+          <p className="text-16 font-extralight mobile:text-11">
             안녕하세요. 저는 현재 수원에서 중학교에 다니고 있는 3학년
             학생입니다. <br />
             2달 전, 저희 어머니께서는 퇴근하던 길에 교통사고를 당하셨습니다.{" "}
@@ -52,8 +60,11 @@ export default function DonateDetailPage() {
             도와주시는 모든 분들 진심으로 감사드립니다.
           </p>
         </div>
-        <div className="flex h-1300 w-300 flex-col items-center justify-start border border-pen-0 pt-55 pl-35 pr-35">
-          <img src="/NFT_bg_1.gif" className="mb-15 h-215 w-215" />
+        <div className="flex h-1300 w-300 flex-col items-center justify-start border border-pen-0 p-40 mobile:h-400 mobile:w-360 mobile:p-5">
+          <img
+            src="/NFT_bg_1.gif"
+            className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
+          />
           <p className="mb-15 text-21 font-medium text-pen-2">닉네임</p>
           <div className="mb-25 w-full">
             <p className="text-18 font-normal text-pen-2">헌혈 LV.10</p>
