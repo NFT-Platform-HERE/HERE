@@ -1,6 +1,7 @@
 package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
+import com.ssafy.herenft.dto.nft.GetNftResponseDto;
 import com.ssafy.herenft.dto.nft.SaveNftRequestDto;
 import com.ssafy.herenft.dto.nft.SaveNftResponseDto;
 import com.ssafy.herenft.service.NftService;
@@ -10,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Api("제출해요 컨트롤러 V1")
 @RestController
@@ -30,5 +31,11 @@ public class NftController {
         System.out.println("controller에 들어옴");
         System.out.println(saveNftRequestDto);
         return ResponseEntity.ok(nftService.save(saveNftRequestDto));
+    }
+
+    @ApiOperation(value = "my nft 목록 조회", notes = "나의 NFT 목록을 조회합니다.")
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<List<GetNftResponseDto>>> getNftList(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(nftService.getNftList(memberId));
     }
 }

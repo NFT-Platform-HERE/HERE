@@ -45,18 +45,11 @@ public class Nft {
     private LocalDateTime createdDate;
 
     public Nft createNft(SaveNftRequestDto saveNftRequestDto) {
-        System.out.println("들어왔나요");
-        System.out.println(saveNftRequestDto);
-        System.out.println("해시" + saveNftRequestDto.getHashValue());
-        System.out.println("오너" + saveNftRequestDto.getOwnerId());
-        System.out.println("이슈어" + saveNftRequestDto.getIssuerId());
-        System.out.println("타입" + saveNftRequestDto.getType());
-
-
         Nft nft = new Nft();
         nft.id = saveNftRequestDto.getHashValue();
         nft.ownerId = saveNftRequestDto.getOwnerId();
         nft.issuerId = saveNftRequestDto.getIssuerId();
+        nft.imgUrl = saveNftRequestDto.getImgUrl();
         nft.type = saveNftRequestDto.getType();
         return nft;
     }
