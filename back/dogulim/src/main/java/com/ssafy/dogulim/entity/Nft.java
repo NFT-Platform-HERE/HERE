@@ -19,9 +19,8 @@ import java.util.UUID;
 public class Nft {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "varchar(200)", nullable = false)
-    private String id;
+    @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
+    private Long tokenId;
 
     @Column(name = "owner_id", columnDefinition = "varchar(36)", nullable = false)
     @Type(type = "uuid-char")
@@ -30,6 +29,9 @@ public class Nft {
     @Column(name = "issuer_id", columnDefinition = "varchar(36)", nullable = false)
     @Type(type = "uuid-char")
     private UUID issuerId;
+
+    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
+    private String hashValue;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;

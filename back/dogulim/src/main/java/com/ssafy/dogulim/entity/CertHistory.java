@@ -46,6 +46,9 @@ public class CertHistory {
     @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
     private String hashValue;
 
+    @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
+    private Long tokenId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(20)", nullable = false)
     private EnumCertHistoryType status;
