@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,7 @@ public class BoardService {
     }
 
     /* 게시글 생성 */
-    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
+    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         Board board = new Board().createBoard(member, saveBoardRequestDto);
@@ -143,6 +144,10 @@ public class BoardService {
         for (String img : saveBoardRequestDto.getImgUrlList()) {
             BoardImg boardImg = new BoardImg().createBoardImg(board, img);
             boardImgRepository.save(boardImg);
+        }
+
+        if(!imgUrlList.isEmpty()) {
+            // 이미지 저장
         }
 
         SaveBoardResponseDto saveBoardResponseDto = SaveBoardResponseDto.builder()

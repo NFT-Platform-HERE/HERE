@@ -5,6 +5,7 @@ import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
+import com.ssafy.hereboard.service.S3Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,11 +28,19 @@ import java.util.UUID;
 public class BoardController {
 
     private final BoardService boardService;
+    private final S3Service s3Service;
 
     @ApiOperation(value = "board 등록", notes = "board를 등록합니다.")
     @PostMapping()
-    public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(@RequestBody @Valid SaveBoardRequestDto saveBoardRequestDto) {
-        return ResponseEntity.ok(boardService.save(saveBoardRequestDto));
+    public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
+            @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
+            @RequestPart("multipartFileList")List<MultipartFile> multipartFileList) {
+
+        List<String> imgUrlList = new ArrayList<>();
+        if(multipartFileList != null) {
+            imgUrlList = s3Service.upload(multipartFileList);
+        }
+        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList));
     }
 
     @ApiOperation(value = "board 상세 조회", notes = "board의 상세 정보를 조회합니다.")
@@ -45,7 +56,7 @@ public class BoardController {
     }
 
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
-    @PatchMapping("")
+    @PatchMapping()
     public ResponseEntity<ResponseSuccessDto<UpdateBoardStatusResponseDto>> updateBoardStatus(
             @RequestBody UpdateBoardStatusRequestDto updateBoardStatusRequestDto) {
         return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
