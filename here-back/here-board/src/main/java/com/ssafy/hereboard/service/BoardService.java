@@ -140,14 +140,12 @@ public class BoardService {
         Board board = new Board().createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
 
-        // 이미지 리스트 넣어주기
-        for (String img : saveBoardRequestDto.getImgUrlList()) {
-            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
-            boardImgRepository.save(boardImg);
-        }
-
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
+            for (String img : imgUrlList) {
+                BoardImg boardImg = new BoardImg().createBoardImg(board, img);
+                boardImgRepository.save(boardImg);
+            }
         }
 
         SaveBoardResponseDto saveBoardResponseDto = SaveBoardResponseDto.builder()
