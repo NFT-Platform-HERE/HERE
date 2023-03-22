@@ -178,6 +178,7 @@ export default function DonatePage() {
                   donatePercent={item.percentage}
                   expirationDate={item.dDay}
                   representativeImageUrl={item.boardImgUrl}
+                  boardId={item.boardId}
                 />
               </div>
             ))}
@@ -190,6 +191,7 @@ export default function DonatePage() {
                   donatePercent={item.percentage}
                   expirationDate={item.dDay}
                   representativeImageUrl={item.boardImgUrl}
+                  boardId={item.boardId}
                 />
               </div>
             ))}
@@ -247,6 +249,7 @@ export default function DonatePage() {
                   donatePercent={item.percentage}
                   expirationDate={item.dDay}
                   representativeImageUrl={item.boardImgUrl}
+                  boardId={item.boardId}
                 />
               </div>
             ))}
@@ -259,6 +262,7 @@ export default function DonatePage() {
                   donatePercent={item.percentage}
                   expirationDate={item.dDay}
                   representativeImageUrl={item.boardImgUrl}
+                  boardId={item.boardId}
                 />
               </div>
             ))}
