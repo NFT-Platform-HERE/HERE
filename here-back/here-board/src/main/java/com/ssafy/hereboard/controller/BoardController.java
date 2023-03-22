@@ -45,17 +45,11 @@ public class BoardController {
     }
 
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
-    @PatchMapping("/{boardId}/{status}")
+    @PatchMapping("")
     public ResponseEntity<ResponseSuccessDto<UpdateBoardStatusResponseDto>> updateBoardStatus(
             @RequestBody UpdateBoardStatusRequestDto updateBoardStatusRequestDto) {
         return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
     }
-
-//    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
-//    @PatchMapping("/{boardId}/close")
-//    public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
-//        return ResponseEntity.ok(boardService.closeBoard(boardId));
-//    }
 
     @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
     @GetMapping()
