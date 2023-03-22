@@ -11,9 +11,9 @@ export default function DonateDetailPage() {
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
 
   return (
-    <div className="h-1500 w-full">
-      <div className="mx-auto flex min-h-fit w-1200 flex-wrap justify-between mobile:min-w-350 ">
-        <div className="w-900 border border-pen-0 p-40 mobile:h-350 mobile:w-360 mobile:p-5">
+    <div className="mb-30 min-h-fit w-full">
+      <div className="mx-auto flex w-1200 justify-center mobile:w-350 mobile:flex-col ">
+        <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
           <div className="mb-18 h-36 w-97 rounded-15 bg-red-1 text-center text-16 font-normal leading-36 text-white mobile:h-24 mobile:w-57 mobile:text-11 mobile:leading-24">
             3일 남음
           </div>
@@ -63,15 +63,23 @@ export default function DonateDetailPage() {
             도와주시는 모든 분들 진심으로 감사드립니다.
           </p>
         </div>
-        <div className="flex w-300 flex-col items-center border border-pen-0 p-35 mobile:h-400 mobile:w-360 mobile:p-5">
-          <img
-            src="/NFT_bg_1.gif"
-            className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
-          />
-          <p className="mb-15 text-21 font-medium text-pen-2">닉네임</p>
-          <div className="mb-25 w-full">
-            <p className="text-18 font-normal text-pen-2">헌혈 LV.10</p>
-            <p className="text-18 font-normal text-pen-2">헌혈 횟수: 23회</p>
+        <div className="flex w-300 flex-col items-center border border-pen-0 p-35 mobile:w-330 mobile:border-none mobile:p-5">
+          <div className="flex w-full flex-col items-center mobile:flex-row mobile:justify-center">
+            <img
+              src="/NFT_bg_1.gif"
+              className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
+            />
+            <div className="mb-25 w-full mobile:ml-25 mobile:w-fit">
+              <p className="mb-15 text-21 font-medium text-pen-2 mobile:text-15">
+                닉네임
+              </p>
+              <p className="text-18 font-normal text-pen-2 mobile:text-13">
+                헌혈 LV.10
+              </p>
+              <p className="text-18 font-normal text-pen-2 mobile:text-13">
+                헌혈 횟수: 23회
+              </p>
+            </div>
           </div>
           <CommonBtn
             width={250}
@@ -84,7 +92,7 @@ export default function DonateDetailPage() {
           {opendSendModal && <DonateSendModal />}
           <p
             className="mt-30
-           mb-15 text-21 font-medium text-pen-2"
+           mb-15 text-21 font-medium text-pen-2 mobile:text-15"
           >
             응원 메시지
           </p>
