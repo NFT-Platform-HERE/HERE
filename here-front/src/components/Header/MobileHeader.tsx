@@ -2,7 +2,12 @@ import { useState } from "react";
 import MobileHeaderMenuDropdown from "./MobileHeaderMenuDropdown";
 import MobileHeaderProfileDropdown from "./MobileHeaderProfileDropdown";
 
-export default function MobileHeader() {
+interface Iprops {
+  walletAddress: string;
+  handleConnect: () => void;
+}
+
+export default function MobileHeader({ walletAddress, handleConnect }: Iprops) {
   const [menuDropDown, setMenuDropDown] = useState<boolean>(false);
   const [profileDropDown, setProfileDropDown] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -34,7 +39,9 @@ export default function MobileHeader() {
         {profileDropDown && <MobileHeaderProfileDropdown />}
       </div>
       <div className="absolute top-60 right-0 h-270 w-full">
-        {menuDropDown && <MobileHeaderMenuDropdown />}
+        {menuDropDown && (
+          <MobileHeaderMenuDropdown handleConnect={handleConnect} />
+        )}
       </div>
     </div>
   );

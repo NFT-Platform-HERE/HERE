@@ -13,10 +13,13 @@ const useCheckMemberEmailQuery = (email: string) => {
     enabled: !!email,
     onSuccess: (data) => {
       console.log(data);
-      // if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
-
-      // }
+      if (data.status === "HERE_DUPLICATED_EMAIL") {
+        // 이메일 중복
+      } else if (data.status === "HERE_NOT_DUPLICATED_EMAIL") {
+        // 이메일 중복 아님
+      }
     },
+    retry: false,
   });
 };
 

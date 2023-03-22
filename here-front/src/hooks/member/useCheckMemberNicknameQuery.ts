@@ -20,6 +20,7 @@ const useCheckMemberNicknameQuery = (nickname: string) => {
 
         // }
       },
+      retry: false,
     },
   );
 };

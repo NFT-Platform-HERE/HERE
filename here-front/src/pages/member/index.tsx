@@ -1,8 +1,9 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import useCheckMemberEmailQuery from "@/hooks/member/useCheckMemberEmailQuery";
 import useCheckMemberNicknameQuery from "@/hooks/member/useCheckMemberNicknameQuery";
+import { debounce } from "lodash";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -10,10 +11,10 @@ export default function SignUpPage() {
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
+
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
-  const [newEmail, setNewEmail] = useState<string>("");
-  const [newNickname, setNewNickname] = useState<string>("");
+  const [characterId, setCharacterId] = useState<number | null>(null);
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -23,27 +24,29 @@ export default function SignUpPage() {
   });
   const { name, email, nickname, characterName } = inputs;
 
-  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValue = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
       [name]: value,
     });
-  };
-  // 캐릭터
-  const [characterId, setCharacterId] = useState<number | null>(null);
+  }, 1000);
 
-  const isValidEmail = useCheckMemberEmailQuery(newEmail);
-  const isValidNickname = useCheckMemberNicknameQuery(newNickname);
+  const isValidEmail = useCheckMemberEmailQuery(email);
+  const isValidNickname = useCheckMemberNicknameQuery(nickname);
   console.log("회원 정보 입력", isValidEmail, isValidNickname);
 
+  useEffect(() => {
+    if (isValidEmail.isError) {
+      setEmailMessage("유효하지 않은 이메일입니다");
+    }
+  }, [isValidEmail]);
+
   const finishUserInfo = () => {
-    setNewEmail(email);
-    setNewNickname(nickname);
     // 어느 상황에서 유효하지 않은지, 중복인지 체크 후 다시 작성
     if (!isValidEmail.isSuccess && emailRef.current) {
       emailRef.current.focus();
-      setEmailMessage("중복된 이메일입니다");
+      setEmailMessage("이메일 안돼 돌아가");
       return;
     }
     if (nickname.length < 2 && nicknameRef.current) {
@@ -51,6 +54,7 @@ export default function SignUpPage() {
       setNicknameMessage("닉네임의 길이가 너무 짧습니다");
       return;
     }
+    // isSuccess 인 경우가 아님 -> 수정 필요
     if (!isValidNickname.isSuccess && nicknameRef.current) {
       nicknameRef.current.focus();
       setNicknameMessage("중복된 닉네임입니다");
@@ -83,7 +87,6 @@ export default function SignUpPage() {
             </label>
             <input
               ref={nameRef}
-              value={name}
               onChange={onChangeValue}
               placeholder="이름을 입력해주세요"
               type="text"
@@ -102,7 +105,6 @@ export default function SignUpPage() {
             </label>
             <input
               ref={emailRef}
-              value={email}
               onChange={onChangeValue}
               placeholder="이메일을 입력해주세요"
               type="email"
@@ -123,7 +125,6 @@ export default function SignUpPage() {
             </label>
             <input
               ref={nicknameRef}
-              value={nickname}
               onChange={onChangeValue}
               placeholder="닉네임을 입력해주세요"
               type="text"

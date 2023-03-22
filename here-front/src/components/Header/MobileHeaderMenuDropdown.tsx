@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 
-export default function MobileHeaderMenuDropdown() {
+interface Iprops {
+  handleConnect: () => void;
+}
+
+export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
   const router = useRouter();
 
   return (
@@ -22,7 +26,9 @@ export default function MobileHeaderMenuDropdown() {
       <div className="text-14" onClick={() => router.push("/my-nft")}>
         나의 NFT
       </div>
-      <div className="text-14" onClick={() => router.push("/signin")}>
+
+      <div className="text-14" onClick={handleConnect}>
+        {/* {active ? "LOGOUT" : "LOGIN"} */}
         LOGIN
       </div>
     </div>
