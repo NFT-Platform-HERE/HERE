@@ -1,11 +1,13 @@
 package com.ssafy.herenft.entity;
 
+import com.ssafy.herenft.dto.nft.SaveNftRequestDto;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,10 +18,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "nft")
+@EntityListeners(AuditingEntityListener.class)
 public class Nft {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "varchar(200)", nullable = false)
     private String id;
 
@@ -41,4 +43,21 @@ public class Nft {
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
+
+    public Nft createNft(SaveNftRequestDto saveNftRequestDto) {
+        System.out.println("들어왔나요");
+        System.out.println(saveNftRequestDto);
+        System.out.println("해시" + saveNftRequestDto.getHashValue());
+        System.out.println("오너" + saveNftRequestDto.getOwnerId());
+        System.out.println("이슈어" + saveNftRequestDto.getIssuerId());
+        System.out.println("타입" + saveNftRequestDto.getType());
+
+
+        Nft nft = new Nft();
+        nft.id = saveNftRequestDto.getHashValue();
+        nft.ownerId = saveNftRequestDto.getOwnerId();
+        nft.issuerId = saveNftRequestDto.getIssuerId();
+        nft.type = saveNftRequestDto.getType();
+        return nft;
+    }
 }
