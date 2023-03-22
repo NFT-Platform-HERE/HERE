@@ -2,15 +2,18 @@ import HeartBar from "@/components/Bar/HeartBar";
 import CheerBtn from "@/components/Button/CheerBtn";
 import { useRouter } from "next/router";
 import CommonBtn from "./../../components/Button/CommonBtn";
+import { useState } from "react";
+import DonateSendModal from "@/features/Donate/DonateSendModal";
 
 export default function DonateDetailPage() {
   const router = useRouter();
   const { boardId } = router.query;
+  const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
 
   return (
-    <div className="flex w-full justify-center ">
-      <div className="flex w-1200 justify-center mobile:h-450 mobile:w-360 mobile:flex-col">
-        <div className="inline-block h-1300 w-900 border border-pen-0 p-40 mobile:h-350 mobile:w-360 mobile:p-5">
+    <div className="h-1500 w-full">
+      <div className="mx-auto flex min-h-fit w-1200 flex-wrap justify-between mobile:min-w-350 ">
+        <div className="w-900 border border-pen-0 p-40 mobile:h-350 mobile:w-360 mobile:p-5">
           <div className="mb-18 h-36 w-97 rounded-15 bg-red-1 text-center text-16 font-normal leading-36 text-white mobile:h-24 mobile:w-57 mobile:text-11 mobile:leading-24">
             3일 남음
           </div>
@@ -60,7 +63,7 @@ export default function DonateDetailPage() {
             도와주시는 모든 분들 진심으로 감사드립니다.
           </p>
         </div>
-        <div className="flex h-1300 w-300 flex-col items-center justify-start border border-pen-0 p-40 mobile:h-400 mobile:w-360 mobile:p-5">
+        <div className="flex w-300 flex-col items-center border border-pen-0 p-35 mobile:h-400 mobile:w-360 mobile:p-5">
           <img
             src="/NFT_bg_1.gif"
             className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
@@ -71,13 +74,14 @@ export default function DonateDetailPage() {
             <p className="text-18 font-normal text-pen-2">헌혈 횟수: 23회</p>
           </div>
           <CommonBtn
-            width={260}
+            width={250}
             height={50}
-            fontSize={22}
+            fontSize={18}
             children={"기부하기"}
             isDisabled={false}
-            onClick={() => {}}
+            onClick={() => setOpendSendModal(!opendSendModal)}
           />
+          {opendSendModal && <DonateSendModal />}
           <p
             className="mt-30
            mb-15 text-21 font-medium text-pen-2"
@@ -86,9 +90,9 @@ export default function DonateDetailPage() {
           </p>
           <div className="my-5">
             <CheerBtn
-              width={265}
-              height={50}
-              fontSize={15}
+              width={250}
+              height={45}
+              fontSize={14}
               count={5}
               onClick={() => {}}
               imgUrl={"/icons/blood_count.svg"}
@@ -97,9 +101,9 @@ export default function DonateDetailPage() {
           </div>
           <div className="my-5">
             <CheerBtn
-              width={265}
-              height={50}
-              fontSize={15}
+              width={250}
+              height={45}
+              fontSize={14}
               count={3}
               onClick={() => {}}
               imgUrl={"/icons/blood_recent.svg"}
@@ -108,9 +112,9 @@ export default function DonateDetailPage() {
           </div>
           <div className="my-5">
             <CheerBtn
-              width={265}
-              height={50}
-              fontSize={15}
+              width={250}
+              height={45}
+              fontSize={14}
               count={2}
               onClick={() => {}}
               imgUrl={"/icons/blood_next.svg"}
