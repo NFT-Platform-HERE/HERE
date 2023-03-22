@@ -47,9 +47,8 @@ public class BoardController {
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
     @PatchMapping("/{boardId}/{status}")
     public ResponseEntity<ResponseSuccessDto<UpdateBoardStatusResponseDto>> updateBoardStatus(
-            @PathVariable("boardId") Long boardId,
-            @PathVariable("status") EnumBoardStatus status) {
-        return ResponseEntity.ok(boardService.updateBoardStatus(boardId, status));
+            @RequestBody UpdateBoardStatusRequestDto updateBoardStatusRequestDto) {
+        return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
     }
 
 //    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
