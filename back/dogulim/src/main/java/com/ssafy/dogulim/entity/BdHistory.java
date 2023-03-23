@@ -8,6 +8,7 @@ import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class BdHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +39,7 @@ public class BdHistory {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
-    private EnumBdHistoryStatus status;
+    private EnumBdHistoryStatus status = EnumBdHistoryStatus.INACTIVE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "bd_type", columnDefinition = "char(20)", nullable = false)

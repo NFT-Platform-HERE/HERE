@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class CertHistory {
 
     @Id
@@ -50,5 +52,5 @@ public class CertHistory {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(20)", nullable = false)
-    private EnumCertHistoryStatus status;
+    private EnumCertHistoryStatus status = EnumCertHistoryStatus.INACTIVE;
 }

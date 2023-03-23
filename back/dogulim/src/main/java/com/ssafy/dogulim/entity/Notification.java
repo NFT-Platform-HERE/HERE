@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
 
     @Id
@@ -36,7 +38,7 @@ public class Notification {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'")
-    private EnumNotificationStatus status;
+    private EnumNotificationStatus status = EnumNotificationStatus.INACTIVE;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)

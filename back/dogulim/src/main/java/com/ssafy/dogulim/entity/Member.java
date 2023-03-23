@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Member {
 
     @Id
@@ -29,7 +31,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
-    private EnumMemberRole role;
+    private EnumMemberRole role = EnumMemberRole.USER;
 
     @Column(name = "wallet_address", columnDefinition = "char(100)", nullable = false, updatable = false)
     private String walletAddress;
