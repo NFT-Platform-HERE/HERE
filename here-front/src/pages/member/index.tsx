@@ -4,9 +4,12 @@ import { useRouter } from "next/router";
 import useCheckMemberEmailQuery from "@/hooks/member/useCheckMemberEmailQuery";
 import useCheckMemberNicknameQuery from "@/hooks/member/useCheckMemberNicknameQuery";
 import { debounce } from "lodash";
+import useCharacterQuery from "@/hooks/member/useCharacterQuery";
 
 export default function SignUpPage() {
   const router = useRouter();
+
+  const characterList = useCharacterQuery();
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
