@@ -21,4 +21,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "((b.content like %:query%) or (b.title like %:query%) or (b.member.nickname like %:query%))" +
             "order by b.status asc, b.createdDate desc")
     List<Board> findAllBySearch(String query);
+
+    List<Board> findTop4ByOrderByDeadlineAscCurQuantityAsc();
 }

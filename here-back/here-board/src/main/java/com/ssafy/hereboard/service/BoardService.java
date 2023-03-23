@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +55,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -88,7 +90,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -140,6 +142,10 @@ public class BoardService {
         Board board = new Board().createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
 
+        if(imgUrlList.size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
+
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
             for (String img : imgUrlList) {
@@ -164,6 +170,10 @@ public class BoardService {
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
+
+        if(updateBoardRequestDto.getImgUrlList().size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
 
         // 게시글의 title, content 수정
         board.updateBoard(updateBoardRequestDto);
@@ -334,6 +344,28 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
+    public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
+
+        List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
+        List<BoardResponseDto> result = new ArrayList<>();
+
+        for (Board board : boards) {
+            String thumbnail = findThumbnail(board.getId());
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .boardId(board.getId())
+                    .title(board.getTitle())
+                    .nickname(board.getMember().getNickname())
+                    .boardImgUrl(thumbnail)
+                    .status(board.getStatus())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                    .build();
+            result.add(boardResponseDto);
+        }
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
 
     /* 기부 내역 등록 */
     public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
@@ -360,7 +392,10 @@ public class BoardService {
         return res;
     }
 
-    /* 기부 데이터 조회 */
+    /* 기부 해시값 총 개수 확인 */
+
+
+    /* 기부 해시값 조회(자동 선택) */
     public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
 
 //        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
