@@ -24,5 +24,4 @@ public class SaveBoardRequestDto {
     private LocalDate deadline;
     @NotNull(message = "목표 수향은 필수 값입니다.")
     private int goalQuantity;
-    private List<String> imgUrlList;
 }

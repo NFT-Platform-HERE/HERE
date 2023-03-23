@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 public class Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
@@ -70,9 +70,9 @@ public class Board {
         return board;
     }
 
-    public void updateBoard(Board board, UpdateBoardRequestDto updateBoardRequestDto) {
-        board.title = updateBoardRequestDto.getTitle();
-        board.content = updateBoardRequestDto.getContent();
+    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+        this.title = updateBoardRequestDto.getTitle();
+        this.content = updateBoardRequestDto.getContent();
     }
 
     public void updateBoardStatus(EnumBoardStatus status) {

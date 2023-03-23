@@ -23,28 +23,6 @@ public class BoardResponseDto {
     private String nickname;
     private String boardImgUrl;
     private EnumBoardStatus status;
-    private LocalDate dDay;
+    private LocalDateTime dDay;
     private int percentage;
-
-//    public BoardResponseDto(Board board) {
-//
-//        boardId = board.getId();
-//        title = board.getTitle();
-//        nickname = board.getMember().getNickname();
-//        boardImgUrl = board
-//        status = board.getStatus();
-//        dDay = board.getDeadline();
-//        percentage = board.getCurQuantity() / board.getGoalQuantity() * 100;
-//    }
-
-//    public String getThumbnail(Board board) {
-//        final BoardImgRepository boardImgRepository = null;
-//
-//        Long boardId = board.getId();
-//        List<BoardImg> boardImgList = null.findAllByBoardId(boardId);
-//        boardImgList.get(0).getImgUrl()
-//
-//        System.out.println("여기서 썸네일 확인" + thumbnail);
-//        return thumbnail;
-//    }
 }

@@ -5,15 +5,19 @@ import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
+import com.ssafy.hereboard.service.S3Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,11 +29,19 @@ import java.util.UUID;
 public class BoardController {
 
     private final BoardService boardService;
+    private final S3Service s3Service;
 
     @ApiOperation(value = "board 등록", notes = "board를 등록합니다.")
-    @PostMapping()
-    public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(@RequestBody @Valid SaveBoardRequestDto saveBoardRequestDto) {
-        return ResponseEntity.ok(boardService.save(saveBoardRequestDto));
+    @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
+            @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
+            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList) throws Exception{
+        System.out.println("multipartFileList = " + multipartFileList.size());
+        List<String> imgUrlList = new ArrayList<>();
+        if(multipartFileList != null) {
+            imgUrlList = s3Service.upload(multipartFileList);
+        }
+        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList));
     }
 
     @ApiOperation(value = "board 상세 조회", notes = "board의 상세 정보를 조회합니다.")
@@ -45,18 +57,11 @@ public class BoardController {
     }
 
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
-    @PatchMapping("/{boardId}/{status}")
+    @PatchMapping()
     public ResponseEntity<ResponseSuccessDto<UpdateBoardStatusResponseDto>> updateBoardStatus(
-            @PathVariable("boardId") Long boardId,
-            @PathVariable("status") EnumBoardStatus status) {
-        return ResponseEntity.ok(boardService.updateBoardStatus(boardId, status));
+            @RequestBody UpdateBoardStatusRequestDto updateBoardStatusRequestDto) {
+        return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
     }
-
-//    @ApiOperation(value = "board 마감", notes = "board를 마감합니다.")
-//    @PatchMapping("/{boardId}/close")
-//    public ResponseEntity<ResponseSuccessDto<CloseBoardResponseDto>> closeBoard(@PathVariable("boardId") Long boardId) {
-//        return ResponseEntity.ok(boardService.closeBoard(boardId));
-//    }
 
     @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
     @GetMapping()
@@ -99,13 +104,5 @@ public class BoardController {
     @PatchMapping("/bd-history")
     public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> updateBoardBdHistory(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
         return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
-    }
-
-    @ApiOperation(value = "기부 내역 조회", notes = "기부한 내역을 조회합니다.")
-    @GetMapping("/nft/{senderId}/{quantity}")
-    public ResponseEntity<ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>>> getBoardBdHistory(
-            @PathVariable("senderId") UUID senderId,
-            @PathVariable("quantity") int quantity) {
-        return ResponseEntity.ok(boardService.getBoardBdHistory(senderId, quantity));
     }
 }

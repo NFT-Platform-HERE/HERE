@@ -1,6 +1,12 @@
 server:
   port: 9011
 
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: B209HERE
+    key-store-type: PKCS12
+
 spring:
   config:
     activate:
