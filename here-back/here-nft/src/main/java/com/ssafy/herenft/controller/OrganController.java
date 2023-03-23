@@ -4,6 +4,8 @@ import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.SubmitCertHospitalRequestDto;
 import com.ssafy.herenft.dto.nft.SubmitCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
+import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
+import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryStatus;
 import com.ssafy.herenft.service.OrganService;
 import io.swagger.annotations.Api;
