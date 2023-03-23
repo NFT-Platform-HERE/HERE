@@ -180,4 +180,9 @@ public class NftService {
         ResponseSuccessDto<List<GetNftToOrganResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_CREATE_NFT);
         return res;
     }
+
+    /* 병원 제출용 자동선택 NFT 목록 조회 */
+    public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findHospitalNftList(UUID memberId, int count) {
+        return null;
+    }
 }
