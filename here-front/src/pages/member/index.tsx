@@ -72,20 +72,15 @@ export default function SignUpPage() {
 
   return (
     <>
-      <div className="mx-auto w-700 text-center mobile:w-full mobile:min-w-[300px]">
-        <p className="mx-auto mt-30 inline-block text-28 mobile:hidden">
+      <div className="mx-auto mb-30 w-700 text-center mobile:w-full mobile:min-w-[300px]">
+        <p className="mx-auto mt-30 inline-block text-28 mobile:text-24">
           회원정보 입력
         </p>
-        <img
-          src="next.svg"
-          alt="logo"
-          className="mx-auto mt-10 hidden h-80 w-160 mobile:block"
-        />
-        <div className="mx-auto mt-30 mobile:mt-0 mobile:w-full">
+        <div className="mx-auto mt-30 mobile:mt-0 mobile:w-[90%]">
           <div className="mt-20">
             <label
               htmlFor="name"
-              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-16"
+              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-8"
             >
               이름
             </label>
@@ -96,14 +91,14 @@ export default function SignUpPage() {
               type="text"
               id="name"
               name="name"
-              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-280"
+              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-260"
             />
-            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-280"></p>
+            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-200"></p>
           </div>
           <div>
             <label
               htmlFor="email"
-              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-16"
+              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-8"
             >
               이메일
             </label>
@@ -114,16 +109,16 @@ export default function SignUpPage() {
               type="email"
               id="email"
               name="email"
-              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-280"
+              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-260"
             />
-            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-280">
+            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-200">
               {emailMessage}
             </p>
           </div>
           <div className="mt-0 mb-30">
             <label
               htmlFor="nickname"
-              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-16"
+              className="mr-32 inline-block w-54 text-left text-18 font-light mobile:mr-8"
             >
               닉네임
             </label>
@@ -134,14 +129,14 @@ export default function SignUpPage() {
               type="text"
               name="nickname"
               id="nickname"
-              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-280"
+              className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-260"
             />
-            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-280 ">
+            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-200 ">
               {nicknameMessage}
             </p>
           </div>
         </div>
-        <div className="mx-auto h-300 mobile:h-400 mobile:w-full">
+        <div className="mx-auto h-300 mobile:h-380 mobile:w-full">
           <p className="mb-20 text-20 font-medium">
             원하는 캐릭터를 선택해 주세요
           </p>
@@ -149,60 +144,60 @@ export default function SignUpPage() {
             <div>
               <input
                 type="radio"
-                value="one"
-                id="one"
+                value="cat"
+                id="cat"
                 name="characterName"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
               <label
-                htmlFor="one"
+                htmlFor="cat"
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="NFT_bg_1.gif"
-                  alt="ex"
-                  className="inline-block h-200 w-150 rounded-16 p-0 mobile:h-160 mobile:w-120"
+                  src="character/cat.png"
+                  alt="cat"
+                  className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
               </label>
             </div>
             <div>
               <input
                 type="radio"
-                value="two"
-                id="two"
+                value="deer"
+                id="deer"
                 name="characterName"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
               <label
-                htmlFor="two"
+                htmlFor="deer"
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="NFT_bg_2.gif"
-                  alt="ex"
-                  className="inline-block h-200 w-150 rounded-16 p-0 mobile:h-160 mobile:w-120"
+                  src="character/deer.png"
+                  alt="deer"
+                  className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
               </label>
             </div>
-            <div>
+            <div className="mobile:mt-10">
               <input
                 type="radio"
-                value="three"
-                id="three"
+                value="dog"
+                id="dog"
                 name="characterName"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
               <label
-                htmlFor="three"
+                htmlFor="dog"
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="NFT_bg_3.gif"
-                  alt="ex"
-                  className="inline-block h-200 w-150 rounded-16 p-0 mobile:h-160 mobile:w-120"
+                  src="character/dog.png"
+                  alt="dog"
+                  className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
               </label>
             </div>
