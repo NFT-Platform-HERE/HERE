@@ -1,5 +1,6 @@
 package com.ssafy.hereauth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,11 @@ public class Member {
     @Column(columnDefinition = "varchar(36)")
     @Type(type="uuid-char")
     private UUID id;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
+    private Character character;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
@@ -58,7 +64,8 @@ public class Member {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
-    public void createMember(SignupRequestDto signupRequestDto) {
+    public void createMember(Character character, SignupRequestDto signupRequestDto) {
+        this.character = character;
         this.role = EnumMemberRole.USER;
         this.walletAddress = signupRequestDto.getWalletAddress();
         this.name = signupRequestDto.getName();

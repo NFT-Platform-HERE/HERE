@@ -28,7 +28,6 @@ public class MemberService {
 
     private final ResponseUtil responseUtil;
     private final MemberRepository memberRepository;
-    private final MemberCharacterRepository memberCharacterRepository;
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
     private final CertHistoryRepository certHistoryRepository;
@@ -49,15 +48,11 @@ public class MemberService {
         /**
          * 회원 저장
          */
-        Member member = new Member();
-        member.createMember(signupRequestDto);
-        memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
-
-        // 멤버_캐릭터 : 멤버 만들고 멤버 만들면 자동으로 만들어지는 것? (원투원 매핑)
-        MemberCharacter memberCharacter = new MemberCharacter();
         Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
-        memberCharacter.createMemberCharacter(member, character, signupRequestDto.getCharacterName());
-        memberCharacterRepository.save(memberCharacter);
+
+        Member member = new Member();
+        member.createMember(character, signupRequestDto);
+        memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
 
         // 스탬프
         Stamp stamp = new Stamp();
@@ -77,13 +72,7 @@ public class MemberService {
         Member member = memberRepository.findById(UUID.fromString(memberId))
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
-        // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
-        MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
-                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 멤버의 캐릭터 정보입니다."));
-
-        Character character = memberCharacter.getCharacter();
-
-        String characterImgUrl = character.getImgUrl();
+        String characterImgUrl = member.getCharacter().getImgUrl();
 
         // 헌혈기록 리스트 뽑기
         List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
