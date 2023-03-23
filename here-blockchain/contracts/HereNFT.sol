@@ -4,7 +4,6 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./token/ERC721/ERC721.sol";
 import "./utils/Counters.sol";
 import "./utils/Strings.sol";
-import "./NFTTransactionLogger.sol";
 
 /**
  * PJT Ⅰ - 과제 2) NFT Creator 구현
@@ -15,10 +14,7 @@ contract HereNFT is ERC721 {
     using Counters for Counters.Counter;
     using Strings for uint256;
 
-    event SaleCreated(uint256 indexed saleId, address saleAddr, uint256 ticketId);
-
     Counters.Counter private _tokenIds;
-    //uint256 private _tokenIds;
     mapping(uint256 => string) tokenURIs;
 
     event createNFT (uint256 indexed _tokenId, address indexed _owner);
@@ -43,7 +39,7 @@ contract HereNFT is ERC721 {
     TransactionLog[] public transactionLogs;
 
     // NFT 거래 기록을 추가하는 함수
-    function addTransactionLog(
+    function donateNFT(
         address _from,
         address _to,
         uint256 _tokenId,
@@ -133,14 +129,8 @@ contract HereNFT is ERC721 {
         // NFT Metadata URI 가져오기
         string memory metadataURI = tokenURI(tokenId);
 
-        // Metadata URI로부터 JSON 데이터 가져오기
-        //bytes memory metadata = abi.encodePacked(metadataURI);
-        //bytes32 transactionHash = keccak256(abi.encodePacked(metadataURI));
-        bytes32 transactionHash = keccak256(bytes(metadataURI));
         // JSON 데이터의 해시값 계산
-        //bytes32 metadataHash = sha256(metadata);
-
-        //NFT memory nft = NFT(tokenId, metadataURI,transactionHash,hash);
+        bytes32 transactionHash = keccak256(bytes(metadataURI));
 
          // 계산된 해시값과 입력된 해시값이 일치하는지 확인
         bool verified = transactionHash == hash;
