@@ -22,8 +22,8 @@ import java.util.UUID;
 public class Nft {
 
     @Id
-    @Column(name = "id", columnDefinition = "varchar(200)", nullable = false)
-    private String id;
+    @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
+    private Long tokenId;
 
     @Column(name = "owner_id", columnDefinition = "varchar(36)", nullable = false)
     @Type(type = "uuid-char")
@@ -32,6 +32,9 @@ public class Nft {
     @Column(name = "issuer_id", columnDefinition = "varchar(36)", nullable = false)
     @Type(type = "uuid-char")
     private UUID issuerId;
+
+    @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
+    private String hashValue;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;
@@ -44,13 +47,15 @@ public class Nft {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
-    public Nft createNft(SaveNftRequestDto saveNftRequestDto) {
+
+    public Nft createNft(SaveNftRequestDto saveNftRequestDto, EnumNftType type) {
         Nft nft = new Nft();
-        nft.id = saveNftRequestDto.getHashValue();
+        nft.tokenId = saveNftRequestDto.getTokenId();
+        nft.hashValue = saveNftRequestDto.getHashValue();
         nft.ownerId = saveNftRequestDto.getOwnerId();
         nft.issuerId = saveNftRequestDto.getIssuerId();
         nft.imgUrl = saveNftRequestDto.getImgUrl();
-        nft.type = saveNftRequestDto.getType();
+        nft.type = type;
         return nft;
     }
 }

@@ -1,9 +1,7 @@
 package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
-import com.ssafy.herenft.dto.nft.GetNftResponseDto;
-import com.ssafy.herenft.dto.nft.SaveNftRequestDto;
-import com.ssafy.herenft.dto.nft.SaveNftResponseDto;
+import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.service.NftService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,5 +35,17 @@ public class NftController {
     @GetMapping("/{memberId}")
     public ResponseEntity<ResponseSuccessDto<List<GetNftResponseDto>>> getNftList(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(nftService.getNftList(memberId));
+    }
+
+    @ApiOperation(value = "내 증명서 제출(기관)", notes = "기관에 나의 증명서를 제출합니다.")
+    @PostMapping("/agency")
+    public ResponseEntity<ResponseSuccessDto<SubmitCertAgencyResponseDto>> submitCertAgency(@RequestBody SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
+        return ResponseEntity.ok(nftService.submitCertAgency(submitCertAgencyRequestDto));
+    }
+
+    @ApiOperation(value = "내 증명서 제출(병원)", notes = "병원에 나의 증명서를 제출합니다.")
+    @PostMapping("/hospital")
+    public ResponseEntity<ResponseSuccessDto<SubmitCertHospitalResponseDto>> submitCertHospital(@RequestBody SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
+        return ResponseEntity.ok(nftService.submitCertHospital(submitCertHospitalRequestDto));
     }
 }
