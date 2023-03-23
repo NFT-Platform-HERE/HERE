@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
     @Query("select b from Board b where b.status= 'ACTIVE' or b.status= 'INACTIVE'" +
             "order by b.status asc, b.createdDate desc")
     List<Board> findAllByStatusOrderByCreatedDateDesc();

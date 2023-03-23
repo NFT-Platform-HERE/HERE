@@ -38,7 +38,8 @@ public class BoardService {
     /* 전체 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
 
-        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateDesc();
+//        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateDesc();
+        List<Board> boards = boardRepository.findBoardList();
 //        List<BoardResponseDto> boardList = boards.stream()
 //                .map(b -> new BoardResponseDto(b))
 //                .collect(Collectors.toList());
@@ -75,7 +76,8 @@ public class BoardService {
     /* 내 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getMemberBoardList(UUID memberId) {
 
-        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateDesc(memberId);
+//        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateDesc(memberId);
+        List<Board> boards = boardRepository.findMyBoardList(memberId);
 
         List<BoardResponseDto> result = new ArrayList<>();
 
@@ -315,7 +317,8 @@ public class BoardService {
 
     /* 게시글 검색 */
     public ResponseSuccessDto<List<SearchBoardResponseDto>> searchBoard(String query) {
-        List<Board> searchedList = boardRepository.findAllBySearch(query);
+//        List<Board> searchedList = boardRepository.findAllBySearch(query);
+        List<Board> searchedList = boardRepository.searchBoard(query);
         List<SearchBoardResponseDto> result = new ArrayList<>();
 
         for (Board searched : searchedList) {
