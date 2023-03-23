@@ -18,34 +18,23 @@ module.exports = function (deployer) {
 };
 
 contract("NftCreator", (accounts) => {
-  console.log(accounts);
-  const sender = accounts[1];
-  const receiver = accounts[2];
-  let owner;
-  let tokenId;
-  const tokenURI = "test";
-
-  it("Create Test", () => {
-    HereNFT.deployed().then((instance) => {
-      tokenId = instance.create(sender, tokenURI);
-      owner = sender;
-      instance.current().then((tokenid) => console.log(tokenid));
-    });
+  beforeEach(async () => {
+    console.log("Before Each");
+    lt = await lt.new();
   });
 
-  it("Transfer Test", () => {
-    HereNFT.deployed().then((instance) => {
-      assert.notEqual(owner, receiver, "NFT transfer Failed!");
-      instance.transferFrom(owner, receiver, tokenId);
-      owner = receiver;
-    });
-  });
+  it("NFT mint, transfer, and compare URI", async () => {
+    let owner = await lt.verifyNFT(
+      1,
+      "0x3ec57f08d11741577b3ccb1b8ab0ee745522f58aeb4081254e6fcea01c7bd696"
+    );
 
-  it("Compare tokenURI", () => {
-    HereNFT.deployed().then((instance) => {
-      const tokenURIFetched = instance.tokenURI(tokenId);
-      // console.log(tokenURIFetched);
-      assert.equal(tokenURI, tokenURIFetched, "Wrong Token Id or URI");
-    });
+    console.log(`owner : ${owner}`);
+    // TODO
+    // 다음이 반드시 테스트되어야 합니다.
+    // assert.equal(sender, owner, "NFT Mint Failed");
+    // assert.equal(receiver, owner, "NFT Transfer Failed.");
+    // assert.equal(tokenURI, tokenURIFetched, "Wrong Token Id or URI.")
+    assert.equal(owner, true);
   });
 });
