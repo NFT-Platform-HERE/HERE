@@ -8,6 +8,7 @@ import com.ssafy.herenft.entity.CertHistory;
 import com.ssafy.herenft.entity.Member;
 import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.herenft.eunmeration.EnumMemberRole;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
 import com.ssafy.herenft.repository.BdHistoryRepository;
@@ -65,6 +66,7 @@ public class NftService {
         List<Nft> myNftList = nftRepository.findAllByIssuerId(memberId);
 
         List<GetNftResponseDto> result = new ArrayList<>();
+
 
         for (Nft myNft : myNftList) {
             GetNftResponseDto getNftResponseDto = GetNftResponseDto.builder()
@@ -138,6 +140,35 @@ public class NftService {
                 .build();
 
         ResponseSuccessDto<GetDonateNftCntResponseDto> res = responseUtil.successResponse(getDonateNftCntResponseDto, HereStatus.HERE_FIND_DONATE_CNT);
+        return res;
+    }
+
+    /* 기관용/병원용 NFT 목록 조회 */
+    public ResponseSuccessDto<List<GetNftToOrganResponseDto>> getNftToOrgan(UUID memberId, String organType) {
+        List<Nft> nftList = null;
+
+        if (organType.equals("AGENCY")) {
+            nftList = nftRepository.findAllByIssuerId(memberId);
+        } else if (organType.equals("HOSPITAL")) {
+            nftList = nftRepository.findAllByOwnerId(memberId);
+        }
+
+        List<GetNftToOrganResponseDto> result = new ArrayList<>();
+
+        for (Nft nft : nftList) {
+            UUID ownerId = nft.getOwnerId();
+            Member member = memberRepository.findById(ownerId)
+                    .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
+
+            GetNftToOrganResponseDto getNftToOrganResponseDto = GetNftToOrganResponseDto.builder()
+                    .memberName(member.getName())
+                    .createdDate(nft.getCreatedDate())
+                    .build();
+
+            result.add(getNftToOrganResponseDto);
+        }
+
+        ResponseSuccessDto<List<GetNftToOrganResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_CREATE_NFT);
         return res;
     }
 }
