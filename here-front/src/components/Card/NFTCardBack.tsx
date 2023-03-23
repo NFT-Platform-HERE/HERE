@@ -117,43 +117,45 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
             },
           ]}
         >
-          <tr>
-            <td
-              className="border-b-1 border-r-1 border-black bg-red-100"
-              rowSpan={2}
-              colSpan={2}
-            >
-              혈액형
-            </td>
-            <td
-              colSpan={3}
-              className="border-b-1 border-r-1 border-black bg-purple-100"
-            >
-              헌혈종류
-            </td>
-            <td rowSpan={2} className="border-b-1 border-black bg-red-200">
-              헌혈량
-            </td>
-          </tr>
-          <tr>
-            <td className="border-b-1 border-r-1 border-black bg-purple-100">
-              전혈
-            </td>
-            <td className="border-b-1 border-r-1 border-black bg-purple-100">
-              혈장
-            </td>
-            <td className="border-b-1 border-r-1 border-black bg-purple-100">
-              혈소판
-            </td>
-          </tr>
-          <tr>
-            <td className="border-r-1 border-black">A</td>
-            <td className="border-r-1 border-black">Rh+</td>
-            <td className="border-r-1 border-black">O</td>
-            <td className="border-r-1 border-black"></td>
-            <td className="border-r-1 border-black"></td>
-            <td>400mL</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td
+                className="border-b-1 border-r-1 border-black bg-red-100"
+                rowSpan={2}
+                colSpan={2}
+              >
+                혈액형
+              </td>
+              <td
+                colSpan={3}
+                className="border-b-1 border-r-1 border-black bg-purple-100"
+              >
+                헌혈종류
+              </td>
+              <td rowSpan={2} className="border-b-1 border-black bg-red-200">
+                헌혈량
+              </td>
+            </tr>
+            <tr>
+              <td className="border-b-1 border-r-1 border-black bg-purple-100">
+                전혈
+              </td>
+              <td className="border-b-1 border-r-1 border-black bg-purple-100">
+                혈장
+              </td>
+              <td className="border-b-1 border-r-1 border-black bg-purple-100">
+                혈소판
+              </td>
+            </tr>
+            <tr>
+              <td className="border-r-1 border-black">A</td>
+              <td className="border-r-1 border-black">Rh+</td>
+              <td className="border-r-1 border-black">O</td>
+              <td className="border-r-1 border-black"></td>
+              <td className="border-r-1 border-black"></td>
+              <td>400mL</td>
+            </tr>
+          </tbody>
         </table>
 
         <div className="mt-6 flex">
@@ -201,7 +203,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((height * 1.618 - 40) * 1) / 4,
+                width: ((height * 1.618 - 40) * 2) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -212,7 +214,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
           <div
             css={[
               {
-                width: ((height * 1.618 - 40) * 1) / 2,
+                width: ((height * 1.618 - 40) * 1) / 4,
                 height: (height * 1) / 10,
               },
             ]}
@@ -221,7 +223,13 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
 
         <img
           src="/icons/redcross-stamp.svg"
-          className="absolute bottom-0 right-0"
+          className="absolute bottom-0 -right-25"
+          css={[
+            {
+              width: height * 1.618 * 0.5,
+              height: height * 0.2,
+            },
+          ]}
         ></img>
       </div>
     </div>
