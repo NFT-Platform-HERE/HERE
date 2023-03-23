@@ -617,3 +617,19 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
 ];
 
 export const HERE_ERC_721_CA = process.env.HERE_ERC_721_CA;
+
+export const NFT_IMAGE_URL_LIST: string[] = [
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_1.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_2.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_3.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_4.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_5.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_6.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_7.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_8.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_9.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_10.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_11.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_12.gif",
+  "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_13.gif",
+];
