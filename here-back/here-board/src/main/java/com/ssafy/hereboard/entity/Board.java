@@ -70,9 +70,9 @@ public class Board {
         return board;
     }
 
-    public void updateBoard(Board board, UpdateBoardRequestDto updateBoardRequestDto) {
-        board.title = updateBoardRequestDto.getTitle();
-        board.content = updateBoardRequestDto.getContent();
+    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+        this.title = updateBoardRequestDto.getTitle();
+        this.content = updateBoardRequestDto.getContent();
     }
 
     public void updateBoardStatus(EnumBoardStatus status) {
