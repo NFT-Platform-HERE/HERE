@@ -7,6 +7,7 @@ import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
 import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
 import { mintBloodNFT } from "../../apis/blockchain/contracts";
+import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 
 const MySwal = withReactContent(Swal);
 
@@ -22,6 +23,7 @@ export default function RedCrossPublishPage() {
   });
 
   const [formValid, setFormValid] = useState(false);
+  const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
 
   const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
 
@@ -41,15 +43,19 @@ export default function RedCrossPublishPage() {
     }
   };
 
-  const handlePlaceInputKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.code === "Enter") {
-      publishNFT();
-    }
-  };
-
   useEffect(() => {
     validateForm();
   }, [inputs]);
+
+  const handlePlaceInputKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      handleMint();
+    }
+  };
+
+  function handleMint() {
+    publishNFT();
+  }
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -60,8 +66,13 @@ export default function RedCrossPublishPage() {
     });
   };
 
+  const errorHandler = (message: string) => {
+    setOpendLoadingModal(false);
+    failMint();
+    return;
+  };
+
   const publishNFT = async () => {
-    console.log("inputs", inputs);
     //랜덤 숫자 생성(0~12)
     const randomNumber = randomFromZeroToN(12);
     // 랜덤 이미지 선택
@@ -79,21 +90,23 @@ export default function RedCrossPublishPage() {
     };
 
     const jsonMetaData = makeJsonMetaData(metaInfo);
-    // const ipfsResult = await sendIpfs(jsonMetaData);
-    const ipfsResult =
-      "http://13.209.252.39:8080/ipfs/QmamRS1yGEmN5WnunPH5SspQujZijrDVH5DmWFLtEzXJVN";
 
-    console.log("randomNumber", randomNumber);
-    console.log("mintImageURL", mintImageURL);
-    console.log("metaInfo", metaInfo);
-    console.log("jsonMetaData", jsonMetaData);
-    console.log("ipfsResult", ipfsResult);
+    try {
+      // const ipfsResult = await sendIpfs(jsonMetaData);
+      const ipfsResult =
+        "http://13.209.252.39:8080/ipfs/QmamRS1yGEmN5WnunPH5SspQujZijrDVH5DmWFLtEzXJVN";
+      setOpendLoadingModal(true);
 
-    console.log("wallet", wallet);
-
-    mintBloodNFT(wallet, ipfsResult);
-
-    console.log("발행하기");
+      mintBloodNFT(wallet, ipfsResult).then((data) => {
+        setOpendLoadingModal(false);
+        successMint();
+      });
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      errorHandler(message);
+    }
   };
 
   const findWallet = () => {
@@ -117,6 +130,25 @@ export default function RedCrossPublishPage() {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       console.log("result.value가 내가 아까 입력한 값", result.value);
+    });
+  };
+
+  const successMint = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "헌혈증 NFT 발행 완료",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const failMint = () => {
+    MySwal.fire({
+      icon: "error",
+      title: "헌혈증 NFT 발행 실패",
+      showConfirmButton: false,
+      timer: 1500,
     });
   };
 
@@ -277,8 +309,9 @@ export default function RedCrossPublishPage() {
         fontSize={20}
         children={"NFT 발행하기"}
         isDisabled={!formValid}
-        onClick={publishNFT}
+        onClick={handleMint}
       />
+      {opendLoadingModal && <RedCrossLoadingModal />}
     </div>
   );
 }
