@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,5 +46,17 @@ public class NftController {
     @PostMapping("/hospital")
     public ResponseEntity<ResponseSuccessDto<SubmitCertHospitalResponseDto>> submitCertHospital(@RequestBody SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
         return ResponseEntity.ok(nftService.submitCertHospital(submitCertHospitalRequestDto));
+    }
+
+    @ApiOperation(value = "기부 해시값 개수 조회", notes = "병원에 나의 증명서를 제출합니다.")
+    @GetMapping("/count/{senderId}")
+    public ResponseEntity<ResponseSuccessDto<GetDonateNftCntResponseDto>> getDonateNftCnt(@PathVariable("senderId") UUID senderId) {
+        return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
+    }
+
+    @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
+    @GetMapping("/{memberId}/{organType}")
+    public ResponseEntity<ResponseSuccessDto<GetDonateNftCntResponseDto>> getDonateNftCnt(@PathVariable("senderId") UUID senderId) {
+        return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 }

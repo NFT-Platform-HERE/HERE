@@ -2,6 +2,7 @@ package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
+import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
 import com.ssafy.herenft.entity.BdHistory;
 import com.ssafy.herenft.entity.CertHistory;
 import com.ssafy.herenft.entity.Member;
@@ -16,6 +17,7 @@ import com.ssafy.herenft.repository.NftRepository;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,6 +125,19 @@ public class NftService {
                 .build();
 //
         ResponseSuccessDto<SubmitCertHospitalResponseDto> res = responseUtil.successResponse(submitCertHospitalResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
+        return res;
+    }
+
+    /* 기부 해시값 개수 조회 */
+    public ResponseSuccessDto<GetDonateNftCntResponseDto> getDonateNftCnt(UUID senderId) {
+
+        List<Nft> donateNfts = nftRepository.findAllByOwnerId(senderId);
+
+        GetDonateNftCntResponseDto getDonateNftCntResponseDto = GetDonateNftCntResponseDto.builder()
+                .cnt(donateNfts.size())
+                .build();
+
+        ResponseSuccessDto<GetDonateNftCntResponseDto> res = responseUtil.successResponse(getDonateNftCntResponseDto, HereStatus.HERE_FIND_DONATE_CNT);
         return res;
     }
 }

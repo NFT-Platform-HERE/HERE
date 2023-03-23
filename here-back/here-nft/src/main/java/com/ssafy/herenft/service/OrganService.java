@@ -1,6 +1,7 @@
 package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
+import com.ssafy.herenft.dto.nft.GetDonateNftCntResponseDto;
 import com.ssafy.herenft.dto.nft.NftObjectDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;

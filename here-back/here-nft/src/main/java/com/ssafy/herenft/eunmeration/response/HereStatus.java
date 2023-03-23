@@ -19,5 +19,8 @@ public enum HereStatus {
     // 발행 목록 조회 성공 (적십자)
     HERE_FIND_REDCROSS,
 
+    // 기부 해시값 개수 조회
+    HERE_FIND_DONATE_CNT,
+
 
 }

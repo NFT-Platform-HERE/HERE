@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface NftRepository extends JpaRepository<Nft, String> {
     List<Nft> findAllByIssuerId(UUID memberId);
 
+    List<Nft> findAllByOwnerId(UUID senderId);
 }
