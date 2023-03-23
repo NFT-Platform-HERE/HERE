@@ -344,7 +344,7 @@ public class BoardService {
     /* 종료 임박 게시글 목록 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
 
-        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateAsc();
+        List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
         List<BoardResponseDto> result = new ArrayList<>();
 
         for (Board board : boards) {
@@ -390,7 +390,10 @@ public class BoardService {
         return res;
     }
 
-    /* 기부 데이터 조회 */
+    /* 기부 해시값 총 개수 확인 */
+
+
+    /* 기부 해시값 조회(자동 선택) */
     public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
 
 //        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
