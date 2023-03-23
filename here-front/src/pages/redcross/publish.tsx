@@ -1,8 +1,11 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import withReactContent from "sweetalert2-react-content";
+import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
+import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
+import { sendIpfs } from "../../apis/blockchain/ipfs";
 
 const MySwal = withReactContent(Swal);
 
@@ -17,7 +20,35 @@ export default function RedCrossPublishPage() {
     place: "",
   });
 
+  const [formValid, setFormValid] = useState(false);
+
   const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
+
+  const validateForm = () => {
+    if (
+      name.length > 0 &&
+      sex.length > 0 &&
+      bloodType.length > 0 &&
+      wallet.length > 0 &&
+      birth.length > 0 &&
+      createdDate.length > 0 &&
+      place.length > 0
+    ) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  };
+
+  const handlePlaceInputKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      publishNFT();
+    }
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [inputs]);
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,7 +59,33 @@ export default function RedCrossPublishPage() {
     });
   };
 
-  const publishNFT = () => {
+  const publishNFT = async () => {
+    console.log("inputs", inputs);
+    //랜덤 숫자 생성(0~12)
+    const randomNumber = randomFromZeroToN(12);
+    // 랜덤 이미지 선택
+    const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
+
+    const metaInfo = {
+      name: name.trim(),
+      gender: sex,
+      type: bloodType,
+      walletAddress: wallet.trim(),
+      birth: birth,
+      createdDate: createdDate,
+      place: place.trim(),
+      imageURL: mintImageURL,
+    };
+
+    const jsonMetaData = makeJsonMetaData(metaInfo);
+    const ipfsResult = await sendIpfs(jsonMetaData);
+
+    console.log("randomNumber", randomNumber);
+    console.log("mintImageURL", mintImageURL);
+    console.log("metaInfo", metaInfo);
+    console.log("jsonMetaData", jsonMetaData);
+    console.log("ipfsResult", ipfsResult);
+
     console.log("발행하기");
   };
 
@@ -203,6 +260,7 @@ export default function RedCrossPublishPage() {
           name="place"
           value={place}
           onChange={onChangeValue}
+          onKeyDown={handlePlaceInputKeyDown}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />
       </div>
@@ -211,7 +269,7 @@ export default function RedCrossPublishPage() {
         height={60}
         fontSize={20}
         children={"NFT 발행하기"}
-        isDisabled={false}
+        isDisabled={!formValid}
         onClick={publishNFT}
       />
     </div>
