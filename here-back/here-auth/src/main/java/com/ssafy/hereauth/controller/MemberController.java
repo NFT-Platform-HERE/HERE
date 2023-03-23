@@ -53,7 +53,7 @@ public class MemberController {
     }
 
     /* 멤버 명함 조회 */
-    @ApiOperation(value = "멤버 명험 조회", notes = "회원의 기본 정보를 조회한다.")
+    @ApiOperation(value = "멤버 명함 조회", notes = "회원의 기본 정보를 조회한다.")
     @GetMapping("/{memberId}")
     public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok(memberService.getProfile(memberId));
