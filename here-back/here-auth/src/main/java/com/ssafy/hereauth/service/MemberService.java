@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,14 +69,14 @@ public class MemberService {
     /**
      * 멤버 명함 조회
      */
-    public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
-        Member member = memberRepository.findById(UUID.fromString(memberId))
+    public ResponseSuccessDto<MemberProfileResponseDto> getProfile(UUID memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
         String characterImgUrl = member.getCharacter().getImgUrl();
 
         // 헌혈기록 리스트 뽑기
-        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
+        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(memberId);
 
         // 헌혈 카운트
         int bdHistoryCnt = bdHistoryList.size();
@@ -246,5 +247,42 @@ public class MemberService {
         return res;
     }
 
+    /**
+     * 스탬프 정보 조회
+     */
+    public ResponseSuccessDto<StampGetResponseDto> getStamp(UUID memberId) {
+
+        Stamp stamp = stampRepository.findByMemberId(memberId);
+        System.out.println(stamp);
+
+        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
+                .stage(stamp.getStamp())
+                .step(stamp.getStep())
+                .build();
+
+        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
+        return res;
+    }
+
+    /**
+     * 증명서 제출 기관/병원 검색
+     */
+    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(String query, String organType) {
+
+        List<Member> searchedOrgans = memberRepository.findAllBySearch(query);
+        List<OrganSearchResponseDto> result = new ArrayList<>();
+
+        for (Member organ : searchedOrgans) {
+
+            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
+                    .agencyId(organ.getId())
+                    .agencyName(organ.getName())
+                    .build();
+            result.add(organSearchResponseDto);
+        }
+
+        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
+        return res;
+    }
 
 }

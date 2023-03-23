@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.List;
+import java.util.UUID;
 
 @Api("Member Controller v1")
 @RestController
@@ -55,7 +57,7 @@ public class MemberController {
     /* 멤버 명함 조회 */
     @ApiOperation(value = "멤버 명함 조회", notes = "회원의 기본 정보를 조회한다.")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") String memberId) {
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(memberService.getProfile(memberId));
     }
 
@@ -73,13 +75,6 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
     }
 
-    /* 증명 승인/미승인 목록 조회(기관) */
-//    @ApiOperation(value = "증명 승인/미승인 목록 조회(기관)", notes = "기관의 승인/미승인 상태의 제출 기록을 조회한다.")
-//    @GetMapping("{agency_id}/{status}")
-//    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getCertListAgency(@PathVariable("agency_id") String agencyId, @PathVariable("status")) {
-//        return ResponseEntity.ok(memberService.getMemberInfo(email));
-//    }
-
     /* CertHistory 생성 */
     @ApiOperation(value = "제출 기록 생성", notes = "헌혈증 증명 제출 기록을 생성한다.")
     @PostMapping("/nft/agency")
@@ -92,5 +87,19 @@ public class MemberController {
     @PostMapping("/nft/bd")
     public ResponseEntity<ResponseSuccessDto<BdHistoryCreateResponseDto>> createBdHistory(@RequestBody BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
         return ResponseEntity.ok(memberService.createBdHistory(bdHistoryCreateRequestDto));
+    }
+
+    /* 스탬프 정보 조회 */
+    @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")
+    @GetMapping("/stamp/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<StampGetResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(memberService.getStamp(memberId));
+    }
+
+    /* 증명서 제출 기관/병원 검색 */
+    @ApiOperation(value = "증명서 제출 기관/병원 검색", notes = "제출할 기관/병원을 검색한다.")
+    @GetMapping("/search/{organType}")
+    public ResponseEntity<ResponseSuccessDto<List<StampGetResponseDto>>> searchOrgan(@RequestParam String query, @PathVariable("organType") String organType) {
+        return ResponseEntity.ok(memberService.searchOrgan(query, organType));
     }
 }
