@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class GetNftToOrganResponseDto {
-    private String memberName;
+    private String issuerName;
     private LocalDateTime createdDate;
+    private boolean isOwner;
 }

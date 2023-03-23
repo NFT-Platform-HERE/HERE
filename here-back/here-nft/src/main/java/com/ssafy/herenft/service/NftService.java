@@ -156,13 +156,22 @@ public class NftService {
         List<GetNftToOrganResponseDto> result = new ArrayList<>();
 
         for (Nft nft : nftList) {
-            UUID ownerId = nft.getOwnerId();
-            Member member = memberRepository.findById(ownerId)
+            UUID issuerId = nft.getIssuerId();
+            Member issuer = memberRepository.findById(issuerId)
                     .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
 
+            boolean isOwner;
+
+            if (issuerId.equals(memberId)) {
+                isOwner = true;
+            } else {
+                isOwner = false;
+            }
+
             GetNftToOrganResponseDto getNftToOrganResponseDto = GetNftToOrganResponseDto.builder()
-                    .memberName(member.getName())
+                    .issuerName(issuer.getName())
                     .createdDate(nft.getCreatedDate())
+                    .isOwner(isOwner)
                     .build();
 
             result.add(getNftToOrganResponseDto);

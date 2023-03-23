@@ -22,6 +22,10 @@ import java.util.UUID;
 public class Nft {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
+    private Long id;
+
     @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
     private Long tokenId;
 
