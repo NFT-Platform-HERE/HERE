@@ -1,7 +1,9 @@
 package com.ssafy.hereboard.errorhandling.resolver;
 
 import com.ssafy.hereboard.dto.common.response.ResponseErrorDto;
+import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.hereboard.errorhandling.exception.service.NotAuthorizedUserException;
 import com.ssafy.hereboard.mattermost.NotificationManager;
 import com.ssafy.hereboard.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,20 @@ public class ServiceExceptionResolver {
         e.printStackTrace();
         notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
         return responseUtil.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), request.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = BadRequestVariableException.class)
+    public ResponseErrorDto<?> handle(BadRequestVariableException e, HttpServletRequest request) {
+        notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
+        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = NotAuthorizedUserException.class)
+    public ResponseErrorDto<?> handle(NotAuthorizedUserException e, HttpServletRequest request) {
+        notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
+        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 
     private String getParams(HttpServletRequest req) {

@@ -3,7 +3,19 @@
  * @dev NFT mint, transfer, and compare URI
  */
 
-const NftCreator = artifacts.require("HereNFT");
+// TODO
+// 다음이 반드시 테스트되어야 합니다.
+// assert.equal(sender, owner, "NFT Mint Failed");
+// assert.equal(receiver, owner, "NFT Transfer Failed.");
+// assert.equal(tokenURI, tokenURIFetched, "Wrong Token Id or URI.")
+const assert = require("assert");
+
+const HereNFT = artifacts.require("HereNFT");
+
+module.exports = function (deployer) {
+  // deployer.deploy(SsafyToken, "SSAFY", "SSF", 0);
+  deployer.deploy(HereNFT);
+};
 
 contract("NftCreator", (accounts) => {
   beforeEach(async () => {

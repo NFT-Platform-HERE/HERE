@@ -5,6 +5,7 @@ import com.ssafy.hereauth.dto.character.CharacterResponseDto;
 import com.ssafy.hereauth.dto.character.CharacterStartingResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.repository.CharacterRepository;
 import com.ssafy.hereauth.util.ResponseUtil;
 import io.swagger.models.Response;
@@ -33,17 +34,17 @@ public class CharacterService {
         characterRepository.save(character);
 
         CharacterResponseDto characterResponseDto = new CharacterResponseDto("캐릭터가 생성되었습니다.");
-        ResponseSuccessDto<CharacterResponseDto> res = responseUtil.successResponse(characterResponseDto);
+        ResponseSuccessDto<CharacterResponseDto> res = responseUtil.successResponse(characterResponseDto, HereStatus.HERE_SUCCESS_CREATE_CHARACTER);
         return res;
     }
 
 
     public ResponseSuccessDto<List<CharacterStartingResponseDto>> findCharacters() {
-        List<Character> characters = characterRepository.findCharacterStarting(1);
+        List<Character> characters = characterRepository.findAllByLevel(1);
         List<CharacterStartingResponseDto> result = characters.stream()
                 .map(c -> new CharacterStartingResponseDto(c))
                 .collect(Collectors.toList());
-        ResponseSuccessDto<List<CharacterStartingResponseDto>> res = responseUtil.successResponse(result);
+        ResponseSuccessDto<List<CharacterStartingResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
         return res;
     }
 }

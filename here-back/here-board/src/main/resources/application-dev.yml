@@ -1,6 +1,12 @@
 server:
   port: 9011
 
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: B209HERE
+    key-store-type: PKCS12
+
 spring:
   config:
     activate:
@@ -9,6 +15,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://j8b209.p.ssafy.io:3306/here?serverTimezone=Asia/Seoul
+    username: root
+    password: B209HERE
+
 
 notification:
   mattermost:

@@ -1,12 +1,10 @@
 package com.ssafy.hereauth.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.ssafy.hereauth.enumeration.member.EnumBdHistoryStatus;
 import com.ssafy.hereauth.dto.member.BdHistoryCreateRequestDto;
-import com.ssafy.hereauth.enumeration.bdHistory.EnumBdHistoryStatus;
+import com.ssafy.hereauth.enumeration.EnumBdHistoryStatus;
+import com.ssafy.hereauth.enumeration.EnumBdHistoryType;
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
-import lombok.Getter;
+        import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,10 +20,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BdHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
-
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", nullable = false)
@@ -40,7 +37,11 @@ public class BdHistory {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'", nullable = false)
-    private EnumBdHistoryStatus status;
+    private EnumBdHistoryStatus status = EnumBdHistoryStatus.INACTIVE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "bd_type", columnDefinition = "char(20)", nullable = false)
+    private EnumBdHistoryType bdType;
 
     public void createBdHistory(Member member, BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
         this.member = member;
