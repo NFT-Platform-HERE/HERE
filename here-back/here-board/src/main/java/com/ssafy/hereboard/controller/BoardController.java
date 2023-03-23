@@ -104,20 +104,4 @@ public class BoardController {
     public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> updateBoardBdHistory(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
         return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
     }
-
-    @ApiOperation(value = "기부 내역 조회", notes = "기부한 내역을 조회합니다.")
-    @GetMapping("/nft/{senderId}/{quantity}")
-    public ResponseEntity<ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>>> getBoardBdHistory(
-            @PathVariable("senderId") UUID senderId,
-            @PathVariable("quantity") int quantity) {
-        return ResponseEntity.ok(boardService.getBoardBdHistory(senderId, quantity));
-    }
-
-//    @ApiOperation(value = "기부 해시값 조회(자동 선택)", notes = "기부 시 자동으로 선택되는 해시값을 조회합니다.")
-//    @GetMapping("/nft/{senderId}/{quantity}")
-//    public ResponseEntity<ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>>> getBoardBdHistory(
-//            @PathVariable("senderId") UUID senderId,
-//            @PathVariable("quantity") int quantity) {
-//        return ResponseEntity.ok(boardService.getBoardBdHistory(senderId, quantity));
-//    }
 }
