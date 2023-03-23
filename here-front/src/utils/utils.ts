@@ -1,7 +1,7 @@
 import { MetaInfo } from "./../types/MetaInfo";
 
-export function randomIntFromOneToN(N: number): number {
-  return Math.floor(Math.random() * N) + 1;
+export function randomFromZeroToN(N: number): number {
+  return Math.floor(Math.random() * N);
 }
 
 export function makeJsonMetaData({
