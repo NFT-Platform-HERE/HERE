@@ -18,7 +18,7 @@ import java.util.UUID;
 public class BoardMsg {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 

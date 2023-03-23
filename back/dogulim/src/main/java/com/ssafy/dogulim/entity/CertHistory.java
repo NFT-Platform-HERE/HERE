@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class CertHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
