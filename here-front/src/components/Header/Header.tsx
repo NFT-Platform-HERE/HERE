@@ -3,7 +3,7 @@ import WebHeader from "./WebHeader";
 
 export default function Header() {
   return (
-    <div className="relative z-30">
+    <div className="relative z-10">
       <div className="bg-white mobile:hidden">
         <WebHeader />
       </div>

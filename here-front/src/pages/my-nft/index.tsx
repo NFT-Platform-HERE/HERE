@@ -44,8 +44,8 @@ export default function MyNFTPage() {
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
-      <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-full mobile:min-h-full mobile:w-full mobile:min-w-full">
-        <div className="relative flex h-full w-[1200px] items-center justify-between mobile:w-full mobile:flex-col-reverse">
+      <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
+        <div className="relative flex h-full w-[1200px] items-center justify-between mobile:w-full mobile:flex-col-reverse mobile:justify-between">
           <div className="absolute right-0 top-20 mobile:hidden">
             <InstaBtn
               width={195}
@@ -58,13 +58,13 @@ export default function MyNFTPage() {
           </div>
           <img
             src="/icons/instagram.png"
-            className="hidden mobile:absolute mobile:top-0 mobile:right-0 mobile:block mobile:h-20 mobile:w-20"
+            className="hidden mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35"
           ></img>
-          <div className="relative flex h-630 w-137 items-center justify-center">
+          <div className="relative flex h-630 w-137 items-center justify-center mobile:h-180 mobile:w-full">
             <MyNFTList myNFTList={swiperList} />
           </div>
 
-          <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:gap-0">
+          <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
             <SelectedNFTList selectedCardList={selectedCardList} />
           </div>
         </div>
