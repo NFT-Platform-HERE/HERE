@@ -1,4 +1,5 @@
 import { AbiItem } from "web3-utils";
+import { HERE_CA } from "../utils/urls";
 
 export const HERE_ERC_721_ABI: AbiItem[] = [
   {
@@ -616,7 +617,7 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
   },
 ];
 
-export const HERE_ERC_721_CA = process.env.HERE_ERC_721_CA;
+export const HERE_ERC_721_CA = HERE_CA;
 
 export const NFT_IMAGE_URL_LIST: string[] = [
   "https://here-bucket.s3.ap-northeast-2.amazonaws.com/here-nft/NFT_bg_1.gif",
