@@ -3,10 +3,12 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import myNFTSlice from "./myNFT/myNFT";
 import selectedNFTSlice from "./myNFT/selectedNFT";
+import memberSlice from "./member/member";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
   selectedNFT: selectedNFTSlice,
+  member: memberSlice,
 });
 
 const persistConfig = {

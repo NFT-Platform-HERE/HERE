@@ -1,77 +1,99 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import useCheckMemberEmailQuery from "@/hooks/member/useCheckMemberEmailQuery";
-import useCheckMemberNicknameQuery from "@/hooks/member/useCheckMemberNicknameQuery";
+import useCheckMemberEmailQuery from "@/apis/member/useCheckMemberEmailQuery";
+import useCheckMemberNicknameQuery from "@/apis/member/useCheckMemberNicknameQuery";
 import { debounce } from "lodash";
-import useCharacterQuery from "@/hooks/member/useCharacterQuery";
+import useCharacterQuery from "@/apis/member/useCharacterQuery";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useSignup from "@/apis/member/useSignup";
+import { Signup } from "@/types/Signup";
 
 export default function SignUpPage() {
-  const router = useRouter();
-
-  const characterList = useCharacterQuery();
+  const { mutate } = useSignup();
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
 
+  const walletAddress = useSelector((state: RootState) => {
+    return state.member.walletAddress;
+  });
+  const [nameMessage, setNameMessage] = useState<string>("");
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
-  const [characterId, setCharacterId] = useState<number | null>(null);
+
+  const [newEmail, setNewEmail] = useState<string>("");
+  const [newNickname, setNewNickname] = useState<string>("");
+
+  const { data } = useCharacterQuery();
 
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
     nickname: "",
-    characterName: "",
+    characterId: 0,
   });
-  const { name, email, nickname, characterName } = inputs;
+  const { name, email, nickname, characterId } = inputs;
 
-  const onChangeValue = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
       [name]: value,
     });
-  }, 1000);
+  };
 
   const isValidEmail = useCheckMemberEmailQuery({
-    email,
+    email: newEmail,
     setEmailMessage,
   });
   const isValidNickname = useCheckMemberNicknameQuery({
-    nickname,
+    nickname: newNickname,
     setNicknameMessage,
   });
-
-  useEffect(() => {
-    if (isValidEmail.isError) {
-      setEmailMessage("유효하지 않은 이메일입니다");
-    } else {
-      setEmailMessage("");
-    }
-  }, [isValidEmail]);
+  console.log(isValidEmail.status, isValidNickname);
 
   const finishUserInfo = () => {
-    // 어느 상황에서 유효하지 않은지, 중복인지 체크 후 다시 작성
-    if (emailMessage && emailRef.current) {
+    setNewEmail(email);
+    setNewNickname(nickname);
+  };
+
+  useEffect(() => {
+    // 이름 길이 확인
+    if ((name.length < 2 || name.length > 5) && nameRef.current) {
+      setNameMessage("유효하지 않은 이름입니다");
+      nameRef.current.focus();
+      return;
+    }
+    // 이메일
+    if (!isValidEmail.isSuccess && emailRef.current) {
       emailRef.current.focus();
       return;
     }
-    if (nickname.length < 2 && nicknameRef.current) {
-      nicknameRef.current.focus();
-      setNicknameMessage("닉네임의 길이가 너무 짧습니다");
-      return;
-    }
-
-    if (!isValidNickname.isSuccess && nicknameRef.current) {
+    //닉네임 길이 확인 + 유효성 확인
+    if (
+      (nickname.length < 2 || !isValidNickname.isSuccess) &&
+      nicknameRef.current
+    ) {
       nicknameRef.current.focus();
       return;
     }
+    // 캐릭터 선택 여부
+    if (characterId === 0) {
+      return;
+    }
 
-    // 캐릭터도 선택시켜
-    router.push("/");
-  };
+    const payload: Signup = {
+      walletAddress,
+      name,
+      nickname: newNickname,
+      email: newEmail,
+      characterId,
+    };
+    mutate(payload);
+  }, [isValidEmail.status, isValidNickname.status]);
 
   return (
     <>
@@ -96,7 +118,9 @@ export default function SignUpPage() {
               name="name"
               className="h-50 w-360 rounded-30 border-1 border-pen-0 px-24 font-light placeholder-pen-0 mobile:w-260"
             />
-            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-200"></p>
+            <p className="ml-140 inline-block h-20 w-360 text-left text-13 font-light text-red-2 mobile:ml-100 mobile:w-200">
+              {nameMessage}
+            </p>
           </div>
           <div>
             <label
@@ -147,9 +171,9 @@ export default function SignUpPage() {
             <div>
               <input
                 type="radio"
-                value="cat"
+                value={data ? data[0].characterId : 0}
                 id="cat"
-                name="characterName"
+                name="characterId"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
@@ -158,7 +182,7 @@ export default function SignUpPage() {
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="character/cat.png"
+                  src={data ? data[0].characterImgUrl : ""}
                   alt="cat"
                   className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
@@ -167,9 +191,9 @@ export default function SignUpPage() {
             <div>
               <input
                 type="radio"
-                value="deer"
+                value={data ? data[1].characterId : 0}
                 id="deer"
-                name="characterName"
+                name="characterId"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
@@ -178,7 +202,7 @@ export default function SignUpPage() {
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="character/deer.png"
+                  src={data ? data[1].characterImgUrl : ""}
                   alt="deer"
                   className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
@@ -187,9 +211,9 @@ export default function SignUpPage() {
             <div className="mobile:mt-10">
               <input
                 type="radio"
-                value="dog"
+                value={data ? data[2].characterId : 0}
                 id="dog"
-                name="characterName"
+                name="characterId"
                 className="peer hidden"
                 onChange={onChangeValue}
               />
@@ -198,7 +222,7 @@ export default function SignUpPage() {
                 className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
               >
                 <img
-                  src="character/dog.png"
+                  src={data ? data[2].characterImgUrl : ""}
                   alt="dog"
                   className="inline-block h-200 w-200 rounded-16 p-0 mobile:h-140 mobile:w-140"
                 />
