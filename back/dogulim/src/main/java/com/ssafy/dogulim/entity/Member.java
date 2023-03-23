@@ -1,5 +1,6 @@
 package com.ssafy.dogulim.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.dogulim.enumeration.member.EnumMemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,11 @@ public class Member {
     @Column(columnDefinition = "varchar(36)")
     @Type(type = "uuid-char")
     private UUID id;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
+    private Character character;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "char(10) default 'USER'", nullable = false)
