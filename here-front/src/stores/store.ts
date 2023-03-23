@@ -1,12 +1,18 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import mobileHeaderMenuDropdownSlice from "./header/mobileHeaderMenuDropdown";
+import mobileHeaderNameSlice from "./header/mobileHeaderName";
+import mobileHeaderProfileDropdownSlice from "./header/mobileHeaderProfileDropdown";
 import myNFTSlice from "./myNFT/myNFT";
 import selectedNFTSlice from "./myNFT/selectedNFT";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
   selectedNFT: selectedNFTSlice,
+  mobileHeaderMenuDropdown: mobileHeaderMenuDropdownSlice,
+  mobileHeaderProfileDropdown: mobileHeaderProfileDropdownSlice,
+  mobileHeaderName: mobileHeaderNameSlice,
 });
 
 const persistConfig = {

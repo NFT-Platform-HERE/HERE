@@ -1,5 +1,3 @@
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
-
 interface Iprops {
   onClick: () => void;
 }
