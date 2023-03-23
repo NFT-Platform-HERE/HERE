@@ -1,8 +1,8 @@
 package com.ssafy.dogulim.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.dogulim.enumeration.certHistory.EnumCertHistoryStatus;
 import com.ssafy.dogulim.enumeration.certHistory.EnumCertHistoryType;
-import com.ssafy.dogulim.enumeration.paperBdCert.EnumPaperBdCertType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +32,6 @@ public class CertHistory {
     @JoinColumn(name = "agency_id", nullable = false)
     private Member agency;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", columnDefinition = "char(20)")
-    private EnumCertHistoryType type;
-
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
@@ -48,8 +44,11 @@ public class CertHistory {
 
     @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
     private Long tokenId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", columnDefinition = "char(20)")
+    private EnumCertHistoryType type;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(20)", nullable = false)
-    private EnumCertHistoryType status;
+    private EnumCertHistoryStatus status;
 }
