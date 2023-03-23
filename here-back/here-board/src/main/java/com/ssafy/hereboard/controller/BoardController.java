@@ -34,8 +34,8 @@ public class BoardController {
     @PostMapping()
     public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
             @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
-            @RequestPart("multipartFileList")List<MultipartFile> multipartFileList) {
-
+            @RequestPart(value = "multipartFileList")List<MultipartFile> multipartFileList) {
+        System.out.println("multipartFileList = " + multipartFileList.size());
         List<String> imgUrlList = new ArrayList<>();
         if(multipartFileList != null) {
             imgUrlList = s3Service.upload(multipartFileList);
