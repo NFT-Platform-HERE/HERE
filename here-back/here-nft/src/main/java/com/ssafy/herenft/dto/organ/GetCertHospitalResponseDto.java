@@ -14,5 +14,5 @@ public class GetCertHospitalResponseDto {
     private String memberName;
     private int count;
     private LocalDateTime createdDate;
-    private List<NftObjectDto> nftList;
+    private List<NftObjectDto> hashValueList;
 }

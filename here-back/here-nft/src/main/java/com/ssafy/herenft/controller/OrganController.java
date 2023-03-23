@@ -26,9 +26,20 @@ public class OrganController {
     private final OrganService organService;
 
     @ApiOperation(value = "증명 승인/미승인 목록 조회(기관)", notes = "기관이 증명 승인/미승인 목록을 조회합니다.")
-    @GetMapping("/{agencyId}/{status}")
+    @GetMapping("/agency/{agencyId}/{status}")
     public ResponseEntity<ResponseSuccessDto<List<GetCertAgencyResponseDto>>> getCertAgency(@PathVariable("agencyId") UUID agencyId, @PathVariable("status") EnumCertHistoryStatus status) {
-        System.out.println("컨트롤러 단");
         return ResponseEntity.ok(organService.getCertAgency(agencyId, status));
+    }
+
+    @ApiOperation(value = "증명 승인/미승인 목록 조회(병원)", notes = "병원이 증명 승인/미승인 목록을 조회합니다.")
+    @GetMapping("/hospital/{hospitalId}/{status}")
+    public ResponseEntity<ResponseSuccessDto<List<GetCertHospitalResponseDto>>> getCertHospital(@PathVariable("hospitalId") UUID hospitalId, @PathVariable("status") EnumCertHistoryStatus status) {
+        return ResponseEntity.ok(organService.getCertHospital(hospitalId, status));
+    }
+
+    @ApiOperation(value = "NFT 발행 목록 조회 (적십자)", notes = "적십자가 발행한 NFT 목록을 조회합니다.")
+    @GetMapping("/redcross")
+    public ResponseEntity<ResponseSuccessDto<List<GetNftRedcrossResponseDto>>> getNftRedCross() {
+        return ResponseEntity.ok(organService.getNftRedcross());
     }
 }
