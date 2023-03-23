@@ -6,6 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
 import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
+import { mintBloodNFT } from "../../apis/blockchain/contracts";
 
 const MySwal = withReactContent(Swal);
 
@@ -78,13 +79,19 @@ export default function RedCrossPublishPage() {
     };
 
     const jsonMetaData = makeJsonMetaData(metaInfo);
-    const ipfsResult = await sendIpfs(jsonMetaData);
+    // const ipfsResult = await sendIpfs(jsonMetaData);
+    const ipfsResult =
+      "http://13.209.252.39:8080/ipfs/QmamRS1yGEmN5WnunPH5SspQujZijrDVH5DmWFLtEzXJVN";
 
     console.log("randomNumber", randomNumber);
     console.log("mintImageURL", mintImageURL);
     console.log("metaInfo", metaInfo);
     console.log("jsonMetaData", jsonMetaData);
     console.log("ipfsResult", ipfsResult);
+
+    console.log("wallet", wallet);
+
+    mintBloodNFT(wallet, ipfsResult);
 
     console.log("발행하기");
   };
