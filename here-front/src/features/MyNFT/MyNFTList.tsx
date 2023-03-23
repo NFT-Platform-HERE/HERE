@@ -33,10 +33,6 @@ const swiperStyle = `
   }`;
 
 const mobileStyle = `
-.swiper-wrapper{
-  width: 100%;
-  height: 50%;
-}
 .swiper-button-prev{
   width: 20px;
   height: 20px;
@@ -102,7 +98,7 @@ export default function MyNFTList({ myNFTList }: Iprops) {
               {selectedCardList.includes(item.index) && (
                 <img
                   src="/icons/check.svg"
-                  className="absolute -top-8 right-15 h-25 w-25"
+                  className="absolute -top-8 right-5 h-25 w-25"
                 />
               )}
             </SwiperSlide>
@@ -128,7 +124,7 @@ export default function MyNFTList({ myNFTList }: Iprops) {
               {selectedCardList.includes(item.index) && (
                 <img
                   src="/icons/check.svg"
-                  className="absolute -top-8 right-15 h-25 w-25"
+                  className="absolute -top-8 -right-5 h-25 w-25"
                 />
               )}
             </SwiperSlide>

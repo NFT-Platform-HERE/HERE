@@ -58,13 +58,13 @@ export default function MyNFTPage() {
           </div>
           <img
             src="/icons/instagram.png"
-            className="hidden mobile:absolute mobile:top-0 mobile:right-0 mobile:block mobile:h-20 mobile:w-20"
+            className="hidden mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35"
           ></img>
           <div className="relative flex h-630 w-137 items-center justify-center mobile:h-180 mobile:w-full">
             <MyNFTList myNFTList={swiperList} />
           </div>
 
-          <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:gap-30">
+          <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
             <SelectedNFTList selectedCardList={selectedCardList} />
           </div>
         </div>
