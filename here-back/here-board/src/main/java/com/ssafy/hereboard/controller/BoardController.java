@@ -35,7 +35,7 @@ public class BoardController {
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
             @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
-            @RequestPart(value = "multipartFileList")List<MultipartFile> multipartFileList) {
+            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList) throws Exception{
         System.out.println("multipartFileList = " + multipartFileList.size());
         List<String> imgUrlList = new ArrayList<>();
         if(multipartFileList != null) {
