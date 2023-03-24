@@ -1,8 +1,13 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import withReactContent from "sweetalert2-react-content";
+import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
+import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
+import { sendIpfs } from "../../apis/blockchain/ipfs";
+import { mintBloodNFT } from "../../apis/blockchain/contracts";
+import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 
 const MySwal = withReactContent(Swal);
 
@@ -17,7 +22,40 @@ export default function RedCrossPublishPage() {
     place: "",
   });
 
+  const [formValid, setFormValid] = useState(false);
+  const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
+
   const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
+
+  const validateForm = () => {
+    if (
+      name.length > 0 &&
+      sex.length > 0 &&
+      bloodType.length > 0 &&
+      wallet.length > 0 &&
+      birth.length > 0 &&
+      createdDate.length > 0 &&
+      place.length > 0
+    ) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [inputs]);
+
+  const handlePlaceInputKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.code === "Enter") {
+      handleMint();
+    }
+  };
+
+  function handleMint() {
+    publishNFT();
+  }
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,8 +66,47 @@ export default function RedCrossPublishPage() {
     });
   };
 
-  const publishNFT = () => {
-    console.log("발행하기");
+  const errorHandler = (message: string) => {
+    setOpendLoadingModal(false);
+    failMint();
+    return;
+  };
+
+  const publishNFT = async () => {
+    //랜덤 숫자 생성(0~12)
+    const randomNumber = randomFromZeroToN(12);
+    // 랜덤 이미지 선택
+    const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
+
+    const metaInfo = {
+      name: name.trim(),
+      gender: sex,
+      type: bloodType,
+      walletAddress: wallet.trim(),
+      birth: birth,
+      createdDate: createdDate,
+      place: place.trim(),
+      imageURL: mintImageURL,
+    };
+
+    const jsonMetaData = makeJsonMetaData(metaInfo);
+
+    try {
+      // const ipfsResult = await sendIpfs(jsonMetaData);
+      const ipfsResult =
+        "http://13.209.252.39:8080/ipfs/QmamRS1yGEmN5WnunPH5SspQujZijrDVH5DmWFLtEzXJVN";
+      setOpendLoadingModal(true);
+
+      mintBloodNFT(wallet, ipfsResult).then((data) => {
+        setOpendLoadingModal(false);
+        successMint();
+      });
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      errorHandler(message);
+    }
   };
 
   const findWallet = () => {
@@ -53,6 +130,25 @@ export default function RedCrossPublishPage() {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       console.log("result.value가 내가 아까 입력한 값", result.value);
+    });
+  };
+
+  const successMint = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "헌혈증 NFT 발행 완료",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const failMint = () => {
+    MySwal.fire({
+      icon: "error",
+      title: "헌혈증 NFT 발행 실패",
+      showConfirmButton: false,
+      timer: 1500,
     });
   };
 
@@ -203,6 +299,7 @@ export default function RedCrossPublishPage() {
           name="place"
           value={place}
           onChange={onChangeValue}
+          onKeyDown={handlePlaceInputKeyDown}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />
       </div>
@@ -211,9 +308,10 @@ export default function RedCrossPublishPage() {
         height={60}
         fontSize={20}
         children={"NFT 발행하기"}
-        isDisabled={false}
-        onClick={publishNFT}
+        isDisabled={!formValid}
+        onClick={handleMint}
       />
+      {opendLoadingModal && <RedCrossLoadingModal />}
     </div>
   );
 }
