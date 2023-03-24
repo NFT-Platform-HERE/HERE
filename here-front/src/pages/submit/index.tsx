@@ -9,8 +9,14 @@ import { useDispatch } from "react-redux";
 import "swiper/css";
 import "swiper/css/navigation";
 import CommonBtn from "@/components/Button/CommonBtn";
+import Background from "@/components/Background/Background";
+import { useState } from "react";
+import SubmitOrganizationModal from "@/features/Submit/SubmitOrganizationModal";
+import SubmitHospitalModal from "@/features/Submit/SubmitHospitalModal";
 
 export default function SubmitPage() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const tabIndex = useSelector((state: RootState) => {
     return state.submitTab.tabIndex;
@@ -19,6 +25,14 @@ export default function SubmitPage() {
   const isOrganizationTab = tabIndex === 1 ? true : false;
 
   const isHospitalTab = tabIndex === 2 ? true : false;
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -88,7 +102,7 @@ export default function SubmitPage() {
                 width={130}
                 height={45}
                 fontSize={16}
-                onClick={() => console.log("submit!")}
+                onClick={openModal}
                 isDisabled={false}
               >
                 제출하기
@@ -99,7 +113,7 @@ export default function SubmitPage() {
                 width={100}
                 height={35}
                 fontSize={15}
-                onClick={() => console.log("submit!")}
+                onClick={openModal}
                 isDisabled={false}
               >
                 제출하기
@@ -149,6 +163,12 @@ export default function SubmitPage() {
           <SubmitNFTList />
         </div>
       </div>
+      {isOrganizationTab && isModalOpen && (
+        <SubmitOrganizationModal onClick={closeModal} />
+      )}
+      {isHospitalTab && isModalOpen && (
+        <SubmitHospitalModal onClick={closeModal} />
+      )}
     </>
   );
 }
