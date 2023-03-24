@@ -4,10 +4,12 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -248,42 +250,42 @@ public class MemberService {
         return res;
     }
 
-//    /**
-//     * 스탬프 정보 조회
-//     */
-//    public ResponseSuccessDto<StampGetResponseDto> getStamp(UUID memberId) {
-//
-//        Stamp stamp = stampRepository.findByMemberId(memberId);
-//        System.out.println(stamp);
-//
-//        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
-//                .stage(stamp.getStamp())
-//                .step(stamp.getStep())
-//                .build();
-//
-//        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
-//        return res;
-//    }
+    /**
+     * 스탬프 정보 조회
+     */
+    public ResponseSuccessDto<StampGetResponseDto> getStampInfo(UUID memberId) {
 
-//    /**
-//     * 증명서 제출 기관/병원 검색
-//     */
-//    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(String query, String organType) {
-//
-//        List<Member> searchedOrgans = memberRepository.findByNameContains(query);
-//        List<OrganSearchResponseDto> result = new ArrayList<>();
-//
-//        for (Member organ : searchedOrgans) {
-//
-//            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
-//                    .agencyId(organ.getId())
-//                    .agencyName(organ.getName())
-//                    .build();
-//            result.add(organSearchResponseDto);
-//        }
-//
-//        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
-//        return res;
-//    }
+        Stamp stampInfo = stampRepository.findByMemberId(memberId);
+        System.out.println(stampInfo);
+
+        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
+                .stage(stampInfo.getStage())
+                .step(stampInfo.getStep())
+                .build();
+
+        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
+        return res;
+    }
+
+    /**
+     * 증명서 제출 기관/병원 검색
+     */
+    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(EnumMemberRole organType,String query) {
+
+        List<Member> searchedOrgans = memberRepository.findByRoleAndNameContains(organType, query);
+        List<OrganSearchResponseDto> result = new ArrayList<>();
+
+        for (Member organ : searchedOrgans) {
+
+            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
+                    .agencyId(organ.getId())
+                    .agencyName(organ.getName())
+                    .build();
+            result.add(organSearchResponseDto);
+        }
+
+        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
+        return res;
+    }
 
 }

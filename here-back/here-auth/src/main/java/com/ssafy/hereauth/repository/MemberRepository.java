@@ -1,6 +1,7 @@
 package com.ssafy.hereauth.repository;
 
 import com.ssafy.hereauth.entity.Member;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,9 +17,11 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
     Optional<Member> findByEmail(String email);
     Optional<Member> findByWalletAddress(String walletAddress);
 
-//    List<Member> findByNameContaining();
-//
+//    List<Member> findByNameContaining(String s);
+
 //    List<Member> findByNameLike(String s);
-//
+
 //    List<Member> findByNameContains(String query);
+
+    List<Member> findByRoleAndNameContains(EnumMemberRole organType, String query);
 }
