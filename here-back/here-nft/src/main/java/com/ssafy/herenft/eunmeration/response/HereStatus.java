@@ -26,7 +26,7 @@ public enum HereStatus {
     HERE_FIND_NFT_LIST_AGENCY,
 
     // 병원용 NFT 목록 조회
-    HERE_FIND_NFT_LIST_HOSPITAL
+    HERE_FIND_NFT_LIST_HOSPITAL,
 
 
 }
