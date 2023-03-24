@@ -2,13 +2,11 @@ package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
-import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
 import com.ssafy.herenft.entity.BdHistory;
 import com.ssafy.herenft.entity.CertHistory;
 import com.ssafy.herenft.entity.Member;
 import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
-import com.ssafy.herenft.eunmeration.EnumMemberRole;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
 import com.ssafy.herenft.repository.BdHistoryRepository;
@@ -18,7 +16,6 @@ import com.ssafy.herenft.repository.NftRepository;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,17 +140,28 @@ public class NftService {
         return res;
     }
 
-    /* 기관용/병원용 NFT 목록 조회 */
-    public ResponseSuccessDto<List<GetNftToOrganResponseDto>> getNftToOrgan(UUID memberId, String organType) {
-        List<Nft> nftList = null;
+    /* 증명서 소유권 이전 (해시값 자동 선택) */
+    public ResponseSuccessDto<List<FindDonationResponseDto>> findDonationList(FindDonationRequestDto findDonationRequestDto) {
+        List<FindDonationResponseDto> result = nftRepository.findDonationList(findDonationRequestDto.getSenderId(), findDonationRequestDto.getQuantity());
+        ResponseSuccessDto<List<FindDonationResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_DONATION);
+        return res;
+    }
 
-        if (organType.equals("AGENCY")) {
+
+    /* 기관용/병원용 NFT 목록 조회 */
+    public ResponseSuccessDto<List> getNftToOrgan(UUID memberId, EnumNftType organType) {
+        List<Nft> nftList = new ArrayList<>();
+        HereStatus status = null;
+
+        if (organType == EnumNftType.AGENCY) {
             nftList = nftRepository.findAllByIssuerId(memberId);
-        } else if (organType.equals("HOSPITAL")) {
+        } else if (organType == EnumNftType.HOSPITAL) {
             nftList = nftRepository.findAllByOwnerId(memberId);
+        } else {
+            throw new RuntimeException("잘못된 organType 입니다!");
         }
 
-        List<GetNftToOrganResponseDto> result = new ArrayList<>();
+        List result = new ArrayList<>();
 
         for (Nft nft : nftList) {
             UUID issuerId = nft.getIssuerId();
@@ -162,22 +170,47 @@ public class NftService {
 
             boolean isOwner;
 
-            if (issuerId.equals(memberId)) {
-                isOwner = true;
+            isOwner = issuerId.equals(memberId);
+
+            if(organType == EnumNftType.HOSPITAL) {
+                GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
+                        .name(issuer.getName())
+                        .createdDate(nft.getCreatedDate())
+                        .isOwner(isOwner)
+                        .build();
+                result.add(getNftHospitalResponseDto);
+                status = HereStatus.HERE_FIND_NFT_LIST_HOSPITAL;
             } else {
-                isOwner = false;
+                BdHistory bdHistory = bdHistoryRepository.findBdHistory(issuer, nft.getCreatedDate());
+                GetNftAgencyResponseDto getNftAgencyResponseDto = GetNftAgencyResponseDto.builder()
+                        .place(bdHistory.getPlace())
+                        .createdDate(nft.getCreatedDate())
+                        .isOwner(isOwner)
+                        .build();
+                result.add(getNftAgencyResponseDto);
+                status = HereStatus.HERE_FIND_NFT_LIST_AGENCY;
             }
 
-            GetNftToOrganResponseDto getNftToOrganResponseDto = GetNftToOrganResponseDto.builder()
-                    .issuerName(issuer.getName())
-                    .createdDate(nft.getCreatedDate())
-                    .isOwner(isOwner)
-                    .build();
-
-            result.add(getNftToOrganResponseDto);
         }
 
-        ResponseSuccessDto<List<GetNftToOrganResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_CREATE_NFT);
+        ResponseSuccessDto<List> res = responseUtil.successResponse(result, status);
+        return res;
+    }
+
+    /* 병원 제출용 자동선택 NFT 목록 조회 */
+    public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findHospitalNftList(UUID memberId, int count) {
+        List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(memberId, count);
+        List<FindHospitalNftResponseDto> result = new ArrayList<>();
+        for (Nft nft : hospitalNftAutoList) {
+            Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+            FindHospitalNftResponseDto findHospitalNftResponseDto = FindHospitalNftResponseDto.builder()
+                    .issuerName(findMember.getName())
+                    .createdDate(nft.getCreatedDate())
+                    .build();
+            result.add(findHospitalNftResponseDto);
+        }
+
+        ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(hospitalNftAutoList, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
         return res;
     }
 }
