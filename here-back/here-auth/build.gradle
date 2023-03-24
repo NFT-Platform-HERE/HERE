@@ -28,6 +28,15 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+
+	// gson
+	implementation 'com.google.code.gson:gson:2.10.1'
+
+	// spring-boot-configuration-processor
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'

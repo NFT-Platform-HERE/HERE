@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.entity;
 
 import com.ssafy.hereauth.dto.character.CharacterRequestDto;
-import com.ssafy.hereauth.enumeration.character.EnumCharacterType;
+import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Character {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
@@ -25,7 +25,7 @@ public class Character {
     private EnumCharacterType type;
 
     @Column(name = "level", columnDefinition = "int default 1", nullable = false)
-    private int level;
+    private int level = 1;
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;
