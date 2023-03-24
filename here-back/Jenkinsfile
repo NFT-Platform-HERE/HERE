@@ -154,7 +154,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name ${HERE_NFT_CONTAINER} -d -p 9012:9012 ${HERE_NFT_CONTAINER}'
+                        sh 'docker run --name ${HERE_NFT_CONTAINER} -d -p 9012:9012 ${HERE_NFT_IMAGE}'
                         echo 'Run New image'
                     }
                 }
