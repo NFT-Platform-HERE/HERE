@@ -21,6 +21,7 @@ const useCheckMemberQuery = (walletAddress: string) => {
         if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
           router.push("/member");
         }
+        // 멤버ID, 닉네임, 이미지 받아서 저장
       },
     },
   );

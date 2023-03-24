@@ -12,7 +12,9 @@ interface Iprops {
   deactivate: () => void;
 }
 
-export const connectWallet = ({
+const SSAFYNETWORK = "0x79f5";
+
+export const connectWallet = async ({
   account,
   active,
   activate,
@@ -27,10 +29,48 @@ export const connectWallet = ({
     );
     return;
   }
+
   if (active && account) {
     deactivate();
     // 이미 연결되어있는 상태면 연결해제 함수 호출
   }
   activate(Injected);
   // activate 함수로, App에서 만든 Injected란 이름의 connector 인스턴스를 넘겨준다
+
+  const chainId = await window.ethereum.request({
+    method: "eth_chainId",
+  });
+  console.log(chainId);
+  if (chainId !== SSAFYNETWORK) {
+    try {
+      console.log("ddd");
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: SSAFYNETWORK }],
+      });
+    } catch (e: any) {
+      console.log("error", e);
+      console.log("error code?", e.code);
+      if (e.code === 4902) {
+        // metamask에 해당 네트워크가 없는 경우 추가해주기
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: SSAFYNETWORK,
+              chainName: "SSAFY",
+              rpcUrls: ["https://rpc.ssafy-blockchain.com"],
+              // blockExplorerUrls: ["https://testnetexplorer.metadium.com"],
+              nativeCurrency: {
+                name: "SSF TOKEN",
+                decimals: 18,
+                symbol: "SSF",
+              },
+            },
+          ],
+        });
+      }
+      return;
+    }
+  }
 };
