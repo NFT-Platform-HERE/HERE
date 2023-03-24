@@ -30,13 +30,11 @@ export default function MobileHeader({ handleConnect }: Iprops) {
   const headerName = useSelector((state: RootState) => {
     return state.mobileHeaderName.name;
   });
-
-  const walletAddress = useSelector(
-    (state: RootState) => state.member.walletAddress,
+  const { memberId, characterImgUrl } = useSelector(
+    (state: RootState) => state.member,
   );
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const handleMenuDropDown = () => {
     menuDropdown
@@ -60,16 +58,16 @@ export default function MobileHeader({ handleConnect }: Iprops) {
   return (
     <div>
       <div className="relative z-30 flex h-60 w-full min-w-300 items-center justify-between bg-white pr-10 pl-10">
-        {!walletAddress ? (
+        {!memberId ? (
           <button onClick={handleConnect}>
             <FaWallet className="mx-10 text-24 text-pen-3" />
           </button>
         ) : (
           <img
-            src="/icons/character.svg"
-            className="h-35 w-35"
+            src={characterImgUrl}
+            className="h-35 w-35 rounded-full"
             onClick={handleProfileDropDown}
-          ></img>
+          />
         )}
         {headerName === "home" ? (
           <img src="/icons/logo.svg" className="h-40 w-80"></img>

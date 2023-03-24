@@ -53,10 +53,6 @@ export default function MobileHeaderMenuDropdown() {
       <div className="text-14" onClick={() => movePage("/my-nft")}>
         나의 NFT
       </div>
-
-      {/* <div className="text-14" onClick={handleConnect}>
-        LOGIN
-      </div> */}
     </div>
   );
 }

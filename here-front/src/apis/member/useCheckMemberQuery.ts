@@ -3,6 +3,8 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { getMemberInfo } from "@/stores/member/member";
 
 const fetcher = (walletAddress: string) =>
   axios
@@ -11,6 +13,7 @@ const fetcher = (walletAddress: string) =>
 
 const useCheckMemberQuery = (walletAddress: string) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   return useQuery(
     [queryKeys.MEMBER_CHECK, walletAddress],
@@ -18,10 +21,12 @@ const useCheckMemberQuery = (walletAddress: string) => {
     {
       enabled: !!walletAddress,
       onSuccess: (data) => {
+        console.log(data.data);
         if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
           router.push("/member");
         }
         // 멤버ID, 닉네임, 이미지 받아서 저장
+        dispatch(getMemberInfo(data.data));
       },
     },
   );
