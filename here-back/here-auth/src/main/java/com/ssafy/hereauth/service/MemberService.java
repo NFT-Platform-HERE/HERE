@@ -1,5 +1,7 @@
 package com.ssafy.hereauth.service;
 
+import com.ssafy.hereauth.dto.bdHistory.BdHistoryCreateRequestDto;
+import com.ssafy.hereauth.dto.bdHistory.BdHistoryCreateResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
@@ -9,10 +11,8 @@ import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
-import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
