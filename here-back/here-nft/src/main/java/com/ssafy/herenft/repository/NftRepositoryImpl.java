@@ -2,22 +2,17 @@ package com.ssafy.herenft.repository;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.herenft.dto.nft.FindHospitalNftResponseDto;
-import com.ssafy.herenft.dto.nft.QFindHospitalNftResponseDto;
-import com.ssafy.herenft.entity.Member;
+import com.ssafy.herenft.dto.nft.FindDonationResponseDto;
+import com.ssafy.herenft.dto.nft.QFindDonationResponseDto;
 import com.ssafy.herenft.entity.Nft;
-import com.ssafy.herenft.entity.QMember;
 import com.ssafy.herenft.entity.QNft;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static com.ssafy.herenft.entity.QMember.member;
 import static com.ssafy.herenft.entity.QNft.nft;
 
 public class NftRepositoryImpl implements NftRepositoryCustom {
@@ -29,14 +24,29 @@ public class NftRepositoryImpl implements NftRepositoryCustom {
     }
 
     @Override
-    public List<Nft> findHospitalNftAuto(Member member, int count) {
+    public List<Nft> findHospitalNftAuto(UUID memberId, int count) {
         return queryFactory
                 .selectFrom(nft)
-                .where(ownerEq(member.getId()))
+                .where(ownerEq(memberId))
                 .orderBy(
                         provideStatusOrder(),
                         nft.createdDate.asc()
                 )
+                .limit(count)
+                .fetch();
+    }
+
+    @Override
+    public List<FindDonationResponseDto> findDonationList(UUID memberId, int count) {
+        return queryFactory
+                .select(new QFindDonationResponseDto(nft.tokenId))
+                .from(nft)
+                .where(ownerEq(memberId))
+                .orderBy(
+                        provideStatusOrder(),
+                        nft.createdDate.asc()
+                )
+                .limit(count)
                 .fetch();
     }
 

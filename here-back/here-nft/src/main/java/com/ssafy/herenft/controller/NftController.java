@@ -3,6 +3,7 @@ package com.ssafy.herenft.controller;
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.eunmeration.EnumMemberRole;
+import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.service.NftService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,9 +56,16 @@ public class NftController {
         return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 
+    @ApiOperation(value = "증명서 소유권 이전(해시값 자동 선택)", notes = "증명서 소유권 이전(해시값 자동 선택)을 합니다.")
+    @PatchMapping("/donate")
+    public ResponseEntity<ResponseSuccessDto<List<FindDonationResponseDto>>> getDonationList(
+            @RequestBody FindDonationRequestDto findDonationRequestDto) {
+        return ResponseEntity.ok(nftService.findDonationList(findDonationRequestDto));
+    }
+
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/{organType}")
-    public ResponseEntity<ResponseSuccessDto<List<GetNftToOrganResponseDto>>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") String organType) {
+    public ResponseEntity<ResponseSuccessDto<List>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
         System.out.println("컨트롤러 단 들어오는지");
         return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
     }

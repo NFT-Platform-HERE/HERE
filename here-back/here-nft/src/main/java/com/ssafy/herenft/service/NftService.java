@@ -140,6 +140,14 @@ public class NftService {
         return res;
     }
 
+    /* 증명서 소유권 이전 (해시값 자동 선택) */
+    public ResponseSuccessDto<List<FindDonationResponseDto>> findDonationList(FindDonationRequestDto findDonationRequestDto) {
+        List<FindDonationResponseDto> result = nftRepository.findDonationList(findDonationRequestDto.getSenderId(), findDonationRequestDto.getQuantity());
+        ResponseSuccessDto<List<FindDonationResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_DONATION);
+        return res;
+    }
+
+
     /* 기관용/병원용 NFT 목록 조회 */
     public ResponseSuccessDto<List> getNftToOrgan(UUID memberId, EnumNftType organType) {
         List<Nft> nftList = new ArrayList<>();
@@ -191,8 +199,7 @@ public class NftService {
 
     /* 병원 제출용 자동선택 NFT 목록 조회 */
     public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findHospitalNftList(UUID memberId, int count) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(member, count);
+        List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(memberId, count);
         List<FindHospitalNftResponseDto> result = new ArrayList<>();
         for (Nft nft : hospitalNftAutoList) {
             Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));

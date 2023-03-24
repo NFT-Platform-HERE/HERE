@@ -28,5 +28,7 @@ public enum HereStatus {
     // 병원용 NFT 목록 조회
     HERE_FIND_NFT_LIST_HOSPITAL,
 
+    // 기부 데이터 조회 성공
+    HERE_FIND_DONATION
 
 }
