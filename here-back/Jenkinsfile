@@ -56,7 +56,7 @@ pipeline {
                     }
                     steps {
                         sh 'ls -al'
-                        dir('here-back/here-anft'){
+                        dir('here-back/here-nft'){
                             sh 'ls -al'
                             sh 'chmod +x ./gradlew'
                             sh './gradlew build'
