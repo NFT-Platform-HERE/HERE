@@ -7,6 +7,8 @@ import mobileHeaderProfileDropdownSlice from "./header/mobileHeaderProfileDropdo
 import myNFTSlice from "./myNFT/myNFT";
 import selectedNFTSlice from "./myNFT/selectedNFT";
 import memberSlice from "./member/member";
+import submitTabSlice from "./submit/submitTab";
+import submitSelectedNFTSlice from "./submit/selectedNFT";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
@@ -15,6 +17,8 @@ const reducers = combineReducers({
   mobileHeaderMenuDropdown: mobileHeaderMenuDropdownSlice,
   mobileHeaderProfileDropdown: mobileHeaderProfileDropdownSlice,
   mobileHeaderName: mobileHeaderNameSlice,
+  submitTab: submitTabSlice,
+  submitSelectedNFT: submitSelectedNFTSlice,
 });
 
 const persistConfig = {
