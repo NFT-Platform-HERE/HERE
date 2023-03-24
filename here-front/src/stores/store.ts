@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import mobileHeaderMenuDropdownSlice from "./header/mobileHeaderMenuDropdown";
 import mobileHeaderNameSlice from "./header/mobileHeaderName";
 import mobileHeaderProfileDropdownSlice from "./header/mobileHeaderProfileDropdown";
+import webHeaderDropdown from "./header/webHeaderDropdown";
 import myNFTSlice from "./myNFT/myNFT";
 import selectedNFTSlice from "./myNFT/selectedNFT";
 import memberSlice from "./member/member";
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   mobileHeaderName: mobileHeaderNameSlice,
   submitTab: submitTabSlice,
   submitSelectedNFT: submitSelectedNFTSlice,
+  webHeaderDropdown: webHeaderDropdown,
 });
 
 const persistConfig = {

@@ -2,25 +2,40 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import WebHeaderDropdown from "./WebHeaderDropdown";
 import HeaderTag from "../Tag/HeaderTag";
+import { FaWallet } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import { useDispatch } from "react-redux";
+import {
+  closeWebHeaderDropdown,
+  openWebHeaderDropdown,
+} from "@/stores/header/webHeaderDropdown";
 
 interface Iprops {
-  walletAddress: string;
   handleConnect: () => void;
 }
 
-export default function WebHeader({ walletAddress, handleConnect }: Iprops) {
-  const [dropDown, setDropDown] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
+export default function WebHeader({ handleConnect }: Iprops) {
+  const { memberId, nickname, characterImgUrl } = useSelector(
+    (state: RootState) => state.member,
+  );
+  const dropDown = useSelector((state: RootState) => {
+    return state.webHeaderDropdown.isOpen;
+  });
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const movePage = (path: string) => {
     router.push(path);
-    setDropDown(false);
+    dispatch(closeWebHeaderDropdown());
   };
 
   const handleDropDown = () => {
-    setDropDown(!dropDown);
+    dropDown
+      ? dispatch(closeWebHeaderDropdown())
+      : dispatch(openWebHeaderDropdown());
   };
 
   useEffect(() => {
@@ -79,25 +94,19 @@ export default function WebHeader({ walletAddress, handleConnect }: Iprops) {
             </div>
           </div>
         </div>
-        <button onClick={handleConnect}>LOGIN</button>
-        {/* {active ? (
+        {!memberId ? (
+          <button onClick={handleConnect}>
+            <FaWallet className="text-30 text-pen-3" />
+          </button>
+        ) : (
           <div
             className="flex w-120 cursor-pointer items-center"
             onClick={handleDropDown}
           >
-            <img className="h-40 w-40 rounded-100 bg-slate-500"></img>
-            <div className="ml-10 w-70 text-15 font-normal">
-              지갑 주소: {account}
-            </div>
+            <img src={characterImgUrl} className="h-40 w-40 rounded-full" />
+            <div className="ml-10 w-70 text-15 font-normal">{nickname}</div>
           </div>
-        ) : null} */}
-        {/* <div
-          className="flex w-120 cursor-pointer items-center"
-          onClick={handleDropDown}
-        >
-          <img className="h-40 w-40 rounded-100 bg-slate-500"></img>
-          <div className="ml-10 w-70 text-15 font-normal">지갑 주소: {account}</div>
-        </div> */}
+        )}
         {dropDown && (
           <div className="absolute top-[65px] right-0 z-10">
             <WebHeaderDropdown />

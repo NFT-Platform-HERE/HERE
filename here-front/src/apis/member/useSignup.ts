@@ -1,7 +1,6 @@
 import { MEMBER_SERVER_URL } from "@/utils/urls";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import * as queryKeys from "@/constants/queryKeys";
 import router from "next/router";
 import { Signup } from "@/types/Signup";
 
@@ -20,9 +19,6 @@ const useSignup = () => {
   const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries(queryKeys.SIGN_UP, {
-        refetchInactive: true,
-      });
       console.log("성공!");
       router.push("/");
     },
