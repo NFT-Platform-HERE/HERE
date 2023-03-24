@@ -61,7 +61,7 @@ public class MemberService {
         stampRepository.save(stamp);
 
         // 리턴
-        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
+        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getId(), member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
         return res;
     }
