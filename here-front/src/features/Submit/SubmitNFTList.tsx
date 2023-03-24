@@ -49,24 +49,40 @@ const samplePreview = [
 
 export default function SubmitNFTList() {
   return (
-    <div className="relative mt-70 mb-50">
-      <Swiper
-        slidesPerView={4}
-        className="static flex w-[1050px] justify-center"
-        navigation={true}
-        modules={[Navigation]}
-        css={[swiperStyle]}
-      >
+    <div className="relative mt-70 mb-50 flex justify-center mobile:mb-20">
+      <div className="mobile:hidden">
+        <Swiper
+          slidesPerView={4}
+          className="static flex w-[1050px] justify-center mobile:w-full"
+          navigation={true}
+          modules={[Navigation]}
+          css={[swiperStyle]}
+        >
+          {samplePreview.map((item, index) => (
+            <SwiperSlide className="relative flex justify-center" key={index}>
+              <SubmitNFTPreview
+                id={index}
+                name={item.name}
+                registerDate={item.registerDate}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      <div className="mt-30 hidden w-330 overflow-hidden rounded-10 border-1 border-black mobile:block">
         {samplePreview.map((item, index) => (
-          <SwiperSlide className="relative flex justify-center" key={index}>
-            <SubmitNFTPreview
-              id={index}
-              name={item.name}
-              registerDate={item.registerDate}
-            />
-          </SwiperSlide>
+          <div
+            className="flex h-47 w-330 items-center justify-between border-b-1 border-pen-0 pl-15 pr-15 text-15"
+            key={index}
+          >
+            <div className="flex items-center gap-10">
+              <img src="icons/check.svg" className="h-20 w-20" />
+              <div>{item.registerDate}</div>
+            </div>
+            <div>{item.name}</div>
+          </div>
         ))}
-      </Swiper>
+      </div>
     </div>
   );
 }

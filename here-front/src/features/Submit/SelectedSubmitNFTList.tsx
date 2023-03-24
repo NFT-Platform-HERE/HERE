@@ -38,7 +38,7 @@ export default function SelectedSubmitNFTList() {
       <Swiper
         slidesPerView={3}
         centeredSlides={true}
-        className="flex h-400 w-900 items-center justify-center"
+        className="flex h-400 w-900 items-center justify-center mobile:h-200 mobile:w-[calc(100%)]"
         css={[swiperStyle]}
       >
         {selectedCardList.map((item, index) => (
@@ -61,10 +61,18 @@ export default function SelectedSubmitNFTList() {
                     isActive && { zIndex: 100 },
                   ]}
                 >
-                  <NFTCardBack
-                    height={isActive ? 350 : 300}
-                    fontSize={isActive ? 18 : 16}
-                  />
+                  <div className="mobile:hidden">
+                    <NFTCardBack
+                      height={isActive ? 350 : 300}
+                      fontSize={isActive ? 18 : 16}
+                    />
+                  </div>
+                  <div className="hidden mobile:block">
+                    <NFTCardBack
+                      height={isActive ? 203 : 150}
+                      fontSize={isActive ? 12 : 10}
+                    />
+                  </div>
                 </div>
               );
             }}
