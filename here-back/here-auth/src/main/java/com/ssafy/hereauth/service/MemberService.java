@@ -4,10 +4,12 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +31,6 @@ public class MemberService {
 
     private final ResponseUtil responseUtil;
     private final MemberRepository memberRepository;
-    private final MemberCharacterRepository memberCharacterRepository;
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
     private final CertHistoryRepository certHistoryRepository;
@@ -49,15 +51,11 @@ public class MemberService {
         /**
          * 회원 저장
          */
-        Member member = new Member();
-        member.createMember(signupRequestDto);
-        memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
-
-        // 멤버_캐릭터 : 멤버 만들고 멤버 만들면 자동으로 만들어지는 것? (원투원 매핑)
-        MemberCharacter memberCharacter = new MemberCharacter();
         Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
-        memberCharacter.createMemberCharacter(member, character, signupRequestDto.getCharacterName());
-        memberCharacterRepository.save(memberCharacter);
+
+        Member member = new Member();
+        member.createMember(character, signupRequestDto);
+        memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
 
         // 스탬프
         Stamp stamp = new Stamp();
@@ -65,7 +63,7 @@ public class MemberService {
         stampRepository.save(stamp);
 
         // 리턴
-        SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 완료되었습니다.");
+        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getId(), member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
         return res;
     }
@@ -73,20 +71,14 @@ public class MemberService {
     /**
      * 멤버 명함 조회
      */
-    public ResponseSuccessDto<MemberProfileResponseDto> getProfile(String memberId) {
-        Member member = memberRepository.findById(UUID.fromString(memberId))
+    public ResponseSuccessDto<MemberProfileResponseDto> getProfile(UUID memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
-        // 캐릭터 imgUrl 가져오기 위해 멤버_캐릭터 테이블에서 멤버 id에 해당하는 캐릭터 id 가져오기
-        MemberCharacter memberCharacter = memberCharacterRepository.findByMemberId(UUID.fromString(memberId))
-                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 멤버의 캐릭터 정보입니다."));
-
-        Character character = memberCharacter.getCharacter();
-
-        String characterImgUrl = character.getImgUrl();
+        String characterImgUrl = member.getCharacter().getImgUrl();
 
         // 헌혈기록 리스트 뽑기
-        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(UUID.fromString(memberId));
+        List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(memberId);
 
         // 헌혈 카운트
         int bdHistoryCnt = bdHistoryList.size();
@@ -140,11 +132,11 @@ public class MemberService {
 
         if (isEmailDuplicate) {
             ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
-            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_DUPLICATED_EMAIL);
             return res;
         } else {
             ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
-            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
+            ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_NOT_DUPLICATED_EMAIL);
             return res;
         }
     }
@@ -166,24 +158,25 @@ public class MemberService {
 
     // 회원가입 여부 확인
     public ResponseSuccessDto<IsMemberResponseDto> checkIsMember(String walletAddress) {
+
         Optional<Member> byWalletAddress = memberRepository.findByWalletAddress(walletAddress);
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
         System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
 
         if (byWalletAddress.isEmpty()) {
-            System.out.println("여기여기" + byWalletAddress);
-            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
+            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(null, null, null, null, "등록된 회원이 아닙니다.");
             ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
             return res;
         }
-        System.out.println("여기여기" + byWalletAddress);
-        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
+        Member member = byWalletAddress.get();
+        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(member.getRole(), member.getId(), member.getNickname(), member.getCharacter().getImgUrl(),"등록된 회원입니다.");
         ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
 
     // 회원가입시 이메일 중복 이중 체크 용 메소드
-    public Boolean isEmailDuplicate(String email) {
+    public boolean isEmailDuplicate(String email) {
+        System.out.println("들어옴" + email);
         return memberRepository.existsByEmail(email);
     }
 
@@ -257,5 +250,42 @@ public class MemberService {
         return res;
     }
 
+    /**
+     * 스탬프 정보 조회
+     */
+    public ResponseSuccessDto<StampGetResponseDto> getStampInfo(UUID memberId) {
+
+        Stamp stampInfo = stampRepository.findByMemberId(memberId);
+        System.out.println(stampInfo);
+
+        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
+                .stage(stampInfo.getStage())
+                .step(stampInfo.getStep())
+                .build();
+
+        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
+        return res;
+    }
+
+    /**
+     * 증명서 제출 기관/병원 검색
+     */
+    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(EnumMemberRole organType,String query) {
+
+        List<Member> searchedOrgans = memberRepository.findByRoleAndNameContains(organType, query);
+        List<OrganSearchResponseDto> result = new ArrayList<>();
+
+        for (Member organ : searchedOrgans) {
+
+            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
+                    .agencyId(organ.getId())
+                    .agencyName(organ.getName())
+                    .build();
+            result.add(organSearchResponseDto);
+        }
+
+        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
+        return res;
+    }
 
 }

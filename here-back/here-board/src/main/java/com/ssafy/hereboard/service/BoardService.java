@@ -7,13 +7,17 @@ import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.hereboard.errorhandling.exception.service.NotAuthorizedUserException;
 import com.ssafy.hereboard.repository.*;
 import com.ssafy.hereboard.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +55,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -86,7 +90,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -132,16 +136,22 @@ public class BoardService {
     }
 
     /* 게시글 생성 */
-    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto) {
+    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         Board board = new Board().createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
 
-        // 이미지 리스트 넣어주기
-        for (String img : saveBoardRequestDto.getImgUrlList()) {
-            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
-            boardImgRepository.save(boardImg);
+        if(imgUrlList.size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
+
+        if(!imgUrlList.isEmpty()) {
+            // 이미지 저장
+            for (String img : imgUrlList) {
+                BoardImg boardImg = new BoardImg().createBoardImg(board, img);
+                boardImgRepository.save(boardImg);
+            }
         }
 
         SaveBoardResponseDto saveBoardResponseDto = SaveBoardResponseDto.builder()
@@ -158,15 +168,20 @@ public class BoardService {
         // 수정할 게시글 가져오기
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
+
+        checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
+
+        if(updateBoardRequestDto.getImgUrlList().size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
+
         // 게시글의 title, content 수정
-        board.updateBoard(board, updateBoardRequestDto); // 굳이 board를 넣어줄 필요가...?
+        board.updateBoard(updateBoardRequestDto);
 
         // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
 
-        for (BoardImg boardImg : boardImgs) {
-            boardImgRepository.delete(boardImg);
-        }
+        boardImgRepository.deleteAll(boardImgs);
 
         // 새롭게 들어온 이미지 리스트로 db에 추가
         for (String img : updateBoardRequestDto.getImgUrlList()) {
@@ -182,22 +197,31 @@ public class BoardService {
         return res;
     }
 
+    private static void checkAuthorizationToUpdateBoard(UUID writerId, Board board) {
+        if(!board.getMember().getId().equals(writerId)) {
+            throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
+        }
+    }
+
     /* 게시글 삭제/마감 */
-    public ResponseSuccessDto<UpdateBoardStatusResponseDto> updateBoardStatus(Long boardId, EnumBoardStatus status) {
-        if (status.equals(EnumBoardStatus.ACTIVE)) {
+    public ResponseSuccessDto<UpdateBoardStatusResponseDto> updateBoardStatus(UpdateBoardStatusRequestDto updateBoardStatusRequestDto) {
+        if (updateBoardStatusRequestDto.getStatus() == EnumBoardStatus.ACTIVE) {
             throw new BadRequestVariableException("게시글 상태값 요청이 올바르지 않습니다.");
         }
+
         // 삭제할 게시글 가져오기
-        Board board = boardRepository.findById(boardId)
+        Board board = boardRepository.findById(updateBoardStatusRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
+        checkAuthorizationToUpdateBoard(updateBoardStatusRequestDto.getWriterId(), board);
+
         // 해당 게시글을 status를 프론트에서 준 status로 변경
-        board.updateBoardStatus(status);
+        board.updateBoardStatus(updateBoardStatusRequestDto.getStatus());
 
         String message = "";
         HereStatus hereStatus = null;
 
-        if (status == EnumBoardStatus.INACTIVE) {
+        if (updateBoardStatusRequestDto.getStatus() == EnumBoardStatus.INACTIVE) {
             message = "게시글 마감 성공";
             hereStatus = HereStatus.HERE_CLOSE_BOARD;
         } else {
@@ -205,34 +229,13 @@ public class BoardService {
             hereStatus = HereStatus.HERE_DELETE_BOARD;
         }
         UpdateBoardStatusResponseDto updateBoardStatusResponseDto = UpdateBoardStatusResponseDto.builder()
-                .boardId(boardId)
+                .boardId(updateBoardStatusRequestDto.getBoardId())
                 .message(message)
                 .build();
 
         ResponseSuccessDto<UpdateBoardStatusResponseDto> res = responseUtil.successResponse(updateBoardStatusResponseDto, hereStatus);
         return res;
     }
-
-//    /* 게시글 마감 */
-//    public ResponseSuccessDto<CloseBoardResponseDto> closeBoard(Long boardId) {
-//        // 마감할 게시글 가져오기
-//        Board board = boardRepository.findById(boardId)
-//                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
-//
-////        if (board.getStatus() == EnumBoardStatus.DELETE) {
-////        } 이런 작업은 안 필요한가요? 그리고 삭제, 마감) 실제 작성자인지 확인하는 로직은 어디 넣는 게 적합?
-//
-//        // 해당 게시글을 status를 INACTIVE로 변경
-//        board.closeBoard();
-//
-//        CloseBoardResponseDto closeBoardResponseDto = CloseBoardResponseDto.builder()
-//                .boardId(board.getId())
-//                .message("게시글 마감 성공")
-//                .build();
-//
-//        ResponseSuccessDto<CloseBoardResponseDto> res = responseUtil.successResponse(closeBoardResponseDto, HereStatus.HERE_CLOSE_BOARD);
-//        return res;
-//    }
 
     /* 응원 메시지 수정 */
     public ResponseSuccessDto<UpdateMsgResponseDto> updateMsg(UpdateMsgRequestDto updateMsgRequestDto) {
@@ -341,6 +344,28 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
+    public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
+
+        List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
+        List<BoardResponseDto> result = new ArrayList<>();
+
+        for (Board board : boards) {
+            String thumbnail = findThumbnail(board.getId());
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .boardId(board.getId())
+                    .title(board.getTitle())
+                    .nickname(board.getMember().getNickname())
+                    .boardImgUrl(thumbnail)
+                    .status(board.getStatus())
+                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                    .build();
+            result.add(boardResponseDto);
+        }
+
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
 
     /* 기부 내역 등록 */
     public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
@@ -350,23 +375,6 @@ public class BoardService {
         UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
         // 주인공 boardBdHistory 가져오자
         BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
-
-        System.out.println("찾았다 주인공" + subjectBoardBdHistory);
-
-//        // sender가 이미 여기에 기부했던 적 있는지 확인!
-//        // 지금 이 게시글에 기부했다고 등록된 boardBdHistory 다 가져오자
-//        List<String> donators = boardBdHistoryRepository.findAllSenderIdByBoardId(boardId);
-//        System.out.println("확인" + donators);
-//        System.out.println("이것" + updateBoardBdHistoryRequestDto.getSenderId());
-//
-//        boolean isDonate = false;
-//
-//        for (String donator : donators) {
-//            if (updateBoardBdHistoryRequestDto.getSenderId().toString().equals(donator)) {
-//                isDonate = true;
-//            }
-//        }
-//        System.out.println("이 사람이 이미 기부자 목록에 있나요?" + isDonate);
 
         if (subjectBoardBdHistory == null) {
             // 이 게시글에 아직 기부한 적 없는 사람
@@ -384,7 +392,10 @@ public class BoardService {
         return res;
     }
 
-    /* 기부 데이터 조회 */
+    /* 기부 해시값 총 개수 확인 */
+
+
+    /* 기부 해시값 조회(자동 선택) */
     public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
 
 //        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);

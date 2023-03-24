@@ -24,9 +24,6 @@ public class SignupRequestDto {
     @NotBlank(message = "이메일 값을 입력해주세요.")
     @Email(message = "이메일 형식이 아닙니다.")
     private String email;
-    @NotNull(message = "캐릭터 이름은 필수 값입니다.")
-    @NotBlank(message = "캐릭터 이름을 입력해주세요.")
-    private String characterName;
     @NotNull(message = "characterId는 필수 값입니다.")
     private Long characterId;
 }

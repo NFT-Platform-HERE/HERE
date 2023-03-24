@@ -3,18 +3,20 @@ package com.ssafy.hereauth.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.hereauth.dto.member.SignupRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "stamp")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stamp {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
