@@ -2,6 +2,7 @@ package com.ssafy.hereauth.controller;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -88,18 +89,18 @@ public class MemberController {
     public ResponseEntity<ResponseSuccessDto<BdHistoryCreateResponseDto>> createBdHistory(@RequestBody BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
         return ResponseEntity.ok(memberService.createBdHistory(bdHistoryCreateRequestDto));
     }
-//
-//    /* 스탬프 정보 조회 */
-//    @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")
-//    @GetMapping("/stamp/{memberId}")
-//    public ResponseEntity<ResponseSuccessDto<StampGetResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
-//        return ResponseEntity.ok(memberService.getStamp(memberId));
-//    }
-//
-//    /* 증명서 제출 기관/병원 검색 */
-//    @ApiOperation(value = "증명서 제출 기관/병원 검색", notes = "제출할 기관/병원을 검색한다.")
-//    @GetMapping("/search/{organType}")
-//    public ResponseEntity<ResponseSuccessDto<List<OrganSearchResponseDto>>> searchOrgan(@RequestParam String query, @PathVariable("organType") String organType) {
-//        return ResponseEntity.ok(memberService.searchOrgan(query, organType));
-//    }
+
+    /* 스탬프 정보 조회 */
+    @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")
+    @GetMapping("/stamp/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<StampGetResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(memberService.getStampInfo(memberId));
+    }
+
+    /* 증명서 제출 기관/병원 검색 */
+    @ApiOperation(value = "증명서 제출 기관/병원 검색", notes = "제출할 기관/병원을 검색한다.")
+    @GetMapping("/search/organ/{organType}")
+    public ResponseEntity<ResponseSuccessDto<List<OrganSearchResponseDto>>> searchOrgan(@PathVariable("organType") EnumMemberRole organType, @RequestParam("query") String query) {
+        return ResponseEntity.ok(memberService.searchOrgan(organType, query));
+    }
 }
