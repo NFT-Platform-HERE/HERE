@@ -116,13 +116,9 @@ public class NftService {
             certHistoryRepository.save(certHistory);
         }
 
-//        CertHistory certHistory = new CertHistory().createCertHistoryHospital(member, agency, submitCertHospitalRequestDto);
-//        certHistoryRepository.save(certHistory);
-//
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
                 .message("증명서 병원 제출 성공")
                 .build();
-//
         ResponseSuccessDto<SubmitCertHospitalResponseDto> res = responseUtil.successResponse(submitCertHospitalResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
         return res;
     }
