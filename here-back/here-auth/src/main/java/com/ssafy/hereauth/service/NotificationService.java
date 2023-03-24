@@ -32,7 +32,7 @@ public class NotificationService {
     public ResponseSuccessDto<SaveNotificationResponseDto> save(SaveNotificationRequestDto saveNotificationRequestDto) {
         Member sender = memberRepository.findById(saveNotificationRequestDto.getSenderId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        Member receiver = memberRepository.findById(saveNotificationRequestDto.getSenderId())
+        Member receiver = memberRepository.findById(saveNotificationRequestDto.getReceiverId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
 
         Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
