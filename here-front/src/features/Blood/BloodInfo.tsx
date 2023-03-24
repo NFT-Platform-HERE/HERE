@@ -1,4 +1,5 @@
-import useMemberInfoQuery from "@/apis/member/useMemberInfoQuery";
+import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
+import Background from "@/components/Background/Background";
 import { RootState } from "@/stores/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,9 +10,10 @@ export default function BloodInfo() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
   const member = useMemberInfoQuery(memberId);
-  console.log(memberId);
-  console.log(member.data);
 
+  const handleModal = () => {
+    setOpenHistory(!openHistory);
+  };
   return (
     <>
       <div className="inline-block h-500 w-400 rounded-30 bg-pink-2 text-center mobile:mx-auto mobile:mt-32 mobile:h-400 mobile:w-300">
@@ -31,11 +33,12 @@ export default function BloodInfo() {
         </div>
         <button
           className="my-10 h-32 w-180 rounded-30 border-1 border-pen-0 bg-pink-0 text-14 font-medium hover:font-semibold"
-          onClick={() => setOpenHistory(!openHistory)}
+          onClick={handleModal}
         >
           나의 헌혈기록 보기
         </button>
         {openHistory && <BloodInfoModal />}
+        {openHistory && <Background onClick={handleModal} />}
       </div>
       <div className="flex h-500 w-600 flex-wrap justify-between mobile:mx-auto mobile:h-200 mobile:w-320">
         <div className="mb-10 flex h-160 w-600 flex-wrap justify-between border-b-3 border-pen-0 px-20 py-30 mobile:mx-0 mobile:w-100 mobile:border-0 mobile:px-0">
