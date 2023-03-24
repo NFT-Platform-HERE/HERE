@@ -20,9 +20,6 @@ const useSignup = () => {
   const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: () => {
-      queryClient.invalidateQueries(queryKeys.SIGN_UP, {
-        refetchInactive: true,
-      });
       console.log("성공!");
       router.push("/");
     },
