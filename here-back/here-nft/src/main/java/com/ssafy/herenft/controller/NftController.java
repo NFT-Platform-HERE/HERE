@@ -61,4 +61,11 @@ public class NftController {
         System.out.println("컨트롤러 단 들어오는지");
         return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
     }
+
+    @ApiOperation(value = "병원 제출용 자동선택 NFT 목록 조회", notes = "병원 제출용 자동선택 NFT 목록을 조회합니다.")
+    @GetMapping("/{memberId}/hospital/{count}")
+    public ResponseEntity<ResponseSuccessDto<List<FindHospitalNftResponseDto>>> findHospitalNftAuto(
+            @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {
+        return ResponseEntity.ok(nftService.findHospitalNftList(memberId, count));
+    }
 }
