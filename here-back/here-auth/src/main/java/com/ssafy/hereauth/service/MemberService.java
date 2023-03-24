@@ -61,7 +61,7 @@ public class MemberService {
         stampRepository.save(stamp);
 
         // 리턴
-        SignupResponseDto signupResponseDto = new SignupResponseDto("회원가입이 완료되었습니다.");
+        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
         return res;
     }
@@ -156,24 +156,25 @@ public class MemberService {
 
     // 회원가입 여부 확인
     public ResponseSuccessDto<IsMemberResponseDto> checkIsMember(String walletAddress) {
+
         Optional<Member> byWalletAddress = memberRepository.findByWalletAddress(walletAddress);
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
         System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
 
         if (byWalletAddress.isEmpty()) {
-            System.out.println("여기여기" + byWalletAddress);
-            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto("NULL", "회원 정보가 없습니다.");
+            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(null, null, null, null, "등록된 회원이 아닙니다.");
             ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
             return res;
         }
-        System.out.println("여기여기" + byWalletAddress);
-        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(byWalletAddress.get().getRole().toString(), "등록된 회원입니다.");
+        Member member = byWalletAddress.get();
+        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(member.getRole(), member.getId(), member.getNickname(), member.getCharacter().getImgUrl(),"등록된 회원입니다.");
         ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
 
     // 회원가입시 이메일 중복 이중 체크 용 메소드
-    public Boolean isEmailDuplicate(String email) {
+    public boolean isEmailDuplicate(String email) {
+        System.out.println("들어옴" + email);
         return memberRepository.existsByEmail(email);
     }
 
@@ -247,42 +248,42 @@ public class MemberService {
         return res;
     }
 
-    /**
-     * 스탬프 정보 조회
-     */
-    public ResponseSuccessDto<StampGetResponseDto> getStamp(UUID memberId) {
+//    /**
+//     * 스탬프 정보 조회
+//     */
+//    public ResponseSuccessDto<StampGetResponseDto> getStamp(UUID memberId) {
+//
+//        Stamp stamp = stampRepository.findByMemberId(memberId);
+//        System.out.println(stamp);
+//
+//        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
+//                .stage(stamp.getStamp())
+//                .step(stamp.getStep())
+//                .build();
+//
+//        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
+//        return res;
+//    }
 
-        Stamp stamp = stampRepository.findByMemberId(memberId);
-        System.out.println(stamp);
-
-        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
-                .stage(stamp.getStamp())
-                .step(stamp.getStep())
-                .build();
-
-        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
-        return res;
-    }
-
-    /**
-     * 증명서 제출 기관/병원 검색
-     */
-    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(String query, String organType) {
-
-        List<Member> searchedOrgans = memberRepository.findAllBySearch(query);
-        List<OrganSearchResponseDto> result = new ArrayList<>();
-
-        for (Member organ : searchedOrgans) {
-
-            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
-                    .agencyId(organ.getId())
-                    .agencyName(organ.getName())
-                    .build();
-            result.add(organSearchResponseDto);
-        }
-
-        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
-        return res;
-    }
+//    /**
+//     * 증명서 제출 기관/병원 검색
+//     */
+//    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(String query, String organType) {
+//
+//        List<Member> searchedOrgans = memberRepository.findByNameContains(query);
+//        List<OrganSearchResponseDto> result = new ArrayList<>();
+//
+//        for (Member organ : searchedOrgans) {
+//
+//            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
+//                    .agencyId(organ.getId())
+//                    .agencyName(organ.getName())
+//                    .build();
+//            result.add(organSearchResponseDto);
+//        }
+//
+//        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
+//        return res;
+//    }
 
 }
