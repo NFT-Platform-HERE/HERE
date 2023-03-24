@@ -3,11 +3,7 @@ import { setMobileHeaderName } from "@/stores/header/mobileHeaderName";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-interface Iprops {
-  handleConnect: () => void;
-}
-
-export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
+export default function MobileHeaderMenuDropdown() {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -58,9 +54,9 @@ export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
         나의 NFT
       </div>
 
-      <div className="text-14" onClick={handleConnect}>
+      {/* <div className="text-14" onClick={handleConnect}>
         LOGIN
-      </div>
+      </div> */}
     </div>
   );
 }

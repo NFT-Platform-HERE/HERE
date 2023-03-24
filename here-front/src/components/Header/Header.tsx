@@ -29,16 +29,10 @@ export default function Header() {
   return (
     <div>
       <div className="mobile:hidden">
-        <WebHeader
-          walletAddress={walletAddress}
-          handleConnect={handleConnect}
-        />
+        <WebHeader handleConnect={handleConnect} />
       </div>
       <div className="hidden mobile:block">
-        <MobileHeader
-          walletAddress={walletAddress}
-          handleConnect={handleConnect}
-        />
+        <MobileHeader handleConnect={handleConnect} />
       </div>
     </div>
   );
