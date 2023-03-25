@@ -8,6 +8,7 @@ import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
 import { mintBloodNFT } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
+import useRedCrossNFTListQuery from "@/apis/redcross/useRedCrossNFTListQuery";
 
 const MySwal = withReactContent(Swal);
 
@@ -91,10 +92,9 @@ export default function RedCrossPublishPage() {
 
     const jsonMetaData = makeJsonMetaData(metaInfo);
 
-
     try {
       const ipfsResult = await sendIpfs(jsonMetaData);
- 
+
       setOpendLoadingModal(true);
 
       mintBloodNFT(wallet, ipfsResult).then((data) => {
@@ -114,18 +114,16 @@ export default function RedCrossPublishPage() {
     MySwal.fire({
       title: <span className="text-20 font-medium">{title}</span>,
       input: "email",
+      inputPlaceholder: "xxxxxxxx@xxx.com",
       inputAttributes: {
         autocapitalize: "off",
       },
       width: "28rem",
       padding: "1rem",
       customClass: {
-        container: "p-4 bg-gray-100 rounded-lg",
-        title: "", // 얘는 왜 될까....
-        input: "bg-red-1 text-white font-bold", // 안써짐.....
-        confirmButton: "rounded-50 bg-red-1",
+        input: "focus:border-red-1 focus:border-0",
+        confirmButton: "w-120 rounded-10 bg-red-1",
       },
-      // confirmButtonColor: "#FF8BA1",
       confirmButtonText: "검색하기",
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {

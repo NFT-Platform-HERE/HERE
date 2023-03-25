@@ -116,12 +116,12 @@ export default function OrganizationPage() {
 
   const [confirmList, setConfirmList] = useState<Confirm[]>(testOne);
 
-  const activeList = useOrganizationNFTListQuery(
-    !isHospital ? "agency" : "hospital",
-    organizationId,
-    active,
-  );
-  console.log(activeList); // 나중에 이걸로 바꿔주기
+  // const activeList = useOrganizationNFTListQuery(
+  //   !isHospital ? "agency" : "hospital",
+  //   organizationId,
+  //   active,
+  // );
+  // console.log(activeList); // 나중에 이걸로 바꿔주기
 
   const changeTab = () => {
     setIsActive(!isActive);
