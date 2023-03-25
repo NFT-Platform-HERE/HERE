@@ -3,6 +3,9 @@ import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
 import { useState } from "react";
 import { Confirm } from "@/types/Confirm";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useOrganizationListQuery from "@/apis/organization/useOrganizationListQuery";
 
 const testOne = [
   {
@@ -104,21 +107,25 @@ const testThree = [
 ];
 
 export default function OrganizationPage() {
-  const [isHospital] = useState<boolean>(false);
+  const { organizationId, isHospital } = useSelector(
+    (state: RootState) => state.member,
+  );
 
-  const [isInactive, setIsInactive] = useState<boolean>(true);
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [active, setActive] = useState<string>("ACTIVE");
 
   const [confirmList, setConfirmList] = useState<Confirm[]>(testOne);
 
+  const activeList = useOrganizationListQuery(organizationId, active);
+  console.log(activeList); // 나중에 이걸로 바꿔주기
+
   const changeTab = () => {
-    setIsInactive(!isInactive);
     setIsActive(!isActive);
     if (isActive) {
-      // 완료된 배열 불러오는 쿼리 요청
+      setActive("ACTIVE");
       setConfirmList(testOne);
     } else {
-      // 대기중인 배열 불러오는 쿼리 요청
+      setActive("INACTIVE");
       setConfirmList(testTwo);
     }
   };
@@ -134,7 +141,7 @@ export default function OrganizationPage() {
         width={500}
         height={70}
         fontSize={20}
-        isSelected={isInactive}
+        isSelected={!isActive}
         children={"승인 대기"}
         onClick={changeTab}
       />

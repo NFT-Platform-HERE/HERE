@@ -7,3 +7,6 @@ export const MEMBER_STARTING_CHARACTER = "/memberCharacter";
 // blood
 export const MEMBER_INFO = "/memberInfo";
 export const BLOOD_HISTORY = "/bloodHistory";
+
+// organization
+export const ORGANIZATION_NFT_LIST = "/organizationNFTList";
