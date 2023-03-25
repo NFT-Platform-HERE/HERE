@@ -2,17 +2,11 @@ package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
-import com.ssafy.herenft.entity.BdHistory;
-import com.ssafy.herenft.entity.CertHistory;
-import com.ssafy.herenft.entity.Member;
-import com.ssafy.herenft.entity.Nft;
+import com.ssafy.herenft.entity.*;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
-import com.ssafy.herenft.repository.BdHistoryRepository;
-import com.ssafy.herenft.repository.CertHistoryRepository;
-import com.ssafy.herenft.repository.MemberRepository;
-import com.ssafy.herenft.repository.NftRepository;
+import com.ssafy.herenft.repository.*;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +28,7 @@ public class NftService {
     private final BdHistoryRepository bdHistoryRepository;
     private final MemberRepository memberRepository;
     private final CertHistoryRepository certHistoryRepository;
+    private final StampRepository stampRepository;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(SaveNftRequestDto saveNftRequestDto) {
@@ -50,8 +45,20 @@ public class NftService {
         BdHistory bdHistory = new BdHistory().createBdHistory(member, saveNftRequestDto);
         bdHistoryRepository.save(bdHistory);
 
+        // 스탬프 정보 업데이트
+        Stamp stamp = stampRepository.findByMemberId(member.getId());
+        boolean isLevelUp = false;
+
+        if (stamp.getStep() + 1 >= 7) {
+            stamp.updateStamp(member, stamp.getStage() + 1, 1);
+            isLevelUp = true;
+        } else {
+            stamp.updateStamp(member, stamp.getStage(), stamp.getStep() + 1);
+        }
+
         SaveNftResponseDto saveNftResponseDto = SaveNftResponseDto.builder()
                 .message("NFT 등록 성공")
+                .isLevelUp(isLevelUp)
                 .build();
 
         ResponseSuccessDto<SaveNftResponseDto> res = responseUtil.successResponse(saveNftResponseDto, HereStatus.HERE_CREATE_NFT);
