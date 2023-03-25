@@ -15,7 +15,7 @@ export default function MoveBtn({
 }: Iprops) {
   return (
     <button
-      className="flex items-center justify-center rounded-30 bg-red-1 font-semibold leading-20 text-white"
+      className="font-regular flex items-center justify-center rounded-30 bg-red-1 leading-20 text-white"
       css={[
         {
           width: width,
@@ -28,11 +28,11 @@ export default function MoveBtn({
       {children}
       <img
         src="/icons/right-white-vector.svg"
-        className="ml-15"
+        className="ml-5"
         css={[
           {
-            width: height - 18,
-            height: height - 18,
+            width: height / 3 + 3,
+            height: height / 3 + 3,
           },
         ]}
       />
