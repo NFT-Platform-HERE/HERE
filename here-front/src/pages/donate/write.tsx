@@ -1,58 +1,22 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import React, { useState } from "react";
-import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
-import CircularProgress from "@mui/material/CircularProgress";
+import React, { useState, useRef } from "react";
 import DatePicker from "react-datepicker";
+import dynamic from "next/dynamic";
+import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
 
-const ReactQuill = dynamic(async () => await import("react-quill"), {
-  ssr: false,
-  loading: () => (
-    <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
-      <CircularProgress color="error" />
-    </div>
-  ),
-});
-
-interface DateButtonProps {
-  onClick: () => void;
-  value: Date;
-}
+const DonateReactQuill = dynamic(
+  () => import("../../features/Donate/DonateReactQuill"),
+  { ssr: false },
+);
 
 export default function DonateWritePage() {
   const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
   const [startDate, setStartDate] = useState<Date>(new Date());
 
-  function printKorDate(date: Date) {
-    const koreaDate = new Date(date);
-    const dateString = koreaDate.toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
-    return dateString;
-  }
-
-  const DateButton = ({ onClick, value }: DateButtonProps) => {
-    const transferDate = printKorDate(value);
-
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        className="mr-3 flex h-55 w-230 items-center justify-start rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-38 mobile:w-151 mobile:text-11"
-      >
-        <img
-          src={"/icons/calendar.svg"}
-          className="ml-15 mr-10 mb-5 h-38 w-38 mobile:ml-15 mobile:mr-12 mobile:h-23 mobile:w-23"
-        />
-        {transferDate}
-      </button>
-    );
-  };
+  const ref = useRef<HTMLButtonElement>(null);
 
   function printVal() {
     console.log("value", value);
@@ -123,20 +87,22 @@ export default function DonateWritePage() {
             <div className="flex-auto">
               <DatePicker
                 selected={startDate}
+                dateFormat="yyyy년 MM월 dd일"
                 onChange={(date: Date) => setStartDate(date)}
+                minDate={new Date()}
+                locale={ko}
                 customInput={
-                  <DateButton value={startDate} onClick={() => {}} />
+                  <DonateDateButton
+                    value={value}
+                    onClick={() => {}}
+                    forwardedRef={ref}
+                  />
                 }
               />
             </div>
           </div>
           {/* <button onClick={printVal}>내용 확인</button> */}
-          <ReactQuill
-            theme="snow"
-            value={value}
-            onChange={setValue}
-            className="mb-70 h-332 w-920 mobile:w-350"
-          />
+          <DonateReactQuill value={value} onChange={setValue} />
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-150 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
             수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
