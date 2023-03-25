@@ -13,6 +13,7 @@ import Background from "@/components/Background/Background";
 import { useState } from "react";
 import SubmitOrganizationModal from "@/features/Submit/SubmitOrganizationModal";
 import SubmitHospitalModal from "@/features/Submit/SubmitHospitalModal";
+import SubmitBanner from "@/features/Submit/SubmitBanner";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -36,24 +37,7 @@ export default function SubmitPage() {
 
   return (
     <>
-      <div className="mobile:hidden">
-        <CommonBanner
-          width={1200}
-          height={240}
-          marginTop={50}
-          bgColor={"#FEA6B4"}
-          imgUrl={"banners/bloodBannerWeb.png"}
-        />
-      </div>
-      <div className="hidden mobile:block mobile:h-180">
-        <CommonBanner
-          width={300}
-          height={150}
-          marginTop={20}
-          bgColor={"#FEA6B4"}
-          imgUrl={"banners/bloodBannerMobile.png"}
-        />
-      </div>
+      <SubmitBanner />
       <div className="mx-auto flex w-[1200px] flex-col items-center justify-center mobile:mt-20 mobile:w-full">
         <div className="mb-50 flex w-full mobile:hidden">
           <TabBtn
