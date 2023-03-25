@@ -21,6 +21,10 @@ import java.util.UUID;
 public class Nft {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
+    private Long id;
+
     @Column(name = "token_id", columnDefinition = "int unsigned", nullable = false)
     private Long tokenId;
 
@@ -45,4 +49,5 @@ public class Nft {
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
+
 }
