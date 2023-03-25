@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import dynamic from "next/dynamic";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
+import { ko } from "date-fns/locale";
 
 const DonateReactQuill = dynamic(
   () => import("../../features/Donate/DonateReactQuill"),
