@@ -12,16 +12,15 @@ import {
   closeMobileHeaderProfileDropdown,
   openMobileHeaderProfileDropdown,
 } from "@/stores/header/mobileHeaderProfileDropdown";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MobileHeaderName from "./MobileHeaderName";
+import { FaWallet } from "react-icons/fa";
 
 interface Iprops {
-  walletAddress: string;
   handleConnect: () => void;
 }
 
-export default function MobileHeader({ walletAddress, handleConnect }: Iprops) {
+export default function MobileHeader({ handleConnect }: Iprops) {
   const menuDropdown = useSelector((state: RootState) => {
     return state.mobileHeaderMenuDropdown.isOpen;
   });
@@ -31,9 +30,11 @@ export default function MobileHeader({ walletAddress, handleConnect }: Iprops) {
   const headerName = useSelector((state: RootState) => {
     return state.mobileHeaderName.name;
   });
+  const { memberId, characterImgUrl } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const handleMenuDropDown = () => {
     menuDropdown
@@ -57,11 +58,17 @@ export default function MobileHeader({ walletAddress, handleConnect }: Iprops) {
   return (
     <div>
       <div className="relative z-30 flex h-60 w-full min-w-300 items-center justify-between bg-white pr-10 pl-10">
-        <img
-          src="/icons/character.svg"
-          className="h-35 w-35"
-          onClick={handleProfileDropDown}
-        ></img>
+        {!memberId ? (
+          <button onClick={handleConnect}>
+            <FaWallet className="mx-10 text-24 text-pen-3" />
+          </button>
+        ) : (
+          <img
+            src={characterImgUrl}
+            className="h-35 w-35 rounded-full"
+            onClick={handleProfileDropDown}
+          />
+        )}
         {headerName === "home" ? (
           <img src="/icons/logo.svg" className="h-40 w-80"></img>
         ) : (
@@ -79,7 +86,7 @@ export default function MobileHeader({ walletAddress, handleConnect }: Iprops) {
         )}
         {menuDropdown && (
           <div className="absolute top-60 right-0 h-270 w-full">
-            <MobileHeaderMenuDropdown handleConnect={handleConnect} />
+            <MobileHeaderMenuDropdown />
           </div>
         )}
       </div>

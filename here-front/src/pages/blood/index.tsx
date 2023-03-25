@@ -1,8 +1,7 @@
 import CommonBanner from "@/components/Banner/CommonBanner";
-import BloodInfoContainer from "@/features/Blood/BloodInfoContainer";
+import BloodInfo from "@/features/Blood/BloodInfo";
 import BloodMap from "@/features/Blood/BloodMap";
 import BloodStamp from "@/features/Blood/BloodStamp";
-import BloodUserContainer from "@/features/Blood/BloodUserContainer";
 
 export default function BloodPage() {
   return (
@@ -26,8 +25,7 @@ export default function BloodPage() {
         />
       </div>
       <div className="mx-auto mb-100 flex w-1200 flex-wrap justify-between px-60 mobile:w-full mobile:px-30">
-        <BloodUserContainer />
-        <BloodInfoContainer />
+        <BloodInfo />
       </div>
       <div className="mx-auto mb-100 h-1000 w-1200 bg-red-0 px-60 mobile:w-full mobile:px-30">
         <BloodStamp />

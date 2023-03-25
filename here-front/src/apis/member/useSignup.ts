@@ -1,9 +1,10 @@
 import { MEMBER_SERVER_URL } from "@/utils/urls";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import * as queryKeys from "@/constants/queryKeys";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { Signup } from "@/types/Signup";
+import { useDispatch } from "react-redux";
+import { getMemberInfo } from "@/stores/member/member";
 
 const fetcher = (payload: Signup) =>
   axios
@@ -17,13 +18,14 @@ const fetcher = (payload: Signup) =>
     .then(({ data }) => data);
 
 const useSignup = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const queryClient = useQueryClient();
   return useMutation(fetcher, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKeys.SIGN_UP, {
-        refetchInactive: true,
-      });
+    onSuccess: (data) => {
       console.log("성공!");
+      dispatch(getMemberInfo(data.data));
       router.push("/");
     },
     onError: () => {
