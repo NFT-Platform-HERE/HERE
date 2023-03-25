@@ -1,3 +1,4 @@
+import useRedCrossNFTListQuery from "@/apis/redcross/useRedCrossNFTListQuery";
 import CommonBtn from "@/components/Button/CommonBtn";
 import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
@@ -36,14 +37,11 @@ const testList = [
   },
 ];
 
-// 페이지네이션은 FE-2003 merge 후 구현
 export default function RedCrossPage() {
   const router = useRouter();
   const [nftList, setNftList] = useState<Confirm[]>(testList);
 
-  useEffect(() => {
-    setNftList(testList);
-  }, []);
+  // const nftList = useRedCrossNFTListQuery()
 
   const { page, currentList, postPerPage, handlePageChange } = usePagination({
     confirmList: nftList,

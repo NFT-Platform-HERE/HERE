@@ -10,3 +10,6 @@ export const BLOOD_HISTORY = "/bloodHistory";
 
 // organization
 export const ORGANIZATION_NFT_LIST = "/organizationNFTList";
+
+// redcross
+export const REDCROSS_NFT_LIST = "/redcrossNFTLIST";

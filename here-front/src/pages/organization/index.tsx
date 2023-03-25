@@ -5,7 +5,8 @@ import { useState } from "react";
 import { Confirm } from "@/types/Confirm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useOrganizationListQuery from "@/apis/organization/useOrganizationListQuery";
+import useOrganizationListQuery from "@/apis/organization/useOrganizationNFTListQuery";
+import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
 
 const testOne = [
   {
@@ -116,7 +117,7 @@ export default function OrganizationPage() {
 
   const [confirmList, setConfirmList] = useState<Confirm[]>(testOne);
 
-  const activeList = useOrganizationListQuery(organizationId, active);
+  const activeList = useOrganizationNFTListQuery(organizationId, active);
   console.log(activeList); // 나중에 이걸로 바꿔주기
 
   const changeTab = () => {
