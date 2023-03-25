@@ -1,13 +1,9 @@
 package com.ssafy.hereauth.service;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereauth.dto.member.BdHistoryCreateRequestDto;
-import com.ssafy.hereauth.dto.member.BdHistoryCreateResponseDto;
 import com.ssafy.hereauth.dto.bdHistory.BdHistoryGetResponseDto;
 import com.ssafy.hereauth.entity.BdHistory;
-import com.ssafy.hereauth.entity.Member;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
-import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.hereauth.repository.BdHistoryRepository;
 import com.ssafy.hereauth.repository.MemberRepository;
 import com.ssafy.hereauth.util.ResponseUtil;

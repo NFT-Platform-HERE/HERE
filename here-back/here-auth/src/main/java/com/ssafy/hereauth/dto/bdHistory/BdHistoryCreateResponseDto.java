@@ -1,4 +1,4 @@
-package com.ssafy.hereauth.dto.member;
+package com.ssafy.hereauth.dto.bdHistory;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
