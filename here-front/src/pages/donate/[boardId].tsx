@@ -10,6 +10,10 @@ export default function DonateDetailPage() {
   const { boardId } = router.query;
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
 
+  const closeModal = () => {
+    setOpendSendModal(false);
+  };
+
   return (
     <div className="mb-30 min-h-fit w-full">
       <div className="mx-auto flex w-1200 justify-center mobile:w-350 mobile:flex-col ">
@@ -87,9 +91,9 @@ export default function DonateDetailPage() {
             fontSize={18}
             children={"기부하기"}
             isDisabled={false}
-            onClick={() => setOpendSendModal(!opendSendModal)}
+            onClick={() => setOpendSendModal(true)}
           />
-          {opendSendModal && <DonateSendModal />}
+          {opendSendModal && <DonateSendModal onClick={closeModal} />}
           <p
             className="mt-30
            mb-15 text-21 font-medium text-pen-2 mobile:text-15"
