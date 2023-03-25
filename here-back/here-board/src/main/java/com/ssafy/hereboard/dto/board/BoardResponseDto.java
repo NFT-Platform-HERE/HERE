@@ -1,21 +1,15 @@
 package com.ssafy.hereboard.dto.board;
 
-import com.ssafy.hereboard.entity.Board;
-import com.ssafy.hereboard.entity.BoardImg;
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
-import com.ssafy.hereboard.repository.BoardImgRepository;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class BoardResponseDto {
     private Long boardId;
@@ -25,4 +19,15 @@ public class BoardResponseDto {
     private EnumBoardStatus status;
     private LocalDateTime dDay;
     private int percentage;
+
+    @QueryProjection
+    public BoardResponseDto(Long boardId, String title, String nickname, String boardImgUrl, EnumBoardStatus status, LocalDateTime dDay, int percentage) {
+        this.boardId = boardId;
+        this.title = title;
+        this.nickname = nickname;
+        this.boardImgUrl = boardImgUrl;
+        this.status = status;
+        this.dDay = dDay;
+        this.percentage = percentage;
+    }
 }

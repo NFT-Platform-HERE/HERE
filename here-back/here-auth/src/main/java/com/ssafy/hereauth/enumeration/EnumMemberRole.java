@@ -1,5 +1,5 @@
 package com.ssafy.hereauth.enumeration;
 
 public enum EnumMemberRole {
-    USER, ORGAN, REDCROSS
+    USER, AGENCY, HOSPITAL, REDCROSS
 }

@@ -1,5 +1,6 @@
 package com.ssafy.herenft.entity;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.herenft.dto.nft.SaveNftRequestDto;
 import com.ssafy.herenft.eunmeration.EnumBdHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumBdHistoryType;
@@ -17,7 +18,6 @@ import java.time.LocalDateTime;
 @Table(name = "bd_history")
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BdHistory {
     @Id
@@ -44,6 +44,16 @@ public class BdHistory {
     @Column(name = "bd_type", columnDefinition = "char(20)", nullable = false)
     private EnumBdHistoryType bdType;
 
+    @QueryProjection
+    public BdHistory(Long id, Member member, String place, LocalDateTime issuedDate, EnumBdHistoryStatus status, EnumBdHistoryType bdType) {
+        this.id = id;
+        this.member = member;
+        this.place = place;
+        this.issuedDate = issuedDate;
+        this.status = status;
+        this.bdType = bdType;
+    }
+
     public BdHistory createBdHistory(Member member, SaveNftRequestDto saveNftRequestDto) {
         BdHistory bdHistory = new BdHistory();
         bdHistory.member = member;
@@ -52,11 +62,5 @@ public class BdHistory {
         return bdHistory;
 
     }
-
-//    public void createBdHistory(Member member, BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
-//        this.member = member;
-//        this.place = bdHistoryCreateRequestDto.getPlace();
-//        this.status = EnumBdHistoryStatus.ACTIVE;
-//    }
 }
 
