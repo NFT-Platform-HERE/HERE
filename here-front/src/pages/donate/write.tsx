@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 
 const DonateReactQuill = dynamic(
-  () => import("../../features/Donate/DonateReactQuill"),
+  async () => await import("../../features/Donate/DonateReactQuill"),
   { ssr: false },
 );
 
