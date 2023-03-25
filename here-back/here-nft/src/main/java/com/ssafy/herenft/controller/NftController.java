@@ -24,7 +24,7 @@ public class NftController {
     private final NftService nftService;
 
     @ApiOperation(value = "nft 등록", notes = "nft를 등록합니다.")
-    @PostMapping()
+    @PostMapping("")
     public ResponseEntity<ResponseSuccessDto<SaveNftResponseDto>> save(@RequestBody SaveNftRequestDto saveNftRequestDto) {
         System.out.println("controller에 들어옴");
         System.out.println(saveNftRequestDto);

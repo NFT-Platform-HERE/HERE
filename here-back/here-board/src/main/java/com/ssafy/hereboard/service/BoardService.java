@@ -14,15 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +38,8 @@ public class BoardService {
     /* 전체 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
 
-        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateAsc();
+//        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateDesc();
+        List<Board> boards = boardRepository.findBoardList();
 //        List<BoardResponseDto> boardList = boards.stream()
 //                .map(b -> new BoardResponseDto(b))
 //                .collect(Collectors.toList());
@@ -78,7 +76,8 @@ public class BoardService {
     /* 내 게시글 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getMemberBoardList(UUID memberId) {
 
-        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateAsc(memberId);
+//        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateDesc(memberId);
+        List<Board> boards = boardRepository.findMyBoardList(memberId);
 
         List<BoardResponseDto> result = new ArrayList<>();
 
@@ -318,7 +317,8 @@ public class BoardService {
 
     /* 게시글 검색 */
     public ResponseSuccessDto<List<SearchBoardResponseDto>> searchBoard(String query) {
-        List<Board> searchedList = boardRepository.findAllBySearch(query);
+//        List<Board> searchedList = boardRepository.findAllBySearch(query);
+        List<Board> searchedList = boardRepository.searchBoard(query);
         List<SearchBoardResponseDto> result = new ArrayList<>();
 
         for (Board searched : searchedList) {
@@ -344,7 +344,7 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
-    public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
+    public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList() {
 
         List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
         List<BoardResponseDto> result = new ArrayList<>();

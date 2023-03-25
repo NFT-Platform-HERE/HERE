@@ -8,14 +8,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
     @Query("select b from Board b where b.status= 'ACTIVE' or b.status= 'INACTIVE'" +
             "order by b.status asc, b.createdDate desc")
-    List<Board> findAllByStatusOrderByCreatedDateAsc();
+    List<Board> findAllByStatusOrderByCreatedDateDesc();
 
     @Query("select b from Board b where (b.member.id= :memberId and b.status= 'ACTIVE') or (b.member.id= :memberId and b.status= 'INACTIVE')" +
             "order by b.status asc, b.createdDate desc")
-    List<Board> findMineAllByStatusOrderByCreatedDateAsc(@Param("memberId") UUID memberId);
+    List<Board> findMineAllByStatusOrderByCreatedDateDesc(@Param("memberId") UUID memberId);
 
     @Query("select b from Board b where (b.status= 'ACTIVE' or b.status= 'INACTIVE') and" +
             "((b.content like %:query%) or (b.title like %:query%) or (b.member.nickname like %:query%))" +
