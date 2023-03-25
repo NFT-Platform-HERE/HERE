@@ -7,7 +7,8 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class FindDonationRequestDto {
+public class TransferOwnershipRequestDto {
     private UUID senderId;
+    private UUID receiverId;
     private int quantity;
 }

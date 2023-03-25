@@ -4,8 +4,6 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.herenft.dto.nft.FindDonationResponseDto;
-import com.ssafy.herenft.dto.nft.QFindDonationResponseDto;
 import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.entity.QNft;
 
@@ -37,9 +35,9 @@ public class NftRepositoryImpl implements NftRepositoryCustom {
     }
 
     @Override
-    public List<FindDonationResponseDto> findDonationList(UUID memberId, int count) {
+    public List<Nft> findDonationList(UUID memberId, int count) {
         return queryFactory
-                .select(new QFindDonationResponseDto(nft.tokenId))
+                .select(nft)
                 .from(nft)
                 .where(ownerEq(memberId))
                 .orderBy(

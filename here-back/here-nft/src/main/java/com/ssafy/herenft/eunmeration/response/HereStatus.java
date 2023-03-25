@@ -29,6 +29,5 @@ public enum HereStatus {
     HERE_FIND_NFT_LIST_HOSPITAL,
 
     // 기부 데이터 조회 성공
-    HERE_FIND_DONATION
-
+    HERE_TRANSFER_OWNERSHIP
 }
