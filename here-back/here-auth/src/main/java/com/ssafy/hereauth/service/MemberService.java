@@ -118,7 +118,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 이메일입니다."));
 
-        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getName(), member.getWalletAddress());
+        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getId(), member.getWalletAddress());
         ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
