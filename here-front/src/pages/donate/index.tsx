@@ -9,6 +9,7 @@ import DonateFloatingActionButton from "@/features/Donate/DonateFloatingActionBu
 import DonateTitle from "@/features/Donate/DonateTitle";
 import DonateCheckBox from "@/features/Donate/DonateCheckBox";
 import DonateCardList from "./../../features/Donate/DonateCardList";
+import MoveBtn from "@/components/Button/MoveBtn";
 
 export default function DonatePage() {
   const testTimeJson: Donation[] = [
@@ -158,50 +159,97 @@ export default function DonatePage() {
     }
   };
 
+  const goToSite = () => {
+    location.assign(
+      "https://www.bloodinfo.net/knrcbs/cm/cntnts/cntntsView.do?mi=1142&cntntsId=1022",
+    );
+  };
+
   return (
-    <div className="mt-60 w-full mobile:flex">
-      {/* <CommonBanner /> */}
-      <div className="mx-auto w-1200 mobile:min-w-350">
-        <div className="mr-10 mt-7 flex justify-end mobile:hidden">
-          <CommonBtn
-            width={150}
-            height={55}
-            fontSize={18}
-            children={"글 작성하기"}
-            isDisabled={false}
-            onClick={() => router.push("/donate/write")}
+    <>
+      <div className="relative mobile:hidden">
+        <CommonBanner
+          width={1200}
+          height={240}
+          marginTop={50}
+          bgColor={"#FF9999"}
+          imgUrl={"banners/donateBannerWeb.png"}
+        />
+        <div className="absolute left-[50%] top-196 translate-x-[-50%]">
+          {/* 이 친구를 어떻게 배치한담... (화면 작아졌을 때 위치 이상함) */}
+          <MoveBtn
+            width={180}
+            height={30}
+            fontSize={14}
+            children={"헌혈증서 알아보기"}
+            onClick={goToSite}
           />
         </div>
-        <DonateTitle title={"종료가 얼마 남지 않았어요!"} />
-        <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-10">
-          <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-            <DonateCardList items={testTimeJson} />
+      </div>
+      <div className="relative hidden mobile:block mobile:h-200">
+        <CommonBanner
+          width={300}
+          height={150}
+          marginTop={20}
+          bgColor={"#FF9999"}
+          imgUrl={"banners/donateBannerMobile.png"}
+        />
+        <div className="absolute left-[54%] top-130">
+          <MoveBtn
+            width={110}
+            height={20}
+            fontSize={10}
+            children={"헌혈증서 알아보기"}
+            onClick={goToSite}
+          />
+        </div>
+      </div>
+      <div className="w-full mobile:flex">
+        <div className="mx-auto w-1200 mobile:min-w-350">
+          <div className="mr-10 mt-7 flex justify-end mobile:hidden">
+            <CommonBtn
+              width={150}
+              height={55}
+              fontSize={18}
+              children={"글 작성하기"}
+              isDisabled={false}
+              onClick={() => router.push("/donate/write")}
+            />
           </div>
-        </div>
-        <DonateTitle title={"전체 목록"} />
-        <div className="mb-10 mr-25 hidden mobile:flex mobile:justify-end ">
-          <DonateCheckBox onChange={handleCheckboxChange} checked={isChecked} />
-        </div>
-        <div className="mb-55 mt-27 flex items-center justify-center mobile:mt-5 mobile:mb-5 ">
-          <DonateSearchInputBox
-            value={searchValue}
-            onChange={handleSearchInputChange}
-            onKeyDown={handleSearchInputKeyDown}
-          />
-          <div className="ml-15 flex mobile:hidden">
+          <DonateTitle title={"종료가 얼마 남지 않았어요!"} />
+          <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-10">
+            <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
+              <DonateCardList items={testTimeJson} />
+            </div>
+          </div>
+          <DonateTitle title={"전체 목록"} />
+          <div className="mb-10 mr-25 hidden mobile:flex mobile:justify-end ">
             <DonateCheckBox
               onChange={handleCheckboxChange}
               checked={isChecked}
             />
           </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-            <DonateCardList items={testJson} />
+          <div className="mb-55 mt-27 flex items-center justify-center mobile:mt-5 mobile:mb-5 ">
+            <DonateSearchInputBox
+              value={searchValue}
+              onChange={handleSearchInputChange}
+              onKeyDown={handleSearchInputKeyDown}
+            />
+            <div className="ml-15 flex mobile:hidden">
+              <DonateCheckBox
+                onChange={handleCheckboxChange}
+                checked={isChecked}
+              />
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
+              <DonateCardList items={testJson} />
+            </div>
           </div>
         </div>
+        <DonateFloatingActionButton />
       </div>
-      <DonateFloatingActionButton />
-    </div>
+    </>
   );
 }

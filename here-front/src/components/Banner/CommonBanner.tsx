@@ -1,3 +1,5 @@
+import MoveBtn from "../Button/MoveBtn";
+
 interface Iprops {
   width: number;
   height: number;
