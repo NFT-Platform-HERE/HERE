@@ -91,10 +91,10 @@ export default function RedCrossPublishPage() {
 
     const jsonMetaData = makeJsonMetaData(metaInfo);
 
+
     try {
-      // const ipfsResult = await sendIpfs(jsonMetaData);
-      const ipfsResult =
-        "http://13.209.252.39:8080/ipfs/QmamRS1yGEmN5WnunPH5SspQujZijrDVH5DmWFLtEzXJVN";
+      const ipfsResult = await sendIpfs(jsonMetaData);
+ 
       setOpendLoadingModal(true);
 
       mintBloodNFT(wallet, ipfsResult).then((data) => {

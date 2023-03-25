@@ -3,8 +3,8 @@
 
 export const MEMBER_SERVER_URL = "https://j8b209.p.ssafy.io:9010/api";
 
-export const IPFS_SERVER_URL = "https://j8b2091.p.ssafy.io:5001";
+export const IPFS_SERVER_URL = "https://j8b2091.p.ssafy.io/";
 
 export const HERE_CA = "0x8D0D201867d8f6C73eFe0538211D329FBe2978B7";
 
-export const IPFS_SERVER_METAINFO_URL = "https://j8b2091.p.ssafy.io:8000/ipfs/";
+export const IPFS_SERVER_METAINFO_URL = "http://j8b2091.p.ssafy.io:8080/ipfs/";
