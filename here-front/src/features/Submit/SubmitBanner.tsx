@@ -1,9 +1,9 @@
 import CommonBanner from "@/components/Banner/CommonBanner";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper/core";
+import SwiperCore, { Autoplay } from "swiper";
 
-SwiperCore.use([Autoplay, Pagination, Navigation]);
+SwiperCore.use([Autoplay]);
 
 export default function SubmitBanner() {
   const bgColor = ["#FFC4BC", "#FFCEBF", "#FFB9A3"];
