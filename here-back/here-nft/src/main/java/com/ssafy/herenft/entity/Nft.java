@@ -62,4 +62,8 @@ public class Nft {
         nft.type = type;
         return nft;
     }
+
+    public void updateOwnership(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
 }

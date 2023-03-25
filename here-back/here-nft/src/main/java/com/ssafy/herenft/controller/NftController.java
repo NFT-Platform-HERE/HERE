@@ -2,7 +2,6 @@ package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
-import com.ssafy.herenft.eunmeration.EnumMemberRole;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.service.NftService;
 import io.swagger.annotations.Api;
@@ -58,8 +57,8 @@ public class NftController {
 
     @ApiOperation(value = "증명서 소유권 이전(해시값 자동 선택)", notes = "증명서 소유권 이전(해시값 자동 선택)을 합니다.")
     @PatchMapping("/donate")
-    public ResponseEntity<ResponseSuccessDto<List<FindDonationResponseDto>>> getDonationList(
-            @RequestBody FindDonationRequestDto findDonationRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> getDonationList(
+            @RequestBody TransferOwnershipRequestDto findDonationRequestDto) {
         return ResponseEntity.ok(nftService.findDonationList(findDonationRequestDto));
     }
 

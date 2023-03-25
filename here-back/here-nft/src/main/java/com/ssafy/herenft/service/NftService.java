@@ -137,9 +137,20 @@ public class NftService {
     }
 
     /* 증명서 소유권 이전 (해시값 자동 선택) */
-    public ResponseSuccessDto<List<FindDonationResponseDto>> findDonationList(FindDonationRequestDto findDonationRequestDto) {
-        List<FindDonationResponseDto> result = nftRepository.findDonationList(findDonationRequestDto.getSenderId(), findDonationRequestDto.getQuantity());
-        ResponseSuccessDto<List<FindDonationResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_DONATION);
+    public ResponseSuccessDto<TransferOwnershipResponseDto> findDonationList(TransferOwnershipRequestDto transferOwnershipRequestDto) {
+        UUID senderId = transferOwnershipRequestDto.getSenderId();
+        UUID receiverId = transferOwnershipRequestDto.getReceiverId();
+        int quantity = transferOwnershipRequestDto.getQuantity();
+
+        List<Nft> nftList = nftRepository.findDonationList(senderId, quantity);
+        for (Nft nft : nftList) {
+            nft.updateOwnership(receiverId);
+        }
+
+        TransferOwnershipResponseDto transferOwnershipResponseDto = TransferOwnershipResponseDto.builder()
+                .message("증명서 소유권 이전이 완료되었습니다.")
+                .build();
+        ResponseSuccessDto<TransferOwnershipResponseDto> res = responseUtil.successResponse(transferOwnershipResponseDto, HereStatus.HERE_TRANSFER_OWNERSHIP);
         return res;
     }
 
