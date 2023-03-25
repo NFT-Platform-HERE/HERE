@@ -344,7 +344,7 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
-    public ResponseSuccessDto<List<BoardResponseDto>> getEndTimeBoardList() {
+    public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList() {
 
         List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
         List<BoardResponseDto> result = new ArrayList<>();
