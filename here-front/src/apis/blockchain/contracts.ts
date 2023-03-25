@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
 
-// 민팅 함수
+// 민팅 함수(적십자)
 export const mintBloodNFT = async (account: string, metadata: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
@@ -31,7 +31,8 @@ export const ownerOf = async (tokenId: string) => {
   return result;
 };
 
-export const CallTokenURI = async (tokenId: string) => {
+// tokenID로 MetaData URL 정보 불러오는 메소드
+export const callTokenURI = async (tokenId: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
 
@@ -44,6 +45,7 @@ export const CallTokenURI = async (tokenId: string) => {
   return result;
 };
 
+// 헌혈증 NFT 기부 메소드
 export const donateNFT = async (
   myAccount: string,
   sendAccount: string,
@@ -62,6 +64,7 @@ export const donateNFT = async (
   console.log("donateNFT result", result);
 };
 
+// 헌혈증 NFT 기부 히스토리 불러오는 메소드
 export const getTransactionLogs = async (tokenId: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
@@ -73,6 +76,7 @@ export const getTransactionLogs = async (tokenId: string) => {
   console.log("getTransactionLogs result", result);
 };
 
+// TokenID로 Hash값 확인하는 메소드
 export const getHashValue = async (tokenId: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
@@ -84,6 +88,7 @@ export const getHashValue = async (tokenId: string) => {
   console.log("getHashValue result", result);
 };
 
+// NFT 검증 메소드
 export const verifyNFT = async (tokenId: string, hash: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
