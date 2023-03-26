@@ -38,7 +38,7 @@ public class NotificationController {
     }
 
     /* 알림 읽음 처리 */
-    @ApiOperation(value = "내 알림 확인", notes = "나의 알림 내역을 조회합니다.")
+    @ApiOperation(value = "알림 읽음 처리", notes = "알림 읽음 처리를 합니다.")
     @PatchMapping()
     public ResponseEntity<ResponseSuccessDto<UpdateNotificationResponseDto>> updateNotification(@RequestBody UpdateNotificationRequestDto updateNotificationRequestDto) {
         return ResponseEntity.ok(notificationService.update(updateNotificationRequestDto));
