@@ -1,4 +1,4 @@
-import AlarmModal from "@/features/Alarm/AlarmModal";
+import WebAlarmModal from "@/features/Alarm/WebAlarmModal";
 import { closeWebHeaderDropdown } from "@/stores/header/webHeaderDropdown";
 import { deleteMemberInfo } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
@@ -35,7 +35,7 @@ export default function WebHeaderDropdown() {
       <div className="mt-10" onClick={openAlarm}>
         <img src="/icons/alarm.svg"></img>
       </div>
-      {openAlarmModal && <AlarmModal />}
+      {openAlarmModal && <WebAlarmModal />}
 
       <div className="mt-10 text-15" onClick={Logout}>
         LOGOUT

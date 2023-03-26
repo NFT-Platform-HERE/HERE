@@ -6,16 +6,9 @@ import MemberCard from "@/components/MemberCard/MemberCard";
 import { RootState } from "@/stores/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Alarm } from "@/types/Alarm";
 
-interface AlarmList {
-  notificationId: number;
-  senderId: string;
-  senderNickname: string;
-  status: string;
-  content: string;
-}
-
-export default function AlarmModal() {
+export default function WebAlarmModal() {
   const { mutate } = useAlarmReadUpdate();
   const { memberId } = useSelector((state: RootState) => state.member);
   const alarmList = useAlarmQuery(memberId);
@@ -35,7 +28,7 @@ export default function AlarmModal() {
     <div className="absolute -left-[320px] top-60 h-280 w-400 bg-[url('/images/alarmBack.png')] bg-contain bg-no-repeat  py-20 pr-24 ">
       <div className="h-230 w-365 overflow-y-auto overflow-x-hidden scrollbar-hide ">
         {alarmList.data &&
-          alarmList.data.map((item: AlarmList) => {
+          alarmList.data.map((item: Alarm) => {
             <AlarmList
               key={item.notificationId}
               text={item.content}
