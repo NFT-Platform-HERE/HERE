@@ -14,3 +14,6 @@ export const ORGANIZATION_NFT_LIST = "/organizationNFTList";
 // redcross
 export const REDCROSS_NFT_LIST = "/redcrossNFTLIST";
 export const SEARCH_EMAIL = "/searchEmail";
+
+// alarm
+export const ALARM_LIST = "/alarmList";

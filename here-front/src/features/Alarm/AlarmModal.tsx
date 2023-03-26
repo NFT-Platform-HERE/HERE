@@ -1,0 +1,59 @@
+import useAlarmQuery from "@/apis/alarm/useAlarmQuery";
+import useAlarmReadUpdate from "@/apis/alarm/useAlarmReadUpdate";
+import AlarmList from "@/components/Alarm/AlarmList";
+import { RootState } from "@/stores/store";
+import { useSelector } from "react-redux";
+
+interface AlarmList {
+  notificationId: number;
+  senderId: string;
+  senderNickname: string;
+  status: string;
+  content: string;
+}
+
+export default function AlarmModal() {
+  const { mutate } = useAlarmReadUpdate();
+  const { memberId } = useSelector((state: RootState) => state.member);
+  const alarmList = useAlarmQuery(memberId);
+
+  const changeStatus = (notificationId: number) => {
+    console.log("ㅎㄷ", notificationId);
+    const payload = {
+      memberId,
+      notificationId,
+    };
+    mutate(payload);
+  };
+
+  return (
+    <div className="absolute -left-[320px] top-50 h-300 w-400 bg-[url('/images/alarmBack.png')] bg-contain py-20 pr-24">
+      {alarmList.data &&
+        alarmList.data.map((item: AlarmList) => {
+          <AlarmList
+            key={item.notificationId}
+            text={item.content}
+            status={item.status}
+            onClick={() => changeStatus(item.notificationId)}
+          />;
+        })}
+      <AlarmList
+        text={"언도 님이 헌혈증서 3개를 기부하셨습니다."}
+        status={"INACTIVE"}
+        onClick={() => changeStatus(1)}
+      />
+      <AlarmList
+        text={"[헌혈증서 급구합니다] 게시글이 마감되었습니다."}
+        status={"ACTIVE"}
+        onClick={() => changeStatus(2)}
+      />
+      <AlarmList
+        text={
+          "당신의 소중한 혈액증서가 사용되었습니다. [사용처- 충남대학교 병원]"
+        }
+        status={"INACTIVE"}
+        onClick={() => changeStatus(3)}
+      />
+    </div>
+  );
+}

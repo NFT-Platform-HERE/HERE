@@ -1,8 +1,10 @@
+import AlarmModal from "@/features/Alarm/AlarmModal";
 import { closeWebHeaderDropdown } from "@/stores/header/webHeaderDropdown";
 import { deleteMemberInfo } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
 import { unConnectWallet } from "@/utils/unConnectWallet";
 import { useWeb3React } from "@web3-react/core";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -17,7 +19,10 @@ export default function WebHeaderDropdown() {
     dispatch(deleteMemberInfo());
     dispatch(closeWebHeaderDropdown());
   };
-
+  const [openAlarmModal, setOpenAlarmModal] = useState<boolean>(false);
+  const openAlarm = () => {
+    setOpenAlarmModal(!openAlarmModal);
+  };
   return (
     <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
       <div>
@@ -27,9 +32,11 @@ export default function WebHeaderDropdown() {
         ></img>
       </div>
       <div className="mt-10 text-15">{nickname}</div>
-      <div className="mt-10">
+      <div className="mt-10" onClick={openAlarm}>
         <img src="/icons/alarm.svg"></img>
       </div>
+      {openAlarmModal && <AlarmModal />}
+
       <div className="mt-10 text-15" onClick={Logout}>
         LOGOUT
       </div>

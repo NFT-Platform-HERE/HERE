@@ -1,7 +1,7 @@
 import { MEMBER_SERVER_URL } from "@/utils/urls";
 import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
-import router, { useRouter } from "next/router";
+import { useMutation } from "react-query";
+import { useRouter } from "next/router";
 import { Signup } from "@/types/Signup";
 import { useDispatch } from "react-redux";
 import { getMemberInfo } from "@/stores/member/member";
@@ -21,7 +21,6 @@ const useSignup = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공!");

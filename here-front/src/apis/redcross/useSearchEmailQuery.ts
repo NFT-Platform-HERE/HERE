@@ -13,6 +13,7 @@ interface Iprops {
   successFindWallet: (data: memberInfo) => void;
   failFindWallet: () => void;
 }
+
 const fetcher = (email: string) =>
   axios
     .get(MEMBER_SERVER_URL + `/member/search/${email}`)
