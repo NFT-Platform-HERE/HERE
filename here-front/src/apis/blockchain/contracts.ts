@@ -99,3 +99,15 @@ export const verifyNFT = async (tokenId: string, hash: string) => {
 
   console.log("verifyNFT result", result);
 };
+
+// 발행한 모든 NFT 조회(테스트 용으로만 사용)
+export const getAllNFTs = async () => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract) return;
+
+  const getAllNFTs = await hereContract.methods.getAllNFTs().call();
+
+  console.log("getAllNFTs", getAllNFTs);
+};
