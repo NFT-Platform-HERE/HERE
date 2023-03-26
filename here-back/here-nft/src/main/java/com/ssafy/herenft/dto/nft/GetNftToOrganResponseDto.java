@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 public class GetNftToOrganResponseDto {
     private String issuerName;
     private LocalDateTime createdDate;
-    private boolean isOwner;
+    private Boolean isOwner;
 }

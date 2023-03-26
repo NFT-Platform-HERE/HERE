@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 public class GetNftAgencyResponseDto {
     private String place;
     private LocalDateTime createdDate;
-    private boolean isOwner;
+    private Boolean isOwner;
 }

@@ -7,5 +7,5 @@ import lombok.Getter;
 @Builder
 public class SaveNftResponseDto {
     private String message;
-    private boolean isLevelUp;
+    private Boolean isLevelUp;
 }
