@@ -9,6 +9,6 @@ export const NFT_SERVER_URL = "https://j8b209.p.ssafy.io:9012/api";
 
 export const IPFS_SERVER_URL = "https://j8b2091.p.ssafy.io/";
 
-export const HERE_CA = "0x8D0D201867d8f6C73eFe0538211D329FBe2978B7";
+export const HERE_CA = "0xF4B84F4fed091321a071c094d852179bFe23996F";
 
 export const IPFS_SERVER_METAINFO_URL = "http://j8b2091.p.ssafy.io:8080/ipfs/";
