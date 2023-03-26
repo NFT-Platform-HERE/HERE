@@ -52,14 +52,14 @@ public class Nft {
     private LocalDateTime createdDate;
 
 
-    public Nft createNft(SaveNftRequestDto saveNftRequestDto, EnumNftType type) {
+    public Nft createNft(SaveNftRequestDto saveNftRequestDto) {
         Nft nft = new Nft();
         nft.tokenId = saveNftRequestDto.getTokenId();
         nft.hashValue = saveNftRequestDto.getHashValue();
         nft.ownerId = saveNftRequestDto.getOwnerId();
         nft.issuerId = saveNftRequestDto.getIssuerId();
         nft.imgUrl = saveNftRequestDto.getImgUrl();
-        nft.type = type;
+        nft.type = saveNftRequestDto.getType();
         return nft;
     }
 

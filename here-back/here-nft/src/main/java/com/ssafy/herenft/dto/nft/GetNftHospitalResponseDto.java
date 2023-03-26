@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 public class GetNftHospitalResponseDto {
     private String name;
     private LocalDateTime createdDate;
-    private boolean isOwner;
+    private Boolean isOwner;
 }
