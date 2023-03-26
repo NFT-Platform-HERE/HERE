@@ -1,7 +1,10 @@
 import useAlarmQuery from "@/apis/alarm/useAlarmQuery";
 import useAlarmReadUpdate from "@/apis/alarm/useAlarmReadUpdate";
 import AlarmList from "@/components/Alarm/AlarmList";
+import Background from "@/components/Background/Background";
+import MemberCard from "@/components/MemberCard/MemberCard";
 import { RootState } from "@/stores/store";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface AlarmList {
@@ -16,18 +19,20 @@ export default function AlarmModal() {
   const { mutate } = useAlarmReadUpdate();
   const { memberId } = useSelector((state: RootState) => state.member);
   const alarmList = useAlarmQuery(memberId);
+  const [openCard, setOpenCard] = useState<boolean>(false);
 
   const changeStatus = (notificationId: number) => {
-    console.log("ㅎㄷ", notificationId);
+    console.log("notificationId", notificationId);
     const payload = {
       memberId,
       notificationId,
     };
     mutate(payload);
+    setOpenCard(!openCard);
   };
 
   return (
-    <div className="absolute -left-[320px] top-50 h-300 w-400 bg-[url('/images/alarmBack.png')] bg-contain py-20 pr-24">
+    <div className="absolute -left-[320px] top-50 h-287 w-400 bg-[url('/images/alarmBack.png')] bg-contain bg-no-repeat py-20 pr-24">
       {alarmList.data &&
         alarmList.data.map((item: AlarmList) => {
           <AlarmList
@@ -36,6 +41,12 @@ export default function AlarmModal() {
             status={item.status}
             onClick={() => changeStatus(item.notificationId)}
           />;
+          {
+            openCard && <MemberCard senderId={item.senderId} />;
+          }
+          {
+            openCard && <Background onClick={() => setOpenCard(!openCard)} />;
+          }
         })}
       <AlarmList
         text={"언도 님이 헌혈증서 3개를 기부하셨습니다."}
