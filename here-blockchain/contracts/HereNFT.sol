@@ -26,7 +26,8 @@ contract HereNFT is ERC721 {
         string tokenURI;
         bytes32 hashValue;
     }
-    mapping(uint256 => NFT) public nfts;
+    uint256[] private _nftIds;
+    mapping(uint256 => NFT) private _nfts;
 
     // 이벤트 구조체
     struct TransactionLog {
@@ -98,40 +99,51 @@ contract HereNFT is ERC721 {
         return tokenURIs[tokenId];
     }
 
-    function create(address to, string memory _tokenURI) public returns (uint256) {
-
-        // TODO
+    function create(address to, string memory _tokenURI1, string memory _tokenURI2) public returns (uint256, uint256) {
         _tokenIds.increment();
 
-        uint256 newItemId = _tokenIds.current();
-        _mint(to, newItemId);
-        tokenURIs[newItemId] = _tokenURI;
+        uint256 newItemId1 = _tokenIds.current();
+        _mint(to, newItemId1);
+        tokenURIs[newItemId1] = _tokenURI1;
 
-        bytes32 hashValue = keccak256(bytes(_tokenURI));
-        NFT memory nft = NFT({
-            tokenURI: _tokenURI,
-            hashValue: hashValue
+        bytes32 hashValue1 = keccak256(bytes(_tokenURI1));
+        NFT memory nft1 = NFT({
+            tokenURI: _tokenURI1,
+            hashValue: hashValue1
         });
-        nfts[newItemId] = nft;
+        _nftIds.push(newItemId1);
+        _nfts[newItemId1] = nft1;
 
         _tokenIds.increment();
 
-        newItemId = _tokenIds.current();
-        _mint(to, newItemId);
-        tokenURIs[newItemId] = _tokenURI;
+        uint256 newItemId2 = _tokenIds.current();
+        _mint(to, newItemId2);
+        tokenURIs[newItemId2] = _tokenURI2;
 
-        hashValue = keccak256(bytes(_tokenURI));
-        nft = NFT({
-            tokenURI: _tokenURI,
-            hashValue: hashValue
+        bytes32 hashValue2 = keccak256(bytes(_tokenURI2));
+        NFT memory nft2 = NFT({
+            tokenURI: _tokenURI2,
+            hashValue: hashValue2
         });
-        nfts[newItemId] = nft;
-        //emit createNFT(newItemId, to);
-        return newItemId;
+        _nftIds.push(newItemId2);
+        _nfts[newItemId2] = nft2;
+
+        return (newItemId1, newItemId2);
     }
 
+    function getAllNFTs() public view returns (NFT[] memory) {
+        uint256 totalNFTs = _nftIds.length;
+        NFT[] memory nftsList = new NFT[](totalNFTs);
+        for (uint256 i = 0; i < totalNFTs; i++) {
+            uint256 nftId = _nftIds[i];
+            NFT memory nft = _nfts[nftId];
+            nftsList[i] = nft;
+        }
+        return nftsList;
+    }   
+
     function getHashValue(uint256 tokenId) public view returns(bytes32) {
-        return nfts[tokenId].hashValue;
+        return _nfts[tokenId].hashValue;
     }
 
     event NFTVerified(uint256 indexed tokenId, string metadataURI, bytes metadata, bytes32 metadataHash, bytes32 inputHash);
