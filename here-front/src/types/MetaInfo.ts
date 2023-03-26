@@ -1,3 +1,5 @@
+import { NftType } from "@/utils/statusType";
+
 export interface MetaInfo {
   name: string;
   gender: string;
@@ -7,4 +9,5 @@ export interface MetaInfo {
   createdDate: string;
   place: string;
   imageURL: string;
+  nftType: NftType;
 }

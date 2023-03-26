@@ -2,14 +2,18 @@ import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
 
 // 민팅 함수(적십자)
-export const mintBloodNFT = async (account: string, metadata: string) => {
+export const mintBloodNFT = async (
+  account: string,
+  agencyTokenUrl: string,
+  hospitalTokenUrl: string,
+) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
 
   if (!hereContract || !account) return;
 
   const result = await hereContract.methods
-    .create(account, metadata)
+    .create(account, agencyTokenUrl, hospitalTokenUrl)
     .send({ from: account });
 
   console.log("result", result);

@@ -9,6 +9,7 @@ import { sendIpfs } from "../../apis/blockchain/ipfs";
 import { mintBloodNFT } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
+import { NftType } from "@/utils/statusType";
 
 const MySwal = withReactContent(Swal);
 
@@ -84,7 +85,8 @@ export default function RedCrossPublishPage() {
     // 랜덤 이미지 선택
     const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
 
-    const metaInfo = {
+    //기관용 메타데이터
+    const metaInfoAgency = {
       name: name.trim(),
       gender: sex,
       type: bloodType,
@@ -93,19 +95,37 @@ export default function RedCrossPublishPage() {
       createdDate: createdDate,
       place: place.trim(),
       imageURL: mintImageURL,
+      nftType: NftType.AGENCY,
     };
 
-    const jsonMetaData = makeJsonMetaData(metaInfo);
+    //병원용 메타데이터
+    const metaInfoHospital = {
+      name: name.trim(),
+      gender: sex,
+      type: bloodType,
+      walletAddress: wallet.trim(),
+      birth: birth,
+      createdDate: createdDate,
+      place: place.trim(),
+      imageURL: mintImageURL,
+      nftType: NftType.HOSPITAL,
+    };
+
+    const jsonMetaDataAgency = makeJsonMetaData(metaInfoAgency);
+    const jsonMetaDataHospital = makeJsonMetaData(metaInfoAgency);
 
     try {
-      const ipfsResult = await sendIpfs(jsonMetaData);
+      const ipfsResultAgencyUrl = await sendIpfs(jsonMetaDataAgency);
+      const ipfsResultHospitalUrl = await sendIpfs(jsonMetaDataHospital);
 
       setOpendLoadingModal(true);
 
-      mintBloodNFT(wallet, ipfsResult).then((data) => {
-        setOpendLoadingModal(false);
-        successMint();
-      });
+      mintBloodNFT(wallet, ipfsResultAgencyUrl, ipfsResultHospitalUrl).then(
+        (data) => {
+          setOpendLoadingModal(false);
+          successMint();
+        },
+      );
     } catch (error) {
       let message;
       if (error instanceof Error) message = error.message;
