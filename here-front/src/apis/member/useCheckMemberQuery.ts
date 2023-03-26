@@ -28,12 +28,16 @@ const useCheckMemberQuery = (walletAddress: string) => {
         console.log(data.data);
         if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
           router.push("/member");
+          return;
         }
-        if (data.data.role === "agency") {
+        if (data.data.role === "AGENCY") {
           dispatch(getAgencyId(data.data.memberId));
-        }
-        if (data.data.role === "hospital") {
+          router.push("/organization");
+        } else if (data.data.role === "HOSPITAL") {
           dispatch(getHospitalId(data.data.memberId));
+          router.push("/organization");
+        } else if (data.data.role === "REDCROSS") {
+          router.push("/redcross");
         }
         // 멤버ID, 닉네임, 이미지 받아서 저장
         dispatch(getMemberInfo(data.data));
