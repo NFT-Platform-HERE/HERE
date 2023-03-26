@@ -45,13 +45,14 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatus(member, EnumNotificationStatus.INACTIVE);
+        List<Notification> notificationList = notificationRepository.findAllByMemberOrderByCreatedDate(member);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
             CheckNotificationResponseDto checkNotificationResponseDto = CheckNotificationResponseDto.builder()
                     .senderId(notification.getSender().getId())
                     .senderNickname(notification.getSender().getNickname())
+                    .status(notification.getStatus())
                     .content(notification.getContent())
                     .build();
             checkNotificationResponseDtoList.add(checkNotificationResponseDto);

@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    List<Notification> findAllByMemberOrderByCreatedDate(Member member);
     List<Notification> findAllByReceiverAndStatus(Member receiver, EnumNotificationStatus status);
     Optional<Notification> findByIdAndReceiver(Long notificationId, Member Receiver);
 }

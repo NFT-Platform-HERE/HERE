@@ -1,5 +1,6 @@
 package com.ssafy.hereauth.dto.notification;
 
+import com.ssafy.hereauth.enumeration.EnumNotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ import java.util.UUID;
 public class CheckNotificationResponseDto {
     private UUID senderId;
     private String senderNickname;
+    private EnumNotificationStatus status;
     private String content;
 }
