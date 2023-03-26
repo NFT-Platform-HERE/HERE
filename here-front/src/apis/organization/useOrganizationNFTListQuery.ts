@@ -13,7 +13,7 @@ const useOrganizationNFTListQuery = (
   memberId: string,
   status: string,
 ) => {
-  return useQuery(queryKeys.ORGANIZATION_NFT_LIST, () =>
+  return useQuery([queryKeys.ORGANIZATION_NFT_LIST, memberId], () =>
     fetcher(organ, memberId, status),
   );
 };

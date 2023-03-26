@@ -24,7 +24,7 @@ const useSearchEmailQuery = ({
   successFindWallet,
   failFindWallet,
 }: Iprops) => {
-  return useQuery(queryKeys.SEARCH_EMAIL, () => fetcher(email), {
+  return useQuery([queryKeys.SEARCH_EMAIL, email], () => fetcher(email), {
     enabled: !!email,
     onSuccess: (data) => {
       successFindWallet(data.data);
