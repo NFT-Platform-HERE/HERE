@@ -2,7 +2,7 @@
 const SsafyToken = artifacts.require("SsafyToken");
 const HereNFT = artifacts.require("HereNFT");
 //const SaleFactory = artifacts.require("SaleFactory");
-const NFTTransactionLogger = artifacts.require("NFTTransactionLogger");
+//const NFTTransactionLogger = artifacts.require("NFTTransactionLogger");
 
 /**
  * PJT Ⅰ/Ⅲ - 시나리오 테스트
@@ -17,5 +17,5 @@ module.exports = async function (deployer) {
   await deployer.deploy(HereNFT);
   //deployer.deploy(SaleFactory);
   //deployer.deploy(NFTTransactionLogger, "0x00E3A06AF2fEf5F7934bE5c97F7BEa95762C8569");
-  await deployer.deploy(NFTTransactionLogger, SsafyToken.address);
+  //await deployer.deploy(NFTTransactionLogger, SsafyToken.address);
 };
