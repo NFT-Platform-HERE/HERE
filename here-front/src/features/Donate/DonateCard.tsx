@@ -31,7 +31,7 @@ export default function DonateCard({
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
       className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
-        isCompleted == BoardStatus.ACTIVE ? "opacity-30" : "bg-white"
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
       <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
@@ -74,7 +74,7 @@ export function DonateCardMobile({
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
       className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
-        isCompleted == BoardStatus.ACTIVE ? "opacity-30" : "bg-white"
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
       <img
