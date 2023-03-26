@@ -8,9 +8,14 @@ import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
 import { mintBloodNFT } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
-import useRedCrossNFTListQuery from "@/apis/redcross/useRedCrossNFTListQuery";
+import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
 
 const MySwal = withReactContent(Swal);
+
+interface memberInfo {
+  memberId: string;
+  walletAddress: string;
+}
 
 export default function RedCrossPublishPage() {
   const [inputs, setInputs] = useState({
@@ -109,10 +114,11 @@ export default function RedCrossPublishPage() {
     }
   };
 
+  const [email, setEmail] = useState<string>("");
+
   const findWallet = () => {
-    const title = "사용자 이메일을 입력해주세요";
     MySwal.fire({
-      title: <span className="text-20 font-medium">{title}</span>,
+      title: "사용자 이메일을 입력해주세요",
       input: "email",
       inputPlaceholder: "xxxxxxxx@xxx.com",
       inputAttributes: {
@@ -121,6 +127,7 @@ export default function RedCrossPublishPage() {
       width: "28rem",
       padding: "1rem",
       customClass: {
+        title: "text-20 font-medium",
         input: "focus:border-red-1 focus:border-0",
         confirmButton: "w-120 rounded-10 bg-red-1",
       },
@@ -128,9 +135,38 @@ export default function RedCrossPublishPage() {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       console.log("result.value가 내가 아까 입력한 값", result.value);
+      setEmail(result.value);
     });
   };
 
+  const successFindWallet = (data: memberInfo) => {
+    setInputs({
+      ...inputs,
+      wallet: data.walletAddress,
+    });
+    setMemberId(data.memberId);
+  };
+  const failFindWallet = () => {
+    MySwal.fire({
+      icon: "error",
+      title: "지갑 주소를 찾을 수 없습니다",
+      showConfirmButton: false,
+      timer: 2000,
+      customClass: {
+        title: "text-20 font-medium",
+        popup: "w-440 h-260",
+      },
+    });
+  };
+  const memberInfo = useSearchEmailQuery({
+    email,
+    successFindWallet,
+    failFindWallet,
+  });
+
+  const [memberId, setMemberId] = useState<string>("");
+
+  console.log(memberId);
   const successMint = () => {
     MySwal.fire({
       icon: "success",
