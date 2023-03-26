@@ -36,18 +36,15 @@ public class NftService {
         Member member = memberRepository.findById(saveNftRequestDto.getIssuerId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
 
-        Nft nft1 = new Nft().createNft(saveNftRequestDto, EnumNftType.AGENCY);
-        nftRepository.save(nft1);
-
-        Nft nft2 = new Nft().createNft(saveNftRequestDto, EnumNftType.HOSPITAL);
-        nftRepository.save(nft2);
+        Nft nft = new Nft().createNft(saveNftRequestDto);
+        nftRepository.save(nft);
 
         BdHistory bdHistory = new BdHistory().createBdHistory(member, saveNftRequestDto);
         bdHistoryRepository.save(bdHistory);
 
         // 스탬프 정보 업데이트
         Stamp stamp = stampRepository.findByMemberId(member.getId());
-        boolean isLevelUp = false;
+        Boolean isLevelUp = false;
 
         if (stamp.getStep() + 1 >= 7) {
             stamp.updateStamp(member, stamp.getStage() + 1, 1);
@@ -182,7 +179,7 @@ public class NftService {
             Member issuer = memberRepository.findById(issuerId)
                     .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
 
-            boolean isOwner;
+            Boolean isOwner;
 
             isOwner = issuerId.equals(memberId);
 
