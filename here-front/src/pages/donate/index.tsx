@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
@@ -10,6 +10,7 @@ import DonateCardList from "./../../features/Donate/DonateCardList";
 import MoveBtn from "@/components/Button/MoveBtn";
 import useDonateListQuery from "./../../apis/donate/useDonateListQuery";
 import useDonateDeadLineListQuery from "./../../apis/donate/useDonateDeadLineListQuery";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function DonatePage() {
   const router = useRouter();
@@ -99,7 +100,9 @@ export default function DonatePage() {
           <DonateTitle title={"종료가 얼마 남지 않았어요!"} />
           <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-10">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-              <DonateCardList items={donateDeadLineList.data!} />
+              <Suspense fallback={<CircularProgress />}>
+                <DonateCardList items={donateDeadLineList.data!} />
+              </Suspense>
             </div>
           </div>
           <DonateTitle title={"전체 목록"} />
@@ -124,7 +127,9 @@ export default function DonatePage() {
           </div>
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-              <DonateCardList items={donateList.data!} />
+              <Suspense fallback={<CircularProgress />}>
+                <DonateCardList items={donateList.data!} />
+              </Suspense>
             </div>
           </div>
         </div>
