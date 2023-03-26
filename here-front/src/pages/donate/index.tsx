@@ -10,6 +10,8 @@ import DonateTitle from "@/features/Donate/DonateTitle";
 import DonateCheckBox from "@/features/Donate/DonateCheckBox";
 import DonateCardList from "./../../features/Donate/DonateCardList";
 import MoveBtn from "@/components/Button/MoveBtn";
+import useDonateListQuery from "./../../apis/donate/useDonateListQuery";
+import { BoardStatus } from "@/utils/statusType";
 
 export default function DonatePage() {
   const testTimeJson: Donation[] = [
@@ -19,7 +21,7 @@ export default function DonatePage() {
       nickname: "구스구스",
       dDay: "2023-03-14 16:46:08",
       percentage: 45,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 2,
@@ -27,7 +29,7 @@ export default function DonatePage() {
       nickname: "규나카",
       dDay: "2023-03-13 16:46:08",
       percentage: 53,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 3,
@@ -35,7 +37,7 @@ export default function DonatePage() {
       nickname: "언도",
       dDay: "2023-03-12 16:46:08",
       percentage: 70,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 4,
@@ -43,7 +45,7 @@ export default function DonatePage() {
       nickname: "용용",
       dDay: "2023-03-10 16:46:08",
       percentage: 67,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
   ];
 
@@ -55,7 +57,7 @@ export default function DonatePage() {
       dDay: "2023-03-14 16:46:08",
       percentage: 25,
       boardImgUrl: "/test/test-01.jpg",
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 2,
@@ -63,7 +65,7 @@ export default function DonatePage() {
       nickname: "닉네임2",
       dDay: "2020-05-14 16:46:08",
       percentage: 25,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 3,
@@ -72,7 +74,7 @@ export default function DonatePage() {
       dDay: "2021-06-14 16:46:08",
       percentage: 25,
       boardImgUrl: "/test/test-02.jpg",
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 4,
@@ -81,7 +83,7 @@ export default function DonatePage() {
       dDay: "2022-12-14 16:46:08",
       percentage: 25,
       boardImgUrl: "/test/test-03.jpg",
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 5,
@@ -90,7 +92,7 @@ export default function DonatePage() {
       dDay: "2022-12-14 16:46:08",
       percentage: 25,
       boardImgUrl: "/test/test-04.jpg",
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 6,
@@ -99,7 +101,7 @@ export default function DonatePage() {
       dDay: "2022-12-14 16:46:08",
       percentage: 100,
       boardImgUrl: "/test/test-05.jpg",
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 7,
@@ -107,7 +109,7 @@ export default function DonatePage() {
       nickname: "닉네임",
       dDay: "2022-12-14 16:46:08",
       percentage: 25,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 8,
@@ -115,7 +117,7 @@ export default function DonatePage() {
       nickname: "닉네임",
       dDay: "2022-12-14 16:46:08",
       percentage: 25,
-      status: false,
+      status: BoardStatus.ACTIVE,
     },
     {
       boardId: 9,
@@ -123,7 +125,7 @@ export default function DonatePage() {
       nickname: "닉네임",
       dDay: "2022-12-14 16:46:08",
       percentage: 90,
-      status: true,
+      status: BoardStatus.INACTIVE,
     },
     {
       boardId: 10,
@@ -131,7 +133,7 @@ export default function DonatePage() {
       nickname: "닉네임",
       dDay: "2022-12-14 16:46:08",
       percentage: 100,
-      status: true,
+      status: BoardStatus.INACTIVE,
     },
   ];
 
@@ -139,6 +141,10 @@ export default function DonatePage() {
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const { data } = useDonateListQuery();
+
+  // console.log("data", data);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
