@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckNotificationResponseDto {
+    private Long notificationId;
     private UUID senderId;
     private String senderNickname;
     private EnumNotificationStatus status;
