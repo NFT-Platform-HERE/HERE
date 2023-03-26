@@ -113,6 +113,19 @@ contract HereNFT is ERC721 {
             hashValue: hashValue
         });
         nfts[newItemId] = nft;
+
+        _tokenIds.increment();
+
+        newItemId = _tokenIds.current();
+        _mint(to, newItemId);
+        tokenURIs[newItemId] = _tokenURI;
+
+        hashValue = keccak256(bytes(_tokenURI));
+        nft = NFT({
+            tokenURI: _tokenURI,
+            hashValue: hashValue
+        });
+        nfts[newItemId] = nft;
         //emit createNFT(newItemId, to);
         return newItemId;
     }
