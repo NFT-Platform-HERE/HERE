@@ -8,7 +8,10 @@ import { ko } from "date-fns/locale";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const DonateReactQuill = dynamic(
-  () => import("../../features/Donate/DonateReactQuill").then((m) => m.default),
+  async () => {
+    const RQ = await import("../../features/Donate/DonateReactQuill");
+    return RQ;
+  },
   {
     ssr: false,
     loading: () => (
