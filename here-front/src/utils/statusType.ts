@@ -3,12 +3,12 @@ export enum NotificationStatus {
   INACTIVE = "INACTIVE",
 }
 
-export enum BoardHistoryStatus {
+export enum BloodHistoryStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
 }
 
-export enum BoardHistoryType {
+export enum BloodType {
   WHOLE = "WHOLE",
   PLATELET = "PLATELET",
   PLASMA = "PLASMA",
