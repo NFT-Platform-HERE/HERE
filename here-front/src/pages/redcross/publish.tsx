@@ -6,9 +6,12 @@ import withReactContent from "sweetalert2-react-content";
 import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
 import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
-import { mintBloodNFT } from "../../apis/blockchain/contracts";
+import { mintBloodNFT, getHashValue } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
+import { NftType } from "@/utils/statusType";
+import useNftMintQuery from "@/apis/redcross/useNftMintQuery";
+import { Mint } from "@/types/Mint";
 
 const MySwal = withReactContent(Swal);
 
@@ -30,6 +33,8 @@ export default function RedCrossPublishPage() {
 
   const [formValid, setFormValid] = useState(false);
   const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
+
+  const mutation = useNftMintQuery();
 
   const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
 
@@ -84,7 +89,8 @@ export default function RedCrossPublishPage() {
     // 랜덤 이미지 선택
     const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
 
-    const metaInfo = {
+    //기관용 메타데이터
+    const metaInfoAgency = {
       name: name.trim(),
       gender: sex,
       type: bloodType,
@@ -93,19 +99,70 @@ export default function RedCrossPublishPage() {
       createdDate: createdDate,
       place: place.trim(),
       imageURL: mintImageURL,
+      nftType: NftType.AGENCY,
     };
 
-    const jsonMetaData = makeJsonMetaData(metaInfo);
+    //병원용 메타데이터
+    const metaInfoHospital = {
+      name: name.trim(),
+      gender: sex,
+      type: bloodType,
+      walletAddress: wallet.trim(),
+      birth: birth,
+      createdDate: createdDate,
+      place: place.trim(),
+      imageURL: mintImageURL,
+      nftType: NftType.HOSPITAL,
+    };
+
+    const jsonMetaDataAgency = makeJsonMetaData(metaInfoAgency);
+    const jsonMetaDataHospital = makeJsonMetaData(metaInfoHospital);
 
     try {
-      const ipfsResult = await sendIpfs(jsonMetaData);
+      const ipfsResultAgencyUrl = await sendIpfs(jsonMetaDataAgency);
+      const ipfsResultHospitalUrl = await sendIpfs(jsonMetaDataHospital);
 
       setOpendLoadingModal(true);
 
-      mintBloodNFT(wallet, ipfsResult).then((data) => {
-        setOpendLoadingModal(false);
-        successMint();
-      });
+      const result = await mintBloodNFT(
+        wallet,
+        ipfsResultAgencyUrl,
+        ipfsResultHospitalUrl,
+      );
+
+      const agencyTokenId = result.events.Transfer[0].returnValues.tokenId;
+      const hospitalTokenId = result.events.Transfer[1].returnValues.tokenId;
+
+      const agencyHashValue = await getHashValue(agencyTokenId);
+      const hospitalHashValue = await getHashValue(hospitalTokenId);
+
+      const agencyPayload: Mint = {
+        bdType: bloodType,
+        hashValue: agencyHashValue,
+        imgUrl: mintImageURL,
+        issuerId: memberId,
+        ownerId: memberId,
+        place: place.trim(),
+        tokenId: agencyTokenId,
+        type: NftType.AGENCY,
+      };
+
+      const hospitalPayload: Mint = {
+        bdType: bloodType,
+        hashValue: hospitalHashValue,
+        imgUrl: mintImageURL,
+        issuerId: memberId,
+        ownerId: memberId,
+        place: place.trim(),
+        tokenId: hospitalTokenId,
+        type: NftType.HOSPITAL,
+      };
+
+      const agencyNftMintResult = await mutation.mutateAsync(agencyPayload);
+      const hospitalNftMintResult = await mutation.mutateAsync(hospitalPayload);
+
+      setOpendLoadingModal(false);
+      successMint();
     } catch (error) {
       let message;
       if (error instanceof Error) message = error.message;
@@ -134,7 +191,6 @@ export default function RedCrossPublishPage() {
       confirmButtonText: "검색하기",
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
-      console.log("result.value가 내가 아까 입력한 값", result.value);
       setEmail(result.value);
     });
   };
@@ -166,7 +222,6 @@ export default function RedCrossPublishPage() {
 
   const [memberId, setMemberId] = useState<string>("");
 
-  console.log(memberId);
   const successMint = () => {
     MySwal.fire({
       icon: "success",
@@ -235,7 +290,7 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="whole"
+              value="WHOLE"
               id="whole"
               name="bloodType"
               className="peer hidden"
@@ -251,7 +306,7 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="plasma"
+              value="PLASMA"
               id="plasma"
               name="bloodType"
               className="peer hidden"
@@ -267,7 +322,7 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="platelets"
+              value="PLATELETS"
               id="platelets"
               className="peer hidden"
               name="bloodType"
@@ -291,6 +346,7 @@ export default function RedCrossPublishPage() {
             name="wallet"
             value={wallet}
             onChange={onChangeValue}
+            readOnly
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>

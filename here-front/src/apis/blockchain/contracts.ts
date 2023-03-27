@@ -2,14 +2,18 @@ import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
 
 // 민팅 함수(적십자)
-export const mintBloodNFT = async (account: string, metadata: string) => {
+export const mintBloodNFT = async (
+  account: string,
+  agencyTokenUrl: string,
+  hospitalTokenUrl: string,
+) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
 
   if (!hereContract || !account) return;
 
   const result = await hereContract.methods
-    .create(account, metadata)
+    .create(account, agencyTokenUrl, hospitalTokenUrl)
     .send({ from: account });
 
   console.log("result", result);
@@ -85,7 +89,7 @@ export const getHashValue = async (tokenId: string) => {
 
   const result = await hereContract.methods.getHashValue(tokenId).call();
 
-  console.log("getHashValue result", result);
+  return result;
 };
 
 // NFT 검증 메소드
@@ -98,4 +102,16 @@ export const verifyNFT = async (tokenId: string, hash: string) => {
   const result = await hereContract.methods.verifyNFT(tokenId, hash).call();
 
   console.log("verifyNFT result", result);
+};
+
+// 발행한 모든 NFT 조회(테스트 용으로만 사용)
+export const getAllNFTs = async () => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract) return;
+
+  const getAllNFTs = await hereContract.methods.getAllNFTs().call();
+
+  console.log("getAllNFTs", getAllNFTs);
 };

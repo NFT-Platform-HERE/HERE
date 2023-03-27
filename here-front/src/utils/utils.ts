@@ -13,6 +13,7 @@ export function makeJsonMetaData({
   createdDate,
   place,
   imageURL,
+  nftType,
 }: MetaInfo) {
   const metadata = {
     name,
@@ -23,6 +24,7 @@ export function makeJsonMetaData({
     createdDate,
     place,
     imageURL,
+    nftType,
   };
 
   console.log("metadata", metadata);
