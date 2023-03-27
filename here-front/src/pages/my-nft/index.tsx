@@ -6,6 +6,7 @@ import SelectedNFTList from "@/features/MyNFT/SelectedNFTList";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import SelectedNFT from "@/features/MyNFT/SelectedNFT";
+import QrCodeReader from "@/components/Register/QrCodeReader";
 
 const swiperList = [
   {
@@ -70,6 +71,9 @@ export default function MyNFTPage() {
         </div>
       </div>
       {NFTCardBackIndex !== 0 && <SelectedNFT />}
+      <div className="mobile:hidden">
+        <QrCodeReader />
+      </div>
     </div>
   );
 }
