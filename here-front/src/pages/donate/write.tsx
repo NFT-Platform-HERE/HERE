@@ -5,10 +5,18 @@ import dynamic from "next/dynamic";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const DonateReactQuill = dynamic(
-  async () => await import("../../features/Donate/DonateReactQuill"),
-  { ssr: false },
+  () => import("../../features/Donate/DonateReactQuill"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
+        <CircularProgress color="error" />
+      </div>
+    ),
+  },
 );
 
 export default function DonateWritePage() {
