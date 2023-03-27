@@ -59,7 +59,7 @@ public class Nft {
         nft.ownerId = saveNftRequestDto.getOwnerId();
         nft.issuerId = saveNftRequestDto.getIssuerId();
         nft.imgUrl = saveNftRequestDto.getImgUrl();
-        nft.type = saveNftRequestDto.getType();
+        nft.type = saveNftRequestDto.getNftType();
         return nft;
     }
 

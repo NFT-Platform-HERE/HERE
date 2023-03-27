@@ -17,6 +17,6 @@ public class SaveNftRequestDto {
     private UUID issuerId;
     private String imgUrl;
     private String place;
-    private EnumNftType type;
+    private EnumNftType nftType;
     private EnumBdHistoryType bdType;       // NFT 등록하고 나서 헌혈기록도 같이 기록되니까 넣어둠
 }
