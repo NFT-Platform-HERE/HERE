@@ -18,8 +18,6 @@ COPY . /app
 RUN npm run build
 EXPOSE 3000
 
-ARG REACT_APP_DEBUG
-ENV REACT_APP_DEBUG=$REACT_APP_DEBUG
 ENV PORT 3000
 
 CMD ["node", "server.js"]
