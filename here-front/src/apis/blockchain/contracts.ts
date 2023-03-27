@@ -89,7 +89,7 @@ export const getHashValue = async (tokenId: string) => {
 
   const result = await hereContract.methods.getHashValue(tokenId).call();
 
-  console.log("getHashValue result", result);
+  return result;
 };
 
 // NFT 검증 메소드
