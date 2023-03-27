@@ -1,23 +1,10 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState, useRef } from "react";
 import DatePicker from "react-datepicker";
-import dynamic from "next/dynamic";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
-import CircularProgress from "@mui/material/CircularProgress";
-
-const DonateReactQuill = dynamic(
-  () => import("../../features/Donate/DonateReactQuill"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
-        <CircularProgress color="error" />
-      </div>
-    ),
-  },
-);
+import DonateTiptap from "@/features/Donate/DonateTiptap";
 
 export default function DonateWritePage() {
   const [value, setValue] = useState<string>("");
@@ -110,7 +97,7 @@ export default function DonateWritePage() {
             </div>
           </div>
           {/* <button onClick={printVal}>내용 확인</button> */}
-          <DonateReactQuill value={value} onChange={setValue} />
+          <DonateTiptap />
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-150 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
             수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
