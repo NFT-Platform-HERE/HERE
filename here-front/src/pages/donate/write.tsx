@@ -13,7 +13,7 @@ const DonateReactQuill = dynamic(
     return RQ;
   },
   {
-    ssr: false,
+    ssr: true,
     loading: () => (
       <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
         <CircularProgress color="error" />
