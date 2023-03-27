@@ -31,7 +31,7 @@ export default function HomePage() {
   return (
     <div>
       <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div>
-      <div className="flex h-[calc(100vh-(100vw/3.2)-65px)] w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
+      <div className="flex h-[calc(100vh-(100vw/3.2)-65px)] max-h-300 w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
         <button onClick={goToDown} className="my-auto">
           <BsChevronDoubleDown className="text-70 text-pen-0" />
         </button>

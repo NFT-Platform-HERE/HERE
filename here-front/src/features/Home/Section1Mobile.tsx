@@ -1,7 +1,19 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 export default function Section1Mobile() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <div className="my-30 flex flex-wrap justify-center">
-      <div className="relative mb-50 h-180 w-280  rounded-20 border-5 border-pink-0 text-center">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="relative mb-50 h-180 w-280  rounded-20 border-5 border-pink-0 text-center"
+      >
         <div className="absolute -top-40 left-90 mx-auto mb-20 flex h-90 w-90 items-center rounded-full bg-icon-1">
           <img
             src="mainItems/mainIcon1.png"
@@ -15,7 +27,11 @@ export default function Section1Mobile() {
         </p>
         <p className="text-14">사람들에게 온정을 나눠주세요</p>
       </div>
-      <div className="relative mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="relative mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center"
+      >
         <div className="absolute -top-40 left-90  mx-auto mb-20 flex h-90 w-90 items-center rounded-full bg-icon-1">
           <img
             src="mainItems/mainIcon2.png"
@@ -29,7 +45,11 @@ export default function Section1Mobile() {
         </p>
         <p className="text-14">다음 헌혈 일정을 계획하세요</p>
       </div>
-      <div className="relative mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="relative mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center"
+      >
         <div className="absolute -top-40 left-90  mx-auto mb-20 flex h-90 w-90 items-center rounded-full bg-icon-1">
           <img
             src="mainItems/mainIcon3.png"
@@ -43,7 +63,11 @@ export default function Section1Mobile() {
         </p>
         <p className="text-14">간편하게 제출하세요</p>
       </div>
-      <div className="relative  mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="relative  mb-50 h-180 w-280 rounded-20 border-5 border-pink-0 text-center"
+      >
         <div className="absolute -top-40 left-90  mx-auto mb-20 flex h-90 w-90 items-center rounded-full bg-icon-1">
           <img
             src="mainItems/mainIcon4.png"

@@ -5,7 +5,7 @@ export default function Section3() {
         <img
           src="mainItems/pong2.png"
           alt="pong2"
-          className="absolute -top-10 -left-20 z-0 h-60 w-45 rotate-12 mobile:-left-10 mobile:-top-20"
+          className="absolute -top-10 -left-20 z-0 h-60 w-45 rotate-12 mobile:-left-8 mobile:-top-12 mobile:h-45 mobile:w-30"
         />
 
         <div className="relative z-10">
@@ -16,12 +16,7 @@ export default function Section3() {
           <p className="text-28 font-medium mobile:text-18">같이 해요</p>
         </div>
       </div>
-      <div
-        // data-aos="fade-right"
-        // data-aos-easing="linear"
-        // data-aos-duration="1500"
-        className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288"
-      >
+      <div className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288">
         <img
           src="images/exImg1.jpg"
           alt="BDimg"
