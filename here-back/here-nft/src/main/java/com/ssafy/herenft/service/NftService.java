@@ -13,8 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -39,18 +42,33 @@ public class NftService {
         Nft nft = new Nft().createNft(saveNftRequestDto);
         nftRepository.save(nft);
 
-        BdHistory bdHistory = new BdHistory().createBdHistory(member, saveNftRequestDto);
-        bdHistoryRepository.save(bdHistory);
-
-        // 스탬프 정보 업데이트
-        Stamp stamp = stampRepository.findByMemberId(member.getId());
         Boolean isLevelUp = false;
 
-        if (stamp.getStep() + 1 >= 7) {
-            stamp.updateStamp(member, stamp.getStage() + 1, 1);
-            isLevelUp = true;
-        } else {
-            stamp.updateStamp(member, stamp.getStage(), stamp.getStep() + 1);
+        // 어제, 오늘 날자 범위 설정
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+
+        // 어제 오늘 날짜 범위안에 같은 이슈어 아이디인 nft 찾기
+        Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), yesterday, tomorrow);
+//        System.out.println("찾았나요" + byIssuerIdAndCreatedDateBetween);
+//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getIssuerId());
+//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getImgUrl());
+//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getHashValue());
+
+        if (byIssuerIdAndCreatedDateBetween.isEmpty()) {
+            System.out.println("들어왔나요");
+            BdHistory bdHistory = new BdHistory().createBdHistory(member, saveNftRequestDto);
+            bdHistoryRepository.save(bdHistory);
+
+            // 스탬프 정보 업데이트
+            Stamp stamp = stampRepository.findByMemberId(member.getId());
+
+            if (stamp.getStep() + 1 >= 7) {
+                stamp.updateStamp(member, stamp.getStage() + 1, 1);
+                isLevelUp = true;
+            } else {
+                stamp.updateStamp(member, stamp.getStage(), stamp.getStep() + 1);
+            }
         }
 
         SaveNftResponseDto saveNftResponseDto = SaveNftResponseDto.builder()
