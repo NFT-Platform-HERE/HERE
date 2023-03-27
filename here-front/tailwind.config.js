@@ -44,6 +44,7 @@ module.exports = {
         "pen-2": "#655f5f",
         "pen-3": "#443B3B",
         "pen-4": "#868E96",
+        "pen-5": "#d9d9d9",
         "pen-00": "#F4F4F4",
         "icon-1": "#FFD8D9",
         "icon-2": "#FFC6CC",
