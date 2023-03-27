@@ -7,6 +7,7 @@ import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
 
 export default function DonateWritePage() {
+  const [description, setDescription] = useState("");
   const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -97,7 +98,7 @@ export default function DonateWritePage() {
             </div>
           </div>
           {/* <button onClick={printVal}>내용 확인</button> */}
-          <DonateTiptap />
+          <DonateTiptap setDescription={setDescription} />
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-150 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
             수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
