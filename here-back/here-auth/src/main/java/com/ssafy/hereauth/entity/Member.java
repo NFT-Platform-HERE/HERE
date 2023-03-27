@@ -73,7 +73,8 @@ public class Member {
         this.email = signupRequestDto.getEmail();
     }
 
-    public void updateMemberExp(int curExp, int goalExp, int level) {
+    public void updateMemberExp(Character character, int curExp, int goalExp, int level) {
+        this.character = character;
         this.curExp = curExp;
         this.goalExp = goalExp;
         this.level = level;
