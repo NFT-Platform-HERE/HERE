@@ -112,7 +112,7 @@ export default function RedCrossPublishPage() {
     };
 
     const jsonMetaDataAgency = makeJsonMetaData(metaInfoAgency);
-    const jsonMetaDataHospital = makeJsonMetaData(metaInfoAgency);
+    const jsonMetaDataHospital = makeJsonMetaData(metaInfoHospital);
 
     try {
       const ipfsResultAgencyUrl = await sendIpfs(jsonMetaDataAgency);
