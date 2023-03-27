@@ -8,12 +8,9 @@ import { ko } from "date-fns/locale";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const DonateReactQuill = dynamic(
-  async () => {
-    const RQ = await import("../../features/Donate/DonateReactQuill");
-    return RQ;
-  },
+  () => import("../../features/Donate/DonateReactQuill"),
   {
-    ssr: true,
+    ssr: false,
     loading: () => (
       <div className="mb-70 flex h-332 w-920 items-center justify-center mobile:w-350">
         <CircularProgress color="error" />
