@@ -19,7 +19,7 @@ pipeline {
                 sh 'node -v'
                 dir('here-front'){
                     sh 'ls -al'
-                    sh 'docker build -t dev-front-img .'    
+                    sh 'docker build -t dev-front-img --build-arg REACT_APP_DEBUG=True .'    
                 }                                                
                 echo 'Build image...'
             }
