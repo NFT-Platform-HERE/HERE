@@ -6,6 +6,7 @@ import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
 import com.ssafy.hereauth.entity.Character;
+import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
@@ -40,6 +41,7 @@ public class MemberService {
      * 회원가입
      */
     public ResponseSuccessDto<SignupResponseDto> signup(SignupRequestDto signupRequestDto) {
+        System.out.println("회원가입 서비스단 들어옴");
 
         /**
          * email 중복 체크
@@ -56,6 +58,7 @@ public class MemberService {
         Member member = new Member();
         member.createMember(character, signupRequestDto);
         memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
+        System.out.println(member + "member 세이브 완료");
 
         // 스탬프
         Stamp stamp = new Stamp();
@@ -193,15 +196,20 @@ public class MemberService {
 
         int goalExp = member.getGoalExp();
         int level = member.getLevel();
+        Character character = member.getCharacter();
 
         boolean isLevelUp = false;
         if (curExp >= goalExp) {
             goalExp += 50;
             level += 1;
             isLevelUp = true;
-        }
 
-        member.updateMemberExp(curExp, goalExp, level);
+            EnumCharacterType curCharacterType = member.getCharacter().getType();
+            if (level <= 6) {
+                character = characterRepository.findByTypeAndLevel(curCharacterType, level);
+            }
+        }
+        member.updateMemberExp(character, curExp, goalExp, level);
 
         ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(level, "경험치가 상승하였습니다.");
         ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto, isLevelUp? HereStatus.HERE_UPDATE_LEVEL : HereStatus.HERE_UPDATE_EXP);

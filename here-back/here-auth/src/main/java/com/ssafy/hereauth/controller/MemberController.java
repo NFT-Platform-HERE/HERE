@@ -33,6 +33,10 @@ public class MemberController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+        System.out.println("컨트롤러" + signupRequestDto);
+        System.out.println(signupRequestDto.getCharacterId());
+        System.out.println(signupRequestDto.getWalletAddress());
+        System.out.println("----------");
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
