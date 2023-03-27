@@ -47,6 +47,10 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        <script
+          type="text/javascript"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NAVER_MAP_CLIENT_ID}&submodules=geocoder`}
+        ></script>
       </Head>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
@@ -54,6 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Provider store={store}>
               <PersistGate loading={null} persistor={persistStore(store)}>
                 <Header />
+
                 <Component {...pageProps} />
               </PersistGate>
             </Provider>
