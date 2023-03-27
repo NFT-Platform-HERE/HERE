@@ -346,6 +346,7 @@ export default function RedCrossPublishPage() {
             name="wallet"
             value={wallet}
             onChange={onChangeValue}
+            readOnly
             className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
           />
         </div>
