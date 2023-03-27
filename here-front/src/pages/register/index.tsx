@@ -1,21 +1,24 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { QrReader } from "react-qr-reader";
+import { QrScanner } from "@yudiel/react-qr-scanner";
 
 export default function RegisterPage() {
   const [data, setData] = useState("Not Found");
 
   return (
     <>
-      <QrReader
-        onScan={(data) => {
-          setData(data);
-        }}
-        onError={(error) => {
-          console.log(error);
-        }}
-        style={{ width: "500px" }}
-      />
+      <div className="h-300 w-300 overflow-hidden">
+        <QrScanner
+          onDecode={(result) => setData(result)}
+          onError={(error) => console.log(error?.message)}
+          containerStyle={{
+            width: "300px",
+            height: "300px",
+          }}
+          videoStyle={{ width: "300px", height: "300px" }}
+        />
+      </div>
+
       <p>{data}</p>
     </>
   );
