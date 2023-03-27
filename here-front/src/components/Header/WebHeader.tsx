@@ -62,7 +62,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
             onClick={() => movePage("/donate")}
           >
             기부해요
-            <div className="absolute -left-35 hidden group-hover:block">
+            <div className="absolute -left-35 z-2 hidden group-hover:block">
               <HeaderTag>#헌혈증서 #나눔</HeaderTag>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
             onClick={() => movePage("/blood")}
           >
             헌혈해요
-            <div className="absolute -left-35 hidden group-hover:block">
+            <div className="absolute -left-35 z-2 hidden group-hover:block">
               <HeaderTag>#나의헌혈정보</HeaderTag>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
             onClick={() => movePage("/submit")}
           >
             제출해요
-            <div className="absolute -left-35 hidden group-hover:block">
+            <div className="absolute -left-35 z-2 hidden group-hover:block">
               <HeaderTag>#병원 #기관</HeaderTag>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
             onClick={() => movePage("/my-nft")}
           >
             나의 NFT
-            <div className="absolute -left-35 hidden group-hover:block">
+            <div className="absolute -left-35 z-2 hidden group-hover:block">
               <HeaderTag>#SNS #등록</HeaderTag>
             </div>
           </div>

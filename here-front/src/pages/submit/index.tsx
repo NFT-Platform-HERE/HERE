@@ -14,6 +14,7 @@ import { useState } from "react";
 import SubmitOrganizationModal from "@/features/Submit/SubmitOrganizationModal";
 import SubmitHospitalModal from "@/features/Submit/SubmitHospitalModal";
 import SubmitBanner from "@/features/Submit/SubmitBanner";
+import QrCodeReader from "@/components/Register/QrCodeReader";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -153,6 +154,9 @@ export default function SubmitPage() {
       {isHospitalTab && isModalOpen && (
         <SubmitHospitalModal onClick={closeModal} />
       )}
+      <div className="mobile:hidden">
+        <QrCodeReader />
+      </div>
     </>
   );
 }
