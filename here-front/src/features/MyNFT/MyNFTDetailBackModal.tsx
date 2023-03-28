@@ -3,7 +3,7 @@ import NFTCardBack from "@/components/Card/NFTCardBack";
 import { selectNFT } from "@/stores/myNFT/selectedNFT";
 import { useDispatch } from "react-redux";
 
-export default function SelectedNFT() {
+export default function MyNFTDetailBackModal() {
   const dispatch = useDispatch();
   return (
     <div>

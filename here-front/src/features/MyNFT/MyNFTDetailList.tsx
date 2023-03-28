@@ -35,7 +35,7 @@ const swiperStyle = `
   }
   `;
 
-export default function SelectedNFTList({ selectedCardList }: Iprops) {
+export default function MyNFTDetailList({ selectedCardList }: Iprops) {
   const dispatch = useDispatch();
   const [curIdx, setCurIdx] = useState<number>(0);
 

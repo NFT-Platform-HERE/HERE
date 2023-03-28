@@ -2,10 +2,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import InstaBtn from "@/components/Button/InstaBtn";
 import MyNFTList from "@/features/MyNFT/MyNFTList";
-import SelectedNFTList from "@/features/MyNFT/SelectedNFTList";
+import MyNFTDetailList from "@/features/MyNFT/MyNFTDetailList";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
-import SelectedNFT from "@/features/MyNFT/SelectedNFT";
+import MyNFTDetailBackModal from "@/features/MyNFT/MyNFTDetailBackModal";
 import QrCodeReader from "@/components/Register/QrCodeReader";
 import { saveNFTImage } from "@/utils/saveAsImg";
 
@@ -67,11 +67,11 @@ export default function MyNFTPage() {
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
-            <SelectedNFTList selectedCardList={selectedCardList} />
+            <MyNFTDetailList selectedCardList={selectedCardList} />
           </div>
         </div>
       </div>
-      {NFTCardBackIndex !== 0 && <SelectedNFT />}
+      {NFTCardBackIndex !== 0 && <MyNFTDetailBackModal />}
       <div className="mobile:hidden">
         <QrCodeReader />
       </div>
