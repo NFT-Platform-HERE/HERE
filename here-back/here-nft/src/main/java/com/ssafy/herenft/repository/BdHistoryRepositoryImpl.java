@@ -30,6 +30,7 @@ public class BdHistoryRepositoryImpl implements BdHistoryRepositoryCustom {
                         bdHistory.member.eq(member)
                                 .and(issuedDateEq(issuedDate))
                 )
+                .limit(1)
                 .fetchOne();
     }
 
