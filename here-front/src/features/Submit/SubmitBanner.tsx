@@ -21,7 +21,7 @@ export default function SubmitBanner() {
           speed={1500}
         >
           {bgColor.map((item, idx) => (
-            <SwiperSlide>
+            <SwiperSlide key={idx}>
               <CommonBanner
                 width={1200}
                 height={240}
@@ -42,9 +42,10 @@ export default function SubmitBanner() {
             pauseOnMouseEnter: true,
           }}
           speed={1500}
+          className="h-180"
         >
           {bgColor.map((item, idx) => (
-            <SwiperSlide>
+            <SwiperSlide key={idx}>
               <CommonBanner
                 width={300}
                 height={150}
