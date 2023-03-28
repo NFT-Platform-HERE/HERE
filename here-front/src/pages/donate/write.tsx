@@ -1,5 +1,5 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,11 +18,21 @@ export default function DonateWritePage() {
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
   const [deadLineDate, setDeadLineDate] = useState<Date>(new Date());
 
+  const [formValid, setFormValid] = useState(false);
+
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const mutation = useDonateWriteQuery();
 
   const ref = useRef<HTMLButtonElement>(null);
+
+  const validateForm = () => {
+    if (title.length > 0 && description.length > 0) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  };
 
   function handleRegisterButton() {
     writeArticle();
@@ -80,6 +90,10 @@ export default function DonateWritePage() {
     }
   }
 
+  useEffect(() => {
+    validateForm();
+  }, [title, description]);
+
   return (
     <div className="mt-25 w-full">
       <div className="mx-auto w-1200 mobile:w-360">
@@ -90,7 +104,7 @@ export default function DonateWritePage() {
               height={50}
               fontSize={20}
               children={"등록"}
-              isDisabled={false}
+              isDisabled={!formValid}
               onClick={handleRegisterButton}
             />
           </div>
@@ -100,7 +114,7 @@ export default function DonateWritePage() {
               height={34}
               fontSize={14}
               children={"등록"}
-              isDisabled={false}
+              isDisabled={!formValid}
               onClick={handleRegisterButton}
             />
           </div>
