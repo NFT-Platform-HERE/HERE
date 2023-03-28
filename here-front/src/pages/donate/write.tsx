@@ -1,18 +1,84 @@
 import CommonBtn from "@/components/Button/CommonBtn";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useDonateWriteQuery from "./../../apis/donate/useDonateWriteQuery";
+import { useRouter } from "next/navigation";
 
 export default function DonateWritePage() {
+  const router = useRouter();
+
+  const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState("");
-  const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
-  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [deadLineDate, setDeadLineDate] = useState<Date>(new Date());
+
+  const [formValid, setFormValid] = useState(false);
+
+  const { memberId } = useSelector((state: RootState) => state.member);
+
+  const mutation = useDonateWriteQuery();
 
   const ref = useRef<HTMLButtonElement>(null);
+
+  const validateForm = () => {
+    if (title.length > 0 && description.length > 0) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  };
+
+  function handleRegisterButton() {
+    writeArticle();
+  }
+
+  function goToWritePage() {
+    router.push("/donate");
+  }
+
+  function makeFormData() {
+    const formData = new FormData();
+
+    const writeData = {
+      title: title.trim(),
+      goalQuantity: targetQuantity,
+      deadline: deadLineDate,
+      content: description,
+      memberId: memberId,
+    };
+
+    formData.append(
+      "saveBoardRequestDto",
+      new Blob([JSON.stringify(writeData)], { type: "application/json" }),
+    );
+
+    return formData;
+  }
+
+  async function writeArticle() {
+    const formData = makeFormData();
+
+    try {
+      const donateWriteResult = await mutation.mutateAsync(formData);
+      console.log(donateWriteResult);
+      goToWritePage();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleTitleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    console.log("event.target.value", event.target.value);
+    setTitle(event.target.value);
+  };
 
   function handleTargetQuantityPlus() {
     setTargetQuantity(targetQuantity + 1);
@@ -24,6 +90,10 @@ export default function DonateWritePage() {
     }
   }
 
+  useEffect(() => {
+    validateForm();
+  }, [title, description]);
+
   return (
     <div className="mt-25 w-full">
       <div className="mx-auto w-1200 mobile:w-360">
@@ -34,8 +104,8 @@ export default function DonateWritePage() {
               height={50}
               fontSize={20}
               children={"등록"}
-              isDisabled={false}
-              onClick={() => {}}
+              isDisabled={!formValid}
+              onClick={handleRegisterButton}
             />
           </div>
           <div className="mt-5 mb-15 hidden justify-end mobile:flex">
@@ -44,12 +114,13 @@ export default function DonateWritePage() {
               height={34}
               fontSize={14}
               children={"등록"}
-              isDisabled={false}
-              onClick={() => {}}
+              isDisabled={!formValid}
+              onClick={handleRegisterButton}
             />
           </div>
           <input
             type="text"
+            onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
             className="mb-5 text-20 text-pen-2 outline-none mobile:text-13"
           />
@@ -78,14 +149,14 @@ export default function DonateWritePage() {
             </div>
             <div className="flex-auto">
               <DatePicker
-                selected={startDate}
+                selected={deadLineDate}
                 dateFormat="yyyy년 MM월 dd일"
-                onChange={(date: Date) => setStartDate(date)}
+                onChange={(date: Date) => setDeadLineDate(date)}
                 minDate={new Date()}
                 locale={ko}
                 customInput={
                   <DonateDateButton
-                    value={value}
+                    value={deadLineDate.toString()}
                     onClick={() => {}}
                     forwardedRef={ref}
                   />
