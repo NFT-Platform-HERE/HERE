@@ -23,7 +23,7 @@ const submitSelectedHospitalNFTSlice = createSlice({
       );
     },
     clearNFTList(state) {
-      state.selectedHospitalNFTList = [];
+      state.selectedHospitalNFTList = [0];
     },
   },
 });
