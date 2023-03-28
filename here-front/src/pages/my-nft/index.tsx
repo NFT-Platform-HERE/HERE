@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import MyNFTDetailBackModal from "@/features/MyNFT/MyNFTDetailBackModal";
 import QrCodeReader from "@/components/Register/QrCodeReader";
 import { saveNFTImage } from "@/utils/saveAsImg";
+import { useEffect, useState } from "react";
 
 const swiperList = [
   {
@@ -44,6 +45,16 @@ export default function MyNFTPage() {
     return state.myNFT.selectedNFTList;
   });
 
+  const [capture, setCapture] = useState<string>("front-capture");
+
+  useEffect(() => {
+    if (NFTCardBackIndex === 0) {
+      setCapture("front-capture");
+    } else {
+      setCapture("back-capture");
+    }
+  }, [NFTCardBackIndex]);
+
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
       <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
@@ -52,7 +63,7 @@ export default function MyNFTPage() {
             <InstaBtn
               width={195}
               height={40}
-              onClick={() => saveNFTImage("#main_capture")}
+              onClick={() => saveNFTImage(capture)}
               fontSize={18}
             >
               이미지 저장하기
