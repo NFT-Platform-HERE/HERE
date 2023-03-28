@@ -81,7 +81,7 @@ export default function BloodMap() {
   }, [markers]);
 
   useEffect(() => {
-    if (!naverMap || !naver) return;
+    if (!naverMap || !naver || !naver.maps) return;
 
     const location = new naver.maps.LatLng(
       geolocation.latitude,
