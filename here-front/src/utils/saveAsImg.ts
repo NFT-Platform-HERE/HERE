@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 export const saveNFTImage = (id: string) => {
   const captureSection = document.querySelector(id) as HTMLElement;
   html2canvas(captureSection).then((canvas) => {
-    saveAsImg(canvas.toDataURL("image/jpg"), "blood_donation_nft.jpg");
+    saveAsImg(canvas.toDataURL("image/jpge", 1.0), "blood_donation_nft.jpg");
   });
 };
 

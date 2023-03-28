@@ -55,7 +55,7 @@ export default function MyNFTPage() {
               onClick={() => saveNFTImage("#main_capture")}
               fontSize={18}
             >
-              SNS 공유하기
+              이미지 저장하기
             </InstaBtn>
           </div>
           <img
@@ -66,10 +66,7 @@ export default function MyNFTPage() {
             <MyNFTList myNFTList={swiperList} />
           </div>
 
-          <div
-            id="main_capture"
-            className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center"
-          >
+          <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
             <SelectedNFTList selectedCardList={selectedCardList} />
           </div>
         </div>
