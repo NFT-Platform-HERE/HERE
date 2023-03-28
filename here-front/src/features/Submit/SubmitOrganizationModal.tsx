@@ -12,6 +12,8 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
   const [purposeInput, setPurposeInput] = useState<string>("");
   const searchOrganizationList = useSearchQuery("AGENCY", searchInput);
 
+  console.log(searchOrganizationList?.data?.data?.length);
+
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
@@ -39,13 +41,15 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
           />
         </div>
 
-        <div className="h-182 w-full overflow-y-auto ">
+        <div className="h-182 w-full overflow-y-auto border-2 border-red-2 scrollbar-thin scrollbar-track-pink-1 scrollbar-thumb-red-2">
           {searchOrganizationList?.data?.data?.map(
             (item: any, index: number) => (
               <div
                 className={
-                  (index == 0 ? "border-t-2 " : "") +
-                  "h-54 w-full cursor-pointer border-x-2 border-b-2 border-red-2 pl-10 leading-50 hover:bg-pink-0"
+                  (index !== searchOrganizationList?.data?.data?.length - 1
+                    ? "border-b-2 "
+                    : "") +
+                  "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
                 }
                 key={index}
               >
