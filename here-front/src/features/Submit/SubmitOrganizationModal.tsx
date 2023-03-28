@@ -46,7 +46,8 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
             (item: any, index: number) => (
               <div
                 className={
-                  (index !== searchOrganizationList?.data?.data?.length - 1
+                  (index !== searchOrganizationList?.data?.data?.length - 1 ||
+                  index < 3
                     ? "border-b-2 "
                     : "") +
                   "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "

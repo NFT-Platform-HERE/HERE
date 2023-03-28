@@ -37,7 +37,8 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
           {searchHospitalList?.data?.data?.map((item: any, index: number) => (
             <div
               className={
-                (index !== searchHospitalList?.data?.data?.length - 1
+                (index !== searchHospitalList?.data?.data?.length - 1 ||
+                index < 5
                   ? "border-b-2 "
                   : "") +
                 "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
