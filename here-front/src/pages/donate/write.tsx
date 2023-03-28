@@ -5,14 +5,51 @@ import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useDonateWriteQuery from "./../../apis/donate/useDonateWriteQuery";
 
 export default function DonateWritePage() {
+  const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState("");
-  const [value, setValue] = useState<string>("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
-  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [deadLineDate, setDeadLineDate] = useState<Date>(new Date());
+
+  const { memberId } = useSelector((state: RootState) => state.member);
+
+  const mutation = useDonateWriteQuery();
 
   const ref = useRef<HTMLButtonElement>(null);
+
+  async function handleRegisterButton() {
+    // console.log("title", title);
+    // console.log("targetQuantity", targetQuantity);
+    // console.log("deadLineDate", deadLineDate.toString());
+    // console.log("description", description);
+    // console.log("memberId", memberId);
+
+    const formData = new FormData();
+
+    formData.append("title", title.trim());
+    formData.append("goalQuantity", targetQuantity.toString());
+    formData.append("deadline", deadLineDate.toString());
+    formData.append("content", description);
+    formData.append("memberId", memberId);
+
+    try {
+      const donateWriteResult = await mutation.mutateAsync(formData);
+      console.log(donateWriteResult);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleTitleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    console.log("event.target.value", event.target.value);
+    setTitle(event.target.value);
+  };
 
   function handleTargetQuantityPlus() {
     setTargetQuantity(targetQuantity + 1);
@@ -35,7 +72,7 @@ export default function DonateWritePage() {
               fontSize={20}
               children={"등록"}
               isDisabled={false}
-              onClick={() => {}}
+              onClick={handleRegisterButton}
             />
           </div>
           <div className="mt-5 mb-15 hidden justify-end mobile:flex">
@@ -45,11 +82,12 @@ export default function DonateWritePage() {
               fontSize={14}
               children={"등록"}
               isDisabled={false}
-              onClick={() => {}}
+              onClick={handleRegisterButton}
             />
           </div>
           <input
             type="text"
+            onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
             className="mb-5 text-20 text-pen-2 outline-none mobile:text-13"
           />
@@ -78,14 +116,14 @@ export default function DonateWritePage() {
             </div>
             <div className="flex-auto">
               <DatePicker
-                selected={startDate}
+                selected={deadLineDate}
                 dateFormat="yyyy년 MM월 dd일"
-                onChange={(date: Date) => setStartDate(date)}
+                onChange={(date: Date) => setDeadLineDate(date)}
                 minDate={new Date()}
                 locale={ko}
                 customInput={
                   <DonateDateButton
-                    value={value}
+                    value={deadLineDate.toString()}
                     onClick={() => {}}
                     forwardedRef={ref}
                   />

@@ -1,18 +1,14 @@
 import { DONATE_SERVER_URL } from "@/utils/urls";
 import { useMutation } from "react-query";
 import axios from "axios";
-import { DonationWrite } from "@/types/DonationWrite";
 
-const fetcher = (payload: DonationWrite) =>
+const config = {
+  headers: { "Content-Type": "multipart/form-data" },
+};
+
+const fetcher = (formData: FormData) =>
   axios
-    .post(DONATE_SERVER_URL + `/board`, {
-      memberId: payload.memberId,
-      title: payload.title,
-      content: payload.content,
-      deadline: payload.deadline,
-      goalQuantity: payload.goalQuantity,
-      imgUrlList: payload.imgUrlList,
-    })
+    .post(DONATE_SERVER_URL + `/board`, formData, config)
     .then(({ data }) => data);
 
 const useDonateWriteQuery = () => {
