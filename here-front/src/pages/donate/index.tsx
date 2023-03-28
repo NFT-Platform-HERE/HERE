@@ -14,20 +14,23 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
+import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
+import { Donation } from "@/types/Donation";
 
 export default function DonatePage() {
   const router = useRouter();
 
-  const [searchValue, setSearchValue] = useState<string>("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [newMemberId, setNewMemberId] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
+  const [nowDonateList, setNowDonateist] = useState<Donation[]>([]);
 
   const { memberId } = useSelector((state: RootState) => state.member);
-
-  const [newMemberId, setNewMemberId] = useState<string>("");
 
   const donateList = useDonateListQuery();
   const donateDeadLineList = useDonateDeadLineListQuery();
   const donateMyList = useDonateMyListQuery(newMemberId);
+  const searchList = useDonateSearchQuery(keyword);
 
   useEffect(() => {
     setNewMemberId(memberId);
@@ -37,20 +40,19 @@ export default function DonatePage() {
     setIsChecked(event.target.checked);
   };
 
-  const handleSearchInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    console.log("event.target.value", event.target.value);
-    setSearchValue(event.target.value);
-  };
-
-  const handleSearchInputKeyDown = (
-    event: React.KeyboardEvent<HTMLElement>,
-  ) => {
-    if (event.code === "Enter") {
-      console.log(event.code);
+  useEffect(() => {
+    if (isChecked && donateMyList.data) {
+      setNowDonateist(donateMyList.data);
+      return;
     }
-  };
+    if (keyword && searchList.data) {
+      setNowDonateist(searchList.data);
+      return;
+    }
+    if (donateList.data) {
+      setNowDonateist(donateList.data);
+    }
+  }, [isChecked, keyword]);
 
   const goToSite = () => {
     location.assign(
@@ -126,9 +128,10 @@ export default function DonatePage() {
           </div>
           <div className="mb-55 mt-27 flex items-center justify-center mobile:mt-5 mobile:mb-5 ">
             <DonateSearchInputBox
-              value={searchValue}
-              onChange={handleSearchInputChange}
-              onKeyDown={handleSearchInputKeyDown}
+              setKeyword={setKeyword}
+              // value={searchValue}
+              // onChange={handleSearchInputChange}
+              // onKeyDown={handleSearchInputKeyDown}
             />
             <div className="ml-15 flex mobile:hidden">
               <DonateCheckBox
@@ -140,11 +143,12 @@ export default function DonatePage() {
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
-                {isChecked ? (
+                {/* {isChecked ? (
                   <DonateCardList items={donateMyList.data!} />
                 ) : (
                   <DonateCardList items={donateList.data!} />
-                )}
+                  )} */}
+                <DonateCardList items={nowDonateList!} />
               </Suspense>
             </div>
           </div>

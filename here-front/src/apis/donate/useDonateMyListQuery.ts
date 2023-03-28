@@ -19,9 +19,6 @@ const useDonateMyListQuery = (memberId: string) => {
     {
       suspense: true,
       enabled: !!memberId,
-      onSuccess: (data) => {
-        console.log("성공", data);
-      },
     },
   );
 };
