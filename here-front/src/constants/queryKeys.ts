@@ -22,6 +22,7 @@ export const ALARM_LIST = "/alarmList";
 export const DONATE_LIST = "/donateList";
 export const DONATE_DETAIL = "/donateDetail";
 export const DONATE_DEADLINE_LIST = "/donateDeadlineList";
+export const DONATE_NFT_COUNT = "/donateNftCount";
 
 // myNFT
 export const MYNFT_LIST = "/mynftList";
