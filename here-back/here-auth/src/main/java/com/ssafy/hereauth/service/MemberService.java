@@ -79,6 +79,7 @@ public class MemberService {
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
         String characterImgUrl = member.getCharacter().getImgUrl();
+        EnumCharacterType characterType = member.getCharacter().getType();
 
         // 헌혈기록 리스트 뽑기
         List<BdHistory> bdHistoryList = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(memberId);
@@ -109,7 +110,7 @@ public class MemberService {
         // 다음 헌혈 가능 날짜 구하기
 
         // DTO에 넣기
-        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, characterType, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
         ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
