@@ -7,6 +7,7 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import SelectedNFT from "@/features/MyNFT/SelectedNFT";
 import QrCodeReader from "@/components/Register/QrCodeReader";
+import { saveNFTImage } from "@/utils/saveAsImg";
 
 const swiperList = [
   {
@@ -51,10 +52,10 @@ export default function MyNFTPage() {
             <InstaBtn
               width={195}
               height={40}
-              onClick={() => console.log("click!")}
+              onClick={() => saveNFTImage("#main_capture")}
               fontSize={18}
             >
-              SNS 공유하기
+              이미지 저장하기
             </InstaBtn>
           </div>
           <img
