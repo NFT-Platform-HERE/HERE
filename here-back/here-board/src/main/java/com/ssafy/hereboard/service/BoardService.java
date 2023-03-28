@@ -3,6 +3,7 @@ package com.ssafy.hereboard.service;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
+import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
@@ -283,7 +284,7 @@ public class BoardService {
     }
 
     /* 응원 메시지별 카운트 조회 */
-    public ResponseSuccessDto<List<GetBoardMsgResponseDto>> getBoardMsgList(Long boardId) {
+    public ResponseSuccessDto<List<GetBoardMsgResponseDto>> getBoardMsgList(Long boardId, UUID memberId) {
 
         // 댓글 목록 가져올 주인공 게시글 가져오기
         Board board = boardRepository.findById(boardId)
@@ -300,14 +301,21 @@ public class BoardService {
         for (CheeringMsg cheeringMsg : cheeringMsgList) {
             Long cheeringMsgId = cheeringMsg.getId();
             String content = cheeringMsg.getContent();
+            Boolean isSelected = false;
 
             // cnt를 위해서 리포지토리에 접근!
             int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+            Optional<BoardMsg> boardMsg = boardMsgRepository.findByBoardAndCheeringMsgIdAndMemberIdAndStatus(board, cheeringMsgId, memberId, EnumBoardMsgStatus.ACTIVE);
+
+            if (!boardMsg.isEmpty()) {
+                isSelected = true;
+            }
 
             GetBoardMsgResponseDto getBoardMsgResponseDto = GetBoardMsgResponseDto.builder()
                     .cheeringMsgId(cheeringMsgId)
                     .content(content)
                     .cnt(cnt)
+                    .isSelected(isSelected)
                     .build();
             result.add(getBoardMsgResponseDto);
         }
