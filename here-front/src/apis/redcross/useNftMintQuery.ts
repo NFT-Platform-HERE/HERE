@@ -13,7 +13,7 @@ const fetcher = (payload: Mint) =>
       ownerId: payload.ownerId,
       place: payload.place,
       tokenId: payload.tokenId,
-      type: payload.type,
+      nftType: payload.nftType,
     })
     .then(({ data }) => data);
 

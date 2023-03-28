@@ -8,5 +8,5 @@ export interface Mint {
   ownerId: string;
   place: string;
   tokenId: 0;
-  type: NftType;
+  nftType: NftType;
 }
