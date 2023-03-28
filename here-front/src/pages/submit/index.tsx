@@ -1,20 +1,18 @@
-import CommonBanner from "@/components/Banner/CommonBanner";
 import TabBtn from "@/components/Button/TabBtn";
 import SubmitNFTList from "@/features/Submit/SubmitNFTList";
-import SelectedSubmitNFTList from "@/features/Submit/SelectedSubmitNFTList";
+import SubmitNFTDetailList from "@/features/Submit/SubmitNFTDetailList";
 import { RootState } from "@/stores/store";
+import { useEffect, useState } from "react";
 import { setTabHospital, setTabOrganization } from "@/stores/submit/submitTab";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import "swiper/css";
-import "swiper/css/navigation";
+import { useSelector, useDispatch } from "react-redux";
 import CommonBtn from "@/components/Button/CommonBtn";
-import Background from "@/components/Background/Background";
-import { useState } from "react";
 import SubmitOrganizationModal from "@/features/Submit/SubmitOrganizationModal";
 import SubmitHospitalModal from "@/features/Submit/SubmitHospitalModal";
 import SubmitBanner from "@/features/Submit/SubmitBanner";
 import QrCodeReader from "@/components/Register/QrCodeReader";
+import "swiper/css";
+import "swiper/css/navigation";
+import { clearNFTList } from "@/stores/submit/selectedNFT";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -35,6 +33,10 @@ export default function SubmitPage() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    dispatch(clearNFTList());
+  }, []);
 
   return (
     <>
@@ -105,7 +107,7 @@ export default function SubmitPage() {
               </CommonBtn>
             </div>
           </div>
-          <SelectedSubmitNFTList />
+          <SubmitNFTDetailList />
           {isHospitalTab && (
             <div className="absolute top-[400px] right-0 flex items-end mobile:left-20 mobile:top-230 mobile:w-190">
               <input className="h-39 w-46 border-1 border-pen-0"></input>

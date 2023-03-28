@@ -1,4 +1,4 @@
-import { selectNFT } from "@/stores/submit/selectedNFT";
+import { addNFT } from "@/stores/submit/selectedNFT";
 import { useDispatch } from "react-redux";
 
 interface Iprops {
@@ -7,12 +7,12 @@ interface Iprops {
   registerDate: string;
 }
 
-export default function SubmitNFTPreview({ id, name, registerDate }: Iprops) {
+export default function SubmitNFTListItem({ id, name, registerDate }: Iprops) {
   const dispatch = useDispatch();
   return (
     <div
       className="flex h-130 w-210 flex-col justify-between rounded-20 bg-pink-1 pt-20 pl-20 pb-20 text-18 shadow-sm"
-      onClick={() => dispatch(selectNFT(id))}
+      onClick={() => dispatch(addNFT(id))}
     >
       <div>{name}</div>
       <div>{registerDate}</div>

@@ -1,23 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface selectedNFTState {
-  selectedNFT: number[];
+  selectedNFTList: number[];
 }
 
 const initialState: selectedNFTState = {
-  selectedNFT: [0, 1, 2, 3, 4],
+  selectedNFTList: [0],
 };
 
 const submitSelectedNFTSlice = createSlice({
   name: "submitSelectedNFT",
   initialState,
   reducers: {
-    selectNFT(state, action) {
-      state.selectedNFT = action.payload;
+    addNFT(state, action) {
+      state.selectedNFTList.push(action.payload);
+    },
+    clearNFTList(state) {
+      state.selectedNFTList = [];
     },
   },
 });
 
-export const { selectNFT } = submitSelectedNFTSlice.actions;
+export const { addNFT, clearNFTList } = submitSelectedNFTSlice.actions;
 
 export default submitSelectedNFTSlice.reducer;

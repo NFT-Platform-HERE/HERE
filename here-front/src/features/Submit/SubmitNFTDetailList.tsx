@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function SelectedSubmitNFTList() {
+export default function SubmitNFTDetailList() {
   const [curIdx, setCurIdx] = useState<number>(0);
 
   const marginStyle = (index: number) => {
@@ -15,7 +15,7 @@ export default function SelectedSubmitNFTList() {
   };
 
   const selectedCardList = useSelector((state: RootState) => {
-    return state.submitSelectedNFT.selectedNFT;
+    return state.submitSelectedNFT.selectedNFTList;
   });
 
   const swiperStyle = `

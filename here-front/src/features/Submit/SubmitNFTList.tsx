@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import SubmitNFTPreview from "./SubmitNFTPreview";
-import { useState } from "react";
+import SubmitNFTListItem from "./SubmitNFTListItem";
 
 const swiperStyle = `
 .swiper-button-prev{
@@ -60,7 +59,7 @@ export default function SubmitNFTList() {
         >
           {samplePreview.map((item, index) => (
             <SwiperSlide className="relative flex justify-center" key={index}>
-              <SubmitNFTPreview
+              <SubmitNFTListItem
                 id={index}
                 name={item.name}
                 registerDate={item.registerDate}
