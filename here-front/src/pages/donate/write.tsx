@@ -8,8 +8,11 @@ import DonateTiptap from "@/features/Donate/DonateTiptap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateWriteQuery from "./../../apis/donate/useDonateWriteQuery";
+import { useRouter } from "next/navigation";
 
 export default function DonateWritePage() {
+  const router = useRouter();
+
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState("");
   const [targetQuantity, setTargetQuantity] = useState<number>(1);
@@ -21,24 +24,40 @@ export default function DonateWritePage() {
 
   const ref = useRef<HTMLButtonElement>(null);
 
-  async function handleRegisterButton() {
-    // console.log("title", title);
-    // console.log("targetQuantity", targetQuantity);
-    // console.log("deadLineDate", deadLineDate.toString());
-    // console.log("description", description);
-    // console.log("memberId", memberId);
+  function handleRegisterButton() {
+    writeArticle();
+  }
 
+  function goToWritePage() {
+    router.push("/donate");
+  }
+
+  function makeFormData() {
     const formData = new FormData();
 
-    formData.append("title", title.trim());
-    formData.append("goalQuantity", targetQuantity.toString());
-    formData.append("deadline", deadLineDate.toString());
-    formData.append("content", description);
-    formData.append("memberId", memberId);
+    const writeData = {
+      title: title.trim(),
+      goalQuantity: targetQuantity,
+      deadline: deadLineDate,
+      content: description,
+      memberId: memberId,
+    };
+
+    formData.append(
+      "saveBoardRequestDto",
+      new Blob([JSON.stringify(writeData)], { type: "application/json" }),
+    );
+
+    return formData;
+  }
+
+  async function writeArticle() {
+    const formData = makeFormData();
 
     try {
       const donateWriteResult = await mutation.mutateAsync(formData);
       console.log(donateWriteResult);
+      goToWritePage();
     } catch (error) {
       console.error(error);
     }
