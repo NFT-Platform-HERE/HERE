@@ -15,7 +15,15 @@ export default function SubmitNFTDetailList() {
   };
 
   const selectedCardList = useSelector((state: RootState) => {
-    return state.submitSelectedNFT.selectedNFTList;
+    return state.submitSelectedHospitalNFT.selectedHospitalNFTList;
+  });
+
+  const selectedCard = useSelector((state: RootState) => {
+    return state.submitSelectedOrganizationNFT.selectedOrganizationNFT;
+  });
+
+  const submitTab = useSelector((state: RootState) => {
+    return state.submitTab.tabName;
   });
 
   const swiperStyle = `
@@ -33,7 +41,7 @@ export default function SubmitNFTDetailList() {
   }
   `;
 
-  return (
+  return submitTab === "HOSPITAL" ? (
     <div>
       <Swiper
         slidesPerView={3}
@@ -79,6 +87,15 @@ export default function SubmitNFTDetailList() {
           </SwiperSlide>
         ))}
       </Swiper>
+    </div>
+  ) : (
+    <div className="mt-25 flex justify-center mobile:mt-0">
+      <div className="mobile:hidden">
+        <NFTCardBack height={350} fontSize={18} />
+      </div>
+      <div className="hidden mobile:block">
+        <NFTCardBack height={203} fontSize={12} />
+      </div>
     </div>
   );
 }

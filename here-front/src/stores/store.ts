@@ -9,7 +9,8 @@ import myNFTSlice from "./myNFT/myNFT";
 import selectedNFTSlice from "./myNFT/selectedNFT";
 import memberSlice from "./member/member";
 import submitTabSlice from "./submit/submitTab";
-import submitSelectedNFTSlice from "./submit/selectedNFT";
+import submitSelectedHospitalNFTSlice from "./submit/selectedHospitalNFT";
+import submitSelectedOrganizationNFTSlice from "./submit/selectedOrganizationNFT";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
@@ -19,7 +20,8 @@ const reducers = combineReducers({
   mobileHeaderProfileDropdown: mobileHeaderProfileDropdownSlice,
   mobileHeaderName: mobileHeaderNameSlice,
   submitTab: submitTabSlice,
-  submitSelectedNFT: submitSelectedNFTSlice,
+  submitSelectedHospitalNFT: submitSelectedHospitalNFTSlice,
+  submitSelectedOrganizationNFT: submitSelectedOrganizationNFTSlice,
   webHeaderDropdown: webHeaderDropdown,
 });
 

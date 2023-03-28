@@ -12,19 +12,19 @@ import SubmitBanner from "@/features/Submit/SubmitBanner";
 import QrCodeReader from "@/components/Register/QrCodeReader";
 import "swiper/css";
 import "swiper/css/navigation";
-import { clearNFTList } from "@/stores/submit/selectedNFT";
+import { clearNFTList } from "@/stores/submit/selectedHospitalNFT";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const tabIndex = useSelector((state: RootState) => {
-    return state.submitTab.tabIndex;
+    return state.submitTab.tabName;
   });
 
-  const isOrganizationTab = tabIndex === 1 ? true : false;
+  const isOrganizationTab = tabIndex === "AGENCY" ? true : false;
 
-  const isHospitalTab = tabIndex === 2 ? true : false;
+  const isHospitalTab = tabIndex === "HOSPITAL" ? true : false;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -36,6 +36,7 @@ export default function SubmitPage() {
 
   useEffect(() => {
     dispatch(clearNFTList());
+    dispatch(setTabOrganization());
   }, []);
 
   return (

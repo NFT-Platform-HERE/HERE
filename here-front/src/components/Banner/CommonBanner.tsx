@@ -17,10 +17,11 @@ export default function CommonBanner({
 }: Iprops) {
   return (
     <div
-      className="flex h-350 w-full flex-col items-center"
+      className="mb-50 flex w-full flex-col items-center"
       css={[
         {
           minWidth: width,
+          height: height + 50,
         },
       ]}
     >

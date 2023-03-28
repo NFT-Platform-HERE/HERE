@@ -27,5 +27,9 @@ export const DONATE_MY_LIST = "/donateMyList";
 export const DONATE_CHEER_UP_LIST = "/donateCheerUpList";
 export const DONATE_SEARCH = "/donateSearch";
 
+// submit
+export const SUBMIT_NFT_LIST = "/submitNFTList";
+export const SUBMIT_SEARCH = "/submitSearch";
+
 // myNFT
 export const MYNFT_LIST = "/mynftList";

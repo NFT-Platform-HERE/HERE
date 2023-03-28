@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface submitTabState {
-  tabIndex: 1 | 2;
+  tabName: "AGENCY" | "HOSPITAL";
 }
 
 const initialState: submitTabState = {
-  tabIndex: 1,
+  tabName: "AGENCY",
 };
 
 const submitTabSlice = createSlice({
@@ -13,10 +13,10 @@ const submitTabSlice = createSlice({
   initialState,
   reducers: {
     setTabOrganization(state) {
-      state.tabIndex = 1;
+      state.tabName = "AGENCY";
     },
     setTabHospital(state) {
-      state.tabIndex = 2;
+      state.tabName = "HOSPITAL";
     },
   },
 });
