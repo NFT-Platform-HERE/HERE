@@ -144,7 +144,7 @@ export default function RedCrossPublishPage() {
         ownerId: memberId,
         place: place.trim(),
         tokenId: agencyTokenId,
-        type: NftType.AGENCY,
+        nftType: NftType.AGENCY,
       };
 
       const hospitalPayload: Mint = {
@@ -155,7 +155,7 @@ export default function RedCrossPublishPage() {
         ownerId: memberId,
         place: place.trim(),
         tokenId: hospitalTokenId,
-        type: NftType.HOSPITAL,
+        nftType: NftType.HOSPITAL,
       };
 
       const agencyNftMintResult = await mutation.mutateAsync(agencyPayload);
