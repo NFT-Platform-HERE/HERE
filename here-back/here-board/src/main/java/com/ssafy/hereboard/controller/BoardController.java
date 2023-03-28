@@ -68,7 +68,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardList());
     }
 
-    @ApiOperation(value = "내 board 조회", notes = "회원이 작성한 board를 조회합니다.")
+    @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
     @GetMapping("/member/{memberId}")
     public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
@@ -87,10 +87,10 @@ public class BoardController {
         return ResponseEntity.ok(boardService.updateMsg(updateMsgRequestDto));
     }
 
-    @ApiOperation(value = "응원 메시지 수정", notes = "응원 메시지를 수정합니다.")
-    @GetMapping("/{boardId}/msg")
-    public ResponseEntity<ResponseSuccessDto<List<GetBoardMsgResponseDto>>> getBoardMsgList(@PathVariable("boardId") Long boardId) {
-        return ResponseEntity.ok(boardService.getBoardMsgList(boardId));
+    @ApiOperation(value = "게시글 응원 메시지별 카운트 조회", notes = "게시글의 응원 메시지별 카운트 및 선택 여부를 조회합니다.")
+    @GetMapping("/msg/{boardId}/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<List<GetBoardMsgResponseDto>>> getBoardMsgList(@PathVariable("boardId") Long boardId, @PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(boardService.getBoardMsgList(boardId, memberId));
     }
 
     @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")

@@ -9,4 +9,5 @@ public class GetBoardMsgResponseDto {
     private Long cheeringMsgId;
     private String content;
     private int cnt;
+    private Boolean isSelected;
 }
