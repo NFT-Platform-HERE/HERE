@@ -51,9 +51,6 @@ module.exports = {
         "icon-3": "#FFF4EF",
         "icon-4": "#FFE2E5",
         "icon-5": "#FFF0F0",
-        cat: "#E1E1E7",
-        dog: "#F0E2B7",
-        deer: "#E6DCD2",
       },
       keyframes: {
         wave: {
