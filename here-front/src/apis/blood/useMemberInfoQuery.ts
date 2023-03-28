@@ -9,7 +9,9 @@ const fetcher = (memberId: string) =>
     .then(({ data }) => data.data);
 
 const useMemberInfoQuery = (memberId: string) => {
-  return useQuery(queryKeys.MEMBER_INFO, () => fetcher(memberId));
+  return useQuery([queryKeys.MEMBER_INFO, memberId], () => fetcher(memberId), {
+    enabled: !!memberId,
+  });
 };
 
 export default useMemberInfoQuery;

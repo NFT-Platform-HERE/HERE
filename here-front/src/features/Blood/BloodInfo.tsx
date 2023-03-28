@@ -10,6 +10,7 @@ export default function BloodInfo() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
   const member = useMemberInfoQuery(memberId);
+  console.log(member.data);
 
   const handleModal = () => {
     setOpenHistory(!openHistory);
@@ -19,7 +20,7 @@ export default function BloodInfo() {
       <div className="inline-block h-500 w-400 rounded-30 bg-pink-2 text-center mobile:mx-auto mobile:mt-32 mobile:h-400 mobile:w-300">
         <img
           src={member.data ? member.data.characterImgUrl : ""}
-          alt="나중에 유저 캐릭터로 바꾸기"
+          alt="characterImgUrl"
           className="mx-auto mt-50 mb-20 h-300 w-300 mobile:mt-30 mobile:h-240 mobile:w-240"
         />
         <div>
