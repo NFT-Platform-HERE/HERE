@@ -16,6 +16,7 @@ export default function BloodMap() {
 
   // initial call
   const geolocation = useGeolocation();
+  const { naver } = window;
 
   const router = useRouter();
 
@@ -42,7 +43,6 @@ export default function BloodMap() {
   }
 
   useEffect(() => {
-    const { naver } = window;
     if (!mapElement.current || !naver) return;
     // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
     const locationPos = new naver.maps.LatLng(36.3562036, 127.3566635);
@@ -81,7 +81,7 @@ export default function BloodMap() {
   }, [markers]);
 
   useEffect(() => {
-    if (naverMap === null) return;
+    if (!naverMap || !naver) return;
 
     const location = new naver.maps.LatLng(
       geolocation.latitude,
