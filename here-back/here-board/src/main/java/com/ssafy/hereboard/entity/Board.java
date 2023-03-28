@@ -65,7 +65,7 @@ public class Board {
         board.member = member;
         board.title = saveBoardRequestDto.getTitle();
         board.content = saveBoardRequestDto.getContent();
-        board.deadline = saveBoardRequestDto.getDeadline();
+        board.deadline = saveBoardRequestDto.getDeadline().plusDays(1);
         board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
         return board;
     }

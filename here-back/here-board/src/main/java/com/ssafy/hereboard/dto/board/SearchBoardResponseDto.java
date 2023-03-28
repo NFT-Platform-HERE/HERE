@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
@@ -18,11 +20,11 @@ public class SearchBoardResponseDto {
     private String nickname;
     private String boardImgUrl;
     private EnumBoardStatus status;
-    private LocalDate dDay;
+    private LocalDateTime dDay;
     private int percentage;
 
     @QueryProjection
-    public SearchBoardResponseDto(Long boardId, String title, String nickname, String boardImgUrl, EnumBoardStatus status, LocalDate dDay, int percentage) {
+    public SearchBoardResponseDto(Long boardId, String title, String nickname, String boardImgUrl, EnumBoardStatus status, LocalDateTime dDay, int percentage) {
         this.boardId = boardId;
         this.title = title;
         this.nickname = nickname;
@@ -39,7 +41,7 @@ public class SearchBoardResponseDto {
         nickname = board.getMember().getNickname();
         boardImgUrl = "thumbnailUrl";
         status = board.getStatus();
-        dDay = board.getDeadline();
+        dDay = board.getDeadline().atTime(LocalTime.MIDNIGHT);
         percentage = board.getCurQuantity() / board.getGoalQuantity() * 100;
     }
 }
