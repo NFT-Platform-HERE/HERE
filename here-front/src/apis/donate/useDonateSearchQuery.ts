@@ -4,14 +4,24 @@ import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
 import { Donation } from "./../../types/Donation";
 
-const fetcher = () =>
-  axios.get(DONATE_SERVER_URL + `/board/search`).then(({ data }) => {
-    const response = data.data as Donation[];
-    return response;
-  });
+interface Iprops {
+  search: string;
+}
 
-const useDonateSearchQuery = () => {
-  return useQuery(queryKeys.DONATE_SEARCH, () => fetcher(), {
+const fetcher = (search: string) =>
+  axios
+    .get(DONATE_SERVER_URL + `/board/search`, {
+      params: {
+        query: search,
+      },
+    })
+    .then(({ data }) => {
+      const response = data.data as Donation[];
+      return response;
+    });
+
+const useDonateSearchQuery = ({ search }: Iprops) => {
+  return useQuery(queryKeys.DONATE_SEARCH, () => fetcher(search), {
     suspense: true,
   });
 };
