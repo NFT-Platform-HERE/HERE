@@ -54,7 +54,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -90,7 +90,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -122,6 +122,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .deadline(board.getDeadline())
+                .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                 .percentage(percentage)
                 .curQuantity(board.getCurQuantity())
                 .goalQuantity(board.getGoalQuantity())
@@ -342,7 +343,7 @@ public class BoardService {
                     .nickname(searched.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(searched.getStatus())
-                    .dDay(searched.getDeadline())
+                    .dDay(searched.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(percentage)
                     .build();
             result.add(searchBoardResponseDto);
@@ -365,7 +366,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);

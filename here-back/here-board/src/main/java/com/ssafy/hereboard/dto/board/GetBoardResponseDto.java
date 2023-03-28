@@ -20,6 +20,7 @@ public class GetBoardResponseDto {
     private String title;
     private String content;
     private LocalDate deadline;
+    private LocalDateTime dDay;
     private int percentage;
     private int curQuantity;
     private int goalQuantity;
