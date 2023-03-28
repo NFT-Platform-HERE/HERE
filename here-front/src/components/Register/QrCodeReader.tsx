@@ -5,7 +5,7 @@ export default function QrCodeReader() {
   return (
     <>
       {isOpen ? (
-        <div className="fixed top-[calc(50%-150px)] left-0 z-30 flex h-300 w-350 overflow-hidden rounded-r-20 border-t-4 border-r-4 border-b-4 border-red-2 bg-white">
+        <div className="fixed top-[calc(50%-150px)] left-0 z-10 flex h-300 w-350 overflow-hidden rounded-r-20 border-t-4 border-r-4 border-b-4 border-red-2 bg-white">
           <div
             className="flex h-300 w-50 cursor-pointer items-center justify-center"
             onClick={() => setIsOpen(false)}
@@ -24,7 +24,7 @@ export default function QrCodeReader() {
         </div>
       ) : (
         <div
-          className="group fixed top-[calc(50%-150px)] left-0 z-30 flex h-250 w-53 cursor-pointer items-center justify-center  rounded-r-40 border-t-4 border-r-4 border-b-4 border-red-2 bg-white"
+          className="group fixed top-[calc(50%-150px)] left-0 z-10 flex h-250 w-53 cursor-pointer items-center justify-center  rounded-r-40 border-t-4 border-r-4 border-b-4 border-red-2 bg-white"
           onClick={() => setIsOpen(true)}
         >
           <div className="w-25 text-center text-18 font-semibold text-red-2">

@@ -48,7 +48,7 @@ export default function MyNFTPage() {
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
       <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
         <div className="relative flex h-full w-[1200px] items-center justify-between mobile:w-full mobile:flex-col-reverse mobile:justify-between">
-          <div className="absolute right-0 top-20 mobile:hidden">
+          <div className="absolute right-0 top-20 z-30 mobile:hidden ">
             <InstaBtn
               width={195}
               height={40}
