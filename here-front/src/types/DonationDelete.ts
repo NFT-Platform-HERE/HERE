@@ -1,7 +1,7 @@
 import { BoardStatus } from "@/utils/statusType";
 
 export interface DonationDelete {
-  boardId: string;
+  boardId: number;
   writerId: string;
   status: BoardStatus;
 }
