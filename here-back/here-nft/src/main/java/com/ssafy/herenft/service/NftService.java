@@ -160,7 +160,7 @@ public class NftService {
 
 
     /* 기관용/병원용 NFT 목록 조회 */
-    public ResponseSuccessDto<List> getNftToOrgan(UUID memberId, EnumNftType organType) {
+    public ResponseSuccessDto<List<?>> getNftToOrgan(UUID memberId, EnumNftType organType) {
         List<Nft> nftList = new ArrayList<>();
         HereStatus status = null;
 
@@ -204,7 +204,7 @@ public class NftService {
 
         }
 
-        ResponseSuccessDto<List> res = responseUtil.successResponse(result, status);
+        ResponseSuccessDto<List<?>> res = responseUtil.successResponse(result, status != null ? status:HereStatus.HERE_NOT_FOUND_NFT_LIST);
         return res;
     }
 

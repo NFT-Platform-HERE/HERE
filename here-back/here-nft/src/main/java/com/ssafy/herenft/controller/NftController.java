@@ -64,7 +64,7 @@ public class NftController {
 
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/{organType}")
-    public ResponseEntity<ResponseSuccessDto<List>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
+    public ResponseEntity<ResponseSuccessDto<List<?>>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
         System.out.println("컨트롤러 단 들어오는지");
         return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
     }
