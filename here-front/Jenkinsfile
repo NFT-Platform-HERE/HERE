@@ -13,7 +13,9 @@ pipeline {
         }
 
         stage('env setting') {
-            sh 'cp /var/jenkins_home/env/.env /var/jenkins_home/workspace/develop-FE-pipeline/here-front'
+            steps{
+                sh 'cp /var/jenkins_home/env/.env /var/jenkins_home/workspace/develop-FE-pipeline/here-front'
+            }            
         }
         
         stage('Build image') {
