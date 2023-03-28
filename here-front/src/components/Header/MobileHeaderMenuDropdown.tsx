@@ -25,8 +25,8 @@ export default function MobileHeaderMenuDropdown() {
       case "/my-nft":
         dispatch(setMobileHeaderName("나의 NFT"));
         break;
-      case "/signin":
-        dispatch(setMobileHeaderName("로그인"));
+      case "/register":
+        dispatch(setMobileHeaderName("종이 헌혈증 등록"));
         break;
       default:
         break;
@@ -52,6 +52,9 @@ export default function MobileHeaderMenuDropdown() {
       </div>
       <div className="text-14" onClick={() => movePage("/my-nft")}>
         나의 NFT
+      </div>
+      <div className="text-14" onClick={() => movePage("/register")}>
+        종이 헌혈증 등록
       </div>
     </div>
   );

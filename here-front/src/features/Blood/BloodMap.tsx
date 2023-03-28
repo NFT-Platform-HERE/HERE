@@ -54,8 +54,9 @@ export default function BloodMap() {
 
     setNaverMap(map);
 
+    const temp: naver.maps.Marker[] = [];
     bloodHouseInfo.map((item, index) =>
-      markers.push(
+      temp.push(
         setMapIcon(
           "/icons/blood-house.png",
           new naver.maps.LatLng(item.lat, item.lng),
@@ -67,12 +68,17 @@ export default function BloodMap() {
       ),
     );
 
+    setMarkers(temp);
+  }, []);
+
+  useEffect(() => {
     markers.map((item, index) =>
       naver.maps.Event.addListener(item, "click", () => {
         setBloodHouse(bloodHouseInfo[index]);
+        console.log(bloodHouse);
       }),
     );
-  }, []);
+  }, [markers]);
 
   useEffect(() => {
     if (naverMap === null) return;
@@ -103,15 +109,18 @@ export default function BloodMap() {
   }, [geolocation]);
 
   return (
-    <div className="flex h-500 w-full gap-45">
-      <div ref={mapElement} className="h-500 w-[calc(100%-425px)]"></div>
-      <div className="relative flex h-500 w-380 items-end">
-        <div className="absolute top-0 left-40 h-70 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-60 text-red-2">
+    <div className="flex h-500 w-full gap-45 mobile:h-full mobile:flex-col">
+      <div
+        ref={mapElement}
+        className="h-500 w-[calc(100%-425px)] mobile:h-[100vw] mobile:w-full"
+      ></div>
+      <div className="relative flex h-500 w-380 items-end mobile:h-350 mobile:w-full mobile:items-end">
+        <div className="absolute top-0 left-40 h-70 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-60 text-red-2 mobile:h-50 mobile:w-[calc(100%-70px)] mobile:text-16 mobile:leading-40">
           헌혈의 집 정보
         </div>
-        <div className="h-465 w-380 rounded-30 border-3 border-pen-5 bg-white">
+        <div className="h-465 w-380 rounded-30 border-3 border-pen-5 bg-white mobile:h-325 mobile:w-full">
           {bloodHouse && (
-            <div className="flex h-465 w-380 flex-col justify-center gap-20 pl-20 pr-20">
+            <div className="flex h-465 w-380 flex-col justify-center gap-20 pl-20 pr-20 mobile:mt-30 mobile:h-325 mobile:w-full">
               <div className="flex gap-13">
                 <img src="icons/house.png" className="h-25 w-25" />
                 {bloodHouse.name}
@@ -124,9 +133,24 @@ export default function BloodMap() {
                 <img src="icons/phone.png" className="h-25 w-25" />
                 {bloodHouse.phone}
               </div>
-              <div className="absolute bottom-20">
+              <div className="absolute bottom-20 mobile:hidden">
                 <CommonBtn
                   width={340}
+                  height={40}
+                  fontSize={18}
+                  isDisabled={false}
+                  onClick={() =>
+                    router.push(
+                      "https://www.bloodinfo.net/knrcbs/bh/resv/resvBldHousStep1.do?mi=1094",
+                    )
+                  }
+                >
+                  예약하러 가기
+                </CommonBtn>
+              </div>
+              <div className="mt-20 hidden mobile:flex mobile:justify-center">
+                <CommonBtn
+                  width={250}
                   height={40}
                   fontSize={18}
                   isDisabled={false}
