@@ -9,9 +9,6 @@ const fetcher = (memberId: string) =>
 const useMyNFTListQuery = (memberId: string) => {
   return useQuery([queryKeys.MYNFT_LIST, memberId], () => fetcher(memberId), {
     enabled: !!memberId,
-    onSuccess: (data) => {
-      console.log("myNFT 성공", data);
-    },
   });
 };
 

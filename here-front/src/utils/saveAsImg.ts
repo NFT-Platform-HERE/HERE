@@ -1,21 +1,27 @@
-import html2canvas from "html2canvas";
+import * as htmlToImage from "html-to-image";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 export const saveNFTImage = (id: string) => {
-  const captureSection = document.querySelector(id) as HTMLElement;
-  html2canvas(captureSection).then((canvas) => {
-    saveAsImg(canvas.toDataURL("image/jpge", 1.0), "blood_donation_nft.jpg");
-  });
-};
+  let width;
+  let height;
 
-const saveAsImg = (uri: string, filename: string) => {
-  const link = document.createElement("a");
-  if (typeof link.download === "string") {
-    link.href = uri;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } else {
-    window.open(uri);
+  const node = document.getElementById(id);
+  if (node === null) {
+    return;
   }
+  if (id === "front-capture") {
+    width = 500;
+    height = 809;
+  } else if (id === "back-capture") {
+    width = 566;
+    height = 350;
+  }
+  htmlToImage
+    .toPng(node, { quality: 1, canvasWidth: width, canvasHeight: height })
+    .then((dataUrl) => {
+      const link = window.document.createElement("a");
+      link.download = "blood_donation.png";
+      link.href = dataUrl;
+      link.click();
+    });
 };

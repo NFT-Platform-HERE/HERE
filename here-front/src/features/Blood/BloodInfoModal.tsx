@@ -9,7 +9,7 @@ export default function BloodInfoModal() {
 
   return (
     <div className="fixed left-[50%] top-[50%] z-50 h-600 w-500 translate-x-[-50%] translate-y-[-50%] rounded-10 border-2 border-pen-0 bg-white text-center mobile:h-400 mobile:w-340">
-      <div className="h-60 w-496 rounded-t-10 bg-pink-0 mobile:w-336">
+      <div className="h-60 w-496 rounded-t-10 bg-pink-0 mobile:w-336 ">
         <div className="mx-auto flex w-480 justify-around mobile:w-320">
           <p className="inline-block w-40 font-semibold leading-60  mobile:text-15">
             번호
@@ -26,7 +26,7 @@ export default function BloodInfoModal() {
         </div>
       </div>
       {bdHistory.data && (
-        <div className="h-540 w-492 overflow-y-auto overflow-x-hidden mobile:h-340 mobile:w-340">
+        <div className="h-540 w-496 overflow-y-auto overflow-x-hidden scrollbar-hide mobile:h-340 mobile:w-340">
           {bdHistory.data.map((item: BloodHistory, idx: number) => (
             <div
               key={item.bdHistoryId}

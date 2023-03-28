@@ -6,6 +6,7 @@ interface Iprops {
 export default function NFTCardBack({ height, fontSize }: Iprops) {
   return (
     <div
+      id="back-capture"
       className="relative overflow-hidden rounded-20 bg-white shadow-lg"
       css={[
         {

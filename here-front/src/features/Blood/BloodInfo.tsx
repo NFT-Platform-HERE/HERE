@@ -10,35 +10,53 @@ export default function BloodInfo() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
   const member = useMemberInfoQuery(memberId);
+  console.log(member.data);
 
   const handleModal = () => {
     setOpenHistory(!openHistory);
   };
+
+  const bgColor = (characterType: string) => {
+    if (characterType === "CAT") return "#E1E1E7";
+    else if (characterType === "DOG") return "#F0E2B7";
+    else if (characterType === "DEER") return "#E6DCD2";
+    else return "#ffffff";
+  };
+
   return (
     <>
-      <div className="inline-block h-500 w-400 rounded-30 bg-pink-2 text-center mobile:mx-auto mobile:mt-32 mobile:h-400 mobile:w-300">
+      <div
+        css={[
+          member.data && {
+            backgroundColor: bgColor(member.data.characterType),
+          },
+        ]}
+        className="inline-block h-500 w-400 rounded-30 border-1 text-center mobile:mx-auto mobile:mt-32 mobile:h-400 mobile:w-300"
+      >
         <img
           src={member.data ? member.data.characterImgUrl : ""}
-          alt="나중에 유저 캐릭터로 바꾸기"
+          alt="characterImgUrl"
           className="mx-auto mt-50 mb-20 h-300 w-300 mobile:mt-30 mobile:h-240 mobile:w-240"
         />
-        <div>
-          <span className="mr-10 text-22 font-semibold text-red-3">
-            LEVEL.
-            {member.data ? member.data.level : ""}
-          </span>
-          <span className="text-24 font-semibold">
-            {member.data ? member.data.nickname : ""}
-          </span>
+        <div className="h-128 w-399 rounded-b-30 bg-white pt-16">
+          <div>
+            <span className="mr-10 text-22 font-semibold text-red-3">
+              LEVEL.
+              {member.data ? member.data.level : ""}
+            </span>
+            <span className="text-24 font-semibold">
+              {member.data ? member.data.nickname : ""}
+            </span>
+          </div>
+          <button
+            className="my-10 h-32 w-180 rounded-30 border-1 border-pen-0 bg-pink-0 text-14 font-medium hover:font-semibold"
+            onClick={handleModal}
+          >
+            나의 헌혈기록 보기
+          </button>
+          {openHistory && <BloodInfoModal />}
+          {openHistory && <Background onClick={handleModal} />}
         </div>
-        <button
-          className="my-10 h-32 w-180 rounded-30 border-1 border-pen-0 bg-pink-0 text-14 font-medium hover:font-semibold"
-          onClick={handleModal}
-        >
-          나의 헌혈기록 보기
-        </button>
-        {openHistory && <BloodInfoModal />}
-        {openHistory && <Background onClick={handleModal} />}
       </div>
       <div className="flex h-500 w-600 flex-wrap justify-between mobile:mx-auto mobile:h-200 mobile:w-320">
         <div className="mb-10 flex h-160 w-600 flex-wrap justify-between border-b-3 border-pen-0 px-20 py-30 mobile:mx-0 mobile:w-100 mobile:border-0 mobile:px-0">
