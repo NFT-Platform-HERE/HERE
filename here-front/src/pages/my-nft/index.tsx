@@ -9,6 +9,7 @@ import MyNFTDetailBackModal from "@/features/MyNFT/MyNFTDetailBackModal";
 import QrCodeReader from "@/components/Register/QrCodeReader";
 import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
+import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
 
 const swiperList = [
   {
@@ -44,6 +45,7 @@ export default function MyNFTPage() {
   const selectedCardList = useSelector((state: RootState) => {
     return state.myNFT.selectedNFTList;
   });
+  const { memberId } = useSelector((state: RootState) => state.member);
 
   const [capture, setCapture] = useState<string>("front-capture");
 
@@ -54,6 +56,9 @@ export default function MyNFTPage() {
       setCapture("back-capture");
     }
   }, [NFTCardBackIndex]);
+
+  const myNFTList = useMyNFTListQuery(memberId);
+  console.log(myNFTList);
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
@@ -74,7 +79,7 @@ export default function MyNFTPage() {
             className="hidden mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35"
           ></img>
           <div className="relative flex h-630 w-137 items-center justify-center mobile:h-180 mobile:w-full">
-            <MyNFTList myNFTList={swiperList} />
+            <MyNFTList myNFTList={myNFTList.data} />
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
