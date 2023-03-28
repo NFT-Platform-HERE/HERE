@@ -58,7 +58,6 @@ export default function MyNFTPage() {
   }, [NFTCardBackIndex]);
 
   const myNFTList = useMyNFTListQuery(memberId);
-  console.log(myNFTList);
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
@@ -79,7 +78,7 @@ export default function MyNFTPage() {
             className="hidden mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35"
           ></img>
           <div className="relative flex h-630 w-137 items-center justify-center mobile:h-180 mobile:w-full">
-            <MyNFTList myNFTList={myNFTList.data} />
+            <MyNFTList myNFTList={myNFTList && myNFTList.data} />
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">

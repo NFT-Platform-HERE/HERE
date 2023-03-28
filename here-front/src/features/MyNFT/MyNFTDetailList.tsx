@@ -79,7 +79,7 @@ export default function MyNFTDetailList({ selectedCardList }: Iprops) {
                   >
                     <NFTCardFront
                       width={isActive ? 300 : 250}
-                      imgUrl={`/NFT_bg_${item}.gif`}
+                      imgUrl={item.imgUrl}
                     />
                   </div>
                   <div
@@ -88,7 +88,7 @@ export default function MyNFTDetailList({ selectedCardList }: Iprops) {
                   >
                     <NFTCardFront
                       width={isActive ? 200 : 180}
-                      imgUrl={`/NFT_bg_${item}.gif`}
+                      imgUrl={item.imgUrl}
                     />
                   </div>
                 </div>
