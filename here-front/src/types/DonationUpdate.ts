@@ -1,5 +1,5 @@
 export interface DonationUpdate {
-  boardId: string;
+  boardId: number;
   writerId: string;
   title: string;
   content: string;

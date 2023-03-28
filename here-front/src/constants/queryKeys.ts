@@ -24,6 +24,8 @@ export const DONATE_DETAIL = "/donateDetail";
 export const DONATE_DEADLINE_LIST = "/donateDeadlineList";
 export const DONATE_NFT_COUNT = "/donateNftCount";
 export const DONATE_MY_LIST = "/donateMyList";
+export const DONATE_CHEER_UP_LIST = "/donateCheerUpList";
+export const DONATE_SEARCH = "/donateSearch";
 
 // myNFT
 export const MYNFT_LIST = "/mynftList";
