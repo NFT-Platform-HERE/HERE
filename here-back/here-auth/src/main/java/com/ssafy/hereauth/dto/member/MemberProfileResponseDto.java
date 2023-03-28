@@ -1,6 +1,7 @@
 package com.ssafy.hereauth.dto.member;
 
 import com.ssafy.hereauth.entity.Member;
+import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class MemberProfileResponseDto {
     private String email;
     private String nickname;
     private String characterImgUrl;
+    private EnumCharacterType characterType;
     private int level;
     private int bdCnt;
     private LocalDateTime createdDate;
@@ -22,10 +24,11 @@ public class MemberProfileResponseDto {
     private int nextWholeBdDays;
     private int nextNotWholeBdDays;
 
-    public MemberProfileResponseDto(Member member, String characterImgUrl, int bdHistoryCnt, LocalDateTime recentBdDate, int nextWholeBdDays, int nextNotWholeBdDays) {
+    public MemberProfileResponseDto(Member member, String characterImgUrl, EnumCharacterType characterType, int bdHistoryCnt, LocalDateTime recentBdDate, int nextWholeBdDays, int nextNotWholeBdDays) {
         this.email = member.getEmail();
         this.nickname = member.getNickname();
         this.characterImgUrl = characterImgUrl;
+        this.characterType = characterType;
         this.level = member.getLevel();
         this.bdCnt = bdHistoryCnt;
         this.createdDate = member.getCreatedDate();
