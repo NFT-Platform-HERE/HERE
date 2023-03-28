@@ -14,10 +14,6 @@ export default function DonateWritePage() {
 
   const ref = useRef<HTMLButtonElement>(null);
 
-  function printVal() {
-    console.log("value", value);
-  }
-
   function handleTargetQuantityPlus() {
     setTargetQuantity(targetQuantity + 1);
   }
@@ -62,7 +58,7 @@ export default function DonateWritePage() {
             <div className="mr-31 text-18 font-normal text-pen-2 mobile:text-14">
               * 목표수량
             </div>
-            <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-14">
+            <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
               {targetQuantity}
             </div>
             <img
@@ -97,9 +93,8 @@ export default function DonateWritePage() {
               />
             </div>
           </div>
-          {/* <button onClick={printVal}>내용 확인</button> */}
           <DonateTiptap setDescription={setDescription} />
-          <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-150 mobile:w-270 mobile:text-12">
+          <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
             수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
           </p>

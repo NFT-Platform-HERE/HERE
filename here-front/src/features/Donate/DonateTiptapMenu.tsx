@@ -13,7 +13,7 @@ export default function DonateTiptapMenu({ editor }: any) {
   if (!editor) return null;
   return (
     <>
-      <div className="menuBar">
+      <div className="menuBar h-40 p-5">
         <div>
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
@@ -48,16 +48,6 @@ export default function DonateTiptapMenu({ editor }: any) {
             }
           >
             <FaHeading />
-          </button>
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-            className={
-              editor.isActive("heading", { level: 3 }) ? "is_active" : ""
-            }
-          >
-            <FaHeading className="heading3" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleBulletList().run()}
