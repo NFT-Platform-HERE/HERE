@@ -4,10 +4,6 @@ import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
 import { Donation } from "./../../types/Donation";
 
-interface Iprops {
-  memberId: string;
-}
-
 const fetcher = (memberId: string) =>
   axios
     .get(DONATE_SERVER_URL + `/board/member/${memberId}`)
@@ -16,10 +12,18 @@ const fetcher = (memberId: string) =>
       return response;
     });
 
-const useDonateMyListQuery = ({ memberId }: Iprops) => {
-  return useQuery(queryKeys.DONATE_MY_LIST, () => fetcher(memberId), {
-    suspense: true,
-  });
+const useDonateMyListQuery = (memberId: string) => {
+  return useQuery(
+    [queryKeys.DONATE_MY_LIST, memberId],
+    () => fetcher(memberId),
+    {
+      suspense: true,
+      enabled: !!memberId,
+      onSuccess: (data) => {
+        console.log("성공", data);
+      },
+    },
+  );
 };
 
 export default useDonateMyListQuery;

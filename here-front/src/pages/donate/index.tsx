@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
@@ -11,6 +11,9 @@ import MoveBtn from "@/components/Button/MoveBtn";
 import useDonateListQuery from "./../../apis/donate/useDonateListQuery";
 import useDonateDeadLineListQuery from "./../../apis/donate/useDonateDeadLineListQuery";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
 
 export default function DonatePage() {
   const router = useRouter();
@@ -18,8 +21,17 @@ export default function DonatePage() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  const { memberId } = useSelector((state: RootState) => state.member);
+
+  const [newMemberId, setNewMemberId] = useState<string>("");
+
   const donateList = useDonateListQuery();
   const donateDeadLineList = useDonateDeadLineListQuery();
+  const donateMyList = useDonateMyListQuery(newMemberId);
+
+  useEffect(() => {
+    setNewMemberId(memberId);
+  }, [isChecked]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -128,7 +140,11 @@ export default function DonatePage() {
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
-                <DonateCardList items={donateList.data!} />
+                {isChecked ? (
+                  <DonateCardList items={donateMyList.data!} />
+                ) : (
+                  <DonateCardList items={donateList.data!} />
+                )}
               </Suspense>
             </div>
           </div>
