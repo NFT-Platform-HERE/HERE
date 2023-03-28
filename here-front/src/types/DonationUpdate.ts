@@ -3,7 +3,7 @@ export interface DonationUpdate {
   writerId: string;
   title: string;
   content: string;
-  deadline: string;
-  goalQuantity: number;
+  deadline?: string;
+  goalQuantity?: number;
   imgUrlList?: string[];
 }
