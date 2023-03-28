@@ -4,10 +4,16 @@ import { useRouter } from "next/router";
 import CommonBtn from "./../../components/Button/CommonBtn";
 import { useState } from "react";
 import DonateSendModal from "@/features/Donate/DonateSendModal";
+import { GetServerSideProps } from "next";
+
+interface Iprops {
+  boardId: string;
+}
 
 export default function DonateDetailPage() {
   const router = useRouter();
   const { boardId } = router.query;
+
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
 
   const closeModal = () => {
@@ -138,3 +144,15 @@ export default function DonateDetailPage() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Iprops> = async ({
+  params,
+}) => {
+  const { boardId } = params as { boardId: string };
+
+  return {
+    props: {
+      boardId,
+    },
+  };
+};
