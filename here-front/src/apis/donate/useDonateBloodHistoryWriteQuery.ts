@@ -1,9 +1,9 @@
 import { DONATE_SERVER_URL } from "@/utils/urls";
 import { useMutation } from "react-query";
 import axios from "axios";
-import { DonateBloodHistoryWrite } from "./../../types/DonateBloodHistoryWrite";
+import { DonationBloodHistoryWrite } from "../../types/DonationBloodHistoryWrite";
 
-const fetcher = (payload: DonateBloodHistoryWrite) =>
+const fetcher = (payload: DonationBloodHistoryWrite) =>
   axios
     .patch(DONATE_SERVER_URL + `/board/bd-history`, {
       boardId: payload.boardId,
