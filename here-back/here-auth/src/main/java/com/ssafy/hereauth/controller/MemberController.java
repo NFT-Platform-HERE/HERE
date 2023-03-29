@@ -33,10 +33,6 @@ public class MemberController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<ResponseSuccessDto<SignupResponseDto>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        System.out.println("컨트롤러" + signupRequestDto);
-        System.out.println(signupRequestDto.getCharacterId());
-        System.out.println(signupRequestDto.getWalletAddress());
-        System.out.println("----------");
         return ResponseEntity.ok(memberService.signup(signupRequestDto));
     }
 
@@ -81,20 +77,6 @@ public class MemberController {
     public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
         return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
     }
-
-//    /* CertHistory 생성 */
-//    @ApiOperation(value = "제출 기록 생성", notes = "헌혈증 증명 제출 기록을 생성한다.")
-//    @PostMapping("/nft/agency")
-//    public ResponseEntity<ResponseSuccessDto<CertHistoryCreateResponseDto>> createCertHistory(@RequestBody CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-//        return ResponseEntity.ok(memberService.createCertHistory(certHistoryCreateRequestDto));
-//    }
-//
-//    /* BdHistory 생성 */
-//    @ApiOperation(value = "헌혈 기록 생성", notes = "헌혈증 발행 기록을 생성한다.")
-//    @PostMapping("/nft/bd")
-//    public ResponseEntity<ResponseSuccessDto<BdHistoryCreateResponseDto>> createBdHistory(@RequestBody BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
-//        return ResponseEntity.ok(memberService.createBdHistory(bdHistoryCreateRequestDto));
-//    }
 
     /* 스탬프 정보 조회 */
     @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")

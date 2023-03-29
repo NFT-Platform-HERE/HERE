@@ -26,7 +26,7 @@ public class BdHistoryController {
 
     private final BdHistoryService bdHistoryService;
 
-    // 헌혈 기록 조회
+    /* 헌혈 기록 조회 */
     @ApiOperation(value = "헌혈 기록 조회", notes = "헌혈 기록을 조회한다.")
     @GetMapping("/history/{memberId}")
     private ResponseEntity<ResponseSuccessDto<List<BdHistoryGetResponseDto>>> getBdHistory(@PathVariable("memberId") UUID memberId) {

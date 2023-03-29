@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Builder
 public class BdHistoryCreateRequestDto {
     @NotNull(message = "memberId는 필수 값입니다.")
