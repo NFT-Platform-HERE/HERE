@@ -21,8 +21,8 @@ public interface BoardMsgRepository extends JpaRepository<BoardMsg, Long> {
 //    @Query(value = "select count(bm.cheeringMsgId) from BoardMsg bm where (bm.board= :board and bm.status='ACTIVE') GROUP BY bm.cheeringMsgId")
 //    List<?> findAllByBoardGroupByCheeringMsgId(Board board);
 
-    @Query("select count(*) from BoardMsg bm where bm.board= :board and bm.cheeringMsgId= :cheeringMsgId")
-    int findCountByBoardAndCheeringMsgId(Board board, Long cheeringMsgId);
+//    @Query("select count(*) from BoardMsg bm where bm.board= :board and bm.cheeringMsgId= :cheeringMsgId and bm.status= ")
+//    int findCountByBoardAndCheeringMsgId(Board board, Long cheeringMsgId);
 
     Optional<BoardMsg> findByBoardAndCheeringMsgIdAndMemberIdAndStatus(Board board, Long cheeringMsgId, UUID memberId, EnumBoardMsgStatus active);
 }
