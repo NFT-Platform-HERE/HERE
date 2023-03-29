@@ -3,6 +3,7 @@ package com.ssafy.hereboard.repository;
 import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.entity.BoardImg;
 import com.ssafy.hereboard.entity.BoardMsg;
+import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +23,6 @@ public interface BoardMsgRepository extends JpaRepository<BoardMsg, Long> {
 
     @Query("select count(*) from BoardMsg bm where bm.board= :board and bm.cheeringMsgId= :cheeringMsgId")
     int findCountByBoardAndCheeringMsgId(Board board, Long cheeringMsgId);
+
+    Optional<BoardMsg> findByBoardAndCheeringMsgIdAndMemberIdAndStatus(Board board, Long cheeringMsgId, UUID memberId, EnumBoardMsgStatus active);
 }

@@ -3,6 +3,7 @@ package com.ssafy.hereboard.service;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
+import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
@@ -53,7 +54,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -89,7 +90,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -121,6 +122,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .deadline(board.getDeadline())
+                .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                 .percentage(percentage)
                 .curQuantity(board.getCurQuantity())
                 .goalQuantity(board.getGoalQuantity())
@@ -163,19 +165,19 @@ public class BoardService {
     }
 
     /* 게시글 수정 */
-    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto, List<String> imgUrlList) {
         // 수정할 게시글 가져오기
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
 
-        if(updateBoardRequestDto.getImgUrlList().size() > 4) {
+        if(imgUrlList.size() > 4) {
             throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
         }
 
         // 게시글의 title, content 수정
-        board.updateBoard(updateBoardRequestDto);
+        board.updateBoard(updateBoardRequestDto, board);
 
         // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
@@ -183,7 +185,7 @@ public class BoardService {
         boardImgRepository.deleteAll(boardImgs);
 
         // 새롭게 들어온 이미지 리스트로 db에 추가
-        for (String img : updateBoardRequestDto.getImgUrlList()) {
+        for (String img : imgUrlList) {
             BoardImg boardImg = new BoardImg().createBoardImg(board, img);
             boardImgRepository.save(boardImg);
         }
@@ -283,7 +285,7 @@ public class BoardService {
     }
 
     /* 응원 메시지별 카운트 조회 */
-    public ResponseSuccessDto<List<GetBoardMsgResponseDto>> getBoardMsgList(Long boardId) {
+    public ResponseSuccessDto<List<GetBoardMsgResponseDto>> getBoardMsgList(Long boardId, UUID memberId) {
 
         // 댓글 목록 가져올 주인공 게시글 가져오기
         Board board = boardRepository.findById(boardId)
@@ -300,14 +302,22 @@ public class BoardService {
         for (CheeringMsg cheeringMsg : cheeringMsgList) {
             Long cheeringMsgId = cheeringMsg.getId();
             String content = cheeringMsg.getContent();
+            Boolean isSelected = false;
 
             // cnt를 위해서 리포지토리에 접근!
-            int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+            List<BoardMsg> boardMsgList = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
+            int cnt = boardMsgList.size();
+            Optional<BoardMsg> boardMsg = boardMsgRepository.findByBoardAndCheeringMsgIdAndMemberIdAndStatus(board, cheeringMsgId, memberId, EnumBoardMsgStatus.ACTIVE);
+
+            if (!boardMsg.isEmpty()) {
+                isSelected = true;
+            }
 
             GetBoardMsgResponseDto getBoardMsgResponseDto = GetBoardMsgResponseDto.builder()
                     .cheeringMsgId(cheeringMsgId)
                     .content(content)
                     .cnt(cnt)
+                    .isSelected(isSelected)
                     .build();
             result.add(getBoardMsgResponseDto);
         }
@@ -334,7 +344,7 @@ public class BoardService {
                     .nickname(searched.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(searched.getStatus())
-                    .dDay(searched.getDeadline())
+                    .dDay(searched.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(percentage)
                     .build();
             result.add(searchBoardResponseDto);
@@ -346,7 +356,7 @@ public class BoardService {
     /* 종료 임박 게시글 목록 조회 */
     public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList() {
 
-        List<Board> boards = boardRepository.findTop4ByOrderByDeadlineAscCurQuantityAsc();
+        List<Board> boards = boardRepository.findTop4ByStatusOrderByDeadlineAscCurQuantityAsc(EnumBoardStatus.ACTIVE);
         List<BoardResponseDto> result = new ArrayList<>();
 
         for (Board board : boards) {
@@ -357,7 +367,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MAX))
+                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);

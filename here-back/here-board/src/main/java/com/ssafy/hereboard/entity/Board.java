@@ -65,20 +65,25 @@ public class Board {
         board.member = member;
         board.title = saveBoardRequestDto.getTitle();
         board.content = saveBoardRequestDto.getContent();
-        board.deadline = saveBoardRequestDto.getDeadline();
+        board.deadline = saveBoardRequestDto.getDeadline().plusDays(1);
         board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
         return board;
     }
 
-    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto, Board board) {
         this.title = updateBoardRequestDto.getTitle();
         this.content = updateBoardRequestDto.getContent();
+        if (updateBoardRequestDto.getDeadline() != null && board.getCurQuantity() == 0) {
+            this.deadline = updateBoardRequestDto.getDeadline();
+        }
+        if (updateBoardRequestDto.getGoalQuantity() != null && board.getCurQuantity() == 0) {
+            this.goalQuantity = updateBoardRequestDto.getGoalQuantity();
+        }
     }
 
     public void updateBoardStatus(EnumBoardStatus status) {
         this.status = status;
     }
-
 //    public void closeBoard() {
 //        this.status = EnumBoardStatus.INACTIVE;
 //    }

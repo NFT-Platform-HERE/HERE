@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.repository;
 
 import com.ssafy.hereboard.entity.Board;
+import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +23,5 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardReposi
             "order by b.status asc, b.createdDate desc")
     List<Board> findAllBySearch(String query);
 
-    List<Board> findTop4ByOrderByDeadlineAscCurQuantityAsc();
+    List<Board> findTop4ByStatusOrderByDeadlineAscCurQuantityAsc(EnumBoardStatus status);
 }
