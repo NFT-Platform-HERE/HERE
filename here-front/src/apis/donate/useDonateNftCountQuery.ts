@@ -3,17 +3,13 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
 
-interface Iprops {
-  senderId: number;
-}
-
-const fetcher = (senderId: number) =>
+const fetcher = (senderId: string) =>
   axios.get(NFT_SERVER_URL + `/nft/count/${senderId}`).then(({ data }) => {
     const response = data.data;
     return response;
   });
 
-const useDonateNftCountQuery = ({ senderId }: Iprops) => {
+const useDonateNftCountQuery = (senderId: string) => {
   return useQuery(
     [queryKeys.DONATE_NFT_COUNT, senderId],
     () => fetcher(senderId),
@@ -21,7 +17,6 @@ const useDonateNftCountQuery = ({ senderId }: Iprops) => {
       suspense: true,
     },
   );
-  ``;
 };
 
 export default useDonateNftCountQuery;

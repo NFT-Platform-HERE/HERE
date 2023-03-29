@@ -8,6 +8,7 @@ import sendingHeart from "../../..//public/lottieJson/sending-heart.json";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { MemberInfo } from "@/types/MemberInfo";
+import useDonateNftCountQuery from "@/apis/donate/useDonateNftCountQuery";
 
 interface Iprops {
   onClick: () => void;
@@ -22,7 +23,13 @@ export default function DonateSendModal({
 }: Iprops) {
   const [count, setCount] = useState<number>(1);
 
-  const { characterImgUrl } = useSelector((state: RootState) => state.member);
+  const characterImgUrl = useSelector(
+    (state: RootState) => state.member.characterImgUrl,
+  );
+  const senderId = useSelector((state: RootState) => state.member.memberId);
+
+  const maxCnt = useDonateNftCountQuery(senderId);
+  console.log(maxCnt);
 
   function handleCountPlus() {
     setCount(count + 1);
