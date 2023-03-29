@@ -70,7 +70,7 @@ public class BoardService {
         if (boardImgs.size() > 0) {
             return boardImgs.get(0).getImgUrl();
         } else {
-            return "noThumbnail";
+            return "/images/logo.svg";
         }
     }
 
