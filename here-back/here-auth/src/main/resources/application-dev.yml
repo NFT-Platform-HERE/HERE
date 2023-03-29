@@ -2,9 +2,9 @@ server:
   port: 9010
   ssl:
     enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: B209HERE
-    key-store-type: PKCS12
+    key-store: ${KEY_STORE}
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: ${KEY_STORE_TYPE}
 
 spring:
   config:
@@ -24,11 +24,11 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j8b209.p.ssafy.io:3306/here?serverTimezone=Asia/Seoul
-    username: root
-    password: B209HERE
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 notification:
   mattermost:
     enabled: true
-    webhook-url: https://meeting.ssafy.com/hooks/yghzwyag6fnmtqwmpoqmufxn6h
+    webhook-url: ${MM_WEBHOOK_URL}
