@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.entity.QNft;
+import com.ssafy.herenft.eunmeration.EnumNftType;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -25,7 +26,10 @@ public class NftRepositoryImpl implements NftRepositoryCustom {
     public List<Nft> findHospitalNftAuto(UUID memberId, int count) {
         return queryFactory
                 .selectFrom(nft)
-                .where(ownerEq(memberId))
+                .where(
+                        ownerEq(memberId),
+                        nft.type.eq(EnumNftType.HOSPITAL)
+                )
                 .orderBy(
                         provideStatusOrder(),
                         nft.createdDate.asc()
