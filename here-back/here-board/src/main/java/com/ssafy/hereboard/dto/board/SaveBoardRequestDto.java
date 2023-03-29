@@ -22,6 +22,6 @@ public class SaveBoardRequestDto {
     private String content;
     @NotNull(message = "deadline은 필수 값입니다.")
     private LocalDate deadline;
-    @NotNull(message = "목표 수향은 필수 값입니다.")
+    @NotNull(message = "목표 수량은 필수 값입니다.")
     private int goalQuantity;
 }

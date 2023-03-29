@@ -165,19 +165,19 @@ public class BoardService {
     }
 
     /* 게시글 수정 */
-    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto, List<String> imgUrlList) {
         // 수정할 게시글 가져오기
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
 
-        if(updateBoardRequestDto.getImgUrlList().size() > 4) {
+        if(imgUrlList.size() > 4) {
             throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
         }
 
         // 게시글의 title, content 수정
-        board.updateBoard(updateBoardRequestDto);
+        board.updateBoard(updateBoardRequestDto, board);
 
         // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
@@ -185,7 +185,7 @@ public class BoardService {
         boardImgRepository.deleteAll(boardImgs);
 
         // 새롭게 들어온 이미지 리스트로 db에 추가
-        for (String img : updateBoardRequestDto.getImgUrlList()) {
+        for (String img : imgUrlList) {
             BoardImg boardImg = new BoardImg().createBoardImg(board, img);
             boardImgRepository.save(boardImg);
         }
