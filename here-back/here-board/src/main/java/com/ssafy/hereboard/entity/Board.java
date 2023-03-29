@@ -74,7 +74,7 @@ public class Board {
         this.title = updateBoardRequestDto.getTitle();
         this.content = updateBoardRequestDto.getContent();
         if (updateBoardRequestDto.getDeadline() != null && board.getCurQuantity() == 0) {
-            this.deadline = updateBoardRequestDto.getDeadline();
+            this.deadline = updateBoardRequestDto.getDeadline().plusDays(1);
         }
         if (updateBoardRequestDto.getGoalQuantity() != null && board.getCurQuantity() == 0) {
             this.goalQuantity = updateBoardRequestDto.getGoalQuantity();
