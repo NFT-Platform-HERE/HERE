@@ -82,7 +82,10 @@ export default function MyNFTPage() {
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
-            <MyNFTDetailList selectedCardList={selectedCardList} />
+            <MyNFTDetailList
+              selectedCardList={selectedCardList}
+              MyNFTList={myNFTList && myNFTList.data}
+            />
           </div>
         </div>
       </div>

@@ -3,9 +3,11 @@ import { selectNFT } from "@/stores/myNFT/selectedNFT";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { MyNFTItem } from "@/types/MyNFTItem";
 
 interface Iprops {
-  selectedCardList: any;
+  selectedCardList: number[];
+  MyNFTList: MyNFTItem[];
 }
 
 const swiperStyle = `
@@ -35,7 +37,10 @@ const swiperStyle = `
   }
   `;
 
-export default function MyNFTDetailList({ selectedCardList }: Iprops) {
+export default function MyNFTDetailList({
+  selectedCardList,
+  MyNFTList,
+}: Iprops) {
   const dispatch = useDispatch();
   const [curIdx, setCurIdx] = useState<number>(0);
 
@@ -54,7 +59,7 @@ export default function MyNFTDetailList({ selectedCardList }: Iprops) {
         className="flex w-900 items-center justify-center mobile:mt-[calc(50vh-240px)] mobile:w-[calc(100%-100px)]"
         css={[swiperStyle]}
       >
-        {selectedCardList.map((item: any, index: number) => (
+        {selectedCardList.map((item: number, index: number) => (
           <SwiperSlide
             className={marginStyle(index) + " flex items-center justify-center"}
             key={index}
@@ -79,7 +84,7 @@ export default function MyNFTDetailList({ selectedCardList }: Iprops) {
                   >
                     <NFTCardFront
                       width={isActive ? 300 : 250}
-                      imgUrl={item.imgUrl}
+                      imgUrl={MyNFTList[item].imgUrl}
                     />
                   </div>
                   <div
@@ -88,7 +93,7 @@ export default function MyNFTDetailList({ selectedCardList }: Iprops) {
                   >
                     <NFTCardFront
                       width={isActive ? 200 : 180}
-                      imgUrl={item.imgUrl}
+                      imgUrl={MyNFTList[item].imgUrl}
                     />
                   </div>
                 </div>
