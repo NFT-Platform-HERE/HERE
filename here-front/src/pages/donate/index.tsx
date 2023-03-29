@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CommonBanner from "@/components/Banner/CommonBanner";
 import CommonBtn from "@/components/Button/CommonBtn";
@@ -11,15 +11,31 @@ import MoveBtn from "@/components/Button/MoveBtn";
 import useDonateListQuery from "./../../apis/donate/useDonateListQuery";
 import useDonateDeadLineListQuery from "./../../apis/donate/useDonateDeadLineListQuery";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
+import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
+import { Donation } from "@/types/Donation";
 
 export default function DonatePage() {
   const router = useRouter();
 
-  const [searchValue, setSearchValue] = useState<string>("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [newMemberId, setNewMemberId] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
+  const [nowDonateList, setNowDonateList] = useState<Donation[]>([]);
+
+  const { memberId } = useSelector((state: RootState) => state.member);
 
   const donateList = useDonateListQuery();
   const donateDeadLineList = useDonateDeadLineListQuery();
+  const donateMyList = useDonateMyListQuery(newMemberId);
+  const searchList = useDonateSearchQuery(keyword);
+
+  useEffect(() => {
+    setNewMemberId(memberId);
+  }, [isChecked]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -28,7 +44,6 @@ export default function DonatePage() {
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log("event.target.value", event.target.value);
     setSearchValue(event.target.value);
   };
 
@@ -36,9 +51,32 @@ export default function DonatePage() {
     event: React.KeyboardEvent<HTMLElement>,
   ) => {
     if (event.code === "Enter") {
-      console.log(event.code);
+      setKeyword(searchValue);
     }
   };
+
+  const handleSearchIconOnClick = () => {
+    setKeyword(searchValue);
+  };
+
+  useEffect(() => {
+    if (isChecked && donateMyList.data) {
+      setNowDonateList(donateMyList.data);
+      setSearchValue("");
+      setKeyword("");
+      return;
+    }
+    if (keyword && searchList.isLoading) {
+      console.log("로딩중...");
+    }
+    if (keyword && searchList.data) {
+      setNowDonateList(searchList.data);
+      return;
+    }
+    if (donateList.data) {
+      setNowDonateList(donateList.data);
+    }
+  }, [isChecked, keyword]);
 
   const goToSite = () => {
     location.assign(
@@ -117,6 +155,7 @@ export default function DonatePage() {
               value={searchValue}
               onChange={handleSearchInputChange}
               onKeyDown={handleSearchInputKeyDown}
+              onClick={handleSearchIconOnClick}
             />
             <div className="ml-15 flex mobile:hidden">
               <DonateCheckBox
@@ -128,7 +167,7 @@ export default function DonatePage() {
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
-                <DonateCardList items={donateList.data!} />
+                <DonateCardList items={nowDonateList!} />
               </Suspense>
             </div>
           </div>

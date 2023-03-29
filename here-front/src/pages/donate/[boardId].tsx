@@ -1,20 +1,32 @@
 import HeartBar from "@/components/Bar/HeartBar";
 import CheerBtn from "@/components/Button/CheerBtn";
-import { useRouter } from "next/router";
 import CommonBtn from "./../../components/Button/CommonBtn";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import DonateSendModal from "@/features/Donate/DonateSendModal";
+import useDonateDetailQuery from "@/apis/donate/useDonateDetailQuery";
 import { GetServerSideProps } from "next";
+import CircularProgress from "@mui/material/CircularProgress";
+import TimeAgo from "timeago-react";
+import * as timeago from "timeago.js";
+import koLocale from "timeago.js/lib/lang/ko";
+import parse from "html-react-parser";
+import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
+import { Swiper, SwiperSlide } from "swiper/react";
+import DonateCheerMsg from "@/features/Donate/DonateCheerMsg";
 
 interface Iprops {
   boardId: string;
 }
 
-export default function DonateDetailPage() {
-  const router = useRouter();
-  const { boardId } = router.query;
-
+export default function DonateDetailPage({ boardId }: Iprops) {
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
+  timeago.register("ko", koLocale);
+
+  const nowBoard = useDonateDetailQuery(parseInt(boardId));
+  console.log(nowBoard);
+
+  const memberId = nowBoard?.data.memberId;
+  const writerInfo = useMemberInfoQuery(memberId);
 
   const closeModal = () => {
     setOpendSendModal(false);
@@ -23,122 +35,100 @@ export default function DonateDetailPage() {
   return (
     <div className="mb-30 min-h-fit w-full">
       <div className="mx-auto flex w-1200 justify-center mobile:w-350 mobile:flex-col ">
-        <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
-          <div className="mb-18 h-36 w-97 rounded-15 bg-red-1 text-center text-16 font-normal leading-36 text-white mobile:h-24 mobile:w-57 mobile:text-11 mobile:leading-24">
-            3일 남음
-          </div>
-          <div className="mb-35 text-22 font-light mobile:text-18">
-            엄마 수술을 앞두고 헌혈증이 필요해요
-          </div>
-          <div className="flex justify-start">
-            <div className="mobile:hidden">
-              <HeartBar width={735} height={12} fontSize={15} percent={25} />
+        <Suspense fallback={<CircularProgress />}>
+          <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
+            <div className="mb-18 h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
+              <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
             </div>
-            <div className="hidden mobile:block">
-              <HeartBar width={300} height={8} fontSize={11} percent={25} />
+            <div className="mb-35 text-22 font-light mobile:text-18">
+              {nowBoard.data.title}
+            </div>
+            <div className="flex justify-start">
+              <div className="mobile:hidden">
+                <HeartBar
+                  width={735}
+                  height={12}
+                  fontSize={15}
+                  percent={nowBoard.data.percentage}
+                />
+              </div>
+              <div className="hidden mobile:block">
+                <HeartBar
+                  width={300}
+                  height={8}
+                  fontSize={11}
+                  percent={nowBoard.data.percentage}
+                />
+              </div>
+            </div>
+            <div className="mt-35 mb-72 flex justify-between mobile:mb-5">
+              <span className="text-16 font-medium text-pen-3">
+                현재 수량: {nowBoard.data.curQuantity}개
+              </span>
+              <span className="text-16 font-medium text-pen-0">
+                목표 수량: {nowBoard.data.goalQuantity}개
+              </span>
+            </div>
+            <div className="flex justify-around">
+              {/* <button>
+                <img src="/icons/expand_left_light.svg" />
+              </button>
+              <img
+                src={"/images/logo.svg"}
+                className="h-370 w-450 mobile:h-168 mobile:w-228"
+              ></img>
+              <button>
+                <img src="/icons/expand_right_light.svg" />
+              </button> */}
+              <Swiper>
+                {nowBoard.data.boardImgUrlList.map((item: string) => {
+                  <SwiperSlide>
+                    <img src={item} alt="boardImg" />
+                  </SwiperSlide>;
+                })}
+              </Swiper>
+            </div>
+            <div className="ProseMirror text-16 font-light mobile:text-11">
+              {parse(nowBoard.data.content)}
             </div>
           </div>
-          <div className="mt-35 mb-72 flex justify-between mobile:mb-5">
-            <span className="text-16 font-medium text-pen-3">
-              현재 수량: 8개
-            </span>
-            <span className="text-16 font-medium text-pen-0">
-              목표 수량: 30개
-            </span>
-          </div>
-          <div className="flex justify-around">
-            <button>
-              <img src="/icons/expand_left_light.svg" />
-            </button>
-            <img
-              src={"/images/logo.svg"}
-              className="h-370 w-450 mobile:h-168 mobile:w-228"
-            ></img>
-            <button>
-              <img src="/icons/expand_right_light.svg" />
-            </button>
-          </div>
-          <p className="text-16 font-extralight mobile:text-11">
-            안녕하세요. 저는 현재 수원에서 중학교에 다니고 있는 3학년
-            학생입니다. <br />
-            2달 전, 저희 어머니께서는 퇴근하던 길에 교통사고를 당하셨습니다.{" "}
-            <br />
-            다행히 엄청 크게 다치시지는 않았지만 저희 집안 형편이 넉넉하지
-            못하고 어머니께서도 2달 동안 일을 나가지 못하셔서 수입이 많이 떨어진
-            상태입니다. <br />
-            저희 가족은 4인 가족인데 현재 아빠가 퇴근하시고 나서 간병을 하고
-            계시는 상태인데요 <br /> 부모님께서 크게 말씀은 안 하시지만
-            금전적으로 많이 힘든 상황인 것 같습니다. <br /> 그러던 중에 이
-            사이트를 알게 돼서 작게나마 부모님에게 도움이 되고 싶습니다. <br />
-            도와주시는 모든 분들 진심으로 감사드립니다.
-          </p>
-        </div>
+        </Suspense>
         <div className="flex w-300 flex-col items-center border border-pen-0 p-35 mobile:w-330 mobile:border-none mobile:p-5">
-          <div className="flex w-full flex-col items-center mobile:flex-row mobile:justify-center">
-            <img
-              src="/NFT_bg_1.gif"
-              className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
-            />
-            <div className="mb-25 w-full mobile:ml-25 mobile:w-fit">
-              <p className="mb-15 text-21 font-medium text-pen-2 mobile:text-15">
-                닉네임
-              </p>
-              <p className="text-18 font-normal text-pen-2 mobile:text-13">
-                헌혈 LV.10
-              </p>
-              <p className="text-18 font-normal text-pen-2 mobile:text-13">
-                헌혈 횟수: 23회
-              </p>
+          <Suspense fallback={<CircularProgress />}>
+            <div className="flex w-full flex-col items-center mobile:flex-row mobile:justify-center">
+              <img
+                src={writerInfo.data && writerInfo.data.characterImgUrl}
+                className="mb-15 h-215 w-215 mobile:h-100 mobile:w-100"
+              />
+              <div className="mb-25 w-full px-10 mobile:ml-25 mobile:w-fit mobile:px-0">
+                <p className="mb-15 text-21 font-medium text-pen-2 mobile:text-15">
+                  {writerInfo.data && writerInfo.data.nickname}
+                </p>
+                <p className="text-18 font-normal text-pen-2 mobile:text-13">
+                  헌혈 LV.{writerInfo.data && writerInfo.data.level}
+                </p>
+                <p className="text-18 font-normal text-pen-2 mobile:text-13">
+                  헌혈 횟수: {writerInfo.data && writerInfo.data.bdCnt}회
+                </p>
+              </div>
             </div>
-          </div>
-          <CommonBtn
-            width={250}
-            height={50}
-            fontSize={18}
-            children={"기부하기"}
-            isDisabled={false}
-            onClick={() => setOpendSendModal(true)}
-          />
-          {opendSendModal && <DonateSendModal onClick={closeModal} />}
-          <p
-            className="mt-30
-           mb-15 text-21 font-medium text-pen-2 mobile:text-15"
-          >
-            응원 메시지
-          </p>
-          <div className="my-5">
-            <CheerBtn
+            <CommonBtn
               width={250}
-              height={45}
-              fontSize={14}
-              count={5}
-              onClick={() => {}}
-              imgUrl={"/icons/blood_count.svg"}
-              children={"응원해요"}
+              height={50}
+              fontSize={18}
+              children={"기부하기"}
+              isDisabled={false}
+              onClick={() => setOpendSendModal(true)}
             />
-          </div>
-          <div className="my-5">
-            <CheerBtn
-              width={250}
-              height={45}
-              fontSize={14}
-              count={3}
-              onClick={() => {}}
-              imgUrl={"/icons/blood_recent.svg"}
-              children={"함께해요"}
-            />
-          </div>
-          <div className="my-5">
-            <CheerBtn
-              width={250}
-              height={45}
-              fontSize={14}
-              count={2}
-              onClick={() => {}}
-              imgUrl={"/icons/blood_next.svg"}
-              children={"힘내세요"}
-            />
-          </div>
+            {opendSendModal && (
+              <DonateSendModal
+                onClick={closeModal}
+                writerInfo={writerInfo.data}
+                boardId={boardId}
+              />
+            )}
+            <DonateCheerMsg memberId={memberId} boardId={boardId} />
+          </Suspense>
         </div>
       </div>
     </div>

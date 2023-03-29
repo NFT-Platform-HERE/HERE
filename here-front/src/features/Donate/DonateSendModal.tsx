@@ -5,13 +5,24 @@ import { useState } from "react";
 import Lottie from "react-lottie-player";
 
 import sendingHeart from "../../..//public/lottieJson/sending-heart.json";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import { MemberInfo } from "@/types/MemberInfo";
 
 interface Iprops {
   onClick: () => void;
+  boardId: string;
+  writerInfo: MemberInfo | undefined;
 }
 
-export default function DonateSendModal({ onClick }: Iprops) {
+export default function DonateSendModal({
+  onClick,
+  boardId,
+  writerInfo,
+}: Iprops) {
   const [count, setCount] = useState<number>(1);
+
+  const { characterImgUrl } = useSelector((state: RootState) => state.member);
 
   function handleCountPlus() {
     setCount(count + 1);
@@ -33,22 +44,22 @@ export default function DonateSendModal({ onClick }: Iprops) {
           </div>
           <div className="my-20 flex justify-center">
             <img
-              src={"/icons/add-circle-button.svg"}
-              onClick={handleCountPlus}
+              src={"/icons/minus-circle-button.svg"}
+              onClick={handleCountMinus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
             <div className="mx-20 h-70 w-15 text-18 font-normal leading-70 text-pen-2 mobile:h-45 mobile:leading-45">
               {count}
             </div>
             <img
-              src={"/icons/minus-circle-button.svg"}
-              onClick={handleCountMinus}
+              src={"/icons/add-circle-button.svg"}
+              onClick={handleCountPlus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
           </div>
           <div className="mb-25 flex w-full justify-around">
             <img
-              src="/NFT_bg_1.gif"
+              src={characterImgUrl}
               className="mb-15 h-190 w-190 rounded-15 mobile:h-100 mobile:w-100"
             />
             <Lottie
@@ -58,7 +69,7 @@ export default function DonateSendModal({ onClick }: Iprops) {
               style={{ width: 167, height: 167 }}
             />
             <img
-              src="/NFT_bg_2.gif"
+              src={writerInfo?.characterImgUrl}
               className="mb-15 h-190 w-190 rounded-15 mobile:h-100 mobile:w-100"
             />
           </div>
