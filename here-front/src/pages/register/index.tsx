@@ -21,7 +21,6 @@ export default function RegisterPage() {
   const decode = (result: string) => {
     if (!openModal) {
       setData(Number(result));
-      console.log(data);
     }
   };
 

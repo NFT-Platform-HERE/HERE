@@ -5,6 +5,7 @@ interface Iprops {
   count: number;
   imgUrl: string;
   children: string;
+  isChecked: boolean;
   onClick: () => void;
 }
 
@@ -15,11 +16,16 @@ export default function CheerBtn({
   count,
   imgUrl,
   children,
+  isChecked,
   onClick,
 }: Iprops) {
   return (
     <button
-      className="flex items-center justify-between rounded-50 bg-red-1 px-18 font-medium text-white hover:text-red-3"
+      className={
+        isChecked
+          ? "flex items-center justify-between rounded-50 border-2 border-red-1 bg-red-1 px-18 font-medium text-white hover:border-3"
+          : "flex items-center justify-between rounded-50 border-2 border-red-1 bg-white px-18 font-medium text-red-2 hover:border-3"
+      }
       css={[
         {
           width: width,

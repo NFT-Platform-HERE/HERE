@@ -66,6 +66,9 @@ export default function DonatePage() {
       setKeyword("");
       return;
     }
+    if (keyword && searchList.isLoading) {
+      console.log("로딩중...");
+    }
     if (keyword && searchList.data) {
       setNowDonateList(searchList.data);
       return;

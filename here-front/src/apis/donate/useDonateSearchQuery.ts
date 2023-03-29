@@ -19,6 +19,7 @@ const fetcher = (search: string) =>
 
 const useDonateSearchQuery = (search: string) => {
   return useQuery([queryKeys.DONATE_SEARCH, search], () => fetcher(search), {
+    // suspense: true,
     enabled: !!search,
   });
 };

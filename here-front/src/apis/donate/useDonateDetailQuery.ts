@@ -3,17 +3,13 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
 
-interface Iprops {
-  boardId: number;
-}
-
 const fetcher = (boardId: number) =>
   axios.get(DONATE_SERVER_URL + `/board/${boardId}`).then(({ data }) => {
     const response = data.data;
     return response;
   });
 
-const useDonateDetailQuery = ({ boardId }: Iprops) => {
+const useDonateDetailQuery = (boardId: number) => {
   return useQuery([queryKeys.DONATE_DETAIL, boardId], () => fetcher(boardId), {
     suspense: true,
   });

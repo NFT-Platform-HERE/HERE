@@ -133,13 +133,13 @@ export default function DonateWritePage() {
               {targetQuantity}
             </div>
             <img
-              src={"/icons/add-circle-button.svg"}
-              onClick={handleTargetQuantityPlus}
+              src={"/icons/minus-circle-button.svg"}
+              onClick={handleTargetQuantityMinus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
             <img
-              src={"/icons/minus-circle-button.svg"}
-              onClick={handleTargetQuantityMinus}
+              src={"/icons/add-circle-button.svg"}
+              onClick={handleTargetQuantityPlus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
           </div>

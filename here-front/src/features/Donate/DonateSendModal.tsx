@@ -33,16 +33,16 @@ export default function DonateSendModal({ onClick }: Iprops) {
           </div>
           <div className="my-20 flex justify-center">
             <img
-              src={"/icons/add-circle-button.svg"}
-              onClick={handleCountPlus}
+              src={"/icons/minus-circle-button.svg"}
+              onClick={handleCountMinus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
             <div className="mx-20 h-70 w-15 text-18 font-normal leading-70 text-pen-2 mobile:h-45 mobile:leading-45">
               {count}
             </div>
             <img
-              src={"/icons/minus-circle-button.svg"}
-              onClick={handleCountMinus}
+              src={"/icons/add-circle-button.svg"}
+              onClick={handleCountPlus}
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
           </div>
