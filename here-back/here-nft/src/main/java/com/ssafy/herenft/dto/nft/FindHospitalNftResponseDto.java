@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class FindHospitalNftResponseDto {
+    private Long tokenId;
     private String issuerName;
     private LocalDateTime createdDate;
 
     @QueryProjection
-    public FindHospitalNftResponseDto(String issuerName, LocalDateTime createdDate) {
+    public FindHospitalNftResponseDto(Long tokenId, String issuerName, LocalDateTime createdDate) {
+        this.tokenId = tokenId;
         this.issuerName = issuerName;
         this.createdDate = createdDate;
     }
