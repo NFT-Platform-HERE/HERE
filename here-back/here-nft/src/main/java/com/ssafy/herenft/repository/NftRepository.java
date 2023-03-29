@@ -1,6 +1,7 @@
 package com.ssafy.herenft.repository;
 
 import com.ssafy.herenft.entity.Nft;
+import com.ssafy.herenft.eunmeration.EnumNftType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +11,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface NftRepository extends JpaRepository<Nft, Long>, NftRepositoryCustom {
-    List<Nft> findAllByIssuerId(UUID memberId);
+//    List<Nft> findAllByIssuerId(UUID memberId);
 
-    List<Nft> findAllByOwnerId(UUID senderId);
+//    List<Nft> findAllByOwnerId(UUID senderId);
+
+    List<Nft> findAllByIssuerIdAndType(UUID memberId, EnumNftType agency);
+
+    List<Nft> findAllByOwnerIdAndType(UUID memberId, EnumNftType hospital);
 
 //    Optional<Nft> findTop1ByIssuerIdAndCreatedDateBetween(UUID issuerId, LocalDateTime yesterday, LocalDateTime tomorrow);
 }

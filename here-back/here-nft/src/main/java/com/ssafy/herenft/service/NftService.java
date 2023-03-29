@@ -82,13 +82,14 @@ public class NftService {
 
     /* NFT 목록 조회 */
     public ResponseSuccessDto<List<GetNftResponseDto>> getNftList(UUID memberId) {
-        List<Nft> myNftList = nftRepository.findAllByIssuerId(memberId);
+        List<Nft> myNftList = nftRepository.findAllByIssuerIdAndType(memberId, EnumNftType.AGENCY);
 
         List<GetNftResponseDto> result = new ArrayList<>();
 
 
         for (Nft myNft : myNftList) {
             GetNftResponseDto getNftResponseDto = GetNftResponseDto.builder()
+                    .id(myNft.getId())
                     .tokenID(myNft.getTokenId())
                     .hashValue(myNft.getHashValue())
                     .imgUrl(myNft.getImgUrl())
@@ -148,7 +149,7 @@ public class NftService {
     /* 기부 해시값 개수 조회 */
     public ResponseSuccessDto<GetDonateNftCntResponseDto> getDonateNftCnt(UUID senderId) {
 
-        List<Nft> donateNfts = nftRepository.findAllByOwnerId(senderId);
+        List<Nft> donateNfts = nftRepository.findAllByOwnerIdAndType(senderId, EnumNftType.HOSPITAL);
 
         GetDonateNftCntResponseDto getDonateNftCntResponseDto = GetDonateNftCntResponseDto.builder()
                 .cnt(donateNfts.size())
@@ -183,9 +184,9 @@ public class NftService {
         HereStatus status = null;
 
         if (organType == EnumNftType.AGENCY) {
-            nftList = nftRepository.findAllByIssuerId(memberId);
+            nftList = nftRepository.findAllByIssuerIdAndType(memberId, EnumNftType.AGENCY);
         } else if (organType == EnumNftType.HOSPITAL) {
-            nftList = nftRepository.findAllByOwnerId(memberId);
+            nftList = nftRepository.findAllByOwnerIdAndType(memberId, EnumNftType.HOSPITAL);
         } else {
             throw new RuntimeException("잘못된 organType 입니다!");
         }
@@ -203,6 +204,7 @@ public class NftService {
 
             if(organType == EnumNftType.HOSPITAL) {
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
+                        .tokenId(nft.getTokenId())
                         .name(issuer.getName())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
@@ -212,6 +214,7 @@ public class NftService {
             } else {
                 BdHistory bdHistory = bdHistoryRepository.findBdHistory(issuer, nft.getCreatedDate());
                 GetNftAgencyResponseDto getNftAgencyResponseDto = GetNftAgencyResponseDto.builder()
+                        .tokenId(nft.getTokenId())
                         .place(bdHistory.getPlace())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
