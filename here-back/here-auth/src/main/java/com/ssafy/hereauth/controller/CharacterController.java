@@ -23,14 +23,13 @@ import java.util.List;
 public class CharacterController {
 
     private final CharacterService characterService;
-    private final CharacterRepository characterRepository;
 
-    /* 캐릭터 임의 생성 */
-    @ApiOperation(value = "캐릭터 생성", notes = "캐릭터를 생성한다.")
-    @PostMapping
-    private ResponseEntity<ResponseSuccessDto<CharacterResponseDto>> postCharacter(@RequestBody CharacterRequestDto characterRequestDto) {
-        return ResponseEntity.ok(characterService.postCharacter(characterRequestDto));
-    }
+//    /* 캐릭터 임의 생성 */
+//    @ApiOperation(value = "캐릭터 생성", notes = "캐릭터를 생성한다.")
+//    @PostMapping
+//    private ResponseEntity<ResponseSuccessDto<CharacterResponseDto>> postCharacter(@RequestBody CharacterRequestDto characterRequestDto) {
+//        return ResponseEntity.ok(characterService.postCharacter(characterRequestDto));
+//    }
 
     // 스타팅 캐릭터 조회
     @ApiOperation(value = "스타팅 캐릭터 조회", notes = "스타팅 캐릭터를 조회한다.")
