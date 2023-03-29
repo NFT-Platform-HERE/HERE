@@ -120,24 +120,32 @@ export default function SubmitNFTList({ count }: Iprops) {
   };
 
   useEffect(() => {
-    console.log(autoSelectList);
-    console.log(submitNFTList);
-    console.log(autoSelectList.isSuccess);
-    console.log(submitNFTList.isSuccess);
-    console.log(autoSelectList.isSuccess && submitNFTList.isSuccess);
+    if (!autoSelectList.isSuccess || !submitNFTList.isSuccess) {
+      return;
+    }
+
     if (autoSelectList.data?.code != 200 || submitNFTList.data?.code != 200) {
-      console.log(autoSelectList.data);
-      console.log(submitNFTList.data);
       return;
     }
 
     const autoSelectData = autoSelectList.data.data;
     const submitNFTData = submitNFTList.data.data;
 
-    for (let i = 0; i < autoSelectList.data.data.length; i++) {
-      for (let j = 0; j < submitNFTList.data.data.length; j++) {}
+    for (let i = 0; i < autoSelectData.length; i++) {
+      for (let j = 0; j < submitNFTData.length; j++) {
+        if (autoSelectData[i].tokenId === submitNFTData[j].tokenId) {
+          if (submitTab === "AGENCY") {
+            dispatch(selectNFT(j));
+          } else if (submitTab === "HOSPITAL") {
+            if (!selectedCardList.includes(j)) {
+              dispatch(addNFT(j));
+            }
+          }
+        }
+      }
     }
-  }, [autoSelectList.isSuccess === true]);
+  }, [autoSelectList?.data]);
+
   return (
     <div className="relative mt-70 mb-50 flex justify-center mobile:mb-20">
       <div className="mobile:hidden">
