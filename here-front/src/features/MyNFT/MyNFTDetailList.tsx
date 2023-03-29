@@ -84,7 +84,7 @@ export default function MyNFTDetailList({
                   >
                     <NFTCardFront
                       width={isActive ? 300 : 250}
-                      imgUrl={MyNFTList[item].imgUrl}
+                      imgUrl={MyNFTList && MyNFTList[item].imgUrl}
                     />
                   </div>
                   <div
@@ -93,7 +93,7 @@ export default function MyNFTDetailList({
                   >
                     <NFTCardFront
                       width={isActive ? 200 : 180}
-                      imgUrl={MyNFTList[item].imgUrl}
+                      imgUrl={MyNFTList && MyNFTList[item].imgUrl}
                     />
                   </div>
                 </div>
