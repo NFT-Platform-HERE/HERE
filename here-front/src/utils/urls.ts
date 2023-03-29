@@ -11,4 +11,4 @@ export const IPFS_SERVER_URL = "https://j8b2091.p.ssafy.io/";
 
 export const HERE_CA = "0xF4B84F4fed091321a071c094d852179bFe23996F";
 
-export const IPFS_SERVER_METAINFO_URL = "http://j8b2091.p.ssafy.io:8080/ipfs/";
+export const IPFS_SERVER_METAINFO_URL = "https://ipfs.io/";
