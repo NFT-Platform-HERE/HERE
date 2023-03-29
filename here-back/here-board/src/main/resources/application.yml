@@ -15,14 +15,18 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 cloud:
   aws:
     credentials:
-      accessKey: AKIAYZZXAQTVAKCQ4ZJB
-      secretKey: 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
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
     s3:
-      bucket: here-bucket
+      bucket: ${S3_BUCKET}
     stack:
       auto: false
     region:
