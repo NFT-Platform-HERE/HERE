@@ -41,7 +41,6 @@ public class MemberService {
      * 회원가입
      */
     public ResponseSuccessDto<SignupResponseDto> signup(SignupRequestDto signupRequestDto) {
-        System.out.println("회원가입 서비스단 들어옴");
 
         /**
          * email 중복 체크
@@ -57,8 +56,7 @@ public class MemberService {
 
         Member member = new Member();
         member.createMember(character, signupRequestDto);
-        memberRepository.save(member); // INSERT 용, 기존에 있으면 UPDATE
-        System.out.println(member + "member 세이브 완료");
+        memberRepository.save(member);
 
         // 스탬프
         Stamp stamp = new Stamp();
@@ -66,7 +64,14 @@ public class MemberService {
         stampRepository.save(stamp);
 
         // 리턴
-        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getId(), member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
+//        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getId(), member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
+        SignupResponseDto signupResponseDto = SignupResponseDto.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .characterImgUrl(member.getCharacter().getImgUrl())
+                .message("회원가입이 완료되었습니다.")
+                .build();
+
         ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
         return res;
     }
@@ -110,7 +115,20 @@ public class MemberService {
         // 다음 헌혈 가능 날짜 구하기
 
         // DTO에 넣기
-        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, characterType, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
+//        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, characterType, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
+        MemberProfileResponseDto memberProfileResponseDto = MemberProfileResponseDto.builder()
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .characterImgUrl(characterImgUrl)
+                .characterType(characterType)
+                .level(member.getLevel())
+                .bdCnt(bdHistoryCnt)
+                .createdDate(member.getCreatedDate())
+                .recentBdDate(recentBdDate)
+                .nextWholeBdDays(nextWholeBdDays)
+                .nextNotWholeBdDays(nextNotWholeBdDays)
+                .build();
+
         ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
@@ -122,7 +140,12 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 이메일입니다."));
 
-        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getId(), member.getWalletAddress());
+//        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getId(), member.getWalletAddress());
+        MemberInfoResponseDto memberInfoResponseDto = MemberInfoResponseDto.builder()
+                .memberId(member.getId())
+                .walletAddress(member.getWalletAddress())
+                .build();
+
         ResponseSuccessDto<MemberInfoResponseDto> res = responseUtil.successResponse(memberInfoResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }
@@ -130,9 +153,6 @@ public class MemberService {
     // email 중복 체크
     public ResponseSuccessDto<ValidateEmailResponseDto> checkEmailDuplicate(String email) {
         Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
-        System.out.println("이메일 중복됨" + email + isEmailDuplicate);
-
-//        Optional<Member> byEmail = memberRepository.findByEmail(email);
 
         if (isEmailDuplicate) {
             ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
@@ -148,7 +168,7 @@ public class MemberService {
     // nickname 중복 체크(수정)
     public ResponseSuccessDto<ValidateNicknameResponseDto> checkNicknameDuplicate(String nickname) {
         Boolean isNicknameDuplicate = memberRepository.existsByNickname(nickname);
-        System.out.println("닉네임 중복됨" + nickname + isNicknameDuplicate);
+
         if (isNicknameDuplicate) {
             ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("이미 사용중인 닉네임입니다.");
             ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto, HereStatus.HERE_DUPLICATED_NICKNAME);
@@ -165,7 +185,6 @@ public class MemberService {
 
         Optional<Member> byWalletAddress = memberRepository.findByWalletAddress(walletAddress);
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
-        System.out.println("존재하는 지갑주소 정보임" + walletAddress + isMember);
 
         if (byWalletAddress.isEmpty()) {
             IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(null, null, null, null, "등록된 회원이 아닙니다.");
@@ -180,7 +199,6 @@ public class MemberService {
 
     // 회원가입시 이메일 중복 이중 체크 용 메소드
     public boolean isEmailDuplicate(String email) {
-        System.out.println("들어옴" + email);
         return memberRepository.existsByEmail(email);
     }
 
@@ -192,11 +210,9 @@ public class MemberService {
                 .orElseThrow(() -> new EntityIsNullException("올바르지 않은 멤버ID입니다."));
 
         int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
-        System.out.println("멤버" + member);
-        System.out.println("현재 경험지" + curExp);
-
         int goalExp = member.getGoalExp();
         int level = member.getLevel();
+
         Character character = member.getCharacter();
 
         boolean isLevelUp = false;
@@ -217,47 +233,47 @@ public class MemberService {
         return res;
     }
 
-    /**
-     * (임시) CertHistory 생성
-     */
-    public ResponseSuccessDto<CertHistoryCreateResponseDto> createCertHistory(CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-
-        // 멤버 가져오기
-        Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
-
-        // 기관 가져오기
-        Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
-                .orElseThrow(() -> new EntityIsNullException("잘못된 기관 ID입니다."));
-
-        CertHistory certHistory = new CertHistory();
-        certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
-        certHistoryRepository.save(certHistory);
-
-        // 리턴
-        CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
-        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
-        return res;
-    }
-
-    /**
-     * (임의) BdHistory 생성
-     */
-    public ResponseSuccessDto<BdHistoryCreateResponseDto> createBdHistory(BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
-
-        // 멤버 가져오기
-        Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
-                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
-
-        BdHistory bdHistory = new BdHistory();
-        bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
-        bdHistoryRepository.save(bdHistory);
-
-        // 리턴
-        BdHistoryCreateResponseDto bdHistoryCreateResponseDto = new BdHistoryCreateResponseDto("헌혈 기록 등록 완료되었습니다.");
-        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
-        return res;
-    }
+//    /**
+//     * (임시) CertHistory 생성
+//     */
+//    public ResponseSuccessDto<CertHistoryCreateResponseDto> createCertHistory(CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
+//
+//        // 멤버 가져오기
+//        Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
+//                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
+//
+//        // 기관 가져오기
+//        Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
+//                .orElseThrow(() -> new EntityIsNullException("잘못된 기관 ID입니다."));
+//
+//        CertHistory certHistory = new CertHistory();
+//        certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
+//        certHistoryRepository.save(certHistory);
+//
+//        // 리턴
+//        CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
+//        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
+//        return res;
+//    }
+//
+//    /**
+//     * (임의) BdHistory 생성
+//     */
+//    public ResponseSuccessDto<BdHistoryCreateResponseDto> createBdHistory(BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
+//
+//        // 멤버 가져오기
+//        Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
+//                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
+//
+//        BdHistory bdHistory = new BdHistory();
+//        bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
+//        bdHistoryRepository.save(bdHistory);
+//
+//        // 리턴
+//        BdHistoryCreateResponseDto bdHistoryCreateResponseDto = new BdHistoryCreateResponseDto("헌혈 기록 등록 완료되었습니다.");
+//        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
+//        return res;
+//    }
 
     /**
      * 스탬프 정보 조회
@@ -265,7 +281,6 @@ public class MemberService {
     public ResponseSuccessDto<StampGetResponseDto> getStampInfo(UUID memberId) {
 
         Stamp stampInfo = stampRepository.findByMemberId(memberId);
-        System.out.println(stampInfo);
 
         StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
                 .stage(stampInfo.getStage())
