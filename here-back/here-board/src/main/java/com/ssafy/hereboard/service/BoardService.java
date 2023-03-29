@@ -305,7 +305,8 @@ public class BoardService {
             Boolean isSelected = false;
 
             // cnt를 위해서 리포지토리에 접근!
-            int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+            List<BoardMsg> boardMsgList = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
+            int cnt = boardMsgList.size();
             Optional<BoardMsg> boardMsg = boardMsgRepository.findByBoardAndCheeringMsgIdAndMemberIdAndStatus(board, cheeringMsgId, memberId, EnumBoardMsgStatus.ACTIVE);
 
             if (!boardMsg.isEmpty()) {
