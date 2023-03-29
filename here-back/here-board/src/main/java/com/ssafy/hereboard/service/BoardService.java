@@ -54,7 +54,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                    .dDay(board.getDeadline().plusDays(1).atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -90,7 +90,7 @@ public class BoardService {
                     .nickname(board.getMember().getNickname())
                     .boardImgUrl(thumbnail)
                     .status(board.getStatus())
-                    .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                    .dDay(board.getDeadline().plusDays(1).atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
             result.add(boardResponseDto);
@@ -122,7 +122,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .deadline(board.getDeadline())
-                .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                .dDay(board.getDeadline().plusDays(1).atTime(LocalTime.MIDNIGHT))
                 .percentage(percentage)
                 .curQuantity(board.getCurQuantity())
                 .goalQuantity(board.getGoalQuantity())
@@ -305,7 +305,9 @@ public class BoardService {
             Boolean isSelected = false;
 
             // cnt를 위해서 리포지토리에 접근!
-            int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+//            int cnt = boardMsgRepository.findCountByBoardAndCheeringMsgId(board, cheeringMsgId);
+            List<BoardMsg> boardMsgList = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
+            int cnt = boardMsgList.size();
             Optional<BoardMsg> boardMsg = boardMsgRepository.findByBoardAndCheeringMsgIdAndMemberIdAndStatus(board, cheeringMsgId, memberId, EnumBoardMsgStatus.ACTIVE);
 
             if (!boardMsg.isEmpty()) {
