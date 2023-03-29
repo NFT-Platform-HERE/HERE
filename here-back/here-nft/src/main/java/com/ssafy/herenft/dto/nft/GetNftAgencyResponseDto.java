@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class GetNftAgencyResponseDto {
+    private Long tokenId;
     private String place;
     private LocalDateTime createdDate;
     private Boolean isOwner;

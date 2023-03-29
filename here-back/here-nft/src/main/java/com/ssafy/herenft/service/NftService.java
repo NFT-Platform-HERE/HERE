@@ -204,6 +204,7 @@ public class NftService {
 
             if(organType == EnumNftType.HOSPITAL) {
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
+                        .tokenId(nft.getTokenId())
                         .name(issuer.getName())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
@@ -213,6 +214,7 @@ public class NftService {
             } else {
                 BdHistory bdHistory = bdHistoryRepository.findBdHistory(issuer, nft.getCreatedDate());
                 GetNftAgencyResponseDto getNftAgencyResponseDto = GetNftAgencyResponseDto.builder()
+                        .tokenId(nft.getTokenId())
                         .place(bdHistory.getPlace())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
