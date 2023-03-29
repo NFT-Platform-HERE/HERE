@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import CommonBtn from "./../../components/Button/CommonBtn";
 import { useState } from "react";
 import DonateSendModal from "@/features/Donate/DonateSendModal";
+import useDonateDetailQuery from "@/apis/donate/useDonateDetailQuery";
 
 export default function DonateDetailPage() {
   const router = useRouter();
