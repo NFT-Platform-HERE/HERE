@@ -120,7 +120,13 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               isDisabled={false}
               onClick={() => setOpendSendModal(true)}
             />
-            {opendSendModal && <DonateSendModal onClick={closeModal} />}
+            {opendSendModal && (
+              <DonateSendModal
+                onClick={closeModal}
+                writerInfo={writerInfo.data}
+                boardId={boardId}
+              />
+            )}
             <DonateCheerMsg memberId={memberId} boardId={boardId} />
           </Suspense>
         </div>
