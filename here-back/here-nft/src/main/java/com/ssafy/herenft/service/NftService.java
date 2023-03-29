@@ -236,13 +236,14 @@ public class NftService {
         for (Nft nft : hospitalNftAutoList) {
             Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
             FindHospitalNftResponseDto findHospitalNftResponseDto = FindHospitalNftResponseDto.builder()
+                    .tokenId(nft.getTokenId())
                     .issuerName(findMember.getName())
                     .createdDate(nft.getCreatedDate())
                     .build();
             result.add(findHospitalNftResponseDto);
         }
 
-        ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(hospitalNftAutoList, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
+        ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
         return res;
     }
 }
