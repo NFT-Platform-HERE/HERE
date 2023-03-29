@@ -18,9 +18,6 @@ const useDonateCheerUpListQuery = (boardId: number, memberId: string) => {
     {
       suspense: true,
       enabled: !!memberId,
-      onSettled: () => {
-        console.log("실행도니?");
-      },
     },
   );
 };
