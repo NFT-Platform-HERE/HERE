@@ -5,14 +5,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { MyNFTItem } from '@/types/MyNFTItem';
 
-interface MyNFTList {
-  tokenId: number;
-  hashValue: string;
-  imgUrl: string;
-}
 interface Iprops {
-  myNFTList: MyNFTList[];
+  myNFTList: MyNFTItem[];
 }
 const swiperStyle = `            
   .swiper-wrapper{
@@ -92,7 +88,7 @@ export default function MyNFTList({ myNFTList }: Iprops) {
           css={[swiperStyle]}
         >
           {myNFTList &&
-            myNFTList.map((item: MyNFTList, index: number) => (
+            myNFTList.map((item: MyNFTItem, index: number) => (
               <SwiperSlide
                 className="relative mt-8 -mb-8 flex justify-center"
                 key={index}
@@ -119,7 +115,7 @@ export default function MyNFTList({ myNFTList }: Iprops) {
           css={[mobileStyle]}
         >
           {myNFTList &&
-            myNFTList.map((item: MyNFTList, index: number) => (
+            myNFTList.map((item: MyNFTItem, index: number) => (
               <SwiperSlide
                 className="relative mt-8 -mb-8 flex justify-center"
                 key={index}

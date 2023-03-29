@@ -33,3 +33,5 @@ export const SUBMIT_SEARCH = "/submitSearch";
 
 // myNFT
 export const MYNFT_LIST = "/mynftList";
+export const MYNFT_META_URL = "/mynftMetaUrl";
+export const MYNFT_METADATA = "/mynftMetaData";

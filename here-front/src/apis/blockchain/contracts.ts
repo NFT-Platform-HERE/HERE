@@ -44,8 +44,6 @@ export const callTokenURI = async (tokenId: string) => {
 
   const result = await hereContract.methods.tokenURI(tokenId).call();
 
-  console.log("CallTokenURI result", result);
-
   return result;
 };
 
