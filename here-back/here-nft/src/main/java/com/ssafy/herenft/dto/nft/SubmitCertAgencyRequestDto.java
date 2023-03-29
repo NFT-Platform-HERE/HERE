@@ -11,7 +11,6 @@ import java.util.UUID;
 public class SubmitCertAgencyRequestDto {
     private UUID memberId;
     private UUID agencyId;
-    private EnumCertHistoryType type;
     private String reason;
     private String hashValue;
     private Long tokenId;

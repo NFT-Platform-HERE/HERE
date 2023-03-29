@@ -132,7 +132,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name ${HERE_AUTH_CONTAINER} -d -p 9010:9010 ${HERE_AUTH_IMAGE}'
+                        sh 'docker run --name ${HERE_AUTH_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -d -p 9010:9010 ${HERE_AUTH_IMAGE}'
                         echo 'Run New image'
                     }
                 }
@@ -143,7 +143,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name ${HERE_BOARD_CONTAINER} -d -p 9011:9011 ${HERE_BOARD_IMAGE}'
+                        sh 'docker run --name ${HERE_BOARD_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -d -p 9011:9011 ${HERE_BOARD_IMAGE}'
                         echo 'Run New image'
                     }
                 }
@@ -154,7 +154,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name ${HERE_NFT_CONTAINER} -d -p 9012:9012 ${HERE_NFT_IMAGE}'
+                        sh 'docker run --name ${HERE_NFT_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -d -p 9012:9012 ${HERE_NFT_IMAGE}'
                         echo 'Run New image'
                     }
                 }
