@@ -89,8 +89,7 @@ public class NftService {
 
         for (Nft myNft : myNftList) {
             GetNftResponseDto getNftResponseDto = GetNftResponseDto.builder()
-                    .id(myNft.getId())
-                    .tokenID(myNft.getTokenId())
+                    .tokenId(myNft.getTokenId())
                     .hashValue(myNft.getHashValue())
                     .imgUrl(myNft.getImgUrl())
                     .build();

@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GetNftResponseDto {
-    private Long id;
-    private Long tokenID;
+    private Long tokenId;
     private String hashValue;
     private String imgUrl;
 }
