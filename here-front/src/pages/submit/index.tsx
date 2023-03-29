@@ -13,11 +13,17 @@ import QrCodeReader from "@/components/Register/QrCodeReader";
 import "swiper/css";
 import "swiper/css/navigation";
 import { clearNFTList } from "@/stores/submit/selectedHospitalNFT";
+import useAutoSelectQuery from "@/apis/submit/useAutoSelectQuery";
+import clickAutoSelectBtn, {
+  onClickAutoSelectBtn,
+} from "@/stores/submit/clickAutoSelectBtn";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
 
   const dispatch = useDispatch();
+
   const tabIndex = useSelector((state: RootState) => {
     return state.submitTab.tabName;
   });
@@ -32,6 +38,10 @@ export default function SubmitPage() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const onhandleChangeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCount(Number(e.target.value));
   };
 
   useEffect(() => {
@@ -111,14 +121,17 @@ export default function SubmitPage() {
           <SubmitNFTDetailList />
           {isHospitalTab && (
             <div className="absolute top-[400px] right-0 flex items-end mobile:left-20 mobile:top-230 mobile:w-190">
-              <input className="h-39 w-46 border-1 border-pen-0"></input>
+              <input
+                className="h-39 w-46 border-1 border-pen-0"
+                onChange={onhandleChangeCount}
+              ></input>
               <div className="ml-5 mr-20 text-16">장</div>
               <div className="mobile:hidden">
                 <CommonBtn
                   width={130}
                   height={45}
                   fontSize={16}
-                  onClick={() => console.log("submit!")}
+                  onClick={() => dispatch(onClickAutoSelectBtn())}
                   isDisabled={false}
                 >
                   자동선택
@@ -129,7 +142,7 @@ export default function SubmitPage() {
                   width={100}
                   height={35}
                   fontSize={15}
-                  onClick={() => console.log("submit!")}
+                  onClick={() => dispatch(onClickAutoSelectBtn())}
                   isDisabled={false}
                 >
                   자동선택
@@ -148,7 +161,7 @@ export default function SubmitPage() {
               </div>
             </div>
           )}
-          <SubmitNFTList />
+          <SubmitNFTList count={count} />
         </div>
       </div>
       {isOrganizationTab && isModalOpen && (
