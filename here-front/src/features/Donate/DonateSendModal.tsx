@@ -29,10 +29,11 @@ export default function DonateSendModal({
   const senderId = useSelector((state: RootState) => state.member.memberId);
 
   const maxCnt = useDonateNftCountQuery(senderId);
-  console.log(maxCnt);
 
   function handleCountPlus() {
-    setCount(count + 1);
+    if (count <= maxCnt.data.cnt) {
+      setCount(count + 1);
+    }
   }
 
   function handleCountMinus() {
