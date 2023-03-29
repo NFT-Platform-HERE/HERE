@@ -1,5 +1,5 @@
 import NFTCardFront from "@/components/Card/NFTCardFront";
-import { selectNFT } from "@/stores/myNFT/selectedNFT";
+import { selectNFT, setTokenId } from "@/stores/myNFT/selectedNFT";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -51,6 +51,11 @@ export default function MyNFTDetailList({
     else return "";
   };
 
+  function handleNFTCardFrontClick(selectedNFT: number, tokenId: number) {
+    dispatch(selectNFT(selectedNFT));
+    dispatch(setTokenId(tokenId));
+  }
+
   return (
     <div className="w-full">
       <Swiper
@@ -80,7 +85,10 @@ export default function MyNFTDetailList({
                 >
                   <div
                     className="mobile:hidden"
-                    onClick={() => isActive && dispatch(selectNFT(item))}
+                    onClick={() =>
+                      isActive &&
+                      handleNFTCardFrontClick(item, MyNFTList[item].tokenId)
+                    }
                   >
                     <NFTCardFront
                       width={isActive ? 300 : 250}
@@ -89,7 +97,10 @@ export default function MyNFTDetailList({
                   </div>
                   <div
                     className="hidden mobile:block"
-                    onClick={() => isActive && dispatch(selectNFT(item))}
+                    onClick={() =>
+                      isActive &&
+                      handleNFTCardFrontClick(item, MyNFTList[item].tokenId)
+                    }
                   >
                     <NFTCardFront
                       width={isActive ? 200 : 180}
