@@ -3,6 +3,7 @@ package com.ssafy.hereboard.dto.board;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,5 +14,6 @@ public class UpdateBoardRequestDto {
     private UUID writerId;
     private String title;
     private String content;
-    private List<String> imgUrlList;
+    private LocalDate deadline;
+    private Integer goalQuantity;
 }

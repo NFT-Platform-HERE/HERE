@@ -50,9 +50,15 @@ public class BoardController {
     }
 
     @ApiOperation(value = "board 수정", notes = "board를 수정합니다.")
-    @PatchMapping("/update")
-    public ResponseEntity<ResponseSuccessDto<UpdateBoardResponseDto>> updateBoard(@RequestBody UpdateBoardRequestDto updateBoardRequestDto) {
-        return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto));
+    @PatchMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseSuccessDto<UpdateBoardResponseDto>> updateBoard(
+            @RequestPart UpdateBoardRequestDto updateBoardRequestDto,
+            @RequestPart(value = "multipartFileList", required = false) List<MultipartFile> multipartFileList) throws Exception {
+        List<String> imgUrlList = new ArrayList<>();
+        if (multipartFileList != null) {
+            imgUrlList = s3Service.upload(multipartFileList);
+        }
+        return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto, imgUrlList));
     }
 
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")
