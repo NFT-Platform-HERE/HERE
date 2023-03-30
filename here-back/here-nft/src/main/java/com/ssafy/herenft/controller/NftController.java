@@ -26,8 +26,6 @@ public class NftController {
     @ApiOperation(value = "nft 등록", notes = "nft를 등록합니다.")
     @PostMapping("")
     public ResponseEntity<ResponseSuccessDto<SaveNftResponseDto>> save(@RequestBody SaveNftRequestDto saveNftRequestDto) {
-        System.out.println("controller에 들어옴");
-        System.out.println(saveNftRequestDto);
         return ResponseEntity.ok(nftService.save(saveNftRequestDto));
     }
 
@@ -65,7 +63,6 @@ public class NftController {
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/{organType}")
     public ResponseEntity<ResponseSuccessDto<List<?>>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
-        System.out.println("컨트롤러 단 들어오는지");
         return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
     }
 
