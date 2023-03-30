@@ -8,6 +8,7 @@ import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.hereauth.errorhandling.exception.service.NotAppropriateValueException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -42,31 +43,38 @@ public class MemberService {
         /**
          * email 중복 체크
          */
-        if (!isEmailDuplicate(signupRequestDto.getEmail()) && !isNicknameDuplicate(signupRequestDto.getNickname())) {
-            /**
-             * 회원 저장
-             */
-            Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
-
-            Member member = new Member();
-            member.createMember(character, signupRequestDto);
-            memberRepository.save(member);
-
-            // 스탬프
-            Stamp stamp = new Stamp();
-            stamp.createStamp(member);
-            stampRepository.save(stamp);
-
-            SignupResponseDto signupResponseDto = SignupResponseDto.builder()
-                    .memberId(member.getId())
-                    .nickname(member.getNickname())
-                    .characterImgUrl(member.getCharacter().getImgUrl())
-                    .message("회원가입이 완료되었습니다.")
-                    .build();
-
-            ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
-            return res;
+        if (isEmailDuplicate(signupRequestDto.getEmail())) {
+            throw new NotAppropriateValueException("중복된 이메일은 사용할 수 없습니다.");
         }
+        /**
+         * nickname 중복 체크
+         */
+        if (isNicknameDuplicate(signupRequestDto.getNickname())) {
+            throw new NotAppropriateValueException("중복된 닉네임은 사용할 수 없습니다.");
+        }
+        /**
+         * 회원 저장
+         */
+        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
+
+        Member member = new Member();
+        member.createMember(character, signupRequestDto);
+        memberRepository.save(member);
+
+        // 스탬프
+        Stamp stamp = new Stamp();
+        stamp.createStamp(member);
+        stampRepository.save(stamp);
+
+        SignupResponseDto signupResponseDto = SignupResponseDto.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .characterImgUrl(member.getCharacter().getImgUrl())
+                .message("회원가입이 완료되었습니다.")
+                .build();
+
+        ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
+        return res;
     }
 
     /**
