@@ -40,16 +40,12 @@ export const connectWallet = async ({
   activate(Injected);
 
   const chainId = await getChainId();
+  console.log("chainId", chainId);
 
   if (chainId !== SSAFYNETWORK) {
     try {
       changeNetwork();
-    } catch (e: any) {
-      if (e.code === 4902) {
-        addNetwork();
-      }
-      return;
-    }
+    } catch {}
   }
 };
 
@@ -61,10 +57,16 @@ const getChainId = async () => {
 };
 
 const changeNetwork = async () => {
-  await window.ethereum.request({
-    method: "wallet_switchEthereumChain",
-    params: [{ chainId: SSAFYNETWORK }],
-  });
+  await window.ethereum
+    .request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: SSAFYNETWORK }],
+    })
+    .catch((e: any) => {
+      if (e.code === 4902) {
+        addNetwork();
+      }
+    });
 };
 
 const addNetwork = async () => {
