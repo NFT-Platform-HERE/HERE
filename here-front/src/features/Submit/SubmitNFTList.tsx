@@ -1,12 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import SubmitNFTListItem from "./SubmitNFTListItem";
+import SubmitOrganizationNFTListItem from "./SubmitOrganizationNFTListItem";
 import useSubmitNFTListQuery from "@/apis/submit/useSubmitNFTListQuery";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { useDispatch } from "react-redux";
 import { selectNFT } from "@/stores/submit/selectedOrganizationNFT";
 import { addNFT, deleteNFT } from "@/stores/submit/selectedHospitalNFT";
+import { SubmitNFTPreview } from "@/types/SubmitNFTPreview";
+import SubmitHospitalNFTListItem from "./SubmitHospitalNFTListItem";
+import useAutoSelectQuery from "@/apis/submit/useAutoSelectQuery";
+import { useEffect } from "react";
 
 const swiperStyle = `
 .swiper-button-prev{
@@ -52,7 +56,11 @@ const samplePreview = [
   },
 ];
 
-export default function SubmitNFTList() {
+interface Iprops {
+  count: number;
+}
+
+export default function SubmitNFTList({ count }: Iprops) {
   const dispatch = useDispatch();
 
   const { memberId } = useSelector((state: RootState) => state.member);
@@ -68,6 +76,16 @@ export default function SubmitNFTList() {
   const submitTab = useSelector((state: RootState) => {
     return state.submitTab.tabName;
   });
+
+  const isClickBtn = useSelector((state: RootState) => {
+    return state.clickAutoSelectBtn.onClick;
+  });
+
+  const autoSelectList = useAutoSelectQuery(
+    "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
+    count,
+    isClickBtn,
+  );
 
   const submitNFTList = useSubmitNFTListQuery(
     "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
@@ -101,6 +119,33 @@ export default function SubmitNFTList() {
     return false;
   };
 
+  useEffect(() => {
+    if (!autoSelectList.isSuccess || !submitNFTList.isSuccess) {
+      return;
+    }
+
+    if (autoSelectList.data?.code != 200 || submitNFTList.data?.code != 200) {
+      return;
+    }
+
+    const autoSelectData = autoSelectList.data.data;
+    const submitNFTData = submitNFTList.data.data;
+
+    for (let i = 0; i < autoSelectData.length; i++) {
+      for (let j = 0; j < submitNFTData.length; j++) {
+        if (autoSelectData[i].tokenId === submitNFTData[j].tokenId) {
+          if (submitTab === "AGENCY") {
+            dispatch(selectNFT(j));
+          } else if (submitTab === "HOSPITAL") {
+            if (!selectedCardList.includes(j)) {
+              dispatch(addNFT(j));
+            }
+          }
+        }
+      }
+    }
+  }, [autoSelectList?.data]);
+
   return (
     <div className="relative mt-70 mb-50 flex justify-center mobile:mb-20">
       <div className="mobile:hidden">
@@ -111,16 +156,27 @@ export default function SubmitNFTList() {
           modules={[Navigation]}
           css={[swiperStyle]}
         >
-          {samplePreview.map((item, index) => (
-            <SwiperSlide className="relative flex justify-center" key={index}>
-              <SubmitNFTListItem
-                name={item.name}
-                registerDate={item.registerDate}
-                onClick={() => handleSetSelectedCard(index)}
-                isSelected={isSelected(index)}
-              />
-            </SwiperSlide>
-          ))}
+          {submitNFTList?.data?.data?.map(
+            (item: SubmitNFTPreview, index: number) => (
+              <SwiperSlide className="relative flex justify-center" key={index}>
+                {submitTab === "AGENCY" ? (
+                  <SubmitOrganizationNFTListItem
+                    place={item.place!}
+                    registerDate={item.createdDate.slice(0, 10)}
+                    onClick={() => handleSetSelectedCard(index)}
+                    isSelected={isSelected(index)}
+                  />
+                ) : (
+                  <SubmitHospitalNFTListItem
+                    name={item.name!}
+                    registerDate={item.createdDate.slice(0, 10)}
+                    onClick={() => handleSetSelectedCard(index)}
+                    isSelected={isSelected(index)}
+                  />
+                )}
+              </SwiperSlide>
+            ),
+          )}
         </Swiper>
       </div>
       <div className="mt-30 hidden w-330 overflow-hidden rounded-10 border-1 border-black mobile:block">

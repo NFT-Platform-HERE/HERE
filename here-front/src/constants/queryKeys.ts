@@ -30,6 +30,7 @@ export const DONATE_SEARCH = "/donateSearch";
 // submit
 export const SUBMIT_NFT_LIST = "/submitNFTList";
 export const SUBMIT_SEARCH = "/submitSearch";
+export const SUBMIT_AUTO_SELECT = "/submitAutoSelect";
 
 // myNFT
 export const MYNFT_LIST = "/mynftList";
