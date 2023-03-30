@@ -33,7 +33,7 @@ export default function DonateCheerMsg({ memberId, boardId }: Iprops) {
           fontSize={14}
           count={cheerMsgCnt.data && cheerMsgCnt.data[0].cnt}
           onClick={() => selectCheerBtn(1)}
-          imgUrl={"/icons/blood_count.svg"}
+          imgUrl={"/icons/cheer2.png"}
           children={"응원해요"}
           isChecked={cheerMsgCnt.data && cheerMsgCnt.data[0].isSelected}
         />
@@ -45,7 +45,7 @@ export default function DonateCheerMsg({ memberId, boardId }: Iprops) {
           fontSize={14}
           count={cheerMsgCnt.data && cheerMsgCnt.data[1].cnt}
           onClick={() => selectCheerBtn(2)}
-          imgUrl={"/icons/blood_recent.svg"}
+          imgUrl={"/icons/friends.png"}
           children={"함께해요"}
           isChecked={cheerMsgCnt.data && cheerMsgCnt.data[1].isSelected}
         />
@@ -57,7 +57,7 @@ export default function DonateCheerMsg({ memberId, boardId }: Iprops) {
           fontSize={14}
           count={cheerMsgCnt.data && cheerMsgCnt.data[2].cnt}
           onClick={() => selectCheerBtn(3)}
-          imgUrl={"/icons/blood_next.svg"}
+          imgUrl={"/icons/cheer-up.png"}
           children={"힘내세요"}
           isChecked={cheerMsgCnt.data && cheerMsgCnt.data[2].isSelected}
         />

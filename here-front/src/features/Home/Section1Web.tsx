@@ -14,7 +14,7 @@ export default function Section1Web() {
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
-        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold italic text-red-3">
+        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold text-red-3">
           01
         </p>
         <p className="mt-50 mb-20 text-26 font-bold text-red-3">기부해요</p>
@@ -35,7 +35,7 @@ export default function Section1Web() {
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
-        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold italic text-red-3">
+        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold text-red-3">
           02
         </p>
         <p className="mt-50 mb-20 text-26 font-bold text-red-3">헌혈해요</p>
@@ -56,7 +56,7 @@ export default function Section1Web() {
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
-        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold italic text-red-3">
+        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold text-red-3">
           03
         </p>
         <p className="mt-50 mb-20 text-26 font-bold text-red-3">제출해요</p>
@@ -77,7 +77,7 @@ export default function Section1Web() {
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
-        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold italic text-red-3">
+        <p className="absolute -top-30 left-110 inline-block w-70 bg-white text-40 font-bold text-red-3">
           04
         </p>
         <p className="mt-50 mb-20 text-26 font-bold text-red-3">나의 NFT</p>

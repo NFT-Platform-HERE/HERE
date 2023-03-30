@@ -36,7 +36,7 @@ export default function CheerBtn({
       onClick={onClick}
     >
       <div className="flex items-center">
-        <img src={imgUrl} className="mr-6 h-30 w-30"></img>
+        <img src={imgUrl} className="mr-6 h-40 w-40"></img>
         {children}
       </div>{" "}
       {count}명

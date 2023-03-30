@@ -11,12 +11,18 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import parse from "html-react-parser";
 import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
-import { Swiper, SwiperSlide } from "swiper/react";
 import DonateCheerMsg from "@/features/Donate/DonateCheerMsg";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface Iprops {
   boardId: string;
 }
+
+SwiperCore.use([Navigation, Pagination]);
 
 export default function DonateDetailPage({ boardId }: Iprops) {
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
@@ -70,22 +76,24 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               </span>
             </div>
             <div className="flex justify-around">
-              {/* <button>
-                <img src="/icons/expand_left_light.svg" />
-              </button>
-              <img
-                src={"/images/logo.svg"}
-                className="h-370 w-450 mobile:h-168 mobile:w-228"
-              ></img>
-              <button>
-                <img src="/icons/expand_right_light.svg" />
-              </button> */}
-              <Swiper>
-                {nowBoard.data.boardImgUrlList.map((item: string) => {
-                  <SwiperSlide>
-                    <img src={item} alt="boardImg" />
-                  </SwiperSlide>;
-                })}
+              <Swiper
+                spaceBetween={0}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                className="flex h-400 w-800 flex-wrap items-center justify-center mobile:mt-[calc(50vh-240px)] mobile:w-[calc(100%-100px)]"
+              >
+                {nowBoard.data.boardImgUrlList.map(
+                  (item: string, index: number) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        src={item}
+                        alt="boardImg"
+                        className="max-w-600 mx-auto h-400"
+                      />
+                    </SwiperSlide>
+                  ),
+                )}
               </Swiper>
             </div>
             <div className="ProseMirror text-16 font-light mobile:text-11">
