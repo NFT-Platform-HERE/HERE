@@ -13,6 +13,8 @@ import com.ssafy.hereboard.repository.*;
 import com.ssafy.hereboard.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -413,4 +415,9 @@ public class BoardService {
         return null;
     }
 
+    public ResponseSuccessDto<Page<Board>> getBoardListPaging(Pageable pageable) {
+        Page<Board> boardListPaging = boardRepository.findBoardListPaging(pageable);
+        ResponseSuccessDto<Page<Board>> res = responseUtil.successResponse(boardListPaging, HereStatus.HERE_FIND_BOARD);
+        return res;
+    }
 }
