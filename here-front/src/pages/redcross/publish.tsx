@@ -9,7 +9,13 @@ import { sendIpfs } from "../../apis/blockchain/ipfs";
 import { mintBloodNFT, getHashValue } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
-import { NftType } from "@/utils/statusType";
+import {
+  Blood,
+  BloodType,
+  GenderType,
+  NftType,
+  RhType,
+} from "@/utils/statusType";
 import useNftMintQuery from "@/apis/redcross/useNftMintQuery";
 import { Mint } from "@/types/Mint";
 
@@ -23,10 +29,13 @@ interface memberInfo {
 export default function RedCrossPublishPage() {
   const [inputs, setInputs] = useState({
     name: "",
-    sex: "",
-    bloodType: "",
+    rhType: RhType.RHPLUS,
+    bloodAmount: "",
+    blood: Blood.A,
+    sex: GenderType.MALE,
+    bloodType: BloodType.WHOLE,
     wallet: "",
-    birth: "",
+    birth: new Date().toISOString().substring(0, 10),
     createdDate: new Date().toISOString().substring(0, 10),
     place: "",
   });
@@ -36,11 +45,23 @@ export default function RedCrossPublishPage() {
 
   const mutation = useNftMintQuery();
 
-  const { name, sex, bloodType, wallet, birth, createdDate, place } = inputs;
+  const {
+    blood,
+    name,
+    sex,
+    bloodType,
+    wallet,
+    birth,
+    createdDate,
+    place,
+    rhType,
+    bloodAmount,
+  } = inputs;
 
   const validateForm = () => {
     if (
       name.length > 0 &&
+      bloodAmount.length > 0 &&
       sex.length > 0 &&
       bloodType.length > 0 &&
       wallet.length > 0 &&
@@ -92,6 +113,9 @@ export default function RedCrossPublishPage() {
     //기관용 메타데이터
     const metaInfoAgency = {
       name: name.trim(),
+      rhType: rhType,
+      blood: blood,
+      bloodAmount: bloodAmount.trim(),
       gender: sex,
       type: bloodType,
       walletAddress: wallet.trim(),
@@ -105,6 +129,9 @@ export default function RedCrossPublishPage() {
     //병원용 메타데이터
     const metaInfoHospital = {
       name: name.trim(),
+      rhType: rhType,
+      blood: blood,
+      bloodAmount: bloodAmount.trim(),
       gender: sex,
       type: bloodType,
       walletAddress: wallet.trim(),
@@ -242,7 +269,7 @@ export default function RedCrossPublishPage() {
   };
 
   return (
-    <div className="mx-auto mt-50 w-1000 text-center text-20 leading-50">
+    <div className="mx-auto mt-40 w-1000 text-center text-20 leading-50">
       <p className="text-24">헌혈증 NFT 발급</p>
       <div className="my-20 mx-auto mt-30 flex w-650 justify-between">
         <label htmlFor="name">이름</label>
@@ -265,8 +292,9 @@ export default function RedCrossPublishPage() {
           </label>
           <input
             type="radio"
-            value="male"
+            value={GenderType.MALE}
             id="male"
+            checked={sex === GenderType.MALE}
             name="sex"
             onChange={onChangeValue}
             className="m-10 mr-30 w-20"
@@ -276,8 +304,9 @@ export default function RedCrossPublishPage() {
           </label>
           <input
             type="radio"
-            value="female"
+            value={GenderType.FEMALE}
             id="female"
+            checked={sex === GenderType.FEMALE}
             name="sex"
             onChange={onChangeValue}
             className="focus:ring-rounded-10 m-10 w-20 cursor-pointer rounded-full border before:text-pink-500 checked:text-pink-500"
@@ -290,7 +319,8 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="WHOLE"
+              value={BloodType.WHOLE}
+              checked={bloodType === BloodType.WHOLE}
               id="whole"
               name="bloodType"
               className="peer hidden"
@@ -306,7 +336,8 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="PLASMA"
+              value={BloodType.PLASMA}
+              checked={bloodType === BloodType.PLASMA}
               id="plasma"
               name="bloodType"
               className="peer hidden"
@@ -322,7 +353,8 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value="PLATELETS"
+              value={BloodType.PLATELETS}
+              checked={bloodType === BloodType.PLATELETS}
               id="platelets"
               className="peer hidden"
               name="bloodType"
@@ -336,6 +368,103 @@ export default function RedCrossPublishPage() {
             </label>
           </div>
         </div>
+      </div>
+      <div className="my-20 mx-auto flex w-650 justify-between">
+        <label htmlFor="blood" className="text-20 leading-50">
+          혈액형
+        </label>
+        <div className="flex w-500 justify-start">
+          <label htmlFor="A" className="ml-20 text-18">
+            A
+          </label>
+          <input
+            type="radio"
+            value={Blood.A}
+            id="A"
+            checked={blood === Blood.A}
+            name="blood"
+            onChange={onChangeValue}
+            className="m-10 mr-30 w-20"
+          />
+          <label htmlFor="B" className="ml-20 text-18">
+            B
+          </label>
+          <input
+            type="radio"
+            value={Blood.B}
+            id="B"
+            checked={blood === Blood.B}
+            name="blood"
+            onChange={onChangeValue}
+            className="m-10 mr-30 w-20"
+          />
+          <label htmlFor="O" className="ml-20 text-18">
+            O
+          </label>
+          <input
+            type="radio"
+            value={Blood.O}
+            id="O"
+            checked={blood === Blood.O}
+            name="blood"
+            onChange={onChangeValue}
+            className="m-10 mr-30 w-20"
+          />
+          <label htmlFor="AB" className="ml-20 text-18">
+            AB
+          </label>
+          <input
+            type="radio"
+            value={Blood.AB}
+            id="AB"
+            checked={blood === Blood.AB}
+            name="blood"
+            onChange={onChangeValue}
+            className="focus:ring-rounded-10 m-10 w-20 cursor-pointer rounded-full border before:text-pink-500 checked:text-pink-500"
+          />
+        </div>
+      </div>
+      <div className="my-20 mx-auto flex w-650 justify-between">
+        <label htmlFor="rhType" className="text-20 leading-50">
+          RH식 혈액형
+        </label>
+        <div className="flex w-500 justify-start">
+          <label htmlFor="rhplus" className="ml-20 text-18">
+            Rh+
+          </label>
+          <input
+            type="radio"
+            value={RhType.RHPLUS}
+            id="rhplus"
+            checked={rhType === RhType.RHPLUS}
+            name="rhType"
+            onChange={onChangeValue}
+            className="m-10 mr-30 w-20"
+          />
+          <label htmlFor="rhminus" className="text-18">
+            Rh-
+          </label>
+          <input
+            type="radio"
+            value={RhType.RHMINUS}
+            id="rhminus"
+            checked={rhType === RhType.RHMINUS}
+            name="rhType"
+            onChange={onChangeValue}
+            className="focus:ring-rounded-10 m-10 w-20 cursor-pointer rounded-full border before:text-pink-500 checked:text-pink-500"
+          />
+        </div>
+      </div>
+      <div className="my-20 mx-auto mt-30 flex w-650 justify-between">
+        <label htmlFor="bloodAmount">헌혈량</label>
+        <input
+          type="text"
+          id="bloodAmount"
+          name="bloodAmount"
+          value={bloodAmount}
+          onChange={onChangeValue}
+          className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
+        />
       </div>
       <div className="my-20 mx-auto flex w-900 justify-between pl-125">
         <div className="flex w-650 justify-between">

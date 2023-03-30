@@ -10,7 +10,7 @@ export enum BloodHistoryStatus {
 
 export enum BloodType {
   WHOLE = "WHOLE",
-  PLATELET = "PLATELET",
+  PLATELETS = "PLATELETS",
   PLASMA = "PLASMA",
 }
 
@@ -45,4 +45,21 @@ export enum CertHistoryType {
 export enum CertHistoryStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
+}
+
+export enum GenderType {
+  MALE = "male",
+  FEMALE = "female",
+}
+
+export enum Blood {
+  A = "A",
+  B = "B",
+  O = "O",
+  AB = "AB",
+}
+
+export enum RhType {
+  RHMINUS = "RHMINUS",
+  RHPLUS = "RHPLUS",
 }
