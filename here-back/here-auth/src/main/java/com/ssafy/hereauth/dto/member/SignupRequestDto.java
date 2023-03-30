@@ -1,18 +1,12 @@
 package com.ssafy.hereauth.dto.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
 public class SignupRequestDto {
     @NotBlank(message = "지갑 주소는 필수 값입니다.")
     private String walletAddress;

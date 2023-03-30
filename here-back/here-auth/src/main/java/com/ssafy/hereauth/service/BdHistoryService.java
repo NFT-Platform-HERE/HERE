@@ -30,10 +30,8 @@ public class BdHistoryService {
      * 헌혈 기록 조회
      */
     public ResponseSuccessDto<List<BdHistoryGetResponseDto>> getBdHistory(UUID memberId) {
-        System.out.println("서비스 들어옴");
 
         List<BdHistory> bdHistories = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(memberId);
-
         List<BdHistoryGetResponseDto> result = new ArrayList<>();
 
         for (BdHistory bdHistory : bdHistories) {
