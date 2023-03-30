@@ -1,7 +1,5 @@
 package com.ssafy.hereauth.service;
 
-import com.ssafy.hereauth.dto.bdHistory.BdHistoryCreateRequestDto;
-import com.ssafy.hereauth.dto.bdHistory.BdHistoryCreateResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
 import com.ssafy.hereauth.entity.*;
@@ -34,7 +32,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CharacterRepository characterRepository;
     private final StampRepository stampRepository;
-    private final CertHistoryRepository certHistoryRepository;
     private final BdHistoryRepository bdHistoryRepository;
 
     /**
@@ -63,8 +60,6 @@ public class MemberService {
         stamp.createStamp(member);
         stampRepository.save(stamp);
 
-        // 리턴
-//        SignupResponseDto signupResponseDto = new SignupResponseDto(member.getId(), member.getNickname(), member.getCharacter().getImgUrl(), "회원가입이 완료되었습니다.");
         SignupResponseDto signupResponseDto = SignupResponseDto.builder()
                 .memberId(member.getId())
                 .nickname(member.getNickname())
@@ -112,10 +107,7 @@ public class MemberService {
         } else {
             recentBdDate = null;
         }
-        // 다음 헌혈 가능 날짜 구하기
 
-        // DTO에 넣기
-//        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member, characterImgUrl, characterType, bdHistoryCnt, recentBdDate, nextWholeBdDays, nextNotWholeBdDays);
         MemberProfileResponseDto memberProfileResponseDto = MemberProfileResponseDto.builder()
                 .email(member.getEmail())
                 .nickname(member.getNickname())
@@ -140,7 +132,6 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 이메일입니다."));
 
-//        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member.getId(), member.getWalletAddress());
         MemberInfoResponseDto memberInfoResponseDto = MemberInfoResponseDto.builder()
                 .memberId(member.getId())
                 .walletAddress(member.getWalletAddress())
@@ -155,11 +146,16 @@ public class MemberService {
         Boolean isEmailDuplicate = memberRepository.existsByEmail(email);
 
         if (isEmailDuplicate) {
-            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("이미 사용중인 이메일입니다.");
+            ValidateEmailResponseDto validateEmailResponseDto = ValidateEmailResponseDto.builder()
+                    .message("이미 사용 중인 이메일입니다.")
+                    .build();
             ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_DUPLICATED_EMAIL);
             return res;
+
         } else {
-            ValidateEmailResponseDto validateEmailResponseDto = new ValidateEmailResponseDto("사용 가능한 이메일입니다.");
+            ValidateEmailResponseDto validateEmailResponseDto = ValidateEmailResponseDto.builder()
+                    .message("사용 가능한 이메일입니다.")
+                    .build();
             ResponseSuccessDto<ValidateEmailResponseDto> res = responseUtil.successResponse(validateEmailResponseDto, HereStatus.HERE_NOT_DUPLICATED_EMAIL);
             return res;
         }
@@ -170,11 +166,15 @@ public class MemberService {
         Boolean isNicknameDuplicate = memberRepository.existsByNickname(nickname);
 
         if (isNicknameDuplicate) {
-            ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("이미 사용중인 닉네임입니다.");
+            ValidateNicknameResponseDto validateNicknameResponseDto = ValidateNicknameResponseDto.builder()
+                    .message("이미 사용 중인 닉네임입니다.")
+                    .build();
             ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto, HereStatus.HERE_DUPLICATED_NICKNAME);
             return res;
         } else {
-            ValidateNicknameResponseDto validateNicknameResponseDto = new ValidateNicknameResponseDto("사용 가능한 닉네임입니다.");
+            ValidateNicknameResponseDto validateNicknameResponseDto = ValidateNicknameResponseDto.builder()
+                    .message("사용 가능한 닉네임입니다.")
+                    .build();
             ResponseSuccessDto<ValidateNicknameResponseDto> res = responseUtil.successResponse(validateNicknameResponseDto, HereStatus.HERE_NOT_DUPLICATED_NICKNAME);
             return res;
         }
@@ -228,52 +228,13 @@ public class MemberService {
         }
         member.updateMemberExp(character, curExp, goalExp, level);
 
-        ExpUpdateResponseDto expUpdateResponseDto = new ExpUpdateResponseDto(level, "경험치가 상승하였습니다.");
+        ExpUpdateResponseDto expUpdateResponseDto = ExpUpdateResponseDto.builder()
+                .level(level)
+                .message("경험치가 상승하였습니다.")
+                .build();
         ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto, isLevelUp? HereStatus.HERE_UPDATE_LEVEL : HereStatus.HERE_UPDATE_EXP);
         return res;
     }
-
-//    /**
-//     * (임시) CertHistory 생성
-//     */
-//    public ResponseSuccessDto<CertHistoryCreateResponseDto> createCertHistory(CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-//
-//        // 멤버 가져오기
-//        Member member = memberRepository.findById(certHistoryCreateRequestDto.getMemberId())
-//                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
-//
-//        // 기관 가져오기
-//        Member agency = memberRepository.findById(certHistoryCreateRequestDto.getAgencyId())
-//                .orElseThrow(() -> new EntityIsNullException("잘못된 기관 ID입니다."));
-//
-//        CertHistory certHistory = new CertHistory();
-//        certHistory.createCertHistory(member, agency, certHistoryCreateRequestDto);
-//        certHistoryRepository.save(certHistory);
-//
-//        // 리턴
-//        CertHistoryCreateResponseDto certHistoryCreateResponseDto = new CertHistoryCreateResponseDto("헌혈증 제출이 완료되었습니다.");
-//        ResponseSuccessDto<CertHistoryCreateResponseDto> res = responseUtil.successResponse(certHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
-//        return res;
-//    }
-//
-//    /**
-//     * (임의) BdHistory 생성
-//     */
-//    public ResponseSuccessDto<BdHistoryCreateResponseDto> createBdHistory(BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
-//
-//        // 멤버 가져오기
-//        Member member = memberRepository.findById(bdHistoryCreateRequestDto.getMemberId())
-//                .orElseThrow(() -> new EntityIsNullException("잘못된 회원 ID입니다."));
-//
-//        BdHistory bdHistory = new BdHistory();
-//        bdHistory.createBdHistory(member, bdHistoryCreateRequestDto);
-//        bdHistoryRepository.save(bdHistory);
-//
-//        // 리턴
-//        BdHistoryCreateResponseDto bdHistoryCreateResponseDto = new BdHistoryCreateResponseDto("헌혈 기록 등록 완료되었습니다.");
-//        ResponseSuccessDto<BdHistoryCreateResponseDto> res = responseUtil.successResponse(bdHistoryCreateResponseDto, HereStatus.HERE_SUBMIT_CERTIFICATION);
-//        return res;
-//    }
 
     /**
      * 스탬프 정보 조회
@@ -307,9 +268,7 @@ public class MemberService {
                     .build();
             result.add(organSearchResponseDto);
         }
-
         ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
         return res;
     }
-
 }

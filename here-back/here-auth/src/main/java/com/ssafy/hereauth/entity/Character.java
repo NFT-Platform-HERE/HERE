@@ -1,6 +1,5 @@
 package com.ssafy.hereauth.entity;
 
-import com.ssafy.hereauth.dto.character.CharacterRequestDto;
 import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +29,8 @@ public class Character {
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;
 
-    public void createCharacter(CharacterRequestDto characterRequestDto) {
-        this.type = characterRequestDto.getType();
-        this.imgUrl = characterRequestDto.getImgUrl();
-    }
+//    public void createCharacter(CharacterRequestDto characterRequestDto) {
+//        this.type = characterRequestDto.getType();
+//        this.imgUrl = characterRequestDto.getImgUrl();
+//    }
 }

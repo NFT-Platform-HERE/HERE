@@ -1,10 +1,7 @@
 package com.ssafy.hereauth.controller;
 
-import com.ssafy.hereauth.dto.character.CharacterRequestDto;
-import com.ssafy.hereauth.dto.character.CharacterResponseDto;
 import com.ssafy.hereauth.dto.character.CharacterStartingResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereauth.repository.CharacterRepository;
 import com.ssafy.hereauth.service.CharacterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

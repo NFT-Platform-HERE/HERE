@@ -16,12 +16,5 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
     boolean existsByWalletAddress(String walletAddress);
     Optional<Member> findByEmail(String email);
     Optional<Member> findByWalletAddress(String walletAddress);
-
-//    List<Member> findByNameContaining(String s);
-
-//    List<Member> findByNameLike(String s);
-
-//    List<Member> findByNameContains(String query);
-
     List<Member> findByRoleAndNameContains(EnumMemberRole organType, String query);
 }

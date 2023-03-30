@@ -2,19 +2,14 @@ package com.ssafy.hereauth.dto.member;
 
 import com.ssafy.hereauth.enumeration.EnumCertHistoryStatus;
 import com.ssafy.hereauth.enumeration.EnumCertHistoryType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class CertHistoryCreateRequestDto {
     @NotNull(message = "memberId는 필수 값입니다.")
     private UUID memberId;
