@@ -11,12 +11,18 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import parse from "html-react-parser";
 import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
-import { Swiper, SwiperSlide } from "swiper/react";
 import DonateCheerMsg from "@/features/Donate/DonateCheerMsg";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface Iprops {
   boardId: string;
 }
+
+SwiperCore.use([Navigation, Pagination]);
 
 export default function DonateDetailPage({ boardId }: Iprops) {
   const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
@@ -69,30 +75,35 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 목표 수량: {nowBoard.data.goalQuantity}개
               </span>
             </div>
-            <div className="flex justify-around">
-              {/* <button>
-                <img src="/icons/expand_left_light.svg" />
-              </button>
-              <img
-                src={"/images/logo.svg"}
-                className="h-370 w-450 mobile:h-168 mobile:w-228"
-              ></img>
-              <button>
-                <img src="/icons/expand_right_light.svg" />
-              </button> */}
-              <Swiper>
-                {nowBoard.data.boardImgUrlList.map((item: string) => {
-                  <SwiperSlide>
-                    <img src={item} alt="boardImg" />
-                  </SwiperSlide>;
-                })}
-              </Swiper>
-            </div>
-            <div className="ProseMirror text-16 font-light mobile:text-11">
+            {nowBoard.data.boardImgUrlList.length != 0 && (
+              <div className="mb-50 flex justify-around">
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  navigation
+                  pagination={{ clickable: true }}
+                  className="flex h-400 w-800 flex-wrap items-center justify-center mobile:mt-30 mobile:h-300 mobile:w-full mobile:min-w-300"
+                >
+                  {nowBoard.data.boardImgUrlList.map(
+                    (item: string, index: number) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          src={item}
+                          alt="boardImg"
+                          className="max-w-600 mobile:max-w-300 mx-auto h-400 mobile:h-300"
+                        />
+                      </SwiperSlide>
+                    ),
+                  )}
+                </Swiper>
+              </div>
+            )}
+            <div className="ProseMirror mx-auto w-800 text-16 font-light mobile:w-300 mobile:text-13">
               {parse(nowBoard.data.content)}
             </div>
           </div>
         </Suspense>
+        <hr className="mb-20 hidden border-2 mobile:block" />
         <div className="flex w-300 flex-col items-center border border-pen-0 p-35 mobile:w-330 mobile:border-none mobile:p-5">
           <Suspense fallback={<CircularProgress />}>
             <div className="flex w-full flex-col items-center mobile:flex-row mobile:justify-center">

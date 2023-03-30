@@ -44,7 +44,7 @@ export default function DonateWritePage() {
         dt.items.add(file);
       }
 
-      newImagePreviewUrls.splice(index, 1); 
+      newImagePreviewUrls.splice(index, 1);
 
       setSelectedFiles(dt.files);
       setImagePreviewUrls(newImagePreviewUrls);
@@ -98,6 +98,7 @@ export default function DonateWritePage() {
       content: description,
       memberId: memberId,
     };
+    console.log(writeData);
 
     formData.append(
       "saveBoardRequestDto",
