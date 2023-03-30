@@ -1,4 +1,4 @@
-import { NftType } from "@/utils/statusType";
+import { Blood, NftType, RhType } from "@/utils/statusType";
 
 export interface MetaInfo {
   name: string;
@@ -10,4 +10,7 @@ export interface MetaInfo {
   place: string;
   imageURL: string;
   nftType: NftType;
+  bloodAmount: string;
+  blood: Blood;
+  rhType: RhType;
 }
