@@ -8,6 +8,7 @@ import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.hereauth.errorhandling.exception.service.NotAppropriateValueException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,14 @@ public class MemberService {
          * email 중복 체크
          */
         if (isEmailDuplicate(signupRequestDto.getEmail())) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+            throw new NotAppropriateValueException("중복된 이메일은 사용할 수 없습니다.");
         }
-
+        /**
+         * nickname 중복 체크
+         */
+        if (isNicknameDuplicate(signupRequestDto.getNickname())) {
+            throw new NotAppropriateValueException("중복된 닉네임은 사용할 수 없습니다.");
+        }
         /**
          * 회원 저장
          */
@@ -212,6 +218,10 @@ public class MemberService {
     // 회원가입시 이메일 중복 이중 체크 용 메소드
     public boolean isEmailDuplicate(String email) {
         return memberRepository.existsByEmail(email);
+    }
+    // 회원가입시 닉네임 중복 이중 체크 용 메소드
+    public boolean isNicknameDuplicate(String nickname) {
+        return memberRepository.existsByNickname(nickname);
     }
 
     /**
