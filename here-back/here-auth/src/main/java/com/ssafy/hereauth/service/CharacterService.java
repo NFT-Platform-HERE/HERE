@@ -27,7 +27,8 @@ public class CharacterService {
     public ResponseSuccessDto<List<CharacterStartingResponseDto>> findCharacters() {
         List<Character> characters = characterRepository.findAllByLevel(1);
         List<CharacterStartingResponseDto> result = characters.stream()
-                .map(c -> new CharacterStartingResponseDto(c))
+                .map(c -> CharacterStartingResponseDto.builder()
+                        .characterId(c.getId()).characterImgUrl(c.getImgUrl()).build())
                 .collect(Collectors.toList());
         ResponseSuccessDto<List<CharacterStartingResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
         return res;

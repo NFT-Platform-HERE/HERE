@@ -187,12 +187,24 @@ public class MemberService {
         Boolean isMember = memberRepository.existsByWalletAddress(walletAddress);
 
         if (byWalletAddress.isEmpty()) {
-            IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(null, null, null, null, "등록된 회원이 아닙니다.");
+            IsMemberResponseDto isMemberResponseDto = IsMemberResponseDto.builder()
+                    .role(null)
+                    .memberId(null)
+                    .nickname(null)
+                    .characterImgUrl(null)
+                    .message("등록되지 않은 회원입니다.")
+                    .build();
             ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_NOT_SUCCESS_FIND_MEMBER);
             return res;
         }
         Member member = byWalletAddress.get();
-        IsMemberResponseDto isMemberResponseDto = new IsMemberResponseDto(member.getRole(), member.getId(), member.getNickname(), member.getCharacter().getImgUrl(),"등록된 회원입니다.");
+        IsMemberResponseDto isMemberResponseDto = IsMemberResponseDto.builder()
+                .role(member.getRole())
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .characterImgUrl(member.getCharacter().getImgUrl())
+                .message("등록된 회원입니다.")
+                .build();
         ResponseSuccessDto<IsMemberResponseDto> res = responseUtil.successResponse(isMemberResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);
         return res;
     }

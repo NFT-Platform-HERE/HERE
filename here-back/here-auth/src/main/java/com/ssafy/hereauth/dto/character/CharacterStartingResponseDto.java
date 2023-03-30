@@ -9,9 +9,4 @@ import lombok.Getter;
 public class CharacterStartingResponseDto {
     private Long characterId;
     private String characterImgUrl ;
-
-    public CharacterStartingResponseDto(Character character) {
-        characterId = character.getId();
-        characterImgUrl = character.getImgUrl();
-    }
 }
