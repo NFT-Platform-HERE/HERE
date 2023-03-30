@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class OrganSearchResponseDto {
+public class SearchOrganResponseDto {
     private UUID agencyId;
     private String agencyName;
 }

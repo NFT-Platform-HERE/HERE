@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
-public class CertHistoryCreateRequestDto {
+public class SaveCertHistoryRequestDto {
     @NotNull(message = "memberId는 필수 값입니다.")
     private UUID memberId;
     @NotNull(message = "agencyId는 필수 값입니다.")

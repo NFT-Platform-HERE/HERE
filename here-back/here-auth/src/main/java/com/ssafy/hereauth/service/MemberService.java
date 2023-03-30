@@ -8,7 +8,7 @@ import com.ssafy.hereauth.enumeration.EnumCharacterType;
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
-import com.ssafy.hereauth.errorhandling.exception.service.NotAppropriateValueException;
+import com.ssafy.hereauth.errorhandling.exception.service.DuplicatedValueException;
 import com.ssafy.hereauth.repository.*;
 import com.ssafy.hereauth.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -44,13 +44,13 @@ public class MemberService {
          * email 중복 체크
          */
         if (isEmailDuplicate(signupRequestDto.getEmail())) {
-            throw new NotAppropriateValueException("중복된 이메일은 사용할 수 없습니다.");
+            throw new DuplicatedValueException("중복된 이메일은 사용할 수 없습니다.");
         }
         /**
          * nickname 중복 체크
          */
         if (isNicknameDuplicate(signupRequestDto.getNickname())) {
-            throw new NotAppropriateValueException("중복된 닉네임은 사용할 수 없습니다.");
+            throw new DuplicatedValueException("중복된 닉네임은 사용할 수 없습니다.");
         }
         /**
          * 회원 저장
@@ -227,11 +227,11 @@ public class MemberService {
     /**
      * 경험치 상승
      */
-    public ResponseSuccessDto<ExpUpdateResponseDto> updateExp(ExpUpdateRequestDto expUpdateRequestDto) {
-        Member member = memberRepository.findById(expUpdateRequestDto.getMemberId())
+    public ResponseSuccessDto<UpdateExpResponseDto> updateExp(UpdateExpRequestDto updateExpRequestDto) {
+        Member member = memberRepository.findById(updateExpRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("올바르지 않은 멤버ID입니다."));
 
-        int curExp = member.getCurExp() + expUpdateRequestDto.getExp();
+        int curExp = member.getCurExp() + updateExpRequestDto.getExp();
         int goalExp = member.getGoalExp();
         int level = member.getLevel();
 
@@ -250,47 +250,47 @@ public class MemberService {
         }
         member.updateMemberExp(character, curExp, goalExp, level);
 
-        ExpUpdateResponseDto expUpdateResponseDto = ExpUpdateResponseDto.builder()
+        UpdateExpResponseDto updateExpResponseDto = UpdateExpResponseDto.builder()
                 .level(level)
                 .message("경험치가 상승하였습니다.")
                 .build();
-        ResponseSuccessDto<ExpUpdateResponseDto> res = responseUtil.successResponse(expUpdateResponseDto, isLevelUp? HereStatus.HERE_UPDATE_LEVEL : HereStatus.HERE_UPDATE_EXP);
+        ResponseSuccessDto<UpdateExpResponseDto> res = responseUtil.successResponse(updateExpResponseDto, isLevelUp? HereStatus.HERE_UPDATE_LEVEL : HereStatus.HERE_UPDATE_EXP);
         return res;
     }
 
     /**
      * 스탬프 정보 조회
      */
-    public ResponseSuccessDto<StampGetResponseDto> getStampInfo(UUID memberId) {
+    public ResponseSuccessDto<GetStampResponseDto> getStampInfo(UUID memberId) {
 
         Stamp stampInfo = stampRepository.findByMemberId(memberId);
 
-        StampGetResponseDto stampGetResponseDto = StampGetResponseDto.builder()
+        GetStampResponseDto getStampResponseDto = GetStampResponseDto.builder()
                 .stage(stampInfo.getStage())
                 .step(stampInfo.getStep())
                 .build();
 
-        ResponseSuccessDto<StampGetResponseDto> res = responseUtil.successResponse(stampGetResponseDto, HereStatus.HERE_FIND_STAMP);
+        ResponseSuccessDto<GetStampResponseDto> res = responseUtil.successResponse(getStampResponseDto, HereStatus.HERE_FIND_STAMP);
         return res;
     }
 
     /**
      * 증명서 제출 기관/병원 검색
      */
-    public ResponseSuccessDto<List<OrganSearchResponseDto>> searchOrgan(EnumMemberRole organType,String query) {
+    public ResponseSuccessDto<List<SearchOrganResponseDto>> searchOrgan(EnumMemberRole organType, String query) {
 
         List<Member> searchedOrgans = memberRepository.findByRoleAndNameContains(organType, query);
-        List<OrganSearchResponseDto> result = new ArrayList<>();
+        List<SearchOrganResponseDto> result = new ArrayList<>();
 
         for (Member organ : searchedOrgans) {
 
-            OrganSearchResponseDto organSearchResponseDto = OrganSearchResponseDto.builder()
+            SearchOrganResponseDto searchOrganResponseDto = SearchOrganResponseDto.builder()
                     .agencyId(organ.getId())
                     .agencyName(organ.getName())
                     .build();
-            result.add(organSearchResponseDto);
+            result.add(searchOrganResponseDto);
         }
-        ResponseSuccessDto<List<OrganSearchResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
+        ResponseSuccessDto<List<SearchOrganResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SEARCH_ORGAN);
         return res;
     }
 }

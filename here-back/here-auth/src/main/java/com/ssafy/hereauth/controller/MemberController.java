@@ -72,21 +72,21 @@ public class MemberController {
     /* 경험치 상승 */
     @ApiOperation(value = "경험치 상승", notes = "회원 경험치를 갱신한다.")
     @PatchMapping("/update/exp")
-    public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
-        return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
+    public ResponseEntity<ResponseSuccessDto<UpdateExpResponseDto>> updateExp(@RequestBody UpdateExpRequestDto updateExpRequestDto) {
+        return ResponseEntity.ok(memberService.updateExp(updateExpRequestDto));
     }
 
     /* 스탬프 정보 조회 */
     @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")
     @GetMapping("/stamp/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<StampGetResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
+    public ResponseEntity<ResponseSuccessDto<GetStampResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(memberService.getStampInfo(memberId));
     }
 
     /* 증명서 제출 기관/병원 검색 */
     @ApiOperation(value = "증명서 제출 기관/병원 검색", notes = "제출할 기관/병원을 검색한다.")
     @GetMapping("/search/organ/{organType}")
-    public ResponseEntity<ResponseSuccessDto<List<OrganSearchResponseDto>>> searchOrgan(@PathVariable("organType") EnumMemberRole organType, @RequestParam("query") String query) {
+    public ResponseEntity<ResponseSuccessDto<List<SearchOrganResponseDto>>> searchOrgan(@PathVariable("organType") EnumMemberRole organType, @RequestParam("query") String query) {
         return ResponseEntity.ok(memberService.searchOrgan(organType, query));
     }
 }

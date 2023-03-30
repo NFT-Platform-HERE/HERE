@@ -3,8 +3,8 @@ package com.ssafy.hereauth.errorhandling.exception.service;
 
 import com.ssafy.hereauth.errorhandling.exception.DefaultException;
 
-public class NotAppropriateValueException extends DefaultException {
-    public NotAppropriateValueException(String message) {
+public class DuplicatedValueException extends DefaultException {
+    public DuplicatedValueException(String message) {
         super(message);
     }
 }

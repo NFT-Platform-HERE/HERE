@@ -28,9 +28,4 @@ public class Character {
 
     @Column(name = "img_url", columnDefinition = "varchar(200)", nullable = false)
     private String imgUrl;
-
-//    public void createCharacter(CharacterRequestDto characterRequestDto) {
-//        this.type = characterRequestDto.getType();
-//        this.imgUrl = characterRequestDto.getImgUrl();
-//    }
 }
