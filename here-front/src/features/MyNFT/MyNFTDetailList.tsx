@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MyNFTItem } from "@/types/MyNFTItem";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 interface Iprops {
-  selectedCardList: number[];
   MyNFTList: MyNFTItem[];
 }
 
@@ -37,12 +38,13 @@ const swiperStyle = `
   }
   `;
 
-export default function MyNFTDetailList({
-  selectedCardList,
-  MyNFTList,
-}: Iprops) {
+export default function MyNFTDetailList({ MyNFTList }: Iprops) {
   const dispatch = useDispatch();
   const [curIdx, setCurIdx] = useState<number>(0);
+
+  const selectedCardList = useSelector((state: RootState) => {
+    return state.myNFT.selectedNFTList;
+  });
 
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";

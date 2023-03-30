@@ -1,9 +1,12 @@
+import { NFTDetail } from "@/types/NFTDetail";
+
 interface Iprops {
   height: number;
   fontSize: number;
+  detail: NFTDetail;
 }
 
-export default function NFTCardBack({ height, fontSize }: Iprops) {
+export default function NFTCardBack({ height, fontSize, detail }: Iprops) {
   return (
     <div
       id="back-capture"
@@ -53,7 +56,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
               },
             ]}
           >
-            이경택
+            {detail?.name}
           </div>
 
           <div
@@ -84,7 +87,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
               },
             ]}
           >
-            95.03.08
+            {detail?.birth}
           </div>
 
           <div
@@ -105,7 +108,8 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
               },
             ]}
           >
-            남
+            {detail?.gender === "male" && "남"}
+            {detail?.gender === "female" && "여"}
           </div>
         </div>
         <table
@@ -151,7 +155,9 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
             <tr>
               <td className="border-r-1 border-black">A</td>
               <td className="border-r-1 border-black">Rh+</td>
-              <td className="border-r-1 border-black">O</td>
+              <td className="border-r-1 border-black">
+                {detail?.type === "WHOLE" && "O"}
+              </td>
               <td className="border-r-1 border-black"></td>
               <td className="border-r-1 border-black"></td>
               <td>400mL</td>
@@ -178,7 +184,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
               },
             ]}
           >
-            2023.03.06
+            {detail?.createdDate}
           </div>
 
           <div
@@ -209,7 +215,7 @@ export default function NFTCardBack({ height, fontSize }: Iprops) {
               },
             ]}
           >
-            대전 충남혈액원
+            {detail?.place}
           </div>
 
           <div

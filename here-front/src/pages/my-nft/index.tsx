@@ -7,50 +7,22 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import MyNFTDetailBackModal from "@/features/MyNFT/MyNFTDetailBackModal";
 import QrCodeReader from "@/components/Register/QrCodeReader";
-import { saveNFTImage } from "@/utils/saveAsImg";
+import { useSaveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
-
-const swiperList = [
-  {
-    index: 2,
-  },
-  {
-    index: 3,
-  },
-  {
-    index: 4,
-  },
-  {
-    index: 5,
-  },
-  {
-    index: 6,
-  },
-  {
-    index: 7,
-  },
-  {
-    index: 8,
-  },
-  {
-    index: 9,
-  },
-];
 
 export default function MyNFTPage() {
   const NFTCardBackIndex = useSelector((state: RootState) => {
     return state.selectedNFT.selectedNFT;
   });
-  const selectedCardList = useSelector((state: RootState) => {
-    return state.myNFT.selectedNFTList;
-  });
+
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const [capture, setCapture] = useState<string>("front-capture");
 
   useEffect(() => {
-    if (NFTCardBackIndex === 0) {
+    if (NFTCardBackIndex === -1) {
+      console.log("front-capture");
       setCapture("front-capture");
     } else {
       setCapture("back-capture");
@@ -58,7 +30,6 @@ export default function MyNFTPage() {
   }, [NFTCardBackIndex]);
 
   const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
-  console.log(myNFTList);
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
@@ -68,7 +39,7 @@ export default function MyNFTPage() {
             <InstaBtn
               width={195}
               height={40}
-              onClick={() => saveNFTImage(capture)}
+              onClick={() => useSaveNFTImage(capture)}
               fontSize={18}
             >
               이미지 저장하기
@@ -83,10 +54,7 @@ export default function MyNFTPage() {
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
-            <MyNFTDetailList
-              selectedCardList={selectedCardList}
-              MyNFTList={myNFTList && myNFTList.data}
-            />
+            <MyNFTDetailList MyNFTList={myNFTList && myNFTList.data} />
           </div>
         </div>
       </div>

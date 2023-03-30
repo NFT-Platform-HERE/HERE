@@ -74,7 +74,7 @@ export default function MyNFTList({ myNFTList }: Iprops) {
     if (myNFTList) {
       dispatch(addNFT(0));
     }
-  }, []);
+  }, [myNFTList]);
 
   return (
     <div className="w-full">

@@ -1,11 +1,12 @@
 import * as htmlToImage from "html-to-image";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+import { useCallback } from "react";
 
-export const saveNFTImage = (id: string) => {
-  let width;
-  let height;
+export const useSaveNFTImage = (id: string) => {
+  let width: number;
+  let height: number;
 
   const node = document.getElementById(id);
+
   if (node === null) {
     return;
   }
@@ -16,12 +17,15 @@ export const saveNFTImage = (id: string) => {
     width = 566;
     height = 350;
   }
-  htmlToImage
-    .toPng(node, { quality: 1, canvasWidth: width, canvasHeight: height })
-    .then((dataUrl) => {
-      const link = window.document.createElement("a");
-      link.download = "blood_donation.png";
-      link.href = dataUrl;
-      link.click();
-    });
+  useCallback(() => {
+    htmlToImage
+      .toPng(node, { canvasWidth: width, canvasHeight: height })
+      .then((dataUrl) => {
+        const link = window.document.createElement("a");
+        link.download = "blood_donation.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => console.log(err));
+  }, [node]);
 };
