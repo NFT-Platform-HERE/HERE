@@ -57,7 +57,8 @@ export default function MyNFTPage() {
     }
   }, [NFTCardBackIndex]);
 
-  const myNFTList = useMyNFTListQuery(memberId);
+  const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
+  console.log(myNFTList);
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
@@ -89,7 +90,7 @@ export default function MyNFTPage() {
           </div>
         </div>
       </div>
-      {NFTCardBackIndex !== 0 && <MyNFTDetailBackModal />}
+      {NFTCardBackIndex !== -1 && <MyNFTDetailBackModal />}
       <div className="mobile:hidden">
         <QrCodeReader />
       </div>

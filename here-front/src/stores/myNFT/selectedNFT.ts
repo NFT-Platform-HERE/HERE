@@ -6,7 +6,7 @@ interface myNFTState {
 }
 
 const initialState: myNFTState = {
-  selectedNFT: 0,
+  selectedNFT: -1,
   tokenId: 0,
 };
 

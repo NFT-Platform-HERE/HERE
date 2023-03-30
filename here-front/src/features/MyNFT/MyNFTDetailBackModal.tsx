@@ -17,7 +17,7 @@ export default function MyNFTDetailBackModal() {
 
   return (
     <div>
-      <Background onClick={() => dispatch(selectNFT(0))} />
+      <Background onClick={() => dispatch(selectNFT(-1))} />
       <div className="fixed top-[calc(50%-175px)] left-[calc(50%-283px)] z-30 mobile:hidden">
         <NFTCardBack height={350} fontSize={18}></NFTCardBack>
       </div>
