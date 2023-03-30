@@ -65,6 +65,35 @@ contract HereNFT is ERC721 {
         );
 
     }
+    // tokenid 리스트를 받아서 여러개의 nft를 한꺼번에 전송하는 함수
+    function donateNFTList(
+        address _from,
+        address _to,
+        uint256[] memory _tokenIdList,
+        uint256 _timestamp
+    ) public payable {
+        require(_from != address(0), "Invalid buyer address");
+        require(_to != address(0), "Invalid seller address");
+        require(_tokenIdList.length > 0, "Invalid token IDs");
+
+        for (uint i = 0; i < _tokenIdList.length; i++) {
+            uint256 tokenId = _tokenIdList[i];
+            require(tokenId != 0, "Invalid token ID");
+
+            // Transfer ownership of NFT from seller to buyer
+            safeTransferFrom(_from, _to, tokenId);
+
+            // Add transaction log to the transactionLogs array
+            transactionLogs.push(
+                TransactionLog({
+                    from: _from,
+                    to: _to,
+                    tokenId: tokenId,
+                    timestamp: _timestamp
+                })
+            );
+        }
+    }
 
     // 특정 NFT의 거래 기록을 조회하는 함수
     function getTransactionLogs(uint256 _tokenId)
@@ -89,16 +118,20 @@ contract HereNFT is ERC721 {
         return logs;
     }
 
+    // 최신 토큰아이디를 구하는 함수
     function current() public view returns (uint256) {
         return _tokenIds.current();
     }
 
+    
+    // tokenId를 받아 toenURI를 구하는 함수
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         // TODO
         _requireMinted(tokenId);
         return tokenURIs[tokenId];
     }
 
+    // 민팅함수
     function create(address to, string memory _tokenURI1, string memory _tokenURI2) public returns (uint256, uint256) {
         _tokenIds.increment();
 
@@ -131,6 +164,7 @@ contract HereNFT is ERC721 {
         return (newItemId1, newItemId2);
     }
 
+    // 모든 NFT를 반환하는 함수
     function getAllNFTs() public view returns (NFT[] memory) {
         uint256 totalNFTs = _nftIds.length;
         NFT[] memory nftsList = new NFT[](totalNFTs);
