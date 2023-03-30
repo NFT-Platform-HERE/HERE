@@ -1,12 +1,11 @@
 package com.ssafy.hereauth.dto.character;
 
-import com.ssafy.hereauth.entity.Character;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class CharacterStartingResponseDto {
+public class GetStartingCharacterResponseDto {
     private Long characterId;
     private String characterImgUrl ;
 }

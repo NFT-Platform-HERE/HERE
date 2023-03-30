@@ -1,6 +1,6 @@
 package com.ssafy.hereauth.controller;
 
-import com.ssafy.hereauth.dto.character.CharacterStartingResponseDto;
+import com.ssafy.hereauth.dto.character.GetStartingCharacterResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.service.CharacterService;
 import io.swagger.annotations.Api;
@@ -24,7 +24,7 @@ public class CharacterController {
     /* 스타팅 캐릭터 조회 */
     @ApiOperation(value = "스타팅 캐릭터 조회", notes = "스타팅 캐릭터를 조회한다.")
     @GetMapping
-    private ResponseEntity<ResponseSuccessDto<List<CharacterStartingResponseDto>>> findCharacterList() {
+    private ResponseEntity<ResponseSuccessDto<List<GetStartingCharacterResponseDto>>> findCharacterList() {
         return ResponseEntity.ok(characterService.findCharacters());
     }
 }

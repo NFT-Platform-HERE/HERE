@@ -1,6 +1,6 @@
 package com.ssafy.hereauth.service;
 
-import com.ssafy.hereauth.dto.character.CharacterStartingResponseDto;
+import com.ssafy.hereauth.dto.character.GetStartingCharacterResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.entity.Character;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
@@ -24,13 +24,13 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     // 스타팅 캐릭터 조회
-    public ResponseSuccessDto<List<CharacterStartingResponseDto>> findCharacters() {
+    public ResponseSuccessDto<List<GetStartingCharacterResponseDto>> findCharacters() {
         List<Character> characters = characterRepository.findAllByLevel(1);
-        List<CharacterStartingResponseDto> result = characters.stream()
-                .map(c -> CharacterStartingResponseDto.builder()
+        List<GetStartingCharacterResponseDto> result = characters.stream()
+                .map(c -> GetStartingCharacterResponseDto.builder()
                         .characterId(c.getId()).characterImgUrl(c.getImgUrl()).build())
                 .collect(Collectors.toList());
-        ResponseSuccessDto<List<CharacterStartingResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
+        ResponseSuccessDto<List<GetStartingCharacterResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
         return res;
     }
 }

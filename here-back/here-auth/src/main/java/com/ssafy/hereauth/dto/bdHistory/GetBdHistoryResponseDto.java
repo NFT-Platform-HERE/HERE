@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class BdHistoryGetResponseDto {
+public class GetBdHistoryResponseDto {
     private Long bdHistoryId;
     private LocalDateTime issuedDate;
     private String place;

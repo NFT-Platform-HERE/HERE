@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ExpUpdateResponseDto {
-    private int level;
+public class SaveCertHistoryResponseDto {
     private String message;
 }
