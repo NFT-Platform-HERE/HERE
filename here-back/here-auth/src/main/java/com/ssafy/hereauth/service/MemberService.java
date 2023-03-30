@@ -42,33 +42,31 @@ public class MemberService {
         /**
          * email 중복 체크
          */
-        if (isEmailDuplicate(signupRequestDto.getEmail())) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+        if (!isEmailDuplicate(signupRequestDto.getEmail()) && !isNicknameDuplicate(signupRequestDto.getNickname())) {
+            /**
+             * 회원 저장
+             */
+            Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
+
+            Member member = new Member();
+            member.createMember(character, signupRequestDto);
+            memberRepository.save(member);
+
+            // 스탬프
+            Stamp stamp = new Stamp();
+            stamp.createStamp(member);
+            stampRepository.save(stamp);
+
+            SignupResponseDto signupResponseDto = SignupResponseDto.builder()
+                    .memberId(member.getId())
+                    .nickname(member.getNickname())
+                    .characterImgUrl(member.getCharacter().getImgUrl())
+                    .message("회원가입이 완료되었습니다.")
+                    .build();
+
+            ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
+            return res;
         }
-
-        /**
-         * 회원 저장
-         */
-        Character character = characterRepository.findById(signupRequestDto.getCharacterId()).orElseThrow(() -> new EntityIsNullException("없는 캐릭터입니다."));
-
-        Member member = new Member();
-        member.createMember(character, signupRequestDto);
-        memberRepository.save(member);
-
-        // 스탬프
-        Stamp stamp = new Stamp();
-        stamp.createStamp(member);
-        stampRepository.save(stamp);
-
-        SignupResponseDto signupResponseDto = SignupResponseDto.builder()
-                .memberId(member.getId())
-                .nickname(member.getNickname())
-                .characterImgUrl(member.getCharacter().getImgUrl())
-                .message("회원가입이 완료되었습니다.")
-                .build();
-
-        ResponseSuccessDto<SignupResponseDto> res = responseUtil.successResponse(signupResponseDto, HereStatus.HERE_SUCCESS_SIGNUP);
-        return res;
     }
 
     /**
@@ -212,6 +210,10 @@ public class MemberService {
     // 회원가입시 이메일 중복 이중 체크 용 메소드
     public boolean isEmailDuplicate(String email) {
         return memberRepository.existsByEmail(email);
+    }
+    // 회원가입시 닉네임 중복 이중 체크 용 메소드
+    public boolean isNicknameDuplicate(String nickname) {
+        return memberRepository.existsByNickname(nickname);
     }
 
     /**
