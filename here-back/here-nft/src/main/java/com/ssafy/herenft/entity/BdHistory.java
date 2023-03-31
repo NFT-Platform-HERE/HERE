@@ -54,13 +54,10 @@ public class BdHistory {
         this.bdType = bdType;
     }
 
-    public BdHistory createBdHistory(Member member, SaveNftRequestDto saveNftRequestDto) {
-        BdHistory bdHistory = new BdHistory();
-        bdHistory.member = member;
-        bdHistory.place = saveNftRequestDto.getPlace();
-        bdHistory.bdType = saveNftRequestDto.getBdType();
-        return bdHistory;
-
+    public void createBdHistory(Member member, SaveNftRequestDto saveNftRequestDto) {
+        this.member = member;
+        this.place = saveNftRequestDto.getPlace();
+        this.bdType = saveNftRequestDto.getBdType();
     }
 }
 

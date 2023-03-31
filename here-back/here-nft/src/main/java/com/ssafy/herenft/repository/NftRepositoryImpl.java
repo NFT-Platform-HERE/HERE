@@ -38,19 +38,19 @@ public class NftRepositoryImpl implements NftRepositoryCustom {
                 .fetch();
     }
 
-    @Override
-    public List<Nft> findDonationList(UUID memberId, int count) {
-        return queryFactory
-                .select(nft)
-                .from(nft)
-                .where(ownerEq(memberId))
-                .orderBy(
-                        provideStatusOrder(),
-                        nft.createdDate.asc()
-                )
-                .limit(count)
-                .fetch();
-    }
+//    @Override
+//    public List<Nft> findDonationList(UUID memberId, int count) {
+//        return queryFactory
+//                .select(nft)
+//                .from(nft)
+//                .where(ownerEq(memberId))
+//                .orderBy(
+//                        provideStatusOrder(),
+//                        nft.createdDate.asc()
+//                )
+//                .limit(count)
+//                .fetch();
+//    }
 
     private OrderSpecifier<Integer> provideStatusOrder() {
         NumberExpression<Integer> cases = new CaseBuilder()

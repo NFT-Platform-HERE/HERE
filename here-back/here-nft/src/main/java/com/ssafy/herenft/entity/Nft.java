@@ -52,15 +52,13 @@ public class Nft {
     private LocalDateTime createdDate;
 
 
-    public Nft createNft(SaveNftRequestDto saveNftRequestDto) {
-        Nft nft = new Nft();
-        nft.tokenId = saveNftRequestDto.getTokenId();
-        nft.hashValue = saveNftRequestDto.getHashValue();
-        nft.ownerId = saveNftRequestDto.getOwnerId();
-        nft.issuerId = saveNftRequestDto.getIssuerId();
-        nft.imgUrl = saveNftRequestDto.getImgUrl();
-        nft.type = saveNftRequestDto.getNftType();
-        return nft;
+    public void createNft(SaveNftRequestDto saveNftRequestDto) {
+        this.tokenId = saveNftRequestDto.getTokenId();
+        this.hashValue = saveNftRequestDto.getHashValue();
+        this.ownerId = saveNftRequestDto.getOwnerId();
+        this.issuerId = saveNftRequestDto.getIssuerId();
+        this.imgUrl = saveNftRequestDto.getImgUrl();
+        this.type = saveNftRequestDto.getNftType();
     }
 
     public void updateOwnership(UUID ownerId) {
