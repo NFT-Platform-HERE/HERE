@@ -1,13 +1,14 @@
 import * as htmlToImage from "html-to-image";
 import { useCallback } from "react";
 
-export const useSaveNFTImage = (id: string) => {
-  let width: number;
-  let height: number;
+export const saveNFTImage = (id: string) => {
+  let width;
+  let height;
 
   const node = document.getElementById(id);
 
   if (node === null) {
+    console.log("?>?>?");
     return;
   }
   if (id === "front-capture") {
@@ -17,15 +18,18 @@ export const useSaveNFTImage = (id: string) => {
     width = 566;
     height = 350;
   }
-  useCallback(() => {
-    htmlToImage
-      .toPng(node, { canvasWidth: width, canvasHeight: height })
-      .then((dataUrl) => {
-        const link = window.document.createElement("a");
-        link.download = "blood_donation.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => console.log(err));
-  }, [node]);
+
+  console.log(node);
+  console.log(width, height);
+
+  htmlToImage
+    .toPng(node, { canvasWidth: width, canvasHeight: height })
+    .then((dataUrl) => {
+      const link = window.document.createElement("a");
+      link.download = "blood_donation.png";
+      link.href = dataUrl;
+      link.click();
+      console.log(dataUrl);
+    })
+    .catch((err) => console.log(err, node));
 };

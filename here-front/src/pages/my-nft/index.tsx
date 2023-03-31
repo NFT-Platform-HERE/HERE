@@ -7,7 +7,7 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import MyNFTDetailBackModal from "@/features/MyNFT/MyNFTDetailBackModal";
 import QrCodeReader from "@/components/Register/QrCodeReader";
-import { useSaveNFTImage } from "@/utils/saveAsImg";
+import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
 
@@ -22,7 +22,6 @@ export default function MyNFTPage() {
 
   useEffect(() => {
     if (NFTCardBackIndex === -1) {
-      console.log("front-capture");
       setCapture("front-capture");
     } else {
       setCapture("back-capture");
@@ -31,6 +30,7 @@ export default function MyNFTPage() {
 
   const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
 
+  console.log(myNFTList);
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
       <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
@@ -39,7 +39,7 @@ export default function MyNFTPage() {
             <InstaBtn
               width={195}
               height={40}
-              onClick={() => useSaveNFTImage(capture)}
+              onClick={() => saveNFTImage(capture)}
               fontSize={18}
             >
               이미지 저장하기

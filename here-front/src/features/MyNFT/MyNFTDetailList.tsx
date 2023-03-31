@@ -89,7 +89,7 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
                     className="mobile:hidden"
                     onClick={() =>
                       isActive &&
-                      handleNFTCardFrontClick(item, MyNFTList[item].tokenId)
+                      handleNFTCardFrontClick(item, MyNFTList[item]?.tokenId)
                     }
                   >
                     <NFTCardFront
@@ -101,12 +101,12 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
                     className="hidden mobile:block"
                     onClick={() =>
                       isActive &&
-                      handleNFTCardFrontClick(item, MyNFTList[item].tokenId)
+                      handleNFTCardFrontClick(item, MyNFTList[item]?.tokenId)
                     }
                   >
                     <NFTCardFront
                       width={isActive ? 200 : 180}
-                      imgUrl={MyNFTList && MyNFTList[item].imgUrl}
+                      imgUrl={MyNFTList && MyNFTList[item]?.imgUrl}
                     />
                   </div>
                 </div>
