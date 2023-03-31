@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.dto.board;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import lombok.Builder;
 import lombok.Getter;
