@@ -1,16 +1,12 @@
 package com.ssafy.hereauth.dto.member;
 
 import com.ssafy.hereauth.enumeration.EnumMemberRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class IsMemberResponseDto {
     private EnumMemberRole role;
     private UUID memberId;

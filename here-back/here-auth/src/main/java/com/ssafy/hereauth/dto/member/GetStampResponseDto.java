@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class LoginResponseDto {
-    private String message;
+public class GetStampResponseDto {
+    private int stage;
+    private int step;
 }

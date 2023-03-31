@@ -1,7 +1,7 @@
 package com.ssafy.hereauth.service;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereauth.dto.bdHistory.BdHistoryGetResponseDto;
+import com.ssafy.hereauth.dto.bdHistory.GetBdHistoryResponseDto;
 import com.ssafy.hereauth.entity.BdHistory;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.repository.BdHistoryRepository;
@@ -29,24 +29,22 @@ public class BdHistoryService {
     /**
      * 헌혈 기록 조회
      */
-    public ResponseSuccessDto<List<BdHistoryGetResponseDto>> getBdHistory(UUID memberId) {
-        System.out.println("서비스 들어옴");
+    public ResponseSuccessDto<List<GetBdHistoryResponseDto>> getBdHistory(UUID memberId) {
 
         List<BdHistory> bdHistories = bdHistoryRepository.findAllByMemberIdOrderByIssuedDate(memberId);
-
-        List<BdHistoryGetResponseDto> result = new ArrayList<>();
+        List<GetBdHistoryResponseDto> result = new ArrayList<>();
 
         for (BdHistory bdHistory : bdHistories) {
-            BdHistoryGetResponseDto bdHistoryGetResponseDto = BdHistoryGetResponseDto.builder()
+            GetBdHistoryResponseDto getBdHistoryResponseDto = GetBdHistoryResponseDto.builder()
                     .bdHistoryId(bdHistory.getId())
                     .issuedDate(bdHistory.getIssuedDate())
                     .place(bdHistory.getPlace())
                     .bdType(bdHistory.getBdType())
                     .build();
-            result.add(bdHistoryGetResponseDto);
+            result.add(getBdHistoryResponseDto);
         }
 
-        ResponseSuccessDto<List<BdHistoryGetResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUBMIT_CERTIFICATION);
+        ResponseSuccessDto<List<GetBdHistoryResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUBMIT_CERTIFICATION);
         return res;
     }
 }

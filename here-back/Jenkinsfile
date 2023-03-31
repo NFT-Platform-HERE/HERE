@@ -143,7 +143,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'docker run --name ${HERE_BOARD_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -d -p 9011:9011 ${HERE_BOARD_IMAGE}'
+                        sh 'docker run --name ${HERE_BOARD_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -e S3_ACCESS_KEY=${S3_ACCESS_KEY} -e S3_SECRET_KEY=${S3_SECRET_KEY} -e S3_BUCKET=${S3_BUCKET} -d -p 9011:9011 ${HERE_BOARD_IMAGE}'
                         echo 'Run New image'
                     }
                 }

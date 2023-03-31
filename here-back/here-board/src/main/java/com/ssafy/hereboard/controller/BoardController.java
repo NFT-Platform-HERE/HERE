@@ -3,6 +3,7 @@ package com.ssafy.hereboard.controller;
 
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
+import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
 import com.ssafy.hereboard.service.S3Service;
@@ -10,6 +11,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -68,18 +72,26 @@ public class BoardController {
         return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
     }
 
-    @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
+    @ApiOperation(value = "전체 board 조회(페이징 size,page)", notes = "전체 board를 조회합니다.")
     @GetMapping()
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getBoardList() {
-        return ResponseEntity.ok(boardService.getBoardList());
+    public ResponseEntity<ResponseSuccessDto<Page<BoardResponseDto>>> getBoardList(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.getBoardListPaging(pageable));
     }
 
-    @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
+//    @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
+//    @GetMapping("/member/{memberId}")
+//    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
+//        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
+//    }
+    @ApiOperation(value = "내 글 보기(페이징 size,page)", notes = "본인이 작성한 board 목록을 조회합니다.")
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
-        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
+    public ResponseEntity<ResponseSuccessDto<Page<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId,@RequestParam(defaultValue = "0") int page,
+                                                                                         @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.getMemberBoardListPaging(memberId,pageable));
     }
-
     @ApiOperation(value = "종료 임박 board 조회", notes = "종료가 임박한 board를 조회합니다.")
     @GetMapping("/deadline")
     public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getDeadlineBoardList() {
@@ -99,10 +111,18 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardMsgList(boardId, memberId));
     }
 
-    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")
+//    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")
+//    @GetMapping("/search")
+//    public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
+//        return ResponseEntity.ok(boardService.searchBoard(query));
+//    }
+
+    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용) (페이징 size,page)", notes = "게시글을 검색합니다.")
     @GetMapping("/search")
-    public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
-        return ResponseEntity.ok(boardService.searchBoard(query));
+    public ResponseEntity<ResponseSuccessDto<Page<SearchBoardResponseDto>>> searchBoard(@RequestParam String query,@RequestParam(defaultValue = "0") int page,
+                                                                                        @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.searchBoardPaging(query,pageable));
     }
 
     @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")

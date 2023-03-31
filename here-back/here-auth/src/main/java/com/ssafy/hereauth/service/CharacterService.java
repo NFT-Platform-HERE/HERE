@@ -1,18 +1,14 @@
 package com.ssafy.hereauth.service;
 
-import com.ssafy.hereauth.dto.character.CharacterRequestDto;
-import com.ssafy.hereauth.dto.character.CharacterResponseDto;
-import com.ssafy.hereauth.dto.character.CharacterStartingResponseDto;
+import com.ssafy.hereauth.dto.character.GetStartingCharacterResponseDto;
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.entity.Character;
 import com.ssafy.hereauth.enumeration.response.HereStatus;
 import com.ssafy.hereauth.repository.CharacterRepository;
 import com.ssafy.hereauth.util.ResponseUtil;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,24 +23,14 @@ public class CharacterService {
     private final ResponseUtil responseUtil;
     private final CharacterRepository characterRepository;
 
-    // 캐릭터 임의 생성
-    public ResponseSuccessDto<CharacterResponseDto> postCharacter(CharacterRequestDto characterRequestDto) {
-        Character character = new Character();
-        character.createCharacter(characterRequestDto);
-        characterRepository.save(character);
-
-        CharacterResponseDto characterResponseDto = new CharacterResponseDto("캐릭터가 생성되었습니다.");
-        ResponseSuccessDto<CharacterResponseDto> res = responseUtil.successResponse(characterResponseDto, HereStatus.HERE_SUCCESS_CREATE_CHARACTER);
-        return res;
-    }
-
-
-    public ResponseSuccessDto<List<CharacterStartingResponseDto>> findCharacters() {
+    // 스타팅 캐릭터 조회
+    public ResponseSuccessDto<List<GetStartingCharacterResponseDto>> findCharacters() {
         List<Character> characters = characterRepository.findAllByLevel(1);
-        List<CharacterStartingResponseDto> result = characters.stream()
-                .map(c -> new CharacterStartingResponseDto(c))
+        List<GetStartingCharacterResponseDto> result = characters.stream()
+                .map(c -> GetStartingCharacterResponseDto.builder()
+                        .characterId(c.getId()).characterImgUrl(c.getImgUrl()).build())
                 .collect(Collectors.toList());
-        ResponseSuccessDto<List<CharacterStartingResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
+        ResponseSuccessDto<List<GetStartingCharacterResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_SUCCESS_FIND_CHARACTER);
         return res;
     }
 }

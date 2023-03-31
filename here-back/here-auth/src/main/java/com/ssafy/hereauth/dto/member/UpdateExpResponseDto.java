@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class StampGetResponseDto {
-    private int stage;
-    private int step;
+public class UpdateExpResponseDto {
+    private int level;
+    private String message;
 }
