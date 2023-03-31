@@ -361,15 +361,15 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value={BloodType.PLATELETS}
-              checked={bloodType === BloodType.PLATELETS}
-              id="platelets"
+              value={BloodType.PLATELET}
+              checked={bloodType === BloodType.PLATELET}
+              id="platelet"
               className="peer hidden"
               name="bloodType"
               onChange={onChangeValue}
             />
             <label
-              htmlFor="platelets"
+              htmlFor="platelet"
               className="inline-block h-45 w-100 cursor-pointer border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white peer-checked:bg-red-2 peer-checked:font-medium"
             >
               혈소판
