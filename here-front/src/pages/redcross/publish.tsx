@@ -6,9 +6,10 @@ import withReactContent from "sweetalert2-react-content";
 import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
 import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
-import { mintBloodNFT, getHashValue } from "../../apis/blockchain/contracts";
+import { getHashValue } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
+import moment from "moment";
 import {
   Blood,
   BloodType,
@@ -30,6 +31,7 @@ interface memberInfo {
 }
 
 export default function RedCrossPublishPage() {
+  const today = moment(new Date()).format("YYYY-MM-DD");
   const [inputs, setInputs] = useState({
     name: "",
     rhType: RhType.RHPLUS,
@@ -38,8 +40,8 @@ export default function RedCrossPublishPage() {
     sex: GenderType.MALE,
     bloodType: BloodType.WHOLE,
     wallet: "",
-    birth: new Date().toISOString().substring(0, 10),
-    createdDate: new Date().toISOString().substring(0, 10),
+    birth: today,
+    createdDate: today,
     place: "",
   });
 
@@ -503,6 +505,8 @@ export default function RedCrossPublishPage() {
           id="birth"
           name="birth"
           value={birth}
+          min={"1930-01-01"}
+          max={"2020-12-31"}
           onChange={onChangeValue}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />
@@ -514,6 +518,8 @@ export default function RedCrossPublishPage() {
           id="date"
           name="createdDate"
           value={createdDate}
+          min="1930-01-01"
+          max={today}
           onChange={onChangeValue}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />
