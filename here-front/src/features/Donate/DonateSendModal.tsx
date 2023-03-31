@@ -15,6 +15,13 @@ import { DonationNftList } from "@/types/DonationNftList";
 import useDonateNftWrite from "@/apis/donate/useDonateNftWrite";
 import { DonationNft } from "@/types/DonationNft";
 
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import withReactContent from "sweetalert2-react-content";
+import DonateLoadingModal from "./DonateLoadingModal";
+
+const MySwal = withReactContent(Swal);
+
 interface Iprops {
   onClick: () => void;
   writerId: string;
@@ -45,6 +52,8 @@ export default function DonateSendModal({
 
   const writeMutation = useDonateNftWrite();
 
+  const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
+
 
   function handleCountPlus() {
     if (count < maxCnt.data.cnt) {
@@ -59,53 +68,84 @@ export default function DonateSendModal({
   }
 
   async function donateMyNftList() {
+    setOpendLoadingModal(true);
     try {
-    // 1. 기부 할 TokenIdList 가져오기
-    const value = await refetch();
-    const resultList = value.data;
+      // 1. 기부 할 TokenIdList 가져오기
+      const value = await refetch();
+      const resultList = value.data;
 
-    const tokenIdList: string[] = [];
+      const tokenIdList: string[] = [];
 
-    resultList.forEach((obj: any) => {
-      tokenIdList.push(obj.tokenId);
-    });
+      resultList.forEach((obj: any) => {
+        tokenIdList.push(obj.tokenId);
+      });
 
-    if(writerInfo){
+      if (writerInfo) {
+        const payload: DonationNftList = {
+          myAccount: myWalletAddress,
+          sendAccount: writerInfo.walletAddress,
+          tokenIdList: tokenIdList
+        };
 
-    const payload: DonationNftList = {
-      myAccount: myWalletAddress,
-      sendAccount: writerInfo.walletAddress,
-      tokenIdList: tokenIdList
-    };
+        const writePayload: DonationNft = {
+          receiverId: writerId,
+          senderId: senderId,
+          nftTokenList: tokenIdList
+        }
 
-    const writePayload: DonationNft = {
-      receiverId: writerId,
-      senderId: senderId,
-      nftTokenList: tokenIdList
-    }
-      
-      // 블록체인 네트워크 소유권 이전
-      const blockResult = await mutation.mutateAsync(payload);
-      
-      console.log("blockResult", blockResult);
+        // 블록체인 네트워크 소유권 이전
+        const blockResult = await mutation.mutateAsync(payload);
 
-      // 백엔드 소유권 이전
-      const result =  writeMutation.mutateAsync(writePayload);
+        console.log("blockResult", blockResult);
 
-      console.log("backResult", result);
+        // 백엔드 소유권 이전
+        const result = await writeMutation.mutateAsync(writePayload);
 
-      // 백엔드 기부 내역 등록(보류)
-    }
+        console.log("backResult", result);
 
-      
+        // 백엔드 기부 내역 등록(보류)
+
+        setOpendLoadingModal(false);
+        onClick();
+        successDonate();
+      }
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      errorHandler(message);
     }
   }
 
   function handleSendButton() {
     donateMyNftList();
   }
+
+  const errorHandler = (message: string) => {
+    setOpendLoadingModal(false);
+    failDonate();
+    return;
+  };
+
+  const successDonate = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "헌혈증 NFT 기부 완료",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const failDonate = () => {
+    MySwal.fire({
+      icon: "error",
+      title: "헌혈증 기부 실패",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
   return (
     <div>
@@ -156,6 +196,7 @@ export default function DonateSendModal({
           />
         </div>
       </div>
+      {opendLoadingModal && <DonateLoadingModal />}
     </div>
   );
 }
