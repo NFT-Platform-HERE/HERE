@@ -61,6 +61,8 @@ export const donateNFTList = async (
     .send({ from: myAccount });
 
   console.log("donateNFTList result", result);
+  return result;
+
 };
 
 // 헌혈증 NFT 기부 히스토리 불러오는 메소드

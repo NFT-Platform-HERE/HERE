@@ -8,11 +8,11 @@ const fetcher = (payload: DonationNft) =>
     .patch(NFT_SERVER_URL + `/nft/donate`, {
       senderId: payload.senderId,
       receiverId: payload.receiverId,
-      quantity: payload.quantity,
+      nftTokenList: payload.nftTokenList,
     })
     .then(({ data }) => data);
 
-const useDonateNftQuery = () => {
+const useDonateNftWrite = () => {
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공!");
@@ -23,4 +23,4 @@ const useDonateNftQuery = () => {
   });
 };
 
-export default useDonateNftQuery;
+export default useDonateNftWrite;

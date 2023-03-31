@@ -11,18 +11,19 @@ import { MemberInfo } from "@/types/MemberInfo";
 import useDonateNftCountQuery from "@/apis/donate/useDonateNftCountQuery";
 import useDonateTokenIdListQuery from "./../../apis/donate/useDonateTokenIdListQuery";
 import useBlockChainNftDonate from "./../../apis/donate/useBlockChainNftDonate";
-import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
 import { DonationNftList } from "@/types/DonationNftList";
+import useDonateNftWrite from "@/apis/donate/useDonateNftWrite";
+import { DonationNft } from "@/types/DonationNft";
 
 interface Iprops {
   onClick: () => void;
-  boardId: string;
+  writerId: string;
   writerInfo: MemberInfo | undefined;
 }
 
 export default function DonateSendModal({
   onClick,
-  boardId,
+  writerId,
   writerInfo,
 }: Iprops) {
   const [count, setCount] = useState<number>(1);
@@ -42,7 +43,8 @@ export default function DonateSendModal({
 
   const mutation = useBlockChainNftDonate();
 
-  const info = useMemberInfoQuery(senderId);
+  const writeMutation = useDonateNftWrite();
+
 
   function handleCountPlus() {
     if (count < maxCnt.data.cnt) {
@@ -57,6 +59,7 @@ export default function DonateSendModal({
   }
 
   async function donateMyNftList() {
+    try {
     // 1. 기부 할 TokenIdList 가져오기
     const value = await refetch();
     const resultList = value.data;
@@ -67,18 +70,37 @@ export default function DonateSendModal({
       tokenIdList.push(obj.tokenId);
     });
 
-    console.log("tokenIdList", tokenIdList);
-    console.log("myWalletAddress", myWalletAddress);
+    if(writerInfo){
 
-    console.log("info", info.data);
+    const payload: DonationNftList = {
+      myAccount: myWalletAddress,
+      sendAccount: writerInfo.walletAddress,
+      tokenIdList: tokenIdList
+    };
 
-    // const payload: DonationNftList = {
-    //   myAccount: string;
-    //   sendAccount: string;
-    //   tokenIdList: string[];
-    // };
+    const writePayload: DonationNft = {
+      receiverId: writerId,
+      senderId: senderId,
+      nftTokenList: tokenIdList
+    }
+      
+      // 블록체인 네트워크 소유권 이전
+      const blockResult = await mutation.mutateAsync(payload);
+      
+      console.log("blockResult", blockResult);
 
-    // const donateWriteResult = await mutation.mutateAsync(payload);
+      // 백엔드 소유권 이전
+      const result =  writeMutation.mutateAsync(writePayload);
+
+      console.log("backResult", result);
+
+      // 백엔드 기부 내역 등록(보류)
+    }
+
+      
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleSendButton() {

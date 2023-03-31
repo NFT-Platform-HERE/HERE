@@ -9,4 +9,5 @@ export interface MemberInfo {
   nextWholeBdDays: number;
   nickname: string;
   recentBdDate: string;
+  walletAddress: string;
 }
