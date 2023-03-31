@@ -12,17 +12,15 @@ export default function SubmitNFTDetailList() {
     return state.submitSelectedOrganizationNFT.selectedOrganizationTokenId;
   });
 
-  const tokenIdList = useSelector((state: RootState) => {
-    return state.submitSelectedHospitalNFT.selectedHospitalNFTTokenIdList;
+  const NFTInfoList = useSelector((state: RootState) => {
+    return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
   });
 
   const { data } = useMyNFTMetaURLQuery(tokenId);
   const result = useMyNFTMetaDataQuery(data);
 
-  const hospitalData = useMyNFTMetaURLQuery(tokenIdList[curIdx]);
+  const hospitalData = useMyNFTMetaURLQuery(NFTInfoList[curIdx]?.tokenId);
   const hospitalResult = useMyNFTMetaDataQuery(hospitalData.data);
-
-  console.log(hospitalResult);
 
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";
