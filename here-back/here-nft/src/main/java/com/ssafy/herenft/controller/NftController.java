@@ -56,11 +56,18 @@ public class NftController {
         return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 
-    @ApiOperation(value = "기부 헌혈증 소유권 이전", notes = "기부한 헌혈증애 대한 소유권 이전을 합니다.")
+    @ApiOperation(value = "병원용 헌혈증 소유권 이전", notes = "병원에 수납한 헌혈증애 대한 소유권 이전을 합니다.")
     @PatchMapping("/donate")
     public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
             @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
         return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
+    }
+
+    @ApiOperation(value = "기부용 헌혈증 소유권 이전 + 기부 내역 등록", notes = "타인에게 기부한 헌혈증애 대한 소유권 이전을 하고 기부 내역을 등록합니다.")
+    @PatchMapping("/donate")
+    public ResponseEntity<ResponseSuccessDto<DonateNftResponseDto>> donateNft(
+            @RequestBody DonateNftRequestDto donateNftRequestDto) {
+        return ResponseEntity.ok(nftService.donateNft(donateNftRequestDto));
     }
 
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")

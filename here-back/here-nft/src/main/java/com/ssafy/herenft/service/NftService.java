@@ -32,6 +32,7 @@ public class NftService {
     private final MemberRepository memberRepository;
     private final CertHistoryRepository certHistoryRepository;
     private final StampRepository stampRepository;
+    private final BoardBdHistoryRepository boardBdHistoryRepository;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -153,7 +154,7 @@ public class NftService {
         return res;
     }
 
-    /* 헌혈증 소유권 이전 */
+    /* 병원용 헌혈증 소유권 이전 */
     public ResponseSuccessDto<TransferOwnershipResponseDto> transferNftOwnership(TransferOwnershipRequestDto transferOwnershipRequestDto) {
         UUID senderId = transferOwnershipRequestDto.getSenderId();
         UUID receiverId = transferOwnershipRequestDto.getReceiverId();
@@ -168,6 +169,38 @@ public class NftService {
                 .message("헌혈증 소유권 이전이 완료되었습니다.")
                 .build();
         ResponseSuccessDto<TransferOwnershipResponseDto> res = responseUtil.successResponse(transferOwnershipResponseDto, HereStatus.HERE_TRANSFER_OWNERSHIP);
+        return res;
+    }
+
+    /* 기부용 헌혈증 소유권 이전 + 기부 내역 등록 */
+    public ResponseSuccessDto<DonateNftResponseDto> donateNft(DonateNftRequestDto donateNftRequestDto) {
+        Long boardId = donateNftRequestDto.getBoardId();
+        UUID senderId = donateNftRequestDto.getSenderId();
+        UUID receiverId = donateNftRequestDto.getReceiverId();
+        List<Long> nftTokenList = donateNftRequestDto.getNftTokenList();
+
+        for (Long nftToken : nftTokenList) {
+            Nft nft = nftRepository.findByTokenId(nftToken);
+            nft.updateOwnership(receiverId);
+        }
+
+        // 주인공 boardBdHistory 가져오기
+        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId);
+
+        if (subjectBoardBdHistory == null) {
+            // 이 게시글에 아직 기부한 적 없는 사람
+            BoardBdHistory boardBdHistory = new BoardBdHistory();
+            boardBdHistory.createBoardBdHistory(donateNftRequestDto);
+            boardBdHistoryRepository.save(boardBdHistory);
+        } else {
+            int newQuantity = subjectBoardBdHistory.getQuantity() + donateNftRequestDto.getNftTokenList().size();
+            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
+        }
+
+        DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
+                .message("기부한 헌혈증 소유권 이전이 완료되었습니다.")
+                .build();
+        ResponseSuccessDto<DonateNftResponseDto> res = responseUtil.successResponse(donateNftResponseDto, HereStatus.HERE_TRANSFER_OWNERSHIP);
         return res;
     }
 
