@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Builder
-public class BoardResponseDto {
+public class BoardObjectDto {
     private Long boardId;
     private String title;
     private String nickname;
@@ -21,7 +21,7 @@ public class BoardResponseDto {
     private int percentage;
 
     @QueryProjection
-    public BoardResponseDto(Long boardId, String title, String nickname, String boardImgUrl, EnumBoardStatus status, LocalDateTime dDay, int percentage) {
+    public BoardObjectDto(Long boardId, String title, String nickname, String boardImgUrl, EnumBoardStatus status, LocalDateTime dDay, int percentage) {
         this.boardId = boardId;
         this.title = title;
         this.nickname = nickname;

@@ -33,12 +33,10 @@ public class BoardBdHistory {
     @Column(name = "quantity", columnDefinition = "int", nullable = false)
     private int quantity;
 
-    public BoardBdHistory createBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
-        BoardBdHistory boardBdHistory = new BoardBdHistory();
-        boardBdHistory.boardId = updateBoardBdHistoryRequestDto.getBoardId();
-        boardBdHistory.senderId = updateBoardBdHistoryRequestDto.getSenderId();
-        boardBdHistory.quantity = updateBoardBdHistoryRequestDto.getQuantity();
-        return boardBdHistory;
+    public void createBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
+        this.boardId = updateBoardBdHistoryRequestDto.getBoardId();
+        this.senderId = updateBoardBdHistoryRequestDto.getSenderId();
+        this.quantity = updateBoardBdHistoryRequestDto.getQuantity();
     }
 
     public void updateBoardBdHistory(int quantity) {

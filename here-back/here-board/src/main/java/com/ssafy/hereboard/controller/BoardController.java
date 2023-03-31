@@ -3,7 +3,6 @@ package com.ssafy.hereboard.controller;
 
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
-import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
 import com.ssafy.hereboard.service.S3Service;
 import io.swagger.annotations.Api;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,19 +68,19 @@ public class BoardController {
 
     @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
     @GetMapping()
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getBoardList() {
+    public ResponseEntity<ResponseSuccessDto<List<BoardObjectDto>>> getBoardList() {
         return ResponseEntity.ok(boardService.getBoardList());
     }
 
     @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
-        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
+    public ResponseEntity<ResponseSuccessDto<List<BoardObjectDto>>> getMyBoardList(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(boardService.getMyBoardList(memberId));
     }
 
     @ApiOperation(value = "종료 임박 board 조회", notes = "종료가 임박한 board를 조회합니다.")
     @GetMapping("/deadline")
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getDeadlineBoardList() {
+    public ResponseEntity<ResponseSuccessDto<List<BoardObjectDto>>> getDeadlineBoardList() {
         return ResponseEntity.ok(boardService.getDeadlineBoardList());
     }
 
