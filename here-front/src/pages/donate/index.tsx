@@ -24,7 +24,6 @@ export default function DonatePage() {
   const [newMemberId, setNewMemberId] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
-  const [nowDonateList, setNowDonateList] = useState<Donation[]>([]);
 
   const { memberId } = useSelector((state: RootState) => state.member);
 
@@ -60,23 +59,12 @@ export default function DonatePage() {
   };
 
   useEffect(() => {
-    if (isChecked && donateMyList.data) {
-      setNowDonateList(donateMyList.data);
+    if (isChecked) {
       setSearchValue("");
       setKeyword("");
       return;
     }
-    if (keyword && searchList.isLoading) {
-      console.log("로딩중...");
-    }
-    if (keyword && searchList.data) {
-      setNowDonateList(searchList.data);
-      return;
-    }
-    if (donateList.data) {
-      setNowDonateList(donateList.data);
-    }
-  }, [isChecked, keyword]);
+  }, [isChecked]);
 
   const goToSite = () => {
     location.assign(
@@ -166,7 +154,11 @@ export default function DonatePage() {
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
-                <DonateCardList items={nowDonateList!} />
+                {isChecked && <DonateCardList items={donateMyList.data!} />}
+                {keyword && <DonateCardList items={searchList.data!} />}
+                {!isChecked && !keyword && (
+                  <DonateCardList items={donateList.data!} />
+                )}
               </Suspense>
             </div>
           </div>
