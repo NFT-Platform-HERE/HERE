@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay } from "swiper";
-
+import "swiper/css";
 SwiperCore.use([Autoplay]);
 
 export default function Section3() {
@@ -22,13 +22,7 @@ export default function Section3() {
         </div>
       </div>
       <div className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288">
-        <img
-          src="images/pic1.jpg"
-          alt=""
-          className="h-full w-full object-cover"
-        />
-
-        {/* <Swiper
+        <Swiper
           spaceBetween={0}
           slidesPerView={1}
           loop={true}
@@ -38,18 +32,18 @@ export default function Section3() {
             pauseOnMouseEnter: true,
           }}
           speed={1500}
-          className="inline-block h-500 w-800 flex-wrap items-center justify-center"
+          className="flex h-full w-full flex-wrap items-center justify-center"
         >
           <SwiperSlide>
-            <img src="images/pic1.jpg" alt="" className="inline-block w-full" />
+            <img src="images/pic1.jpg" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="images/pic2.jpg" alt="" className="inline-block w-full" />
+            <img src="images/pic2.jpg" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="images/pic3.jpg" alt="" className="inline-block w-full" />
+            <img src="images/pic3.jpg" />
           </SwiperSlide>
-        </Swiper> */}
+        </Swiper>
       </div>
     </section>
   );
