@@ -8,19 +8,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function SubmitNFTDetailList() {
   const [curIdx, setCurIdx] = useState<number>(0);
-  const tokenId = useSelector((state: RootState) => {
-    return state.submitSelectedOrganizationNFT.selectedOrganizationTokenId;
+  const organizationNFTInfo = useSelector((state: RootState) => {
+    return state.submitSelectedOrganizationNFT.selectedOrganizationNFTInfo;
   });
 
-  const NFTInfoList = useSelector((state: RootState) => {
+  const hospitalNFTInfoList = useSelector((state: RootState) => {
     return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
   });
 
-  const { data } = useMyNFTMetaURLQuery(tokenId);
-  const result = useMyNFTMetaDataQuery(data);
+  const organizationData = useMyNFTMetaURLQuery(organizationNFTInfo?.tokenId);
+  const result = useMyNFTMetaDataQuery(organizationData?.data);
 
-  const hospitalData = useMyNFTMetaURLQuery(NFTInfoList[curIdx]?.tokenId);
-  const hospitalResult = useMyNFTMetaDataQuery(hospitalData.data);
+  const hospitalData = useMyNFTMetaURLQuery(
+    hospitalNFTInfoList?.[curIdx]?.tokenId,
+  );
+  const hospitalResult = useMyNFTMetaDataQuery(hospitalData?.data);
 
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";

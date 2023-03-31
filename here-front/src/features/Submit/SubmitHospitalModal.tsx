@@ -12,19 +12,20 @@ interface Iprops {
 
 export default function SubmitHospitalModal({ onClick }: Iprops) {
   const [searchInput, setSearchInput] = useState<string>("");
-  const searchHospitalList = useSearchQuery("HOSPITAL", searchInput);
+  const [hospital, setHospital] = useState<string>("");
 
-  const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
+  const searchHospitalList = useSearchQuery("HOSPITAL", searchInput);
 
   const submitNFTList = useSelector((state: RootState) => {
     return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
   });
 
-  const [hospital, setHospital] = useState<string>("");
-
   const { mutate } = useHospitalNFTSubmit();
+
+  const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
   const onClickSubmit = () => {
     mutate({
       agencyId: hospital,
@@ -57,7 +58,10 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
                 index < 5
                   ? "border-b-2 "
                   : "") +
-                "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
+                (item.agencyId === hospital
+                  ? "bg-red-2 text-white hover:bg-red-2 "
+                  : "hover:bg-pink-0 ") +
+                "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50"
               }
               key={index}
               onClick={() => setHospital(item.agencyId)}

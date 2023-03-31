@@ -5,7 +5,7 @@ import useSubmitNFTListQuery from "@/apis/submit/useSubmitNFTListQuery";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { useDispatch } from "react-redux";
-import { selectNFT, setTokenId } from "@/stores/submit/selectedOrganizationNFT";
+import { selectNFT, setNFTInfo } from "@/stores/submit/selectedOrganizationNFT";
 import {
   addNFT,
   addNFTInfo,
@@ -79,7 +79,7 @@ export default function SubmitNFTList({ count }: Iprops) {
   ) => {
     if (submitTab === "AGENCY") {
       dispatch(selectNFT(index));
-      dispatch(setTokenId(tokenId));
+      dispatch(setNFTInfo({ tokenId: tokenId, hashValue: hashValue }));
     } else if (submitTab === "HOSPITAL") {
       if (selectedCardList.includes(index)) {
         dispatch(deleteNFT(index));
@@ -124,7 +124,12 @@ export default function SubmitNFTList({ count }: Iprops) {
         if (autoSelectData[i].tokenId === submitNFTData[j].tokenId) {
           if (submitTab === "AGENCY") {
             dispatch(selectNFT(j));
-            dispatch(setTokenId(autoSelectData[i].tokenId));
+            dispatch(
+              setNFTInfo({
+                tokenId: autoSelectData[i].tokenId,
+                hashValue: autoSelectData[i].hashValue,
+              }),
+            );
           } else if (submitTab === "HOSPITAL") {
             dispatch(addNFT(j));
             dispatch(
@@ -141,17 +146,26 @@ export default function SubmitNFTList({ count }: Iprops) {
 
   useEffect(() => {
     if (submitNFTList.data?.data?.length === 0) return;
-    dispatch(clearNFTList());
-    dispatch(selectNFT(0));
-    dispatch(addNFT(0));
-    dispatch(setTokenId(submitNFTList.data?.data[0]?.tokenId));
-    dispatch(clearNFTInfoList());
-    dispatch(
-      addNFTInfo({
-        tokenId: submitNFTList.data?.data[0]?.tokenId,
-        hashValue: submitNFTList.data?.data[0]?.hashValue,
-      }),
-    );
+
+    if (submitTab === "AGENCY") {
+      dispatch(selectNFT(0));
+      dispatch(
+        setNFTInfo({
+          tokenId: submitNFTList.data?.data[0]?.tokenId,
+          hashValue: submitNFTList.data?.data[0]?.hashValue,
+        }),
+      );
+    } else {
+      dispatch(clearNFTList());
+      dispatch(addNFT(0));
+      dispatch(clearNFTInfoList());
+      dispatch(
+        addNFTInfo({
+          tokenId: submitNFTList.data?.data[0]?.tokenId,
+          hashValue: submitNFTList.data?.data[0]?.hashValue,
+        }),
+      );
+    }
   }, [submitNFTList?.data]);
 
   return (

@@ -10,9 +10,9 @@ interface Iprops {
 export default function SubmitOrganizationModal({ onClick }: Iprops) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [purposeInput, setPurposeInput] = useState<string>("");
-  const searchOrganizationList = useSearchQuery("AGENCY", searchInput);
+  const [organization, setOrganization] = useState<string>("");
 
-  console.log(searchOrganizationList?.data?.data?.length);
+  const searchOrganizationList = useSearchQuery("AGENCY", searchInput);
 
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -50,9 +50,13 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
                   index < 3
                     ? "border-b-2 "
                     : "") +
+                  (item.agencyId === organization
+                    ? "bg-red-2 text-white hover:bg-red-2 "
+                    : "hover:bg-pink-0 ") +
                   "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
                 }
                 key={index}
+                onClick={() => setOrganization(item.agencyId)}
               >
                 {item.agencyName}
               </div>
