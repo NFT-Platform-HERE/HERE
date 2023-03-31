@@ -22,6 +22,7 @@ import useNftMint from "@/apis/redcross/useNftMint";
 import { Mint } from "@/types/Mint";
 import useBlockChainNftMint from "./../../apis/redcross/useBlockChainNftMint";
 import { BlockChainMint } from "@/types/BlockChainMint";
+import { useRouter } from "next/router";
 
 const MySwal = withReactContent(Swal);
 
@@ -31,6 +32,7 @@ interface memberInfo {
 }
 
 export default function RedCrossPublishPage() {
+  const router = useRouter();
   const today = moment(new Date()).format("YYYY-MM-DD");
   const [inputs, setInputs] = useState({
     name: "",
@@ -267,6 +269,7 @@ export default function RedCrossPublishPage() {
       showConfirmButton: false,
       timer: 1500,
     });
+    router.push("/redcross");
   };
 
   const failMint = () => {
