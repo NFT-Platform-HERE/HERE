@@ -75,10 +75,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public Page<Board> findBoardListPaging(Pageable pageable) {
-        String thumbnail = findThumbnail(board.getId());
         List<Board> content = queryFactory
-                .select(new QBoardResponseDto(board.id, board.title, board.member.nickname, board.status,board.deadline,board))
-                .from(board).fetchJoin(QMember.member).fetchJoin(QBoardImg.boardImg)
+                .select(board)
+                .from(board)
                 .where(statusEq())
                 .orderBy(
                         provideStatusOrder(),
@@ -91,7 +90,8 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         JPAQuery<Board> countQuery = queryFactory
                 .select(board)
-                .from(board);
+                .from(board)
+                .where(statusEq());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }

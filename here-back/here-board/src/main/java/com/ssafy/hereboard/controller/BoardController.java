@@ -74,8 +74,8 @@ public class BoardController {
 
     @ApiOperation(value = "전체 board 조회(페이징 size,page)", notes = "전체 board를 조회합니다.")
     @GetMapping()
-    public ResponseEntity<ResponseSuccessDto<Page<Board>>> getBoardList(@RequestParam(defaultValue = "0") int page,
-                                                                        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ResponseSuccessDto<Page<BoardResponseDto>>> getBoardList(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "12") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(boardService.getBoardListPaging(pageable));
     }
