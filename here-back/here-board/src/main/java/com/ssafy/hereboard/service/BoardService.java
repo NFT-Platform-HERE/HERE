@@ -251,7 +251,7 @@ public class BoardService {
 
         Long cheeringMsgId = updateMsgRequestDto.getCheeringMsgId();
 
-        // 해당 조합 게시글메시지 객체 찾기!
+        // 해당 조합 게시글메시지 객체 찾기
         Optional<BoardMsg> boardCheeringMsg = boardMsgRepository.findByBoardAndMemberIdAndMsgId(board, memberId, cheeringMsgId);
 
         // 만약 아예 db에 게시글메시지 객체가 없으면 insert, 아니면 update
@@ -387,17 +387,14 @@ public class BoardService {
         ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
         return res;
     }
-
-    /* 기부 해시값 총 개수 확인 */
-
-
-    /* 기부 해시값 조회(자동 선택) */
-    public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
-
-//        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
-//        return res;
-        return null;
-    }
+//
+//    /* 기부 해시값 조회(자동 선택) */
+//    public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
+//
+////        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+////        return res;
+//        return null;
+//    }
 
 //    public ResponseSuccessDto<Page<Board>> getBoardListPaging(Pageable pageable) {
 //        Page<Board> boardListPaging = boardRepository.findBoardListPaging(pageable);
@@ -408,12 +405,12 @@ public class BoardService {
 //    }
 
     /* 전체 게시글 조회(페이징) */
-    public ResponseSuccessDto<Page<BoardResponseDto>> getBoardListPaging(Pageable pageable) {
+    public ResponseSuccessDto<Page<BoardObjectDto>> getBoardListPaging(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findBoardListPaging(pageable);
         List<Board> boardList = boardPage.getContent();
 
-        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
-                .map(board -> BoardResponseDto.builder()
+        List<BoardObjectDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardObjectDto.builder()
                         .boardId(board.getId())
                         .title(board.getTitle())
                         .nickname(board.getMember().getNickname())
@@ -424,17 +421,17 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
 
-        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+        Page<BoardObjectDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
         return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
     /* 내 게시글 조회(페이징) */
-    public ResponseSuccessDto<Page<BoardResponseDto>> getMemberBoardListPaging(UUID memberId, Pageable pageable) {
+    public ResponseSuccessDto<Page<BoardObjectDto>> getMemberBoardListPaging(UUID memberId, Pageable pageable) {
 
         Page<Board> boardPage = boardRepository.findMyBoardListPaging(memberId,pageable);
         List<Board> boardList = boardPage.getContent();
 
-        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
-                .map(board -> BoardResponseDto.builder()
+        List<BoardObjectDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardObjectDto.builder()
                         .boardId(board.getId())
                         .title(board.getTitle())
                         .nickname(board.getMember().getNickname())
@@ -445,7 +442,7 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
 
-        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+        Page<BoardObjectDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
         return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
 

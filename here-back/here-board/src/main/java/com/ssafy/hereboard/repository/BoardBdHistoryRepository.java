@@ -1,12 +1,10 @@
 package com.ssafy.hereboard.repository;
 
 import com.ssafy.hereboard.entity.BoardBdHistory;
-import com.ssafy.hereboard.entity.BoardImg;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface BoardBdHistoryRepository extends JpaRepository<BoardBdHistory, Long> {

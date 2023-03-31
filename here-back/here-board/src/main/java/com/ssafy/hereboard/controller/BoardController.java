@@ -103,9 +103,9 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoard(query));
     }
 
-    @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")
-    @PatchMapping("/bd-history")
-    public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> updateBoardBdHistory(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
-        return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
-    }
+//    @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")
+//    @PatchMapping("/bd-history")
+//    public ResponseEntity<ResponseSuccessDto<UpdateBoardBdHistoryResponseDto>> updateBoardBdHistory(@RequestBody UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
+//        return ResponseEntity.ok(boardService.updateBoardBdHistory(updateBoardBdHistoryRequestDto));
+//    }
 }

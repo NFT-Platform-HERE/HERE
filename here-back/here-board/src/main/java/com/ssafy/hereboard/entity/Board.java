@@ -82,7 +82,4 @@ public class Board {
     public void updateBoardStatus(EnumBoardStatus status) {
         this.status = status;
     }
-//    public void closeBoard() {
-//        this.status = EnumBoardStatus.INACTIVE;
-//    }
 }

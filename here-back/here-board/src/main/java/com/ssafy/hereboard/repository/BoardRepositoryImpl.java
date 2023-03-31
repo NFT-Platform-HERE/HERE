@@ -7,7 +7,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.hereboard.dto.board.BoardResponseDto;
+import com.ssafy.hereboard.dto.board.BoardObjectDto;
 import com.ssafy.hereboard.dto.board.QBoardResponseDto;
 import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.entity.QBoardImg;
