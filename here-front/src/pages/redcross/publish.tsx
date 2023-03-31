@@ -15,7 +15,7 @@ import {
   GenderType,
   NftType,
   RhType,
-} from "@/utils/statusType";
+} from "@/enum/statusType";
 import useNftMintQuery from "@/apis/redcross/useNftMintQuery";
 import { Mint } from "@/types/Mint";
 

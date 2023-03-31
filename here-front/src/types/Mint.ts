@@ -1,4 +1,4 @@
-import { NftType } from "@/utils/statusType";
+import { NftType } from "@/enum/statusType";
 
 export interface Mint {
   bdType: string;
