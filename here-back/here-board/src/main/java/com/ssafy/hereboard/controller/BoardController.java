@@ -3,6 +3,7 @@ package com.ssafy.hereboard.controller;
 
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
+import com.ssafy.hereboard.entity.Board;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.service.BoardService;
 import com.ssafy.hereboard.service.S3Service;
@@ -10,6 +11,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -68,10 +72,12 @@ public class BoardController {
         return ResponseEntity.ok(boardService.updateBoardStatus(updateBoardStatusRequestDto));
     }
 
-    @ApiOperation(value = "전체 board 조회", notes = "전체 board를 조회합니다.")
+    @ApiOperation(value = "전체 board 조회(페이징 size,page)", notes = "전체 board를 조회합니다.")
     @GetMapping()
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getBoardList() {
-        return ResponseEntity.ok(boardService.getBoardList());
+    public ResponseEntity<ResponseSuccessDto<Page<BoardResponseDto>>> getBoardList(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.getBoardListPaging(pageable));
     }
 
     @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")

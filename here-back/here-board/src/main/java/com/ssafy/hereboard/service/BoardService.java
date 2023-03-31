@@ -13,6 +13,9 @@ import com.ssafy.hereboard.repository.*;
 import com.ssafy.hereboard.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -411,6 +415,35 @@ public class BoardService {
 //        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
 //        return res;
         return null;
+    }
+
+//    public ResponseSuccessDto<Page<Board>> getBoardListPaging(Pageable pageable) {
+//        Page<Board> boardListPaging = boardRepository.findBoardListPaging(pageable);
+//
+//
+//        ResponseSuccessDto<Page<Board>> res = responseUtil.successResponse(boardListPaging, HereStatus.HERE_FIND_BOARD);
+//        return res;
+//    }
+
+    public ResponseSuccessDto<Page<BoardResponseDto>> getBoardListPaging(Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findBoardListPaging(pageable);
+        List<Board> boardList = boardPage.getContent();
+
+        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardResponseDto.builder()
+                        .boardId(board.getId())
+                        .title(board.getTitle())
+                        .nickname(board.getMember().getNickname())
+                        .boardImgUrl(findThumbnail(board.getId()))
+                        .status(board.getStatus())
+                        .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                        .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                        .build())
+                .collect(Collectors.toList());
+
+        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+
+        return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
 
 }
