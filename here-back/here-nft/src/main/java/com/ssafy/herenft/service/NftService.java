@@ -187,11 +187,6 @@ public class NftService {
         List result = new ArrayList<>();
 
         for (Nft nft : nftList) {
-            System.out.println("@@@ createdDate @@@");
-            System.out.println(nft.toString());
-            System.out.println("id = " + nft.getId());
-            System.out.println("tokenId = " + nft.getTokenId());
-            System.out.println(nft.getCreatedDate());
             UUID issuerId = nft.getIssuerId();
             Member issuer = memberRepository.findById(issuerId)
                     .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
@@ -201,6 +196,10 @@ public class NftService {
             isOwner = issuerId.equals(memberId);
 
             if(organType == EnumNftType.HOSPITAL) {
+                System.out.println("@@@ createdDate @@@");
+                System.out.println("tokenId = " + nft.getTokenId());
+                System.out.println(nft.getCreatedDate());
+
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
                         .tokenId(nft.getTokenId())
                         .hashValue(nft.getHashValue())
