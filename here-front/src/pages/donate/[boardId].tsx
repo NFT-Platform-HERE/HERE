@@ -31,7 +31,6 @@ export default function DonateDetailPage({ boardId }: Iprops) {
   timeago.register("ko", koLocale);
 
   const nowBoard = useDonateDetailQuery(parseInt(boardId));
-  console.log("nowBoard", nowBoard);
 
   const writerId = nowBoard?.data.memberId;
   const writerInfo = useMemberInfoQuery(writerId);
@@ -158,7 +157,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 onClick={closeModal}
                 writerInfo={writerInfo.data}
                 writerId={writerId}
-                boardId={boardId}
+                boardId={parseInt(boardId)}
               />
             )}
             <DonateCheerMsg memberId={writerId} boardId={boardId} />

@@ -10,6 +10,7 @@ import QrCodeReader from "@/components/Register/QrCodeReader";
 import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
+import { FaCameraRetro } from "react-icons/fa";
 
 export default function MyNFTPage() {
   const NFTCardBackIndex = useSelector((state: RootState) => {
@@ -45,10 +46,7 @@ export default function MyNFTPage() {
               이미지 저장하기
             </InstaBtn>
           </div>
-          <img
-            src="/icons/instagram.png"
-            className="hidden mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35"
-          ></img>
+          <FaCameraRetro className="hidden text-red-500 mobile:absolute mobile:top-20 mobile:right-20 mobile:block mobile:h-35 mobile:w-35" />
           <div className="relative flex h-630 w-137 items-center justify-center mobile:h-180 mobile:w-full">
             <MyNFTList myNFTList={myNFTList && myNFTList.data} />
           </div>

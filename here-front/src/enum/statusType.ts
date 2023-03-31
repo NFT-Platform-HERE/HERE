@@ -10,7 +10,7 @@ export enum BloodHistoryStatus {
 
 export enum BloodType {
   WHOLE = "WHOLE",
-  PLATELETS = "PLATELETS",
+  PLATELET = "PLATELET",
   PLASMA = "PLASMA",
 }
 

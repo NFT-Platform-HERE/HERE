@@ -6,7 +6,6 @@ interface Iprops {
 }
 
 export default function DonateCardList({ items }: Iprops) {
-  // console.log(items);
   return (
     <>
       {items?.map((item) => (
@@ -16,7 +15,7 @@ export default function DonateCardList({ items }: Iprops) {
             nickname={item.nickname}
             isCompleted={item.status}
             donatePercent={item.percentage}
-            expirationDate={item.dDay}
+            expirationDate={item.dday}
             representativeImageUrl={item.boardImgUrl}
             boardId={item.boardId}
           />
@@ -29,7 +28,7 @@ export default function DonateCardList({ items }: Iprops) {
             nickname={item.nickname}
             isCompleted={item.status}
             donatePercent={item.percentage}
-            expirationDate={item.dDay}
+            expirationDate={item.dday}
             representativeImageUrl={item.boardImgUrl}
             boardId={item.boardId}
           />

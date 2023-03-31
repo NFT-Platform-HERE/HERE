@@ -6,9 +6,10 @@ import withReactContent from "sweetalert2-react-content";
 import { randomFromZeroToN, makeJsonMetaData } from "../../utils/utils";
 import { NFT_IMAGE_URL_LIST } from "../../constants/blockchain";
 import { sendIpfs } from "../../apis/blockchain/ipfs";
-import { mintBloodNFT, getHashValue } from "../../apis/blockchain/contracts";
+import { getHashValue } from "../../apis/blockchain/contracts";
 import RedCrossLoadingModal from "./../../features/RedCross/RedCrossLoadingModal";
 import useSearchEmailQuery from "@/apis/redcross/useSearchEmailQuery";
+import moment from "moment";
 import {
   Blood,
   BloodType,
@@ -21,6 +22,7 @@ import useNftMint from "@/apis/redcross/useNftMint";
 import { Mint } from "@/types/Mint";
 import useBlockChainNftMint from "./../../apis/redcross/useBlockChainNftMint";
 import { BlockChainMint } from "@/types/BlockChainMint";
+import { useRouter } from "next/router";
 
 const MySwal = withReactContent(Swal);
 
@@ -30,6 +32,8 @@ interface memberInfo {
 }
 
 export default function RedCrossPublishPage() {
+  const router = useRouter();
+  const today = moment(new Date()).format("YYYY-MM-DD");
   const [inputs, setInputs] = useState({
     name: "",
     rhType: RhType.RHPLUS,
@@ -38,8 +42,8 @@ export default function RedCrossPublishPage() {
     sex: GenderType.MALE,
     bloodType: BloodType.WHOLE,
     wallet: "",
-    birth: new Date().toISOString().substring(0, 10),
-    createdDate: new Date().toISOString().substring(0, 10),
+    birth: today,
+    createdDate: today,
     place: "",
   });
 
@@ -265,6 +269,7 @@ export default function RedCrossPublishPage() {
       showConfirmButton: false,
       timer: 1500,
     });
+    router.push("/redcross");
   };
 
   const failMint = () => {
@@ -361,15 +366,15 @@ export default function RedCrossPublishPage() {
           <div>
             <input
               type="radio"
-              value={BloodType.PLATELETS}
-              checked={bloodType === BloodType.PLATELETS}
-              id="platelets"
+              value={BloodType.PLATELET}
+              checked={bloodType === BloodType.PLATELET}
+              id="platelet"
               className="peer hidden"
               name="bloodType"
               onChange={onChangeValue}
             />
             <label
-              htmlFor="platelets"
+              htmlFor="platelet"
               className="inline-block h-45 w-100 cursor-pointer border-3 border-[#FFBBC7] bg-red-1 text-18 font-light leading-40 text-white peer-checked:bg-red-2 peer-checked:font-medium"
             >
               혈소판
@@ -503,6 +508,8 @@ export default function RedCrossPublishPage() {
           id="birth"
           name="birth"
           value={birth}
+          min={"1930-01-01"}
+          max={"2020-12-31"}
           onChange={onChangeValue}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />
@@ -514,6 +521,8 @@ export default function RedCrossPublishPage() {
           id="date"
           name="createdDate"
           value={createdDate}
+          min="1930-01-01"
+          max={today}
           onChange={onChangeValue}
           className="h-50 w-500 rounded-30 border-1 border-pen-0 px-30 text-18"
         />

@@ -19,7 +19,7 @@ export default function Section4() {
         <img
           src="mainItems/question.svg"
           alt="question"
-          className="inline-block h-70 animate-bounce align-top"
+          className="inline-block h-70 align-top"
         />
       </div>
       <div className="my-50 flex flex-wrap justify-center text-center">

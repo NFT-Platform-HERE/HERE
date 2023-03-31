@@ -29,7 +29,7 @@ export default function Section2Web() {
           <span className="mx-8 text-24 font-medium">헌혈증서</span>
         </div>
         <img
-          src="mainItems/mainNFTInfo.png"
+          src="mainItems/mainNFTInfo.svg"
           alt="mainNFTInfo"
           className="w-320"
         />

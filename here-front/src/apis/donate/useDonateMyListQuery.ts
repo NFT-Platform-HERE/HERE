@@ -11,10 +11,8 @@ const fetcher = (memberId: string, pageParam: number) =>
       },
     })
     .then(({ data }) => {
-      console.log(data);
       return data.data;
-    })
-    .catch((err) => console.log(err));
+    });
 
 const useDonateMyListQuery = (memberId: string) => {
   return useInfiniteQuery(
@@ -22,13 +20,9 @@ const useDonateMyListQuery = (memberId: string) => {
     ({ pageParam = 0 }) => fetcher(memberId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
-        console.log("lastPage", lastPage);
         return lastPage.last ? undefined : lastPage.number + 1;
       },
       enabled: !!memberId,
-      onSettled: () => {
-        console.log("요청!", memberId);
-      },
     },
   );
 };
