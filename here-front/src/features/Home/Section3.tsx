@@ -1,3 +1,8 @@
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay } from "swiper";
+
+SwiperCore.use([Autoplay]);
+
 export default function Section3() {
   return (
     <section className="my-80 flex min-w-[1200px] justify-center bg-pink-0 py-80 mobile:my-50 mobile:w-full mobile:min-w-[300px]">
@@ -18,10 +23,33 @@ export default function Section3() {
       </div>
       <div className="inline-block h-500 w-800 border-5 border-pink-3 mobile:h-180 mobile:w-288">
         <img
-          src="images/exImg1.jpg"
-          alt="BDimg"
-          className="inline-block h-full w-full"
+          src="images/pic1.jpg"
+          alt=""
+          className="h-full w-full object-cover"
         />
+
+        {/* <Swiper
+          spaceBetween={0}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          speed={1500}
+          className="inline-block h-500 w-800 flex-wrap items-center justify-center"
+        >
+          <SwiperSlide>
+            <img src="images/pic1.jpg" alt="" className="inline-block w-full" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="images/pic2.jpg" alt="" className="inline-block w-full" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="images/pic3.jpg" alt="" className="inline-block w-full" />
+          </SwiperSlide>
+        </Swiper> */}
       </div>
     </section>
   );

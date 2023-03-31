@@ -6,6 +6,7 @@ interface Iprops {
 }
 
 export default function DonateCardList({ items }: Iprops) {
+  // console.log(items);
   return (
     <>
       {items?.map((item) => (
