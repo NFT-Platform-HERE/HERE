@@ -425,6 +425,7 @@ public class BoardService {
 //        return res;
 //    }
 
+    /* 전체 게시글 조회(페이징) */
     public ResponseSuccessDto<Page<BoardResponseDto>> getBoardListPaging(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findBoardListPaging(pageable);
         List<Board> boardList = boardPage.getContent();
@@ -442,8 +443,49 @@ public class BoardService {
                 .collect(Collectors.toList());
 
         Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+        return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
+    }
+    /* 내 게시글 조회(페이징) */
+    public ResponseSuccessDto<Page<BoardResponseDto>> getMemberBoardListPaging(UUID memberId, Pageable pageable) {
 
+        Page<Board> boardPage = boardRepository.findMyBoardListPaging(memberId,pageable);
+        List<Board> boardList = boardPage.getContent();
+
+        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardResponseDto.builder()
+                        .boardId(board.getId())
+                        .title(board.getTitle())
+                        .nickname(board.getMember().getNickname())
+                        .boardImgUrl(findThumbnail(board.getId()))
+                        .status(board.getStatus())
+                        .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                        .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                        .build())
+                .collect(Collectors.toList());
+
+        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
         return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
 
+
+    /* 게시글 검색(페이징) */
+    public ResponseSuccessDto<Page<SearchBoardResponseDto>> searchBoardPaging(String query, Pageable pageable) {
+        Page<Board> searchedPage = boardRepository.searchBoardPaging(query,pageable);
+        List<Board> searchedList = searchedPage.getContent();
+
+        List<SearchBoardResponseDto> searchBoardResponseDtoList = searchedList.stream()
+                .map(board -> SearchBoardResponseDto.builder()
+                        .boardId(board.getId())
+                        .title(board.getTitle())
+                        .nickname(board.getMember().getNickname())
+                        .boardImgUrl(findThumbnail(board.getId()))
+                        .status(board.getStatus())
+                        .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
+                        .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
+                        .build())
+                .collect(Collectors.toList());
+
+        Page<SearchBoardResponseDto> searchBoardResponseDtoPage = new PageImpl<>(searchBoardResponseDtoList, pageable, searchedPage.getTotalElements());
+        return responseUtil.successResponse(searchBoardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
+    }
 }

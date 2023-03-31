@@ -72,6 +72,28 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 )
                 .fetch();
     }
+    @Override
+    public Page<Board> searchBoardPaging(String word, Pageable pageable){
+        List<Board> content = queryFactory
+                .select(board)
+                .from(board)
+                .where(statusEq(),wordContain(word))
+                .orderBy(
+                        provideStatusOrder(),
+                        board.createdDate.desc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+
+        JPAQuery<Board> countQuery = queryFactory
+                .select(board)
+                .from(board)
+                .where(statusEq());
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
 
     @Override
     public Page<Board> findBoardListPaging(Pageable pageable) {
@@ -92,6 +114,33 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .select(board)
                 .from(board)
                 .where(statusEq());
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public Page<Board> findMyBoardListPaging(UUID memberId , Pageable pageable) {
+
+        List<Board> content = queryFactory
+                .select(board)
+                .from(board)
+                .where(
+                        memberIdEq(memberId),
+                        statusEq())
+                .orderBy(
+                        provideStatusOrder(),
+                        board.createdDate.desc()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Board> countQuery = queryFactory
+                .select(board)
+                .from(board)
+                .where(
+                        memberIdEq(memberId),
+                        statusEq());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
