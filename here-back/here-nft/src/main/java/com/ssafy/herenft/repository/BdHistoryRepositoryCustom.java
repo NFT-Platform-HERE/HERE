@@ -6,5 +6,5 @@ import com.ssafy.herenft.entity.Member;
 import java.time.LocalDateTime;
 
 public interface BdHistoryRepositoryCustom {
-    BdHistory findBdHistory(Member member, LocalDateTime issuedDate);
+    BdHistory findBdHistory(Member member, LocalDateTime createdDate);
 }
