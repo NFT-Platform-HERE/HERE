@@ -26,6 +26,7 @@ export const DONATE_NFT_COUNT = "/donateNftCount";
 export const DONATE_MY_LIST = "/donateMyList";
 export const DONATE_CHEER_UP_LIST = "/donateCheerUpList";
 export const DONATE_SEARCH = "/donateSearch";
+export const DONATE_TOKEN_ID_LIST = "/donateTokenIdList";
 
 // submit
 export const SUBMIT_NFT_LIST = "/submitNFTList";

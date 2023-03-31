@@ -14,7 +14,7 @@ const useDonateNftCountQuery = (senderId: string) => {
     [queryKeys.DONATE_NFT_COUNT, senderId],
     () => fetcher(senderId),
     {
-      suspense: true,
+      enabled: !!senderId,
     },
   );
 };
