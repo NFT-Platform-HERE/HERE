@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { MyNFTItem } from '@/types/MyNFTItem';
+import { MyNFTItem } from "@/types/MyNFTItem";
 
 interface Iprops {
   myNFTList: MyNFTItem[];
@@ -72,9 +72,9 @@ export default function MyNFTList({ myNFTList }: Iprops) {
   useEffect(() => {
     dispatch(clearNFTList());
     if (myNFTList) {
-      dispatch(addNFT(myNFTList[0]));
+      dispatch(addNFT(0));
     }
-  }, []);
+  }, [myNFTList]);
 
   return (
     <div className="w-full">
@@ -94,7 +94,6 @@ export default function MyNFTList({ myNFTList }: Iprops) {
                 key={index}
                 onClick={() => handleSetSelectedCardList(index)}
               >
-                {item.tokenId}
                 <NFTCardFront width={100} imgUrl={item.imgUrl} />
                 {selectedCardList.includes(index) && (
                   <img

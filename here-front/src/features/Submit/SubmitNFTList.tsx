@@ -109,22 +109,16 @@ export default function SubmitNFTList({ count }: Iprops) {
       if (selectedCard === index) {
         return true;
       }
-      return false;
     } else if (submitTab === "HOSPITAL") {
       if (selectedCardList.includes(index)) {
         return true;
       }
-      return false;
     }
     return false;
   };
 
   useEffect(() => {
     if (!autoSelectList.isSuccess || !submitNFTList.isSuccess) {
-      return;
-    }
-
-    if (autoSelectList.data?.code != 200 || submitNFTList.data?.code != 200) {
       return;
     }
 

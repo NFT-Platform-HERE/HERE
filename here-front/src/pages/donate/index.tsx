@@ -15,23 +15,33 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
 import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
-import { Donation } from "@/types/Donation";
+import { useInView } from "react-intersection-observer";
 
 export default function DonatePage() {
   const router = useRouter();
+  const { ref, inView } = useInView();
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [newMemberId, setNewMemberId] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
-  const [nowDonateList, setNowDonateList] = useState<Donation[]>([]);
 
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const donateList = useDonateListQuery();
+  const { data, fetchNextPage, isFetchingNextPage, refetch } =
+    useDonateListQuery();
+  console.log("data", data);
   const donateDeadLineList = useDonateDeadLineListQuery();
   const donateMyList = useDonateMyListQuery(newMemberId);
   const searchList = useDonateSearchQuery(keyword);
+  console.log(donateList);
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   useEffect(() => {
     setNewMemberId(memberId);
@@ -60,23 +70,12 @@ export default function DonatePage() {
   };
 
   useEffect(() => {
-    if (isChecked && donateMyList.data) {
-      setNowDonateList(donateMyList.data);
+    if (isChecked) {
       setSearchValue("");
       setKeyword("");
       return;
     }
-    if (keyword && searchList.isLoading) {
-      console.log("로딩중...");
-    }
-    if (keyword && searchList.data) {
-      setNowDonateList(searchList.data);
-      return;
-    }
-    if (donateList.data) {
-      setNowDonateList(donateList.data);
-    }
-  }, [isChecked, keyword]);
+  }, [isChecked]);
 
   const goToSite = () => {
     location.assign(
@@ -166,8 +165,20 @@ export default function DonatePage() {
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
-                <DonateCardList items={nowDonateList!} />
+                {/* {isChecked && <DonateCardList items={donateMyList.data!} />} */}
+                {/* {keyword && <DonateCardList items={searchList.data!} />} */}
               </Suspense>
+              {/* {!isChecked && !keyword && (
+                <DonateCardList items={donateList.data?.pages[0].content!} />
+              )} */}
+              {data?.pages?.map((page, idx) => (
+                <>
+                  <DonateCardList items={page.content!} />
+                  {!isFetchingNextPage && (
+                    <div ref={ref} className="h-50"></div>
+                  )}
+                </>
+              ))}
             </div>
           </div>
         </div>
