@@ -7,7 +7,7 @@ import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useDonateWriteQuery from "./../../apis/donate/useDonateWriteQuery";
+import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 
@@ -23,7 +23,7 @@ export default function DonateWritePage() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
 
-  const mutation = useDonateWriteQuery();
+  const mutation = useDonateWrite();
 
   const dateBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -99,7 +99,6 @@ export default function DonateWritePage() {
       content: description,
       memberId: memberId,
     };
-    console.log(writeData);
 
     formData.append(
       "saveBoardRequestDto",

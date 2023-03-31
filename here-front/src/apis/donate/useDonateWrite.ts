@@ -2,6 +2,9 @@ import { DONATE_SERVER_URL } from "@/utils/urls";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import * as queryKeys from "@/constants/queryKeys";
+import useExpUpdate from "../member/useExpUpdate";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 const config = {
   headers: { "Content-Type": "multipart/form-data" },
@@ -12,11 +15,17 @@ const fetcher = (formData: FormData) =>
     .post(DONATE_SERVER_URL + `/board`, formData, config)
     .then(({ data }) => data);
 
-const useDonateWriteQuery = () => {
+const useDonateWrite = () => {
   const queryClient = useQueryClient();
+  const { mutate } = useExpUpdate();
+  const { memberId } = useSelector((state: RootState) => state.member);
   return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
+    onSuccess: () => {
+      const payload = {
+        memberId,
+        exp: 5,
+      };
+      mutate(payload);
       return queryClient.invalidateQueries([
         queryKeys.DONATE_LIST,
         queryKeys.DONATE_DEADLINE_LIST,
@@ -28,4 +37,4 @@ const useDonateWriteQuery = () => {
   });
 };
 
-export default useDonateWriteQuery;
+export default useDonateWrite;
