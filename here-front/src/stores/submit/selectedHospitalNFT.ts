@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface selectedHospitalNFTState {
   selectedHospitalNFTList: number[];
+  selectedHospitalNFTTokenIdList: number[];
 }
 
 const initialState: selectedHospitalNFTState = {
-  selectedHospitalNFTList: [0],
+  selectedHospitalNFTList: [],
+  selectedHospitalNFTTokenIdList: [],
 };
 
 const submitSelectedHospitalNFTSlice = createSlice({
@@ -15,6 +17,9 @@ const submitSelectedHospitalNFTSlice = createSlice({
     addNFT(state, action) {
       state.selectedHospitalNFTList.push(action.payload);
     },
+    addTokenId(state, action) {
+      state.selectedHospitalNFTTokenIdList.push(action.payload);
+    },
     deleteNFT(state, action) {
       state.selectedHospitalNFTList = state.selectedHospitalNFTList.filter(
         (selectedNFT) => {
@@ -22,13 +27,30 @@ const submitSelectedHospitalNFTSlice = createSlice({
         },
       );
     },
+    deleteTokenId(state, action) {
+      state.selectedHospitalNFTTokenIdList =
+        state.selectedHospitalNFTTokenIdList.filter((selectedTokenId) => {
+          return action.payload !== selectedTokenId;
+        });
+    },
+
     clearNFTList(state) {
-      state.selectedHospitalNFTList = [0];
+      state.selectedHospitalNFTList = [];
+    },
+
+    clearTokenIdList(state) {
+      state.selectedHospitalNFTTokenIdList = [];
     },
   },
 });
 
-export const { addNFT, deleteNFT, clearNFTList } =
-  submitSelectedHospitalNFTSlice.actions;
+export const {
+  addNFT,
+  addTokenId,
+  deleteNFT,
+  deleteTokenId,
+  clearNFTList,
+  clearTokenIdList,
+} = submitSelectedHospitalNFTSlice.actions;
 
 export default submitSelectedHospitalNFTSlice.reducer;

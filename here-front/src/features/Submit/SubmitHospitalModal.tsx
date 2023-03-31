@@ -15,6 +15,8 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
     setSearchInput(e.target.value);
   };
 
+  const [hospital, setHospital] = useState<String>("");
+
   const onClickSubmit = () => {};
 
   return (
@@ -44,6 +46,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
                 "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
               }
               key={index}
+              onClick={() => setHospital(item.agencyName)}
             >
               {item.agencyName}
             </div>
