@@ -18,7 +18,7 @@ export default function usePagination({ confirmList }: Iprops) {
   const indefOfFirstPost = indefOfLastPost - postPerPage;
 
   useEffect(() => {
-    setCurrentList(confirmList.slice(indefOfFirstPost, indefOfLastPost));
+    setCurrentList(confirmList?.slice(indefOfFirstPost, indefOfLastPost));
   }, [indefOfFirstPost, indefOfLastPost, page]);
 
   useEffect(() => {
