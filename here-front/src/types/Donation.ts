@@ -6,6 +6,6 @@ export interface Donation {
   nickname: string;
   boardImgUrl?: string;
   status: BoardStatus;
-  dDay: string;
+  dday: string;
   percentage: number;
 }
