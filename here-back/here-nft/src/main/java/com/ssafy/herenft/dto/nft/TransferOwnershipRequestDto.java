@@ -3,6 +3,7 @@ package com.ssafy.herenft.dto.nft;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -10,5 +11,5 @@ import java.util.UUID;
 public class TransferOwnershipRequestDto {
     private UUID senderId;
     private UUID receiverId;
-    private int quantity;
+    private List<Long> nftTokenList;
 }

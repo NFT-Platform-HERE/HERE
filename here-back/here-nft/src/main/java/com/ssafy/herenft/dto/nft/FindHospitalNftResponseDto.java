@@ -1,12 +1,10 @@
 package com.ssafy.herenft.dto.nft;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.types.dsl.DatePath;
-import com.querydsl.core.types.dsl.DateTimePath;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

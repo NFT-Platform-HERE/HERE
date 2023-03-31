@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,33 +34,31 @@ public class NftService {
     private final StampRepository stampRepository;
 
     /* NFT 생성 */
-    public ResponseSuccessDto<SaveNftResponseDto> save(SaveNftRequestDto saveNftRequestDto) {
-        System.out.println("서비스단 들어옴" + saveNftRequestDto);
+    public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
         Member member = memberRepository.findById(saveNftRequestDto.getIssuerId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
 
-        Nft nft = new Nft().createNft(saveNftRequestDto);
+        Nft nft = new Nft();
+        nft.createNft(saveNftRequestDto);
         nftRepository.save(nft);
 
         Boolean isLevelUp = false;
 
-        // 어제, 오늘 날자 범위 설정
+        // 어제, 오늘 날짜 범위 설정
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
         // 어제 오늘 날짜 범위안에 같은 이슈어 아이디인 nft 찾기
         Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), yesterday, tomorrow);
-//        System.out.println("찾았나요" + byIssuerIdAndCreatedDateBetween);
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getIssuerId());
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getImgUrl());
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getHashValue());
 
+        // 한 번 민팅된 nft가 없으면, 즉 현재 민팅 nft가 첫번째 민팅 경우라면
         if (byIssuerIdAndCreatedDateBetween.isEmpty()) {
-            System.out.println("들어왔나요");
-            BdHistory bdHistory = new BdHistory().createBdHistory(member, saveNftRequestDto);
+            // 1) 헌혈 기록 생성
+            BdHistory bdHistory = new BdHistory();
+            bdHistory.createBdHistory(member, saveNftRequestDto);
             bdHistoryRepository.save(bdHistory);
 
-            // 스탬프 정보 업데이트
+            // 2) 스탬프 정보 업데이트
             Stamp stamp = stampRepository.findByMemberId(member.getId());
 
             if (stamp.getStep() + 1 >= 7) {
@@ -80,12 +78,10 @@ public class NftService {
         return res;
     }
 
-    /* NFT 목록 조회 */
+    /* MY NFT 목록 조회 */
     public ResponseSuccessDto<List<GetNftResponseDto>> getNftList(UUID memberId) {
         List<Nft> myNftList = nftRepository.findAllByIssuerIdAndType(memberId, EnumNftType.AGENCY);
-
         List<GetNftResponseDto> result = new ArrayList<>();
-
 
         for (Nft myNft : myNftList) {
             GetNftResponseDto getNftResponseDto = GetNftResponseDto.builder()
@@ -95,12 +91,11 @@ public class NftService {
                     .build();
             result.add(getNftResponseDto);
         }
-
         ResponseSuccessDto<List<GetNftResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_NFT_LIST);
         return res;
     }
 
-    /* 기관 증명서 제출 */
+    /* (기관) 내 증명서 제출 */
     public ResponseSuccessDto<SubmitCertAgencyResponseDto> submitCertAgency(SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
 
         Member member = memberRepository.findById(submitCertAgencyRequestDto.getMemberId())
@@ -109,7 +104,8 @@ public class NftService {
         Member agency = memberRepository.findById(submitCertAgencyRequestDto.getAgencyId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 기관 ID입니다."));
 
-        CertHistory certHistory = new CertHistory().createCertHistoryAgency(member, agency, submitCertAgencyRequestDto);
+        CertHistory certHistory = new CertHistory();
+        certHistory.createCertHistoryAgency(member, agency, submitCertAgencyRequestDto);
         certHistoryRepository.save(certHistory);
 
         SubmitCertAgencyResponseDto submitCertAgencyResponseDto = SubmitCertAgencyResponseDto.builder()
@@ -120,21 +116,20 @@ public class NftService {
         return res;
     }
 
-    /* 병원 증명서 제출 */
+    /* (병원) 내 증명서 제출 */
     public ResponseSuccessDto<SubmitCertHospitalResponseDto> submitCertHospital(SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
 
         Member member = memberRepository.findById(submitCertHospitalRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
 
         Member agency = memberRepository.findById(submitCertHospitalRequestDto.getAgencyId())
-                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 기관 ID입니다."));
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 병원 ID입니다."));
 
         List<NftObjectDto> nftList = submitCertHospitalRequestDto.getNftList();
 
-        System.out.println("확인" + nftList);
-
         for (NftObjectDto nft : nftList) {
-            CertHistory certHistory = new CertHistory().createCertHistoryHospital(member, agency, submitCertHospitalRequestDto, nft);
+            CertHistory certHistory = new CertHistory();
+            certHistory.createCertHistoryHospital(member, agency, nft);
             certHistoryRepository.save(certHistory);
         }
 
@@ -158,19 +153,19 @@ public class NftService {
         return res;
     }
 
-    /* 증명서 소유권 이전 (해시값 자동 선택) */
-    public ResponseSuccessDto<TransferOwnershipResponseDto> findDonationList(TransferOwnershipRequestDto transferOwnershipRequestDto) {
+    /* 헌혈증 소유권 이전 */
+    public ResponseSuccessDto<TransferOwnershipResponseDto> transferNftOwnership(TransferOwnershipRequestDto transferOwnershipRequestDto) {
         UUID senderId = transferOwnershipRequestDto.getSenderId();
         UUID receiverId = transferOwnershipRequestDto.getReceiverId();
-        int quantity = transferOwnershipRequestDto.getQuantity();
+        List<Long> nftTokenList = transferOwnershipRequestDto.getNftTokenList();
 
-        List<Nft> nftList = nftRepository.findDonationList(senderId, quantity);
-        for (Nft nft : nftList) {
+        for (Long nftToken : nftTokenList) {
+            Nft nft = nftRepository.findByTokenId(nftToken);
             nft.updateOwnership(receiverId);
         }
 
         TransferOwnershipResponseDto transferOwnershipResponseDto = TransferOwnershipResponseDto.builder()
-                .message("증명서 소유권 이전이 완료되었습니다.")
+                .message("헌혈증 소유권 이전이 완료되었습니다.")
                 .build();
         ResponseSuccessDto<TransferOwnershipResponseDto> res = responseUtil.successResponse(transferOwnershipResponseDto, HereStatus.HERE_TRANSFER_OWNERSHIP);
         return res;
@@ -228,7 +223,7 @@ public class NftService {
         return res;
     }
 
-    /* 병원 제출용 자동선택 NFT 목록 조회 */
+    /* 기부/병원 제출용 자동선택 NFT 목록 조회 */
     public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findHospitalNftList(UUID memberId, int count) {
         List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(memberId, count);
         List<FindHospitalNftResponseDto> result = new ArrayList<>();

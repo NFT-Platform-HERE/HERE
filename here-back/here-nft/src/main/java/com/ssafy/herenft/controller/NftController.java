@@ -9,8 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 @RequestMapping("/nft")
 public class NftController {
 
@@ -25,9 +28,7 @@ public class NftController {
 
     @ApiOperation(value = "nft 등록", notes = "nft를 등록합니다.")
     @PostMapping("")
-    public ResponseEntity<ResponseSuccessDto<SaveNftResponseDto>> save(@RequestBody SaveNftRequestDto saveNftRequestDto) {
-        System.out.println("controller에 들어옴");
-        System.out.println(saveNftRequestDto);
+    public ResponseEntity<ResponseSuccessDto<SaveNftResponseDto>> save(@RequestBody @Valid SaveNftRequestDto saveNftRequestDto) {
         return ResponseEntity.ok(nftService.save(saveNftRequestDto));
     }
 
@@ -55,21 +56,20 @@ public class NftController {
         return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 
-    @ApiOperation(value = "증명서 소유권 이전(해시값 자동 선택)", notes = "증명서 소유권 이전(해시값 자동 선택)을 합니다.")
+    @ApiOperation(value = "기부 헌혈증 소유권 이전", notes = "기부한 헌혈증애 대한 소유권 이전을 합니다.")
     @PatchMapping("/donate")
-    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> getDonationList(
-            @RequestBody TransferOwnershipRequestDto findDonationRequestDto) {
-        return ResponseEntity.ok(nftService.findDonationList(findDonationRequestDto));
+    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
+            @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
+        return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
     }
 
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/{organType}")
     public ResponseEntity<ResponseSuccessDto<List<?>>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
-        System.out.println("컨트롤러 단 들어오는지");
         return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
     }
 
-    @ApiOperation(value = "병원 제출용 자동선택 NFT 목록 조회", notes = "병원 제출용 자동선택 NFT 목록을 조회합니다.")
+    @ApiOperation(value = "기부/병원 제출용 자동선택 NFT 목록 조회", notes = "기부 또는 병원 제출용으로 자동선택된 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/hospital/{count}")
     public ResponseEntity<ResponseSuccessDto<List<FindHospitalNftResponseDto>>> findHospitalNftAuto(
             @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {

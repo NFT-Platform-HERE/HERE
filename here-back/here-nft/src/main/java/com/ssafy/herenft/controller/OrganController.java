@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Api("조직 컨트롤러 V1")
+@Api("공식 기관 컨트롤러 V1")
 @RestController
 @RequiredArgsConstructor
 @Slf4j

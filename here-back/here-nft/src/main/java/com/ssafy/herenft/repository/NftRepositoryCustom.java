@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface NftRepositoryCustom {
     List<Nft> findHospitalNftAuto(UUID memberId, int count);
-    List<Nft> findDonationList(UUID memberId, int count);
+//    List<Nft> findDonationList(UUID memberId, int count);
 }

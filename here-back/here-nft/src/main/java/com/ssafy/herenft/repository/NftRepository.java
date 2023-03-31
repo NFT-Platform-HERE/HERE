@@ -11,13 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface NftRepository extends JpaRepository<Nft, Long>, NftRepositoryCustom {
-//    List<Nft> findAllByIssuerId(UUID memberId);
-
-//    List<Nft> findAllByOwnerId(UUID senderId);
-
     List<Nft> findAllByIssuerIdAndType(UUID memberId, EnumNftType agency);
 
     List<Nft> findAllByOwnerIdAndType(UUID memberId, EnumNftType hospital);
+
+    Nft findByTokenId(Long nftToken);
 
 //    Optional<Nft> findTop1ByIssuerIdAndCreatedDateBetween(UUID issuerId, LocalDateTime yesterday, LocalDateTime tomorrow);
 }
