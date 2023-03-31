@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface BdHistoryRepositoryCustom {
-    BdHistory findBdHistory(Member member, LocalDateTime issuedDate);
+    BdHistory findBdHistory(Member member, LocalDateTime createdDate);
 }

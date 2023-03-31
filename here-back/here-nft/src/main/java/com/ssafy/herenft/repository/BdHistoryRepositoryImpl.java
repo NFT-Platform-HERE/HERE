@@ -23,21 +23,19 @@ public class BdHistoryRepositoryImpl implements BdHistoryRepositoryCustom {
     }
 
     @Override
-    public BdHistory findBdHistory(Member member, LocalDateTime issuedDate) {
+    public BdHistory findBdHistory(Member member, LocalDateTime createdDate) {
         return queryFactory
                 .selectFrom(bdHistory)
                 .where(
                         bdHistory.member.eq(member)
-                                .and(issuedDateEq(issuedDate))
+                                .and(issuedDateEq(createdDate))
                 )
                 .limit(1)
                 .fetchOne();
     }
 
-    private BooleanExpression issuedDateEq(LocalDateTime issuedDate) {
-        if (issuedDate == null) return null;
-        LocalDate date = issuedDate.toLocalDate();
-        return bdHistory.issuedDate.year().eq(date.getYear())
-                .and(bdHistory.issuedDate.month().eq(date.getMonthValue()));
+    private BooleanExpression issuedDateEq(LocalDateTime createdDate) {
+        if (createdDate == null) return null;
+        return bdHistory.issuedDate.between(createdDate.minusMinutes(2), createdDate.plusMinutes(2));
     }
 }

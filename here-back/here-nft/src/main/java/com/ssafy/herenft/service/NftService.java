@@ -44,16 +44,12 @@ public class NftService {
 
         Boolean isLevelUp = false;
 
-        // 어제, 오늘 날자 범위 설정
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+        // 어제, 오늘 날짜 범위 설정
+        LocalDateTime before = LocalDateTime.now().minusMinutes(2);
+        LocalDateTime after = LocalDateTime.now().plusMinutes(2);
 
         // 어제 오늘 날짜 범위안에 같은 이슈어 아이디인 nft 찾기
-        Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), yesterday, tomorrow);
-//        System.out.println("찾았나요" + byIssuerIdAndCreatedDateBetween);
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getIssuerId());
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getImgUrl());
-//        System.out.println(byIssuerIdAndCreatedDateBetween.get().getHashValue());
+        Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), before, after);
 
         if (byIssuerIdAndCreatedDateBetween.isEmpty()) {
             System.out.println("들어왔나요");
@@ -193,6 +189,8 @@ public class NftService {
         List result = new ArrayList<>();
 
         for (Nft nft : nftList) {
+            System.out.println("@@@ createdDate @@@");
+            System.out.println(nft.getCreatedDate());
             UUID issuerId = nft.getIssuerId();
             Member issuer = memberRepository.findById(issuerId)
                     .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
