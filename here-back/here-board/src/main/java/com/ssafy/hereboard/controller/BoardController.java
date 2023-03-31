@@ -80,12 +80,18 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardListPaging(pageable));
     }
 
-    @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
+//    @ApiOperation(value = "내 글 보기", notes = "본인이 작성한 board 목록을 조회합니다.")
+//    @GetMapping("/member/{memberId}")
+//    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
+//        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
+//    }
+    @ApiOperation(value = "내 글 보기(페이징 size,page)", notes = "본인이 작성한 board 목록을 조회합니다.")
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId) {
-        return ResponseEntity.ok(boardService.getMemberBoardList(memberId));
+    public ResponseEntity<ResponseSuccessDto<Page<BoardResponseDto>>> getMemberBoardList(@PathVariable("memberId") UUID memberId,@RequestParam(defaultValue = "0") int page,
+                                                                                         @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.getMemberBoardListPaging(memberId,pageable));
     }
-
     @ApiOperation(value = "종료 임박 board 조회", notes = "종료가 임박한 board를 조회합니다.")
     @GetMapping("/deadline")
     public ResponseEntity<ResponseSuccessDto<List<BoardResponseDto>>> getDeadlineBoardList() {
@@ -105,10 +111,18 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardMsgList(boardId, memberId));
     }
 
-    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")
+//    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용)", notes = "게시글을 검색합니다.")
+//    @GetMapping("/search")
+//    public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
+//        return ResponseEntity.ok(boardService.searchBoard(query));
+//    }
+
+    @ApiOperation(value = "게시글 검색 (작성자 + 제목/내용) (페이징 size,page)", notes = "게시글을 검색합니다.")
     @GetMapping("/search")
-    public ResponseEntity<ResponseSuccessDto<List<SearchBoardResponseDto>>> searchBoard(@RequestParam String query) {
-        return ResponseEntity.ok(boardService.searchBoard(query));
+    public ResponseEntity<ResponseSuccessDto<Page<SearchBoardResponseDto>>> searchBoard(@RequestParam String query,@RequestParam(defaultValue = "0") int page,
+                                                                                        @RequestParam(defaultValue = "12") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(boardService.searchBoardPaging(query,pageable));
     }
 
     @ApiOperation(value = "기부 내역 등록", notes = "기부한 내역을 생성/수정합니다.")

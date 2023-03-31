@@ -21,4 +21,10 @@ public interface BoardRepositoryCustom {
 
     // 전체 게시글 조회 (페이징)
     Page<Board> findBoardListPaging(Pageable pageable);
+
+    // 내 게시글 조회 (페이징)
+    Page<Board> findMyBoardListPaging(UUID memberId, Pageable pageable);
+
+    // 게시글 검색 (페이징)
+    Page<Board> searchBoardPaging(String word, Pageable pageable);
 }
