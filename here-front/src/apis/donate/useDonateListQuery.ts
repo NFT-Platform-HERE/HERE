@@ -11,7 +11,6 @@ const fetcher = (pageParam: number) =>
       },
     })
     .then(({ data }) => {
-      console.log("fetcher", data.data);
       return data.data;
     });
 
@@ -21,16 +20,9 @@ const useDonateListQuery = () => {
     ({ pageParam = 0 }) => fetcher(pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
-        console.log("lastPage", lastPage);
-        console.log("pages", pages);
         return lastPage.last ? undefined : lastPage.number + 1;
       },
-      onSuccess: (data) => {
-        console.log("성공", data);
-      },
-      onError: () => {
-        console.log("실패");
-      },
+      suspense: true,
     },
   );
 };

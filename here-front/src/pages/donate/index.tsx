@@ -29,23 +29,23 @@ export default function DonatePage() {
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const donateList = useDonateListQuery();
-  const { data, fetchNextPage, isFetchingNextPage, refetch } =
-    useDonateListQuery();
-  console.log("data", data);
   const donateDeadLineList = useDonateDeadLineListQuery();
   const donateMyList = useDonateMyListQuery(newMemberId);
   const searchList = useDonateSearchQuery(keyword);
-  console.log(donateList);
 
   useEffect(() => {
+    if (isChecked && inView) {
+      donateMyList.fetchNextPage();
+      return;
+    }
+    if (keyword && inView) {
+      searchList.fetchNextPage();
+      return;
+    }
     if (inView) {
-      fetchNextPage();
+      donateList.fetchNextPage();
     }
   }, [inView]);
-
-  useEffect(() => {
-    setNewMemberId(memberId);
-  }, [isChecked]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -71,6 +71,7 @@ export default function DonatePage() {
 
   useEffect(() => {
     if (isChecked) {
+      setNewMemberId(memberId);
       setSearchValue("");
       setKeyword("");
       return;
@@ -164,21 +165,36 @@ export default function DonatePage() {
           </div>
           <div className="flex justify-center">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
-              <Suspense fallback={<CircularProgress />}>
-                {/* {isChecked && <DonateCardList items={donateMyList.data!} />} */}
-                {/* {keyword && <DonateCardList items={searchList.data!} />} */}
-              </Suspense>
-              {/* {!isChecked && !keyword && (
-                <DonateCardList items={donateList.data?.pages[0].content!} />
-              )} */}
-              {data?.pages?.map((page, idx) => (
-                <>
-                  <DonateCardList items={page.content!} />
-                  {!isFetchingNextPage && (
-                    <div ref={ref} className="h-50"></div>
-                  )}
-                </>
-              ))}
+              {/* <Suspense fallback={<CircularProgress />}> */}
+              {isChecked &&
+                donateMyList.data?.pages?.map((page, idx) => (
+                  <>
+                    <DonateCardList items={page.content!} key={idx} />
+                    {!donateMyList.isFetchingNextPage && (
+                      <div ref={ref} className="h-10 w-full"></div>
+                    )}
+                  </>
+                ))}
+              {keyword &&
+                searchList.data?.pages?.map((page, idx) => (
+                  <>
+                    <DonateCardList items={page.content!} key={idx} />
+                    {!searchList.isFetchingNextPage && (
+                      <div ref={ref} className="h-10 w-full"></div>
+                    )}
+                  </>
+                ))}
+              {!isChecked &&
+                !keyword &&
+                donateList.data?.pages?.map((page, idx) => (
+                  <>
+                    <DonateCardList items={page.content!} key={idx} />
+                    {!donateList.isFetchingNextPage && (
+                      <div ref={ref} className="h-10 w-full"></div>
+                    )}
+                  </>
+                ))}
+              {/* </Suspense> */}
             </div>
           </div>
         </div>
