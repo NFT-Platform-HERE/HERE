@@ -40,13 +40,13 @@ public class NftController {
 
     @ApiOperation(value = "내 증명서 제출(기관)", notes = "기관에 나의 증명서를 제출합니다.")
     @PostMapping("/agency")
-    public ResponseEntity<ResponseSuccessDto<SubmitCertAgencyResponseDto>> submitCertAgency(@RequestBody SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<SubmitCertAgencyResponseDto>> submitCertAgency(@RequestBody @Valid SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
         return ResponseEntity.ok(nftService.submitCertAgency(submitCertAgencyRequestDto));
     }
 
     @ApiOperation(value = "내 증명서 제출(병원)", notes = "병원에 나의 증명서를 제출합니다.")
     @PostMapping("/hospital")
-    public ResponseEntity<ResponseSuccessDto<SubmitCertHospitalResponseDto>> submitCertHospital(@RequestBody SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
+    public ResponseEntity<ResponseSuccessDto<SubmitCertHospitalResponseDto>> submitCertHospital(@RequestBody @Valid SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
         return ResponseEntity.ok(nftService.submitCertHospital(submitCertHospitalRequestDto));
     }
 
