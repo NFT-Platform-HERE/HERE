@@ -15,9 +15,6 @@ export const mintBloodNFT = async (
   const result = await hereContract.methods
     .create(account, agencyTokenUrl, hospitalTokenUrl)
     .send({ from: account });
-
-  console.log("result", result);
-
   return result;
 };
 
@@ -48,10 +45,10 @@ export const callTokenURI = async (tokenId: string) => {
 };
 
 // 헌혈증 NFT 기부 메소드
-export const donateNFT = async (
+export const donateNFTList = async (
   myAccount: string,
   sendAccount: string,
-  tokenId: string,
+  tokenIdList: string[],
 ) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
@@ -60,10 +57,10 @@ export const donateNFT = async (
   if (!hereContract) return;
 
   const result = await hereContract.methods
-    .donateNFT(myAccount, sendAccount, tokenId, timestamp)
+    .donateNFTList(myAccount, sendAccount, tokenIdList, timestamp)
     .send({ from: myAccount });
 
-  console.log("donateNFT result", result);
+  console.log("donateNFTList result", result);
 };
 
 // 헌혈증 NFT 기부 히스토리 불러오는 메소드

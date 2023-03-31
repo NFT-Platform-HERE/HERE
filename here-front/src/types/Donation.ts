@@ -1,4 +1,4 @@
-import { BoardStatus } from "@/utils/statusType";
+import { BoardStatus } from "@/enum/statusType";
 
 export interface Donation {
   boardId: number;
