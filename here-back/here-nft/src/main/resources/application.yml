@@ -10,6 +10,10 @@ server:
 spring:
   profiles:
     default: local
+  jpa:
+    hibernate:
+      jdbc:
+        time_zone: Asia/Seoul
 
   mvc:
     pathmatch:
