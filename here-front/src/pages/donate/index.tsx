@@ -168,7 +168,7 @@ export default function DonatePage() {
               {/* <Suspense fallback={<CircularProgress />}> */}
               {isChecked &&
                 donateMyList.data?.pages?.map((page, idx) => (
-                  <div key={idx}>
+                  <div key={idx} className="flex flex-wrap">
                     <DonateCardList items={page.content!} />
                     {!donateMyList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
@@ -177,7 +177,7 @@ export default function DonatePage() {
                 ))}
               {keyword &&
                 searchList.data?.pages?.map((page, idx) => (
-                  <div key={idx}>
+                  <div key={idx} className="flex flex-wrap">
                     <DonateCardList items={page.content!} />
                     {!searchList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
@@ -187,7 +187,7 @@ export default function DonatePage() {
               {!isChecked &&
                 !keyword &&
                 donateList.data?.pages?.map((page, idx) => (
-                  <div key={idx}>
+                  <div key={idx} className="flex flex-wrap">
                     <DonateCardList items={page.content!} />
                     {!donateList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
