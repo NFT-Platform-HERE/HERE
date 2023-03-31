@@ -57,7 +57,7 @@ public class NftController {
     }
 
     @ApiOperation(value = "병원용 헌혈증 소유권 이전", notes = "병원에 수납한 헌혈증애 대한 소유권 이전을 합니다.")
-    @PatchMapping("/donate")
+    @PatchMapping("/hospital/submit")
     public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
             @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
         return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
