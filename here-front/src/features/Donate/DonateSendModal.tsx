@@ -9,6 +9,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { MemberInfo } from "@/types/MemberInfo";
 import useDonateNftCountQuery from "@/apis/donate/useDonateNftCountQuery";
+import useDonateTokenIdListQuery from "./../../apis/donate/useDonateTokenIdListQuery";
+import useBlockChainNftDonate from "./../../apis/donate/useBlockChainNftDonate";
+import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
+import { DonationNftList } from "@/types/DonationNftList";
 
 interface Iprops {
   onClick: () => void;
@@ -26,12 +30,22 @@ export default function DonateSendModal({
   const characterImgUrl = useSelector(
     (state: RootState) => state.member.characterImgUrl,
   );
+
+  const myWalletAddress = useSelector(
+    (state: RootState) => state.member.walletAddress,
+  );
   const senderId = useSelector((state: RootState) => state.member.memberId);
 
   const maxCnt = useDonateNftCountQuery(senderId);
 
+  const { refetch } = useDonateTokenIdListQuery(senderId, count);
+
+  const mutation = useBlockChainNftDonate();
+
+  const info = useMemberInfoQuery(senderId);
+
   function handleCountPlus() {
-    if (count <= maxCnt.data.cnt) {
+    if (count < maxCnt.data.cnt) {
       setCount(count + 1);
     }
   }
@@ -40,6 +54,35 @@ export default function DonateSendModal({
     if (count > 1) {
       setCount(count - 1);
     }
+  }
+
+  async function donateMyNftList() {
+    // 1. 기부 할 TokenIdList 가져오기
+    const value = await refetch();
+    const resultList = value.data;
+
+    const tokenIdList: string[] = [];
+
+    resultList.forEach((obj: any) => {
+      tokenIdList.push(obj.tokenId);
+    });
+
+    console.log("tokenIdList", tokenIdList);
+    console.log("myWalletAddress", myWalletAddress);
+
+    console.log("info", info.data);
+
+    // const payload: DonationNftList = {
+    //   myAccount: string;
+    //   sendAccount: string;
+    //   tokenIdList: string[];
+    // };
+
+    // const donateWriteResult = await mutation.mutateAsync(payload);
+  }
+
+  function handleSendButton() {
+    donateMyNftList();
   }
 
   return (
@@ -87,7 +130,7 @@ export default function DonateSendModal({
             fontSize={18}
             children={"전송"}
             isDisabled={false}
-            onClick={() => {}}
+            onClick={handleSendButton}
           />
         </div>
       </div>

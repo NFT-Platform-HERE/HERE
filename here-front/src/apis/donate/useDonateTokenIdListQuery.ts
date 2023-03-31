@@ -6,7 +6,7 @@ import * as queryKeys from "@/constants/queryKeys";
 const fetcher = (memberId: string, count: number) =>
   axios
     .get(NFT_SERVER_URL + `/nft/${memberId}/hospital/${count}`)
-    .then(({ data }) => data);
+    .then(({ data }) => data.data);
 
 const useDonateTokenIdListQuery = (memberId: string, count: number) => {
   return useQuery(
@@ -16,7 +16,7 @@ const useDonateTokenIdListQuery = (memberId: string, count: number) => {
       refetchOnWindowFocus: false,
       enabled: false,
       onSuccess: (data) => {
-        console.log("data!", data);
+        console.log("Success");
       },
       onError: (err) => {
         console.log("error!", err);
