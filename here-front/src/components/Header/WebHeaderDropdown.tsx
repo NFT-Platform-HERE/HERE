@@ -24,7 +24,7 @@ export default function WebHeaderDropdown() {
     setOpenAlarmModal(!openAlarmModal);
   };
   return (
-    <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
+    <div className="z-40 flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
       <div>
         <img
           src={characterImgUrl}

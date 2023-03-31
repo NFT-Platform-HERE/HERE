@@ -29,7 +29,6 @@ export default function DonateDetailPage({ boardId }: Iprops) {
   timeago.register("ko", koLocale);
 
   const nowBoard = useDonateDetailQuery(parseInt(boardId));
-  console.log(nowBoard);
 
   const memberId = nowBoard?.data.memberId;
   const writerInfo = useMemberInfoQuery(memberId);
