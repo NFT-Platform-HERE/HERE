@@ -229,6 +229,10 @@ public class NftService {
             isOwner = issuerId.equals(memberId);
 
             if(organType == EnumNftType.HOSPITAL) {
+                System.out.println("@@@ createdDate @@@");
+                System.out.println("tokenId = " + nft.getTokenId());
+                System.out.println(nft.getCreatedDate());
+
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
                         .tokenId(nft.getTokenId())
                         .hashValue(nft.getHashValue())
