@@ -187,6 +187,8 @@ public class NftService {
         List result = new ArrayList<>();
 
         for (Nft nft : nftList) {
+            System.out.println("@@@ createdDate @@@");
+            System.out.println(nft.getCreatedDate());
             UUID issuerId = nft.getIssuerId();
             Member issuer = memberRepository.findById(issuerId)
                     .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원 ID입니다."));
