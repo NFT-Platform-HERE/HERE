@@ -1,7 +1,8 @@
 import { NFT_SERVER_URL } from "@/utils/urls";
 import { useMutation } from "react-query";
 import axios from "axios";
-import { Mint } from "./../../types/Mint";
+import { Mint } from "../../types/Mint";
+import useExpUpdate from "../member/useExpUpdate";
 
 const fetcher = (payload: Mint) =>
   axios
@@ -17,10 +18,15 @@ const fetcher = (payload: Mint) =>
     })
     .then(({ data }) => data);
 
-const useNftMintQuery = () => {
+const useNftMint = () => {
+  const { mutate } = useExpUpdate();
   return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
+    onSuccess: (data, variables) => {
+      const payload = {
+        memberId: variables.issuerId,
+        exp: 15,
+      };
+      mutate(payload);
     },
     onError: () => {
       console.log("onERROR");
@@ -28,4 +34,4 @@ const useNftMintQuery = () => {
   });
 };
 
-export default useNftMintQuery;
+export default useNftMint;

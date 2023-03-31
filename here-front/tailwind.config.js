@@ -25,6 +25,7 @@ module.exports = {
       zIndex: num(300),
       screens: {
         mobile: { max: "480px" },
+        banner: { max: "1200px" },
       },
       colors: {
         transparent: "transparent",

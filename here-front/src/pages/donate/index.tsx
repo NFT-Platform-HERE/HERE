@@ -94,8 +94,7 @@ export default function DonatePage() {
           bgColor={"#FF9999"}
           imgUrl={"banners/donateBannerWeb.png"}
         />
-        <div className="absolute left-[50%] top-196 translate-x-[-50%]">
-          {/* 이 친구를 어떻게 배치한담... (화면 작아졌을 때 위치 이상함) */}
+        <div className="absolute top-196 left-[50%] translate-x-[-50%] banner:left-[600px]">
           <MoveBtn
             width={180}
             height={30}

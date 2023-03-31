@@ -28,7 +28,7 @@ export default function DonateSearchInputBox({
   return (
     <div className="flex h-65 w-700 items-center rounded-55 border border-pen-0 mobile:h-35 mobile:w-290">
       <input
-        className="flex-grow pl-44 text-20 outline-none mobile:pl-20 mobile:text-11"
+        className="ml-44 flex-grow text-20 outline-none mobile:ml-20 mobile:text-11"
         type="text"
         onChange={onChange}
         value={value}

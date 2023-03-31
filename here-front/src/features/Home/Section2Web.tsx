@@ -1,11 +1,18 @@
+import MoveBtn from "@/components/Button/MoveBtn";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function Section2Web() {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const router = useRouter();
+  const goToNFTPage = () => {
+    router.push("/my-nft");
+  };
 
   return (
     <section className="my-99 mx-auto flex w-[75rem] justify-center mobile:w-0">
@@ -27,8 +34,21 @@ export default function Section2Web() {
           className="w-320"
         />
       </div>
-      <div className="mx-20" data-aos="fade-left" data-aos-duration="1500">
+      <div
+        className="relative mx-20"
+        data-aos="fade-left"
+        data-aos-duration="1500"
+      >
         <img src="mainItems/mainNFT.png" alt="mainNFT" className="w-440" />
+        <div className="absolute right-6 -bottom-6">
+          <MoveBtn
+            width={160}
+            height={28}
+            children={"나의 NFT 보러가기"}
+            fontSize={13}
+            onClick={goToNFTPage}
+          />
+        </div>
       </div>
     </section>
   );

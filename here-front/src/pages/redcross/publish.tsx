@@ -16,7 +16,8 @@ import {
   NftType,
   RhType,
 } from "@/enum/statusType";
-import useNftMintQuery from "@/apis/redcross/useNftMintQuery";
+
+import useNftMint from "@/apis/redcross/useNftMint";
 import { Mint } from "@/types/Mint";
 
 const MySwal = withReactContent(Swal);
@@ -43,7 +44,7 @@ export default function RedCrossPublishPage() {
   const [formValid, setFormValid] = useState(false);
   const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
 
-  const mutation = useNftMintQuery();
+  const mutation = useNftMint();
 
   const {
     blood,

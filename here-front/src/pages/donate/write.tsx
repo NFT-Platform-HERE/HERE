@@ -7,8 +7,9 @@ import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useDonateWriteQuery from "./../../apis/donate/useDonateWriteQuery";
+import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
+import getDateString from "@/utils/getDateString";
 
 export default function DonateWritePage() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function DonateWritePage() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
 
-  const mutation = useDonateWriteQuery();
+  const mutation = useDonateWrite();
 
   const dateBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -94,11 +95,10 @@ export default function DonateWritePage() {
     const writeData = {
       title: title.trim(),
       goalQuantity: targetQuantity,
-      deadline: deadLineDate,
+      deadline: getDateString(deadLineDate),
       content: description,
       memberId: memberId,
     };
-    console.log(writeData);
 
     formData.append(
       "saveBoardRequestDto",
@@ -175,7 +175,7 @@ export default function DonateWritePage() {
             type="text"
             onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
-            className="mb-5 text-20 text-pen-2 outline-none mobile:text-13"
+            className="mb-5 w-950 text-20 text-pen-2 outline-none mobile:w-full mobile:text-16"
           />
           <div className="mb-15 h-1 w-full bg-gray-200"></div>
           <div className="mb-5 flex items-center justify-start">
@@ -196,9 +196,9 @@ export default function DonateWritePage() {
               className="h-70 w-70 mobile:h-45 mobile:w-45"
             />
           </div>
-          <div className="mb-25 flex items-center justify-between ">
-            <div className="flex items-center justify-start">
-              <div className="mr-31 text-18 font-normal text-pen-2 mobile:text-14">
+          <div className="mb-25 flex flex-wrap items-center justify-between">
+            <div className="flex items-center justify-start mobile:mb-10">
+              <div className="mr-31 text-18 font-normal text-pen-2 mobile:mr-15 mobile:w-80 mobile:text-14">
                 * 마감기한
               </div>
               <div className="flex-auto">
