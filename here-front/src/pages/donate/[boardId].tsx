@@ -17,6 +17,8 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 interface Iprops {
   boardId: string;
@@ -29,10 +31,12 @@ export default function DonateDetailPage({ boardId }: Iprops) {
   timeago.register("ko", koLocale);
 
   const nowBoard = useDonateDetailQuery(parseInt(boardId));
-  console.log(nowBoard);
+  console.log("nowBoard", nowBoard);
 
-  const memberId = nowBoard?.data.memberId;
-  const writerInfo = useMemberInfoQuery(memberId);
+  const writerId = nowBoard?.data.memberId;
+  const writerInfo = useMemberInfoQuery(writerId);
+
+  const memberId = useSelector((state: RootState) => state.member.memberId);
 
   const closeModal = () => {
     setOpendSendModal(false);
@@ -43,8 +47,16 @@ export default function DonateDetailPage({ boardId }: Iprops) {
       <div className="mx-auto flex w-1200 justify-center mobile:w-350 mobile:flex-col ">
         <Suspense fallback={<CircularProgress />}>
           <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
-            <div className="mb-18 h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
-              <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
+            <div className="flex justify-between mb-18">
+              <div className="h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
+                <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
+              </div>
+              {writerId == memberId ?
+                <div className="text-pen-2">
+                  <span className="mx-6" onClick={() => { }}>수정</span>
+                  <span className="mx-6" onClick={() => { }}>삭제</span>
+                </div> : null
+              }
             </div>
             <div className="mb-35 text-22 font-light mobile:text-18">
               {nowBoard.data.title}
@@ -123,22 +135,32 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 </p>
               </div>
             </div>
-            <CommonBtn
-              width={250}
-              height={50}
-              fontSize={18}
-              children={"기부하기"}
-              isDisabled={false}
-              onClick={() => setOpendSendModal(true)}
-            />
+            {writerId == memberId ?
+              <CommonBtn
+                width={250}
+                height={50}
+                fontSize={18}
+                children={"마감하기"}
+                isDisabled={false}
+                onClick={() => { }}
+              /> :
+              <CommonBtn
+                width={250}
+                height={50}
+                fontSize={18}
+                children={"기부하기"}
+                isDisabled={false}
+                onClick={() => setOpendSendModal(true)}
+              />
+            }
             {opendSendModal && (
               <DonateSendModal
                 onClick={closeModal}
                 writerInfo={writerInfo.data}
-                writerId={memberId}
+                writerId={writerId}
               />
             )}
-            <DonateCheerMsg memberId={memberId} boardId={boardId} />
+            <DonateCheerMsg memberId={writerId} boardId={boardId} />
           </Suspense>
         </div>
       </div>
