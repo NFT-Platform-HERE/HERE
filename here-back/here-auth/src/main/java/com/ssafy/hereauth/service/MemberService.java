@@ -125,6 +125,7 @@ public class MemberService {
                 .recentBdDate(recentBdDate)
                 .nextWholeBdDays(nextWholeBdDays)
                 .nextNotWholeBdDays(nextNotWholeBdDays)
+                .walletAddress(member.getWalletAddress())
                 .build();
 
         ResponseSuccessDto<MemberProfileResponseDto> res = responseUtil.successResponse(memberProfileResponseDto, HereStatus.HERE_SUCCESS_FIND_MEMBER);

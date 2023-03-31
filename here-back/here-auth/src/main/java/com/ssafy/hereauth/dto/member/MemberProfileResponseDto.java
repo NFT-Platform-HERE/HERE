@@ -20,4 +20,6 @@ public class MemberProfileResponseDto {
     private LocalDateTime recentBdDate;
     private int nextWholeBdDays;
     private int nextNotWholeBdDays;
+
+    private String walletAddress;
 }
