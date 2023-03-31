@@ -1,4 +1,4 @@
-import { Blood, NftType, RhType } from "@/utils/statusType";
+import { Blood, NftType, RhType } from "@/enum/statusType";
 
 export interface MetaInfo {
   name: string;

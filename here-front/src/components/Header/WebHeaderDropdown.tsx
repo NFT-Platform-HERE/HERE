@@ -32,12 +32,12 @@ export default function WebHeaderDropdown() {
         ></img>
       </div>
       <div className="mt-10 text-15">{nickname}</div>
-      <div className="mt-10" onClick={openAlarm}>
+      <div className="mt-10 cursor-pointer" onClick={openAlarm}>
         <img src="/icons/alarm.svg"></img>
       </div>
       {openAlarmModal && <WebAlarmModal />}
 
-      <div className="mt-10 text-15" onClick={Logout}>
+      <div className="mt-10 cursor-pointer text-15" onClick={Logout}>
         LOGOUT
       </div>
     </div>

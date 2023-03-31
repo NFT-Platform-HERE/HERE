@@ -11,54 +11,26 @@ import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
 
-const swiperList = [
-  {
-    index: 2,
-  },
-  {
-    index: 3,
-  },
-  {
-    index: 4,
-  },
-  {
-    index: 5,
-  },
-  {
-    index: 6,
-  },
-  {
-    index: 7,
-  },
-  {
-    index: 8,
-  },
-  {
-    index: 9,
-  },
-];
-
 export default function MyNFTPage() {
   const NFTCardBackIndex = useSelector((state: RootState) => {
     return state.selectedNFT.selectedNFT;
   });
-  const selectedCardList = useSelector((state: RootState) => {
-    return state.myNFT.selectedNFTList;
-  });
+
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const [capture, setCapture] = useState<string>("front-capture");
 
   useEffect(() => {
-    if (NFTCardBackIndex === 0) {
+    if (NFTCardBackIndex === -1) {
       setCapture("front-capture");
     } else {
       setCapture("back-capture");
     }
   }, [NFTCardBackIndex]);
 
-  const myNFTList = useMyNFTListQuery(memberId);
+  const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
 
+  console.log(myNFTList);
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
       <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
@@ -82,14 +54,11 @@ export default function MyNFTPage() {
           </div>
 
           <div className="relative flex w-983 justify-center gap-43 mobile:w-full mobile:items-center">
-            <MyNFTDetailList
-              selectedCardList={selectedCardList}
-              MyNFTList={myNFTList && myNFTList.data}
-            />
+            <MyNFTDetailList MyNFTList={myNFTList && myNFTList.data} />
           </div>
         </div>
       </div>
-      {NFTCardBackIndex !== 0 && <MyNFTDetailBackModal />}
+      {NFTCardBackIndex !== -1 && <MyNFTDetailBackModal />}
       <div className="mobile:hidden">
         <QrCodeReader />
       </div>

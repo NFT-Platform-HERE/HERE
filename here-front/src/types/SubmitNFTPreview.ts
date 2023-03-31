@@ -4,4 +4,5 @@ export interface SubmitNFTPreview {
   name?: string;
   createdDate: string;
   isOwner: boolean;
+  hashValue: string;
 }

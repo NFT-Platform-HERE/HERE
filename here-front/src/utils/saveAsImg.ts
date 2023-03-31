@@ -1,11 +1,11 @@
 import * as htmlToImage from "html-to-image";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 export const saveNFTImage = (id: string) => {
   let width;
   let height;
 
   const node = document.getElementById(id);
+
   if (node === null) {
     return;
   }
@@ -16,12 +16,14 @@ export const saveNFTImage = (id: string) => {
     width = 566;
     height = 350;
   }
+
   htmlToImage
-    .toPng(node, { quality: 1, canvasWidth: width, canvasHeight: height })
+    .toPng(node, { canvasWidth: width, canvasHeight: height, cacheBust: true })
     .then((dataUrl) => {
       const link = window.document.createElement("a");
       link.download = "blood_donation.png";
       link.href = dataUrl;
       link.click();
-    });
+    })
+    .catch((err) => console.log(err));
 };

@@ -1,3 +1,5 @@
+import useMyNFTMetaDataQuery from "@/apis/my-nft/useMyNFTMetaDataQuery";
+import useMyNFTMetaURLQuery from "@/apis/my-nft/useMyNFTMetaURLQuery";
 import NFTCardBack from "@/components/Card/NFTCardBack";
 import { RootState } from "@/stores/store";
 import { useEffect, useState } from "react";
@@ -6,6 +8,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function SubmitNFTDetailList() {
   const [curIdx, setCurIdx] = useState<number>(0);
+  const tokenId = useSelector((state: RootState) => {
+    return state.submitSelectedOrganizationNFT.selectedOrganizationTokenId;
+  });
+
+  const NFTInfoList = useSelector((state: RootState) => {
+    return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
+  });
+
+  const { data } = useMyNFTMetaURLQuery(tokenId);
+  const result = useMyNFTMetaDataQuery(data);
+
+  const hospitalData = useMyNFTMetaURLQuery(NFTInfoList[curIdx]?.tokenId);
+  const hospitalResult = useMyNFTMetaDataQuery(hospitalData.data);
 
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";
@@ -73,12 +88,14 @@ export default function SubmitNFTDetailList() {
                     <NFTCardBack
                       height={isActive ? 350 : 300}
                       fontSize={isActive ? 18 : 16}
+                      detail={hospitalResult.data}
                     />
                   </div>
                   <div className="hidden mobile:block">
                     <NFTCardBack
                       height={isActive ? 203 : 150}
                       fontSize={isActive ? 12 : 10}
+                      detail={hospitalResult.data}
                     />
                   </div>
                 </div>
@@ -91,10 +108,10 @@ export default function SubmitNFTDetailList() {
   ) : (
     <div className="mt-25 flex justify-center mobile:mt-0">
       <div className="mobile:hidden">
-        <NFTCardBack height={350} fontSize={18} />
+        <NFTCardBack height={350} fontSize={18} detail={result.data} />
       </div>
       <div className="hidden mobile:block">
-        <NFTCardBack height={203} fontSize={12} />
+        <NFTCardBack height={203} fontSize={12} detail={result.data} />
       </div>
     </div>
   );

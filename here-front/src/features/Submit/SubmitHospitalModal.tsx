@@ -1,7 +1,10 @@
+import useHospitalNFTSubmit from "@/apis/submit/useHospitalNFTSubmit";
 import useSearchQuery from "@/apis/submit/useSearchQuery";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
+import { RootState } from "@/stores/store";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Iprops {
   onClick: () => void;
@@ -15,7 +18,20 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
     setSearchInput(e.target.value);
   };
 
-  const onClickSubmit = () => {};
+  const submitNFTList = useSelector((state: RootState) => {
+    return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
+  });
+
+  const [hospital, setHospital] = useState<string>("");
+
+  const { mutate } = useHospitalNFTSubmit();
+  const onClickSubmit = () => {
+    mutate({
+      agencyId: hospital,
+      memberId: "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
+      nftList: submitNFTList,
+    });
+  };
 
   return (
     <div>
@@ -44,6 +60,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
                 "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
               }
               key={index}
+              onClick={() => setHospital(item.agencyId)}
             >
               {item.agencyName}
             </div>
@@ -53,7 +70,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
           width={544}
           height={60}
           fontSize={18}
-          onClick={() => console.log("submit!")}
+          onClick={onClickSubmit}
           isDisabled={false}
         >
           제출하기

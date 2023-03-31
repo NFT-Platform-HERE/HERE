@@ -3,7 +3,7 @@ import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
-import { BoardStatus } from "@/utils/statusType";
+import { BoardStatus } from "@/enum/statusType";
 
 interface Iprops {
   boardId: number;
