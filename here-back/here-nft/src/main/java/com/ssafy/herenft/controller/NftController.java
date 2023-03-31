@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-@Api("제출해요 컨트롤러 V1")
+@Api("Nft 컨트롤러 V1")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -65,8 +65,8 @@ public class NftController {
 
     @ApiOperation(value = "기관용/병원용 NFT 목록 조회", notes = "제출해요 페이지에서 인증/제출할 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/{organType}")
-    public ResponseEntity<ResponseSuccessDto<List<?>>> getNftToOrgan(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
-        return ResponseEntity.ok(nftService.getNftToOrgan(memberId, organType));
+    public ResponseEntity<ResponseSuccessDto<List<?>>> getNftListToSubmit(@PathVariable("memberId") UUID memberId, @PathVariable("organType") EnumNftType organType) {
+        return ResponseEntity.ok(nftService.getNftListToSubmit(memberId, organType));
     }
 
     @ApiOperation(value = "기부/병원 제출용 자동선택 NFT 목록 조회", notes = "기부 또는 병원 제출용으로 자동선택된 NFT 목록을 조회합니다.")

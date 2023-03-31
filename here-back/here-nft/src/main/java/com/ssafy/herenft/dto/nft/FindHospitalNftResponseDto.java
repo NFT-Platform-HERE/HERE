@@ -1,7 +1,6 @@
 package com.ssafy.herenft.dto.nft;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 

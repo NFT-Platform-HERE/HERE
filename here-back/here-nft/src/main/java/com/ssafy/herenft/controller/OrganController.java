@@ -1,8 +1,6 @@
 package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalRequestDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;

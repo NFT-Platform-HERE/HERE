@@ -1,16 +1,13 @@
 package com.ssafy.herenft.repository;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herenft.entity.BdHistory;
 import com.ssafy.herenft.entity.Member;
-import com.ssafy.herenft.entity.QBdHistory;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static com.ssafy.herenft.entity.QBdHistory.bdHistory;
 

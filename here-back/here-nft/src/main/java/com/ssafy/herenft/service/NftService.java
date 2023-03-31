@@ -171,10 +171,9 @@ public class NftService {
         return res;
     }
 
-
     /* 기관용/병원용 NFT 목록 조회 */
-    public ResponseSuccessDto<List<?>> getNftToOrgan(UUID memberId, EnumNftType organType) {
-        List<Nft> nftList = new ArrayList<>();
+    public ResponseSuccessDto<List<?>> getNftListToSubmit(UUID memberId, EnumNftType organType) {
+        List<Nft> nftList;
         HereStatus status = null;
 
         if (organType == EnumNftType.AGENCY) {
@@ -182,7 +181,7 @@ public class NftService {
         } else if (organType == EnumNftType.HOSPITAL) {
             nftList = nftRepository.findAllByOwnerIdAndType(memberId, EnumNftType.HOSPITAL);
         } else {
-            throw new RuntimeException("잘못된 organType 입니다!");
+            throw new RuntimeException("잘못된 organType 입니다.");
         }
 
         List result = new ArrayList<>();
@@ -199,6 +198,7 @@ public class NftService {
             if(organType == EnumNftType.HOSPITAL) {
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
                         .tokenId(nft.getTokenId())
+                        .hashValue(nft.getHashValue())
                         .name(issuer.getName())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
@@ -209,6 +209,7 @@ public class NftService {
                 BdHistory bdHistory = bdHistoryRepository.findBdHistory(issuer, nft.getCreatedDate());
                 GetNftAgencyResponseDto getNftAgencyResponseDto = GetNftAgencyResponseDto.builder()
                         .tokenId(nft.getTokenId())
+                        .hashValue(nft.getHashValue())
                         .place(bdHistory.getPlace())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
@@ -216,9 +217,7 @@ public class NftService {
                 result.add(getNftAgencyResponseDto);
                 status = HereStatus.HERE_FIND_NFT_LIST_AGENCY;
             }
-
         }
-
         ResponseSuccessDto<List<?>> res = responseUtil.successResponse(result, status != null ? status:HereStatus.HERE_NOT_FOUND_NFT_LIST);
         return res;
     }

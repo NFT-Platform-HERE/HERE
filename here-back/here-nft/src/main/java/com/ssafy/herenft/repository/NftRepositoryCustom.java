@@ -1,6 +1,5 @@
 package com.ssafy.herenft.repository;
 
-import com.ssafy.herenft.dto.nft.TransferOwnershipResponseDto;
 import com.ssafy.herenft.entity.Nft;
 
 import java.util.List;

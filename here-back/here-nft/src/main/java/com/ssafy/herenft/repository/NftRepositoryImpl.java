@@ -5,7 +5,6 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herenft.entity.Nft;
-import com.ssafy.herenft.entity.QNft;
 import com.ssafy.herenft.eunmeration.EnumNftType;
 
 import javax.persistence.EntityManager;
