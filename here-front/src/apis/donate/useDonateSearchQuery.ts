@@ -1,27 +1,31 @@
 import { DONATE_SERVER_URL } from "@/utils/urls";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import * as queryKeys from "@/constants/queryKeys";
-import { Donation } from "./../../types/Donation";
 
-const fetcher = (search: string) =>
+const fetcher = (search: string, pageParam: number) =>
   axios
     .get(DONATE_SERVER_URL + `/board/search`, {
       params: {
         query: search,
+        page: pageParam,
       },
     })
     .then(({ data }) => {
-      const response = data.data as Donation[];
-      return response;
-    })
-    .catch((err) => console.log(err));
+      return data.data;
+    });
 
 const useDonateSearchQuery = (search: string) => {
-  return useQuery([queryKeys.DONATE_SEARCH, search], () => fetcher(search), {
-    // suspense: true,
-    enabled: !!search,
-  });
+  return useInfiniteQuery(
+    [queryKeys.DONATE_SEARCH, search],
+    ({ pageParam = 0 }) => fetcher(search, pageParam),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        return lastPage.last ? undefined : lastPage.number + 1;
+      },
+      enabled: !!search,
+    },
+  );
 };
 
 export default useDonateSearchQuery;
