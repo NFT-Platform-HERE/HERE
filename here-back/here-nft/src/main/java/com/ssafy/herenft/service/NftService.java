@@ -45,11 +45,11 @@ public class NftService {
         Boolean isLevelUp = false;
 
         // 어제, 오늘 날짜 범위 설정
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+        LocalDateTime before = LocalDateTime.now().minusMinutes(2);
+        LocalDateTime after = LocalDateTime.now().plusMinutes(2);
 
         // 어제 오늘 날짜 범위안에 같은 이슈어 아이디인 nft 찾기
-        Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), yesterday, tomorrow);
+        Optional<BdHistory> byIssuerIdAndCreatedDateBetween = bdHistoryRepository.findTop1ByMemberIdAndIssuedDateBetween(nft.getIssuerId(), before, after);
 
         // 한 번 민팅된 nft가 없으면, 즉 현재 민팅 nft가 첫번째 민팅 경우라면
         if (byIssuerIdAndCreatedDateBetween.isEmpty()) {
