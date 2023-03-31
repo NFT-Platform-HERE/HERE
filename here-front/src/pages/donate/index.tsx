@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
 import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
-import { Donation } from "@/types/Donation";
 
 export default function DonatePage() {
   const router = useRouter();
