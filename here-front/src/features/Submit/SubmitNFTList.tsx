@@ -5,8 +5,15 @@ import useSubmitNFTListQuery from "@/apis/submit/useSubmitNFTListQuery";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { useDispatch } from "react-redux";
-import { selectNFT } from "@/stores/submit/selectedOrganizationNFT";
-import { addNFT, deleteNFT } from "@/stores/submit/selectedHospitalNFT";
+import { selectNFT, setTokenId } from "@/stores/submit/selectedOrganizationNFT";
+import {
+  addNFT,
+  addTokenId,
+  clearNFTList,
+  clearTokenIdList,
+  deleteNFT,
+  deleteTokenId,
+} from "@/stores/submit/selectedHospitalNFT";
 import { SubmitNFTPreview } from "@/types/SubmitNFTPreview";
 import SubmitHospitalNFTListItem from "./SubmitHospitalNFTListItem";
 import useAutoSelectQuery from "@/apis/submit/useAutoSelectQuery";
@@ -28,33 +35,6 @@ const swiperStyle = `
 }
 
 `;
-
-const samplePreview = [
-  {
-    name: "이경택",
-    registerDate: "2023-03-24",
-  },
-  {
-    name: "최정온",
-    registerDate: "2023-02-14",
-  },
-  {
-    name: "조용현",
-    registerDate: "2023-01-14",
-  },
-  {
-    name: "이현구",
-    registerDate: "2022-05-24",
-  },
-  {
-    name: "최규림",
-    registerDate: "2021-02-24",
-  },
-  {
-    name: "김도언",
-    registerDate: "2021-07-24",
-  },
-];
 
 interface Iprops {
   count: number;
@@ -92,14 +72,17 @@ export default function SubmitNFTList({ count }: Iprops) {
     submitTab,
   );
 
-  const handleSetSelectedCard = (index: number) => {
+  const handleSetSelectedCard = (tokenId: number, index: number) => {
     if (submitTab === "AGENCY") {
       dispatch(selectNFT(index));
+      dispatch(setTokenId(tokenId));
     } else if (submitTab === "HOSPITAL") {
       if (selectedCardList.includes(index)) {
         dispatch(deleteNFT(index));
+        dispatch(deleteTokenId(tokenId));
       } else {
         dispatch(addNFT(index));
+        dispatch(addTokenId(tokenId));
       }
     }
   };
@@ -122,6 +105,8 @@ export default function SubmitNFTList({ count }: Iprops) {
       return;
     }
 
+    dispatch(clearNFTList());
+    dispatch(clearTokenIdList());
     const autoSelectData = autoSelectList.data.data;
     const submitNFTData = submitNFTList.data.data;
 
@@ -130,15 +115,25 @@ export default function SubmitNFTList({ count }: Iprops) {
         if (autoSelectData[i].tokenId === submitNFTData[j].tokenId) {
           if (submitTab === "AGENCY") {
             dispatch(selectNFT(j));
+            dispatch(setTokenId(autoSelectData[i].tokenId));
           } else if (submitTab === "HOSPITAL") {
-            if (!selectedCardList.includes(j)) {
-              dispatch(addNFT(j));
-            }
+            dispatch(addNFT(j));
+            dispatch(addTokenId(autoSelectData[i].tokenId));
           }
         }
       }
     }
   }, [autoSelectList?.data]);
+
+  useEffect(() => {
+    if (submitNFTList.data?.data?.length === 0) return;
+    dispatch(clearNFTList());
+    dispatch(selectNFT(0));
+    dispatch(addNFT(0));
+    dispatch(setTokenId(submitNFTList.data?.data[0]?.tokenId));
+    dispatch(clearTokenIdList());
+    dispatch(addTokenId(submitNFTList.data?.data[0]?.tokenId));
+  }, [submitNFTList?.data]);
 
   return (
     <div className="relative mt-70 mb-50 flex justify-center mobile:mb-20">
@@ -157,14 +152,14 @@ export default function SubmitNFTList({ count }: Iprops) {
                   <SubmitOrganizationNFTListItem
                     place={item.place!}
                     registerDate={item.createdDate.slice(0, 10)}
-                    onClick={() => handleSetSelectedCard(index)}
+                    onClick={() => handleSetSelectedCard(item.tokenId, index)}
                     isSelected={isSelected(index)}
                   />
                 ) : (
                   <SubmitHospitalNFTListItem
                     name={item.name!}
                     registerDate={item.createdDate.slice(0, 10)}
-                    onClick={() => handleSetSelectedCard(index)}
+                    onClick={() => handleSetSelectedCard(item.tokenId, index)}
                     isSelected={isSelected(index)}
                   />
                 )}
@@ -174,25 +169,28 @@ export default function SubmitNFTList({ count }: Iprops) {
         </Swiper>
       </div>
       <div className="mt-30 hidden w-330 overflow-hidden rounded-10 border-1 border-black mobile:block">
-        {samplePreview.map((item, index) => (
-          <div
-            className="flex h-47 w-330 items-center justify-between border-b-1 border-pen-0 pl-15 pr-15 text-15"
-            onClick={() => handleSetSelectedCard(index)}
-            key={index}
-          >
-            <div className="flex items-center gap-10">
-              <img
-                src="icons/check.svg"
-                className={
-                  (isSelected(index) ? "visible " : "invisible ") + "h-20 w-20"
-                }
-              />
+        {submitNFTList?.data?.data?.map(
+          (item: SubmitNFTPreview, index: number) => (
+            <div
+              className="flex h-47 w-330 items-center justify-between border-b-1 border-pen-0 pl-15 pr-15 text-15"
+              onClick={() => handleSetSelectedCard(item.tokenId, index)}
+              key={index}
+            >
+              <div className="flex items-center gap-10">
+                <img
+                  src="icons/check.svg"
+                  className={
+                    (isSelected(index) ? "visible " : "invisible ") +
+                    "h-20 w-20"
+                  }
+                />
 
-              <div>{item.registerDate}</div>
+                <div>{item.createdDate}</div>
+              </div>
+              <div>{item.name}</div>
             </div>
-            <div>{item.name}</div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
     </div>
   );
