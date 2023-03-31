@@ -6,6 +6,7 @@ import { DonationNft } from "@/types/DonationNft";
 const fetcher = (payload: DonationNft) =>
   axios
     .patch(NFT_SERVER_URL + `/nft/donate`, {
+      boardId: payload.boardId,
       senderId: payload.senderId,
       receiverId: payload.receiverId,
       nftTokenList: payload.nftTokenList,

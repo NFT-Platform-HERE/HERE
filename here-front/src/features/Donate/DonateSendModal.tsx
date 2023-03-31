@@ -25,6 +25,7 @@ const MySwal = withReactContent(Swal);
 interface Iprops {
   onClick: () => void;
   writerId: string;
+  boardId: number;
   writerInfo: MemberInfo | undefined;
 }
 
@@ -32,6 +33,7 @@ export default function DonateSendModal({
   onClick,
   writerId,
   writerInfo,
+  boardId
 }: Iprops) {
   const [count, setCount] = useState<number>(1);
 
@@ -88,6 +90,7 @@ export default function DonateSendModal({
         };
 
         const writePayload: DonationNft = {
+          boardId: boardId,
           receiverId: writerId,
           senderId: senderId,
           nftTokenList: tokenIdList
@@ -102,8 +105,6 @@ export default function DonateSendModal({
         const result = await writeMutation.mutateAsync(writePayload);
 
         console.log("backResult", result);
-
-        // 백엔드 기부 내역 등록(보류)
 
         setOpendLoadingModal(false);
         onClick();

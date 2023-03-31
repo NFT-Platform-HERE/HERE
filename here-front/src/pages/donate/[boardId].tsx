@@ -158,6 +158,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 onClick={closeModal}
                 writerInfo={writerInfo.data}
                 writerId={writerId}
+                boardId={boardId}
               />
             )}
             <DonateCheerMsg memberId={writerId} boardId={boardId} />
