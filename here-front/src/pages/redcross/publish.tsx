@@ -19,6 +19,8 @@ import {
 
 import useNftMint from "@/apis/redcross/useNftMint";
 import { Mint } from "@/types/Mint";
+import useBlockChainNftMint from "./../../apis/redcross/useBlockChainNftMint";
+import { BlockChainMint } from "@/types/BlockChainMint";
 
 const MySwal = withReactContent(Swal);
 
@@ -45,6 +47,8 @@ export default function RedCrossPublishPage() {
   const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
 
   const mutation = useNftMint();
+
+  const blockChainMutation = useBlockChainNftMint();
 
   const {
     blood,
@@ -152,11 +156,13 @@ export default function RedCrossPublishPage() {
 
       setOpendLoadingModal(true);
 
-      const result = await mintBloodNFT(
-        wallet,
-        ipfsResultAgencyUrl,
-        ipfsResultHospitalUrl,
-      );
+      const mintPayload: BlockChainMint = {
+        account: wallet,
+        agencyTokenUrl: ipfsResultAgencyUrl,
+        hospitalTokenUrl: ipfsResultHospitalUrl,
+      };
+
+      const result = await blockChainMutation.mutateAsync(mintPayload);
 
       const agencyTokenId = result.events.Transfer[0].returnValues.tokenId;
       const hospitalTokenId = result.events.Transfer[1].returnValues.tokenId;
@@ -192,6 +198,7 @@ export default function RedCrossPublishPage() {
       setOpendLoadingModal(false);
       successMint();
     } catch (error) {
+      console.error("error", error);
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);
@@ -270,7 +277,7 @@ export default function RedCrossPublishPage() {
   };
 
   return (
-    <div className="mx-auto mt-40 w-1000 text-center text-20 leading-50">
+    <div className="mx-auto mt-40 mb-30 w-1000 text-center text-20 leading-50">
       <p className="text-24">헌혈증 NFT 발급</p>
       <div className="my-20 mx-auto mt-30 flex w-650 justify-between">
         <label htmlFor="name">이름</label>
