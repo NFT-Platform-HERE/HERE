@@ -190,6 +190,9 @@ public class NftService {
 
         for (Nft nft : nftList) {
             System.out.println("@@@ createdDate @@@");
+            System.out.println(nft.toString());
+            System.out.println("id = " + nft.getId());
+            System.out.println("tokenId = " + nft.getTokenId());
             System.out.println(nft.getCreatedDate());
             UUID issuerId = nft.getIssuerId();
             Member issuer = memberRepository.findById(issuerId)
