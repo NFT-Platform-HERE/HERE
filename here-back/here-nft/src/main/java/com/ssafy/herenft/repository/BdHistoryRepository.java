@@ -1,7 +1,6 @@
 package com.ssafy.herenft.repository;
 
 import com.ssafy.herenft.entity.BdHistory;
-import com.ssafy.herenft.entity.Nft;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

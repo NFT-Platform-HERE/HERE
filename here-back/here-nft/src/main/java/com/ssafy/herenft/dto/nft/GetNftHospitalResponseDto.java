@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class GetNftHospitalResponseDto {
     private Long tokenId;
+    private String hashValue;
     private String name;
     private LocalDateTime createdDate;
     private Boolean isOwner;

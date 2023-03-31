@@ -4,8 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.herenft.dto.nft.SaveNftRequestDto;
 import com.ssafy.herenft.eunmeration.EnumBdHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumBdHistoryType;
-import com.ssafy.herenft.repository.BdHistoryRepository;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

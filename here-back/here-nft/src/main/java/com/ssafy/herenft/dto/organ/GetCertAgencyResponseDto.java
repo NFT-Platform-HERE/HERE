@@ -1,6 +1,5 @@
 package com.ssafy.herenft.dto.organ;
 
-import com.ssafy.herenft.dto.nft.NftObjectDto;
 import lombok.Builder;
 import lombok.Getter;
 

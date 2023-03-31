@@ -3,8 +3,6 @@ package com.ssafy.herenft.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.herenft.dto.nft.NftObjectDto;
 import com.ssafy.herenft.dto.nft.SubmitCertAgencyRequestDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalRequestDto;
-import com.ssafy.herenft.eunmeration.EnumBdHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
@@ -75,15 +73,4 @@ public class CertHistory {
         this.tokenId = nft.getTokenId();
         this.hashValue = nft.getHashValue();
     }
-
-
-//    public void createCertHistory(Member member, Member agency, CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-//        this.member = member;
-//        this.agency = agency;
-//        this.type = certHistoryCreateRequestDto.getType();
-//        this.status = EnumCertHistoryStatus.ACTIVE;
-//        this.reason = certHistoryCreateRequestDto.getReason();
-//        this.hashValue = certHistoryCreateRequestDto.getHashValue();
-//    }
-
 }

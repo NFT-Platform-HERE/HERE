@@ -1,6 +1,5 @@
 package com.ssafy.herenft.dto.nft;
 
-import com.ssafy.herenft.eunmeration.EnumCertHistoryType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,5 +13,4 @@ public class SubmitCertAgencyRequestDto {
     private String reason;
     private String hashValue;
     private Long tokenId;
-
 }
