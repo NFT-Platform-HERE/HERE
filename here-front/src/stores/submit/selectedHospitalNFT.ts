@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface selectedHospitalNFTState {
   selectedHospitalNFTList: number[];
-  selectedHospitalNFTTokenIdList: number[];
+  selectedHospitalNFTInfoList: { tokenId: number; hashValue: string }[];
 }
 
 const initialState: selectedHospitalNFTState = {
   selectedHospitalNFTList: [],
-  selectedHospitalNFTTokenIdList: [],
+  selectedHospitalNFTInfoList: [],
 };
 
 const submitSelectedHospitalNFTSlice = createSlice({
@@ -17,8 +17,8 @@ const submitSelectedHospitalNFTSlice = createSlice({
     addNFT(state, action) {
       state.selectedHospitalNFTList.push(action.payload);
     },
-    addTokenId(state, action) {
-      state.selectedHospitalNFTTokenIdList.push(action.payload);
+    addNFTInfo(state, action) {
+      state.selectedHospitalNFTInfoList.push(action.payload);
     },
     deleteNFT(state, action) {
       state.selectedHospitalNFTList = state.selectedHospitalNFTList.filter(
@@ -27,10 +27,10 @@ const submitSelectedHospitalNFTSlice = createSlice({
         },
       );
     },
-    deleteTokenId(state, action) {
-      state.selectedHospitalNFTTokenIdList =
-        state.selectedHospitalNFTTokenIdList.filter((selectedTokenId) => {
-          return action.payload !== selectedTokenId;
+    deleteNFTInfo(state, action) {
+      state.selectedHospitalNFTInfoList =
+        state.selectedHospitalNFTInfoList.filter(({ tokenId }) => {
+          return action.payload.tokenId !== tokenId;
         });
     },
 
@@ -38,19 +38,19 @@ const submitSelectedHospitalNFTSlice = createSlice({
       state.selectedHospitalNFTList = [];
     },
 
-    clearTokenIdList(state) {
-      state.selectedHospitalNFTTokenIdList = [];
+    clearNFTInfoList(state) {
+      state.selectedHospitalNFTInfoList = [];
     },
   },
 });
 
 export const {
   addNFT,
-  addTokenId,
+  addNFTInfo,
   deleteNFT,
-  deleteTokenId,
+  deleteNFTInfo,
   clearNFTList,
-  clearTokenIdList,
+  clearNFTInfoList,
 } = submitSelectedHospitalNFTSlice.actions;
 
 export default submitSelectedHospitalNFTSlice.reducer;

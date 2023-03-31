@@ -15,10 +15,10 @@ const fetcher = (info: SubmitHospitalNFT) =>
 const useHospitalNFTSubmit = () => {
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("성공!");
+      console.log(data);
     },
-    onError: () => {
-      console.log("onERROR");
+    onError: (err, variables) => {
+      console.log(err, variables);
     },
   });
 };

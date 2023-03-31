@@ -5,5 +5,4 @@ export interface NFTDetail {
   type: string;
   createdDate: string;
   place: string;
-  hashValue?: string;
 }

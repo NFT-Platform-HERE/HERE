@@ -8,11 +8,11 @@ import { useDispatch } from "react-redux";
 import { selectNFT, setTokenId } from "@/stores/submit/selectedOrganizationNFT";
 import {
   addNFT,
-  addTokenId,
+  addNFTInfo,
+  clearNFTInfoList,
   clearNFTList,
-  clearTokenIdList,
   deleteNFT,
-  deleteTokenId,
+  deleteNFTInfo,
 } from "@/stores/submit/selectedHospitalNFT";
 import { SubmitNFTPreview } from "@/types/SubmitNFTPreview";
 import SubmitHospitalNFTListItem from "./SubmitHospitalNFTListItem";
@@ -72,17 +72,26 @@ export default function SubmitNFTList({ count }: Iprops) {
     submitTab,
   );
 
-  const handleSetSelectedCard = (tokenId: number, index: number) => {
+  const handleSetSelectedCard = (
+    tokenId: number,
+    hashValue: string,
+    index: number,
+  ) => {
     if (submitTab === "AGENCY") {
       dispatch(selectNFT(index));
       dispatch(setTokenId(tokenId));
     } else if (submitTab === "HOSPITAL") {
       if (selectedCardList.includes(index)) {
         dispatch(deleteNFT(index));
-        dispatch(deleteTokenId(tokenId));
+        dispatch(deleteNFTInfo(tokenId));
       } else {
         dispatch(addNFT(index));
-        dispatch(addTokenId(tokenId));
+        dispatch(
+          addNFTInfo({
+            tokenId: tokenId,
+            hashValue: hashValue,
+          }),
+        );
       }
     }
   };
@@ -106,7 +115,7 @@ export default function SubmitNFTList({ count }: Iprops) {
     }
 
     dispatch(clearNFTList());
-    dispatch(clearTokenIdList());
+    dispatch(clearNFTInfoList());
     const autoSelectData = autoSelectList.data.data;
     const submitNFTData = submitNFTList.data.data;
 
@@ -118,7 +127,12 @@ export default function SubmitNFTList({ count }: Iprops) {
             dispatch(setTokenId(autoSelectData[i].tokenId));
           } else if (submitTab === "HOSPITAL") {
             dispatch(addNFT(j));
-            dispatch(addTokenId(autoSelectData[i].tokenId));
+            dispatch(
+              addNFTInfo({
+                tokenId: autoSelectData[i].tokenId,
+                hashValue: autoSelectData[i].hashValue,
+              }),
+            );
           }
         }
       }
@@ -131,8 +145,13 @@ export default function SubmitNFTList({ count }: Iprops) {
     dispatch(selectNFT(0));
     dispatch(addNFT(0));
     dispatch(setTokenId(submitNFTList.data?.data[0]?.tokenId));
-    dispatch(clearTokenIdList());
-    dispatch(addTokenId(submitNFTList.data?.data[0]?.tokenId));
+    dispatch(clearNFTInfoList());
+    dispatch(
+      addNFTInfo({
+        tokenId: submitNFTList.data?.data[0]?.tokenId,
+        hashValue: submitNFTList.data?.data[0]?.hashValue,
+      }),
+    );
   }, [submitNFTList?.data]);
 
   return (
@@ -152,14 +171,18 @@ export default function SubmitNFTList({ count }: Iprops) {
                   <SubmitOrganizationNFTListItem
                     place={item.place!}
                     registerDate={item.createdDate.slice(0, 10)}
-                    onClick={() => handleSetSelectedCard(item.tokenId, index)}
+                    onClick={() =>
+                      handleSetSelectedCard(item.tokenId, item.hashValue, index)
+                    }
                     isSelected={isSelected(index)}
                   />
                 ) : (
                   <SubmitHospitalNFTListItem
                     name={item.name!}
                     registerDate={item.createdDate.slice(0, 10)}
-                    onClick={() => handleSetSelectedCard(item.tokenId, index)}
+                    onClick={() =>
+                      handleSetSelectedCard(item.tokenId, item.hashValue, index)
+                    }
                     isSelected={isSelected(index)}
                   />
                 )}
@@ -173,7 +196,9 @@ export default function SubmitNFTList({ count }: Iprops) {
           (item: SubmitNFTPreview, index: number) => (
             <div
               className="flex h-47 w-330 items-center justify-between border-b-1 border-pen-0 pl-15 pr-15 text-15"
-              onClick={() => handleSetSelectedCard(item.tokenId, index)}
+              onClick={() =>
+                handleSetSelectedCard(item.tokenId, item.hashValue, index)
+              }
               key={index}
             >
               <div className="flex items-center gap-10">
