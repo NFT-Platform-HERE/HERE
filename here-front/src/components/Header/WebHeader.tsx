@@ -108,7 +108,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
           </div>
         )}
         {dropDown && (
-          <div className="absolute top-[65px] right-0 z-10">
+          <div className="absolute top-[65px] right-0 z-40">
             <WebHeaderDropdown />
           </div>
         )}

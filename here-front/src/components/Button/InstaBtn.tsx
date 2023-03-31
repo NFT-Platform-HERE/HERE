@@ -1,3 +1,5 @@
+import { FaCameraRetro } from "react-icons/fa";
+
 interface Iprops {
   width: number;
   height: number;
@@ -25,8 +27,16 @@ export default function InstaBtn({
       ]}
       onClick={onClick}
     >
-      <img
+      {/* <img
         src="/icons/instagram.png"
+        css={[
+          {
+            width: height - 10,
+            height: height - 10,
+          },
+        ]}
+      /> */}
+      <FaCameraRetro
         css={[
           {
             width: height - 10,
