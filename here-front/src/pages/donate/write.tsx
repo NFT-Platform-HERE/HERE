@@ -224,7 +224,6 @@ export default function DonateWritePage() {
             >
               <img
                 src={"/icons/Img_box_duotone_line.svg"}
-                onClick={handleTargetQuantityMinus}
                 className="h-52 w-52 mobile:h-35 mobile:w-35"
               />
               <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
