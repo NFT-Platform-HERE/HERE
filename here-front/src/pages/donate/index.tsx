@@ -168,31 +168,31 @@ export default function DonatePage() {
               {/* <Suspense fallback={<CircularProgress />}> */}
               {isChecked &&
                 donateMyList.data?.pages?.map((page, idx) => (
-                  <>
-                    <DonateCardList items={page.content!} key={idx} />
+                  <div key={idx}>
+                    <DonateCardList items={page.content!} />
                     {!donateMyList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
                     )}
-                  </>
+                  </div>
                 ))}
               {keyword &&
                 searchList.data?.pages?.map((page, idx) => (
-                  <>
-                    <DonateCardList items={page.content!} key={idx} />
+                  <div key={idx}>
+                    <DonateCardList items={page.content!} />
                     {!searchList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
                     )}
-                  </>
+                  </div>
                 ))}
               {!isChecked &&
                 !keyword &&
                 donateList.data?.pages?.map((page, idx) => (
-                  <>
-                    <DonateCardList items={page.content!} key={idx} />
+                  <div key={idx}>
+                    <DonateCardList items={page.content!} />
                     {!donateList.isFetchingNextPage && (
                       <div ref={ref} className="h-10 w-full"></div>
                     )}
-                  </>
+                  </div>
                 ))}
               {/* </Suspense> */}
             </div>
