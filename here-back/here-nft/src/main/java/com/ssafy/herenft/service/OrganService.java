@@ -135,6 +135,7 @@ public class OrganService {
     }
 
     /* 증명 승인/미승인 목록 조회(기관) */
+    // 발행 목록 조회(적십자)
     public ResponseSuccessDto<List<GetNftRedcrossResponseDto>> getNftRedcross() {
 
         List<Nft> nfts = nftRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
@@ -147,6 +148,7 @@ public class OrganService {
             String memberName = member.getName();
 
             GetNftRedcrossResponseDto getNftRedcrossResponseDto = GetNftRedcrossResponseDto.builder()
+                    .tokenId(nft.getTokenId())
                     .memberName(memberName)
                     .createdDate(nft.getCreatedDate())
                     .build();
