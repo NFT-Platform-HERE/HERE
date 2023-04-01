@@ -146,18 +146,22 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
                 </div>
               )}
-              {writerId == memberId ? (
-                <div className="text-pen-2">
-                  <button className="mx-6" onClick={handleEditButton}>
-                    수정
-                  </button>
-                  {nowBoard.data.curQuantity == 0 ? (
-                    <button className="mx-6" onClick={handleDeleteButton}>
-                      삭제
-                    </button>
+              {nowBoard.data.status == BoardStatus.INACTIVE ? null : (
+                <div>
+                  {writerId == memberId ? (
+                    <div className="text-pen-2">
+                      <button className="mx-6" onClick={handleEditButton}>
+                        수정
+                      </button>
+                      {nowBoard.data.curQuantity == 0 ? (
+                        <button className="mx-6" onClick={handleDeleteButton}>
+                          삭제
+                        </button>
+                      ) : null}
+                    </div>
                   ) : null}
                 </div>
-              ) : null}
+              )}
             </div>
             <div className="mb-35 text-22 font-light mobile:text-18">
               {nowBoard.data.title}
