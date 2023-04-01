@@ -1,3 +1,4 @@
+import useHospitalNftVerify from "@/apis/organization/useHospitalNftVerify";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
 import NFTCardBack from "@/components/Card/NFTCardBack";
@@ -12,18 +13,15 @@ export default function HospitalNFTModal({ onClick }: Iprops) {
   const { hashValueList } = useSelector(
     (state: RootState) => state.organization,
   );
-  console.log(hashValueList);
+  console.log("hashValueList", hashValueList);
   //   const MetaUrl = useMyNFTMetaURLQuery(tokenId);
   //   const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
-  //   const { mutate } = useBlockChainNftVerity();
+  const { mutate } = useHospitalNftVerify();
 
   const checkNFT = () => {
-    // const payload = {
-    //   tokenId,
-    //   hash,
-    // };
-    // mutate(payload);
+    mutate(hashValueList);
     console.log("ㅎㅎㅎㅎ");
+    onClick(0);
   };
 
   return (

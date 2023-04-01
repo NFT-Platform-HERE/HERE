@@ -655,6 +655,31 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
     type: "function",
     constant: true,
   },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "tokenIds",
+        type: "uint256[]",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "hashes",
+        type: "bytes32[]",
+      },
+    ],
+    name: "verifyNFTList",
+    outputs: [
+      {
+        internalType: "bool[]",
+        name: "results",
+        type: "bool[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
 ];
 
 export const HERE_ERC_721_CA = HERE_CA;

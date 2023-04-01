@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
+import { HashValueList } from "@/types/HashValueList";
 
 // 민팅 함수(적십자)
 export const mintBloodNFT = async (
@@ -98,6 +99,24 @@ export const verifyNFT = async (tokenId: number, hash: string) => {
   const result = await hereContract.methods.verifyNFT(tokenId, hash).call();
 
   console.log("verifyNFT result", result);
+};
+
+export const verifyNFTList = async (hashValueList: HashValueList[]) => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract) return;
+
+  const hashes = hashValueList.map((item) => item.hashValue);
+  const tokenIds = hashValueList.map((item) => item.tokenId);
+  console.log("hashes", hashes);
+  console.log("tokenIds", tokenIds);
+
+  const result = await hereContract.methods
+    .verifyNFTList(tokenIds, hashes)
+    .call();
+
+  console.log("verifyNFTList result", result);
 };
 
 // 발행한 모든 NFT 조회(테스트 용으로만 사용)
