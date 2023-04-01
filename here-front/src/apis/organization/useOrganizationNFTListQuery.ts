@@ -19,6 +19,7 @@ const useOrganizationNFTListQuery = (
     () => fetcher(organ, memberId, status),
     {
       onSuccess: (data) => {
+        console.log(data);
         setConfirmList(data);
       },
       enabled: !!memberId,

@@ -13,11 +13,11 @@ export default function RedCrossNFTModal({ tokenId, onClick }: Iprops) {
   const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
 
   return (
-    <>
+    <div>
       <Background onClick={() => onClick(0)} />
       <div className="fixed top-[calc(50%-175px)] left-[calc(50%-283px)] z-30">
         <NFTCardBack height={350} fontSize={18} detail={NFTDetail.data} />
       </div>
-    </>
+    </div>
   );
 }

@@ -54,7 +54,7 @@ export default function RedCrossPage() {
           <div key={idx}>
             <div
               onClick={() => hanldleClick(item.tokenId)}
-              className="flex h-70 w-1000 justify-between text-center"
+              className="flex h-70 w-1000 cursor-pointer justify-between text-center "
             >
               <p className="ml-40 mr-56 inline-block w-100 font-light leading-70">
                 {(page - 1) * postPerPage + idx + 1}
@@ -65,10 +65,10 @@ export default function RedCrossPage() {
               <p className="mr-[6rem] inline-block w-100 font-light leading-70">
                 {item.createdDate.slice(0, 10)}
               </p>
-              {item.tokenId === nowToken && isOpen && (
-                <RedCrossNFTModal tokenId={nowToken} onClick={hanldleClick} />
-              )}
             </div>
+            {item.tokenId === nowToken && isOpen && (
+              <RedCrossNFTModal tokenId={nowToken} onClick={hanldleClick} />
+            )}
             <hr />
           </div>
         ))}
