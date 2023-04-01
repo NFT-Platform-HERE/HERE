@@ -116,6 +116,8 @@ public class BoardService {
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
+        System.out.println("updateBoardRequestDto = " + updateBoardRequestDto);
+        System.out.println("board.getId() = " + board.getId());
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
 
         if(imgUrlList.size() > 4) {
@@ -375,6 +377,8 @@ public class BoardService {
     }
 
     private static void checkAuthorizationToUpdateBoard(UUID writerId, Board board) {
+        System.out.println("writerId = " + writerId);
+        System.out.println("board.getMember().getId() = " + board.getMember().getId());
         if(!board.getMember().getId().equals(writerId)) {
             throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
         }
