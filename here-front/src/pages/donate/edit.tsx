@@ -9,20 +9,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
+import useDonateUpdate from "@/apis/donate/useDonateUpdate";
 
 export default function DonateEditPage() {
   const router = useRouter();
 
   const donateInfo = useSelector((state: RootState) => state.donate);
 
-  console.log("donateInfo", donateInfo);
-
   const [title, setTitle] = useState<string>(donateInfo.title);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(donateInfo.content);
   const [targetQuantity, setTargetQuantity] = useState<number>(
     donateInfo.goalQuantity,
   );
-  const [deadLineDate, setDeadLineDate] = useState<Date>(new Date());
+  const [deadLineDate, setDeadLineDate] = useState<Date>(
+    new Date(donateInfo.deadline),
+  );
 
   const [formValid, setFormValid] = useState(false);
 
@@ -34,6 +35,75 @@ export default function DonateEditPage() {
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>(
     donateInfo.boardImgUrlList,
   );
+
+  const mutation = useDonateUpdate();
+
+  function makeFormData() {
+    const formData = new FormData();
+
+    console.log("memberId", donateInfo.memberId);
+    console.log("boardId", donateInfo.boardId);
+
+    if (donateInfo.curQuantity > 0) {
+      const editData = {
+        title: title.trim(),
+        content: description,
+        memberId: donateInfo.memberId,
+        boardId: donateInfo.boardId,
+      };
+
+      formData.append(
+        "updateBoardRequestDto",
+        new Blob([JSON.stringify(editData)], { type: "application/json" }),
+      );
+
+      if (selectedFiles) {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append(`multipartFileList`, selectedFiles[i]);
+        }
+      }
+
+      return formData;
+    } else {
+      const editData = {
+        title: title.trim(),
+        goalQuantity: targetQuantity,
+        deadline: getDateString(deadLineDate),
+        content: description,
+        memberId: donateInfo.memberId,
+        boardId: donateInfo.boardId,
+      };
+
+      formData.append(
+        "updateBoardRequestDto",
+        new Blob([JSON.stringify(editData)], { type: "application/json" }),
+      );
+
+      if (selectedFiles) {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append(`multipartFileList`, selectedFiles[i]);
+        }
+      }
+
+      return formData;
+    }
+  }
+
+  function handleEditButton() {
+    donateEdit();
+  }
+
+  async function donateEdit() {
+    const formData = makeFormData();
+
+    try {
+      const donateEditeResult = await mutation.mutateAsync(formData);
+      console.log(donateEditeResult);
+      goToDetailPage();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleRemoveClick = (index: number) => () => {
     if (selectedFiles) {
@@ -84,8 +154,8 @@ export default function DonateEditPage() {
     }
   };
 
-  function goToWritePage() {
-    router.push("/donate");
+  function goToDetailPage() {
+    router.push(`/donate/${donateInfo.boardId}`);
   }
 
   const handleTitleInputChange = (
@@ -109,10 +179,6 @@ export default function DonateEditPage() {
     validateForm();
   }, [title, description]);
 
-  useEffect(() => {
-    setDescription(donateInfo.content);
-  }, []);
-
   return (
     <div className="mt-25 w-full">
       <div className="mx-auto w-1200 mobile:w-360">
@@ -124,7 +190,7 @@ export default function DonateEditPage() {
               fontSize={20}
               children={"수정"}
               isDisabled={!formValid}
-              onClick={() => {}}
+              onClick={handleEditButton}
             />
           </div>
           <div className="mt-5 mb-15 hidden justify-end mobile:flex">
@@ -134,7 +200,7 @@ export default function DonateEditPage() {
               fontSize={14}
               children={"수정"}
               isDisabled={!formValid}
-              onClick={() => {}}
+              onClick={handleEditButton}
             />
           </div>
           <input
@@ -149,54 +215,91 @@ export default function DonateEditPage() {
             <div className="mr-31 text-18 font-normal text-pen-2 mobile:text-14">
               * 목표수량
             </div>
-            <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
-              {targetQuantity}
-            </div>
-            <img
-              src={"/icons/minus-circle-button.svg"}
+            {donateInfo.curQuantity > 0 ? (
+              <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 bg-pen-00 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
+                {targetQuantity}
+              </div>
+            ) : (
+              <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
+                {targetQuantity}
+              </div>
+            )}
+            <button
+              disabled={donateInfo.curQuantity > 0 ? true : false}
               onClick={handleTargetQuantityMinus}
-              className="h-70 w-70 mobile:h-45 mobile:w-45"
-            />
-            <img
-              src={"/icons/add-circle-button.svg"}
+            >
+              <img
+                src={"/icons/minus-circle-button.svg"}
+                className="h-70 w-70 mobile:h-45 mobile:w-45"
+              />
+            </button>
+            <button
+              disabled={donateInfo.curQuantity > 0 ? true : false}
               onClick={handleTargetQuantityPlus}
-              className="h-70 w-70 mobile:h-45 mobile:w-45"
-            />
+            >
+              <img
+                src={"/icons/add-circle-button.svg"}
+                className="h-70 w-70 mobile:h-45 mobile:w-45"
+              />
+            </button>
           </div>
           <div className="mb-25 flex flex-wrap items-center justify-between">
             <div className="flex items-center justify-start mobile:mb-10">
               <div className="mr-31 text-18 font-normal text-pen-2 mobile:mr-15 mobile:w-80 mobile:text-14">
                 * 마감기한
               </div>
-              <div className="flex-auto">
-                <DatePicker
-                  selected={deadLineDate}
-                  dateFormat="yyyy년 MM월 dd일"
-                  onChange={(date: Date) => setDeadLineDate(date)}
-                  minDate={new Date()}
-                  locale={ko}
-                  customInput={
-                    <DonateDateButton
-                      value={deadLineDate.toString()}
-                      onClick={() => {}}
-                      forwardedRef={dateBtnRef}
-                    />
-                  }
+
+              {donateInfo.curQuantity > 0 ? (
+                <div className="flex-auto">
+                  <DatePicker
+                    selected={deadLineDate}
+                    disabled={donateInfo.curQuantity > 0 ? true : false}
+                    dateFormat="yyyy년 MM월 dd일"
+                    onChange={(date: Date) => setDeadLineDate(date)}
+                    minDate={new Date()}
+                    locale={ko}
+                    customInput={
+                      <DonateDateButton
+                        value={deadLineDate.toString()}
+                        onClick={() => {}}
+                        forwardedRef={dateBtnRef}
+                        edit={false}
+                      />
+                    }
+                  />
+                </div>
+              ) : (
+                <div className="flex-auto">
+                  <DatePicker
+                    selected={deadLineDate}
+                    disabled={donateInfo.curQuantity > 0 ? true : false}
+                    dateFormat="yyyy년 MM월 dd일"
+                    onChange={(date: Date) => setDeadLineDate(date)}
+                    minDate={new Date()}
+                    locale={ko}
+                    customInput={
+                      <DonateDateButton
+                        value={deadLineDate.toString()}
+                        onClick={() => {}}
+                        forwardedRef={dateBtnRef}
+                        edit={true}
+                      />
+                    }
+                  />
+                </div>
+              )}
+            </div>
+            <button onClick={handleImageSelectButtonClick}>
+              <div className="flex items-center justify-end">
+                <img
+                  src={"/icons/Img_box_duotone_line.svg"}
+                  className="h-52 w-52 mobile:h-35 mobile:w-35"
                 />
+                <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
+                  사진 첨부
+                </div>
               </div>
-            </div>
-            <div
-              className="flex items-center justify-end"
-              onClick={handleImageSelectButtonClick}
-            >
-              <img
-                src={"/icons/Img_box_duotone_line.svg"}
-                className="h-52 w-52 mobile:h-35 mobile:w-35"
-              />
-              <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
-                사진 첨부
-              </div>
-            </div>
+            </button>
           </div>
           <input
             type="file"
@@ -208,7 +311,10 @@ export default function DonateEditPage() {
             hidden
             multiple
           />
-          <DonateTiptap setDescription={setDescription} />
+          <DonateTiptap
+            setDescription={setDescription}
+            description={description}
+          />
           <div className="mb-25 flex items-center justify-start">
             {selectedFiles &&
               imagePreviewUrls.map((imageUrl, index) => (
@@ -219,11 +325,12 @@ export default function DonateEditPage() {
                     alt={`Image Preview ${index}`}
                     className="h-95 w-95 rounded-15"
                   />
-                  <img
-                    src="/icons/Dell.svg"
-                    className="absolute top-5 right-5 h-25 w-25"
-                    onClick={handleRemoveClick(index)}
-                  ></img>
+                  <button onClick={handleRemoveClick(index)}>
+                    <img
+                      src="/icons/Dell.svg"
+                      className="absolute top-5 right-5 h-25 w-25"
+                    />
+                  </button>
                 </div>
               ))}
           </div>
