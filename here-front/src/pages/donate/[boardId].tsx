@@ -58,7 +58,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     confirmDelete();
   }
 
-  function handleEditButton() {}
+  function handleEditButton() {
+    moveDonateEditPage();
+  }
 
   function handleDonateButton() {
     setOpendSendModal(true);
@@ -129,6 +131,10 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
   function moveDonateListPage() {
     router.push("/donate");
+  }
+
+  function moveDonateEditPage() {
+    router.push("/donate/edit");
   }
 
   function disableDonateButton() {

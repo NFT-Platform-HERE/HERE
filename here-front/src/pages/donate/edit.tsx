@@ -7,30 +7,103 @@ import { ko } from "date-fns/locale";
 import DonateTiptap from "@/features/Donate/DonateTiptap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
+import useDonateUpdate from "@/apis/donate/useDonateUpdate";
 
-export default function DonateWritePage() {
+export default function DonateEditPage() {
   const router = useRouter();
 
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState("");
-  const [targetQuantity, setTargetQuantity] = useState<number>(1);
-  const [deadLineDate, setDeadLineDate] = useState<Date>(new Date());
+  const donateInfo = useSelector((state: RootState) => state.donate);
+
+  const [title, setTitle] = useState<string>(donateInfo.title);
+  const [description, setDescription] = useState(donateInfo.content);
+  const [targetQuantity, setTargetQuantity] = useState<number>(
+    donateInfo.goalQuantity,
+  );
+  const [deadLineDate, setDeadLineDate] = useState<Date>(
+    new Date(donateInfo.deadline),
+  );
 
   const [formValid, setFormValid] = useState(false);
-
-  const { memberId } = useSelector((state: RootState) => state.member);
-
-  const mutation = useDonateWrite();
 
   const dateBtnRef = useRef<HTMLButtonElement>(null);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>(
+    donateInfo.boardImgUrlList,
+  );
+
+  const mutation = useDonateUpdate();
+
+  function makeFormData() {
+    const formData = new FormData();
+
+    console.log("memberId", donateInfo.memberId);
+    console.log("boardId", donateInfo.boardId);
+
+    if (donateInfo.curQuantity > 0) {
+      const editData = {
+        title: title.trim(),
+        content: description,
+        memberId: donateInfo.memberId,
+        boardId: donateInfo.boardId,
+      };
+
+      formData.append(
+        "updateBoardRequestDto",
+        new Blob([JSON.stringify(editData)], { type: "application/json" }),
+      );
+
+      if (selectedFiles) {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append(`multipartFileList`, selectedFiles[i]);
+        }
+      }
+
+      return formData;
+    } else {
+      const editData = {
+        title: title.trim(),
+        goalQuantity: targetQuantity,
+        deadline: getDateString(deadLineDate),
+        content: description,
+        memberId: donateInfo.memberId,
+        boardId: donateInfo.boardId,
+      };
+
+      formData.append(
+        "updateBoardRequestDto",
+        new Blob([JSON.stringify(editData)], { type: "application/json" }),
+      );
+
+      if (selectedFiles) {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append(`multipartFileList`, selectedFiles[i]);
+        }
+      }
+
+      return formData;
+    }
+  }
+
+  function handleEditButton() {
+    donateEdit();
+  }
+
+  async function donateEdit() {
+    const formData = makeFormData();
+
+    try {
+      const donateEditeResult = await mutation.mutateAsync(formData);
+      console.log(donateEditeResult);
+      goToDetailPage();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleRemoveClick = (index: number) => () => {
     if (selectedFiles) {
@@ -81,49 +154,8 @@ export default function DonateWritePage() {
     }
   };
 
-  function handleRegisterButton() {
-    writeArticle();
-  }
-
-  function goToWritePage() {
-    router.push("/donate");
-  }
-
-  function makeFormData() {
-    const formData = new FormData();
-
-    const writeData = {
-      title: title.trim(),
-      goalQuantity: targetQuantity,
-      deadline: getDateString(deadLineDate),
-      content: description,
-      memberId: memberId,
-    };
-
-    formData.append(
-      "saveBoardRequestDto",
-      new Blob([JSON.stringify(writeData)], { type: "application/json" }),
-    );
-
-    if (selectedFiles) {
-      for (let i = 0; i < selectedFiles.length; i++) {
-        formData.append(`multipartFileList`, selectedFiles[i]);
-      }
-    }
-
-    return formData;
-  }
-
-  async function writeArticle() {
-    const formData = makeFormData();
-
-    try {
-      const donateWriteResult = await mutation.mutateAsync(formData);
-      console.log(donateWriteResult);
-      goToWritePage();
-    } catch (error) {
-      console.error(error);
-    }
+  function goToDetailPage() {
+    router.push(`/donate/${donateInfo.boardId}`);
   }
 
   const handleTitleInputChange = (
@@ -156,9 +188,9 @@ export default function DonateWritePage() {
               width={95}
               height={50}
               fontSize={20}
-              children={"등록"}
+              children={"수정"}
               isDisabled={!formValid}
-              onClick={handleRegisterButton}
+              onClick={handleEditButton}
             />
           </div>
           <div className="mt-5 mb-15 hidden justify-end mobile:flex">
@@ -166,13 +198,14 @@ export default function DonateWritePage() {
               width={73}
               height={34}
               fontSize={14}
-              children={"등록"}
+              children={"수정"}
               isDisabled={!formValid}
-              onClick={handleRegisterButton}
+              onClick={handleEditButton}
             />
           </div>
           <input
             type="text"
+            value={title}
             onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
             className="mb-5 w-950 text-20 text-pen-2 outline-none mobile:w-full mobile:text-16"
@@ -182,16 +215,28 @@ export default function DonateWritePage() {
             <div className="mr-31 text-18 font-normal text-pen-2 mobile:text-14">
               * 목표수량
             </div>
-            <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
-              {targetQuantity}
-            </div>
-            <button onClick={handleTargetQuantityMinus}>
+            {donateInfo.curQuantity > 0 ? (
+              <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 bg-pen-00 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
+                {targetQuantity}
+              </div>
+            ) : (
+              <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
+                {targetQuantity}
+              </div>
+            )}
+            <button
+              disabled={donateInfo.curQuantity > 0 ? true : false}
+              onClick={handleTargetQuantityMinus}
+            >
               <img
                 src={"/icons/minus-circle-button.svg"}
                 className="h-70 w-70 mobile:h-45 mobile:w-45"
               />
             </button>
-            <button onClick={handleTargetQuantityPlus}>
+            <button
+              disabled={donateInfo.curQuantity > 0 ? true : false}
+              onClick={handleTargetQuantityPlus}
+            >
               <img
                 src={"/icons/add-circle-button.svg"}
                 className="h-70 w-70 mobile:h-45 mobile:w-45"
@@ -203,23 +248,46 @@ export default function DonateWritePage() {
               <div className="mr-31 text-18 font-normal text-pen-2 mobile:mr-15 mobile:w-80 mobile:text-14">
                 * 마감기한
               </div>
-              <div className="flex-auto">
-                <DatePicker
-                  selected={deadLineDate}
-                  dateFormat="yyyy년 MM월 dd일"
-                  onChange={(date: Date) => setDeadLineDate(date)}
-                  minDate={new Date()}
-                  locale={ko}
-                  customInput={
-                    <DonateDateButton
-                      value={deadLineDate.toString()}
-                      onClick={() => {}}
-                      forwardedRef={dateBtnRef}
-                      edit={true}
-                    />
-                  }
-                />
-              </div>
+
+              {donateInfo.curQuantity > 0 ? (
+                <div className="flex-auto">
+                  <DatePicker
+                    selected={deadLineDate}
+                    disabled={donateInfo.curQuantity > 0 ? true : false}
+                    dateFormat="yyyy년 MM월 dd일"
+                    onChange={(date: Date) => setDeadLineDate(date)}
+                    minDate={new Date()}
+                    locale={ko}
+                    customInput={
+                      <DonateDateButton
+                        value={deadLineDate.toString()}
+                        onClick={() => {}}
+                        forwardedRef={dateBtnRef}
+                        edit={false}
+                      />
+                    }
+                  />
+                </div>
+              ) : (
+                <div className="flex-auto">
+                  <DatePicker
+                    selected={deadLineDate}
+                    disabled={donateInfo.curQuantity > 0 ? true : false}
+                    dateFormat="yyyy년 MM월 dd일"
+                    onChange={(date: Date) => setDeadLineDate(date)}
+                    minDate={new Date()}
+                    locale={ko}
+                    customInput={
+                      <DonateDateButton
+                        value={deadLineDate.toString()}
+                        onClick={() => {}}
+                        forwardedRef={dateBtnRef}
+                        edit={true}
+                      />
+                    }
+                  />
+                </div>
+              )}
             </div>
             <button onClick={handleImageSelectButtonClick}>
               <div className="flex items-center justify-end">
