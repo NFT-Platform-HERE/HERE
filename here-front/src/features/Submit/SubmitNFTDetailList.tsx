@@ -49,9 +49,6 @@ export default function SubmitNFTDetailList() {
 
   const hospitalResult = useMyNFTMetaDataQuery(hospitalData?.data);
 
-  console.log("기관", organizationResult);
-  console.log("병원", hospitalResult);
-
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";
     else if (curIdx > index) return "ml-120 -mr-120";

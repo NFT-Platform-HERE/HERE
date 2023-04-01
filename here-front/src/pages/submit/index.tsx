@@ -13,10 +13,7 @@ import QrCodeReader from "@/components/Register/QrCodeReader";
 import "swiper/css";
 import "swiper/css/navigation";
 import { clearNFTList } from "@/stores/submit/selectedHospitalNFT";
-import useAutoSelectQuery from "@/apis/submit/useAutoSelectQuery";
-import clickAutoSelectBtn, {
-  onClickAutoSelectBtn,
-} from "@/stores/submit/clickAutoSelectBtn";
+import { onClickAutoSelectBtn } from "@/stores/submit/clickAutoSelectBtn";
 
 export default function SubmitPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

@@ -3,8 +3,13 @@ import useSearchQuery from "@/apis/submit/useSearchQuery";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
 import { RootState } from "@/stores/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "sweetalert2/dist/sweetalert2.min.css";
+
+const MySwal = withReactContent(Swal);
 
 interface Iprops {
   onClick: () => void;
@@ -22,7 +27,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
 
   const searchHospitalList = useSearchQuery("HOSPITAL", searchInput);
 
-  const { mutate } = useHospitalNFTSubmit();
+  const { mutate, isSuccess, isError } = useHospitalNFTSubmit();
 
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -35,6 +40,31 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
       nftList: submitNFTList,
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClick();
+      MySwal.fire({
+        icon: "success",
+        title: "헌혈증 NFT 제출 완료",
+
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      MySwal.fire({
+        icon: "error",
+        title: "헌혈증 NFT 제출 실패",
+
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }, [isError]);
 
   return (
     <div>
