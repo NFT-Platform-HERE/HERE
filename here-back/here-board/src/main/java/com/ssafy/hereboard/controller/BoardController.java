@@ -54,7 +54,7 @@ public class BoardController {
     @PatchMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseSuccessDto<UpdateBoardResponseDto>> updateBoard(
             @RequestPart UpdateBoardRequestDto updateBoardRequestDto,
-            @RequestPart List<UpdateBoardImgObject> updateBoardImgObjectList,
+            @RequestPart(required = false) List<UpdateBoardImgObject> updateBoardImgObjectList,
             @RequestPart(value = "multipartFileList", required = false) List<MultipartFile> multipartFileList,
             @RequestPart List<Integer> ordersList) throws Exception {
         List<String> imgUrlList = new ArrayList<>();
