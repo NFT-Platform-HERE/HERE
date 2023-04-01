@@ -243,12 +243,10 @@ public class NftService {
                 result.add(getNftHospitalResponseDto);
                 status = HereStatus.HERE_FIND_NFT_LIST_HOSPITAL;
             } else {
-                BdHistory bdHistory = bdHistoryRepository.findBdHistory(issuer, nft.getCreatedDate());
-                if(bdHistory == null) continue;
                 GetNftAgencyResponseDto getNftAgencyResponseDto = GetNftAgencyResponseDto.builder()
                         .tokenId(nft.getTokenId())
                         .hashValue(nft.getHashValue())
-                        .place(bdHistory.getPlace())
+                        .place(nft.getPlace())
                         .createdDate(nft.getCreatedDate())
                         .isOwner(isOwner)
                         .build();
