@@ -117,6 +117,7 @@ export const verifyNFTList = async (hashValueList: HashValueList[]) => {
     .call();
 
   console.log("verifyNFTList result", result);
+  return result;
 };
 
 // 발행한 모든 NFT 조회(테스트 용으로만 사용)

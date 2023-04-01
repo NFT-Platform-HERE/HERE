@@ -16,7 +16,6 @@ const useHospitalNftVerify = () => {
 
   return useMutation(fetcher, {
     onSuccess: (data, variables) => {
-      console.log("하핫 성공!");
       MySwal.fire({
         icon: "success",
         title: "진위 여부가 확인되었습니다",
@@ -28,11 +27,12 @@ const useHospitalNftVerify = () => {
         },
       });
       const tokenIds = variables.map((item) => item.tokenId);
-      console.log(tokenIds);
-      mutate(tokenIds);
+      const verifyTokenIds = tokenIds.filter((token, idx) => {
+        return data[idx] && token;
+      });
+      mutate(verifyTokenIds);
     },
     onError: () => {
-      console.log("유유 error");
       MySwal.fire({
         icon: "error",
         title: "진위 여부 확인에 실패하였습니다",

@@ -1,3 +1,5 @@
+import useMyNFTMetaDataQuery from "@/apis/my-nft/useMyNFTMetaDataQuery";
+import useMyNFTMetaURLQuery from "@/apis/my-nft/useMyNFTMetaURLQuery";
 import useHospitalNftVerify from "@/apis/organization/useHospitalNftVerify";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
@@ -14,8 +16,9 @@ export default function HospitalNFTModal({ onClick }: Iprops) {
     (state: RootState) => state.organization,
   );
   console.log("hashValueList", hashValueList);
-  //   const MetaUrl = useMyNFTMetaURLQuery(tokenId);
-  //   const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
+
+  // const MetaUrl = useMyNFTMetaURLQuery(hashValueList[0].tokenId);
+  // const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
   const { mutate } = useHospitalNftVerify();
 
   const checkNFT = () => {
