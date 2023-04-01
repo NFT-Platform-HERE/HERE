@@ -10,6 +10,7 @@ import com.ssafy.herenft.entity.Member;
 import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryStatus;
+import com.ssafy.herenft.eunmeration.EnumNftType;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
 import com.ssafy.herenft.repository.CertHistoryRepository;
 import com.ssafy.herenft.repository.MemberRepository;
@@ -137,8 +138,7 @@ public class OrganService {
     /* 증명 승인/미승인 목록 조회(기관) */
     // 발행 목록 조회(적십자)
     public ResponseSuccessDto<List<GetNftRedcrossResponseDto>> getNftRedcross() {
-
-        List<Nft> nfts = nftRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+        List<Nft> nfts = nftRepository.findAllByTypeOrderByCreatedDateDesc(EnumNftType.AGENCY);
         List<GetNftRedcrossResponseDto> result = new ArrayList<>();
 
         for (Nft nft : nfts) {

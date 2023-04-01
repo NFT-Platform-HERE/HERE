@@ -13,4 +13,7 @@ public interface NftRepository extends JpaRepository<Nft, Long>, NftRepositoryCu
     List<Nft> findAllByOwnerIdAndType(UUID memberId, EnumNftType hospital);
 
     Nft findByTokenId(Long nftToken);
+
+    List<Nft> findAllByTypeOrderByCreatedDateDesc(EnumNftType type);
+
 }
