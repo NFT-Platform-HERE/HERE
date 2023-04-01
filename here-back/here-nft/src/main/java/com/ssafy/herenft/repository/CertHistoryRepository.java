@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface CertHistoryRepository extends JpaRepository<CertHistory, Long> {
     List<CertHistory> findAllByAgencyIdAndStatusOrderByCreatedDateDesc(UUID agencyId, EnumCertHistoryStatus status);
+
+    CertHistory findByTokenId(Long tokenId);
 }

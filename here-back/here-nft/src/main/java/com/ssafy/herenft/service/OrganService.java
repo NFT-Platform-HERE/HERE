@@ -1,7 +1,7 @@
 package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
-import com.ssafy.herenft.dto.nft.NftObjectDto;
+import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
@@ -18,7 +18,6 @@ import com.ssafy.herenft.repository.NftRepository;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,8 +138,7 @@ public class OrganService {
         return res;
     }
 
-    /* 증명 승인/미승인 목록 조회(기관) */
-    // 발행 목록 조회(적십자)
+    /* 발행 목록 조회(적십자) */
     public ResponseSuccessDto<List<GetNftRedcrossResponseDto>> getNftRedcross() {
         List<Nft> nfts = nftRepository.findAllByTypeOrderByCreatedDateDesc(EnumNftType.AGENCY);
         List<GetNftRedcrossResponseDto> result = new ArrayList<>();
@@ -160,6 +158,38 @@ public class OrganService {
         }
 
         ResponseSuccessDto<List<GetNftRedcrossResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_REDCROSS);
+        return res;
+    }
+
+    /* 제출 기록 승인 여부 갱신(기관) */
+    public ResponseSuccessDto<UpdateCertAgencyResponseDto> updateCertAgency(UpdateCertAgencyRequestDto updateCertAgencyRequestDto) {
+        Long tokenId = updateCertAgencyRequestDto.getTokenId();
+        CertHistory certHistory = certHistoryRepository.findByTokenId(tokenId);
+
+        certHistory.updateCertHistory();
+
+        UpdateCertAgencyResponseDto updateCertAgencyResponseDto = UpdateCertAgencyResponseDto.builder()
+                .message("제출 기록 승인이 완료되었습니다.")
+                .build();
+
+        ResponseSuccessDto<UpdateCertAgencyResponseDto> res = responseUtil.successResponse(updateCertAgencyResponseDto, HereStatus.HERE_UPDATE_CERT_AGENCY);
+        return res;
+    }
+
+    /* 제출 기록 승인 여부 갱신(병원) */
+    public ResponseSuccessDto<UpdateCertHospitalResponseDto> updateCertHospital(UpdateCertHospitalRequestDto updateCertHospitalRequestDto) {
+        List<Long> tokenIdList = updateCertHospitalRequestDto.getTokenIdList();
+
+        for (Long tokenId : tokenIdList) {
+            CertHistory certHistory = certHistoryRepository.findByTokenId(tokenId);
+            certHistory.updateCertHistory();
+        }
+
+        UpdateCertHospitalResponseDto updateCertHospitalResponseDto = UpdateCertHospitalResponseDto.builder()
+                .message("제출 기록 승인이 완료되었습니다.")
+                .build();
+
+        ResponseSuccessDto<UpdateCertHospitalResponseDto> res = responseUtil.successResponse(updateCertHospitalResponseDto, HereStatus.HERE_UPDATE_CERT_HOSPITAL);
         return res;
     }
 }
