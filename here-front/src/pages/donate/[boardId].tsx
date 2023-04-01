@@ -137,9 +137,15 @@ export default function DonateDetailPage({ boardId }: Iprops) {
         <Suspense fallback={<CircularProgress />}>
           <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
             <div className="mb-18 flex justify-between">
-              <div className="h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
-                <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
-              </div>
+              {nowBoard.data.status == BoardStatus.INACTIVE ? (
+                <div className="h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
+                  마감 완료
+                </div>
+              ) : (
+                <div className="h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
+                  <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
+                </div>
+              )}
               {writerId == memberId ? (
                 <div className="text-pen-2">
                   <button className="mx-6" onClick={handleEditButton}>
@@ -236,7 +242,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 height={50}
                 fontSize={18}
                 children={"마감하기"}
-                isDisabled={false}
+                isDisabled={
+                  nowBoard.data.status == BoardStatus.INACTIVE ? true : false
+                }
                 onClick={handleCloseButton}
               />
             ) : (
@@ -245,7 +253,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 height={50}
                 fontSize={18}
                 children={"기부하기"}
-                isDisabled={false}
+                isDisabled={
+                  nowBoard.data.status == BoardStatus.INACTIVE ? true : false
+                }
                 onClick={handleDonateButton}
               />
             )}
