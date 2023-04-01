@@ -62,7 +62,6 @@ export const donateNFTList = async (
 
   console.log("donateNFTList result", result);
   return result;
-
 };
 
 // 헌혈증 NFT 기부 히스토리 불러오는 메소드
@@ -90,7 +89,7 @@ export const getHashValue = async (tokenId: string) => {
 };
 
 // NFT 검증 메소드
-export const verifyNFT = async (tokenId: string, hash: string) => {
+export const verifyNFT = async (tokenId: number, hash: string) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
 

@@ -1,142 +1,72 @@
 import TabBtn from "@/components/Button/TabBtn";
 import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Confirm } from "@/types/Confirm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
-
-const testOne = [
-  {
-    memberName: "이경택",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    reason: "예비군",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "김도언",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-];
-
-const testTwo = [
-  {
-    memberName: "김도언",
-    reason: "대학입시 가산점",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    reason: "예비군",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이경택",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-];
-
-const testThree = [
-  {
-    memberName: "이경택",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    count: 2,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    count: 5,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "김도언",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-];
+import AgencyNFTModal from "@/features/Organization/AgencyNFTModal";
+import { useDispatch } from "react-redux";
+import {
+  getAgencyNft,
+  getHospitalNft,
+} from "@/stores/organization/organization";
+import HospitalNFTModal from "@/features/Organization/HospitalNFTModal";
 
 export default function OrganizationPage() {
-  const { organizationId, isHospital } = useSelector(
-    (state: RootState) => state.member,
-  );
-
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [active, setActive] = useState<string>("ACTIVE");
-
-  const [confirmList, setConfirmList] = useState<Confirm[]>(testOne);
-
-  // const activeList = useOrganizationNFTListQuery(
-  //   !isHospital ? "agency" : "hospital",
-  //   organizationId,
-  //   active,
+  const dispatch = useDispatch();
+  // const { organizationId, isHospital } = useSelector(
+  //   (state: RootState) => state.member,
   // );
-  // console.log(activeList); // 나중에 이걸로 바꿔주기
+
+  // 기관 테스트 데이터
+  const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
+  const isHospital = false;
+
+  // 병원 테스트 데이터
+  // const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
+  // const isHospital = true;
+
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const [active, setActive] = useState<string>("INACTIVE");
+
+  const [confirmList, setConfirmList] = useState<Confirm[]>([]);
+
+  const activeList = useOrganizationNFTListQuery(
+    !isHospital ? "agency" : "hospital",
+    organizationId,
+    active,
+    setConfirmList,
+  );
 
   const changeTab = () => {
     setIsActive(!isActive);
     if (isActive) {
       setActive("ACTIVE");
-      setConfirmList(testOne);
     } else {
       setActive("INACTIVE");
-      setConfirmList(testTwo);
     }
   };
 
   const { page, currentList, postPerPage, handlePageChange } = usePagination({
     confirmList: confirmList,
   });
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const hanldleClick = (idx: number) => {
+    setIsOpen(!isOpen);
+    if (isHospital) {
+      dispatch(getHospitalNft(currentList[idx].hashValueList));
+    } else {
+      const payload = {
+        tokenId: currentList[idx].tokenId,
+        hashValue: currentList[idx].hashValue,
+      };
+      dispatch(getAgencyNft(payload));
+    }
+  };
 
   return (
     <div className="mx-auto mt-50 w-1000 text-center">
@@ -145,7 +75,7 @@ export default function OrganizationPage() {
         width={500}
         height={70}
         fontSize={20}
-        isSelected={!isActive}
+        isSelected={isActive}
         children={"승인 대기"}
         onClick={changeTab}
       />
@@ -153,7 +83,7 @@ export default function OrganizationPage() {
         width={500}
         height={70}
         fontSize={20}
-        isSelected={isActive}
+        isSelected={!isActive}
         children={"승인 완료"}
         onClick={changeTab}
       />
@@ -177,9 +107,12 @@ export default function OrganizationPage() {
           등록일
         </p>
       </div>
-      {currentList.map((item, idx) => (
+      {currentList?.map((item, idx) => (
         <div key={idx}>
-          <div className="flex h-70 w-1000 justify-between text-center">
+          <div
+            onClick={() => hanldleClick(idx)}
+            className="flex h-70 w-1000 cursor-pointer justify-between text-center "
+          >
             <p className="ml-40 inline-block w-100 font-light leading-70">
               {(page - 1) * postPerPage + idx + 1}
             </p>
@@ -196,14 +129,16 @@ export default function OrganizationPage() {
               </p>
             )}
             <p className="mr-[6rem] inline-block w-100 font-light leading-70">
-              {item.createdDate}
+              {item.createdDate.slice(0, 10)}
             </p>
           </div>
+          {isOpen && !isHospital && <AgencyNFTModal onClick={hanldleClick} />}
+          {isOpen && isHospital && <HospitalNFTModal onClick={hanldleClick} />}
           <hr />
         </div>
       ))}
       <Paging
-        totalCount={confirmList.length}
+        totalCount={confirmList?.length}
         page={page}
         postPerPage={postPerPage}
         pageRangeDisplayed={5}
