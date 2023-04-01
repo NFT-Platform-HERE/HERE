@@ -19,7 +19,7 @@ export default function usePagination({ confirmList }: Iprops) {
 
   useEffect(() => {
     setCurrentList(confirmList?.slice(indefOfFirstPost, indefOfLastPost));
-  }, [indefOfFirstPost, indefOfLastPost, page]);
+  }, [confirmList, indefOfFirstPost, indefOfLastPost, page]);
 
   useEffect(() => {
     setPage(1);

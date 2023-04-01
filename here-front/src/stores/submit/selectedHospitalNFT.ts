@@ -30,7 +30,7 @@ const submitSelectedHospitalNFTSlice = createSlice({
     deleteNFTInfo(state, action) {
       state.selectedHospitalNFTInfoList =
         state.selectedHospitalNFTInfoList.filter(({ tokenId }) => {
-          return action.payload.tokenId !== tokenId;
+          return action.payload !== tokenId;
         });
     },
 

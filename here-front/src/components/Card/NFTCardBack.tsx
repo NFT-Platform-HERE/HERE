@@ -1,4 +1,5 @@
 import { NFTDetail } from "@/types/NFTDetail";
+import { BloodType, GenderType, RhType } from "@/enum/statusType";
 
 interface Iprops {
   height: number;
@@ -108,8 +109,8 @@ export default function NFTCardBack({ height, fontSize, detail }: Iprops) {
               },
             ]}
           >
-            {detail?.gender === "male" && "남"}
-            {detail?.gender === "female" && "여"}
+            {detail?.gender === GenderType.MALE && "남"}
+            {detail?.gender === GenderType.FEMALE && "여"}
           </div>
         </div>
         <table
@@ -153,14 +154,20 @@ export default function NFTCardBack({ height, fontSize, detail }: Iprops) {
               </td>
             </tr>
             <tr>
-              <td className="border-r-1 border-black">A</td>
-              <td className="border-r-1 border-black">Rh+</td>
+              <td className="border-r-1 border-black">{detail?.blood}</td>
               <td className="border-r-1 border-black">
-                {detail?.type === "WHOLE" && "O"}
+                {detail?.rhType === RhType.RHPLUS ? "Rh+" : "Rh-"}
               </td>
-              <td className="border-r-1 border-black"></td>
-              <td className="border-r-1 border-black"></td>
-              <td>400mL</td>
+              <td className="border-r-1 border-black">
+                {detail?.type === BloodType.WHOLE && "O"}
+              </td>
+              <td className="border-r-1 border-black">
+                {detail?.type === BloodType.PLATELET && "O"}
+              </td>
+              <td className="border-r-1 border-black">
+                {detail?.type === BloodType.PLASMA && "O"}
+              </td>
+              <td>{detail?.bloodAmount}mL</td>
             </tr>
           </tbody>
         </table>

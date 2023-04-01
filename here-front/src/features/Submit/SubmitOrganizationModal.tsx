@@ -1,7 +1,15 @@
+import useOrganizationNFTSubmit from "@/apis/submit/useOrganizationNFTSubmit";
 import useSearchQuery from "@/apis/submit/useSearchQuery";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
+import { RootState } from "@/stores/store";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "sweetalert2/dist/sweetalert2.min.css";
+
+const MySwal = withReactContent(Swal);
 
 interface Iprops {
   onClick: () => void;
@@ -10,9 +18,17 @@ interface Iprops {
 export default function SubmitOrganizationModal({ onClick }: Iprops) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [purposeInput, setPurposeInput] = useState<string>("");
+  const [organization, setOrganization] = useState<string>("");
+
+  const { memberId } = useSelector((state: RootState) => state.member);
+
+  const submitNFT = useSelector((state: RootState) => {
+    return state.submitSelectedOrganizationNFT.selectedOrganizationNFTInfo;
+  });
+
   const searchOrganizationList = useSearchQuery("AGENCY", searchInput);
 
-  console.log(searchOrganizationList?.data?.data?.length);
+  const { mutate, isSuccess, isError } = useOrganizationNFTSubmit();
 
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -22,7 +38,40 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
     setPurposeInput(e.target.value);
   };
 
-  const onClickSubmit = () => {};
+  const onClickSubmit = () => {
+    mutate({
+      agencyId: organization,
+      hashValue: submitNFT.hashValue,
+      memberId: "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
+      reason: purposeInput,
+      tokenId: submitNFT.tokenId,
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClick();
+      MySwal.fire({
+        icon: "success",
+        title: "헌혈증 NFT 제출 완료",
+
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      MySwal.fire({
+        icon: "error",
+        title: "헌혈증 NFT 제출 실패",
+
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }, [isError]);
 
   return (
     <div>
@@ -50,9 +99,13 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
                   index < 3
                     ? "border-b-2 "
                     : "") +
+                  (item.agencyId === organization
+                    ? "bg-red-2 text-white hover:bg-red-2 "
+                    : "hover:bg-pink-0 ") +
                   "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50 hover:bg-pink-0 "
                 }
                 key={index}
+                onClick={() => setOrganization(item.agencyId)}
               >
                 {item.agencyName}
               </div>
