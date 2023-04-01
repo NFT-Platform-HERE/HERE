@@ -115,7 +115,7 @@ export default function BloodMap() {
         className="h-500 w-[calc(100%-425px)] mobile:h-[100vw] mobile:w-full"
       ></div>
       <div className="relative flex h-500 w-380 items-end mobile:h-350 mobile:w-full mobile:items-end">
-        <div className="absolute top-0 left-40 h-70 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-60 text-red-2 mobile:h-50 mobile:w-[calc(100%-70px)] mobile:text-16 mobile:leading-40">
+        <div className="absolute top-0 left-40 h-60 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-50 text-red-2 mobile:h-50 mobile:w-[calc(100%-70px)] mobile:text-16 mobile:leading-40">
           헌혈의 집 정보
         </div>
         <div className="h-465 w-380 rounded-30 border-3 border-pen-5 bg-white mobile:h-325 mobile:w-full">
