@@ -39,7 +39,16 @@ public class OrganService {
     /* 증명 승인/미승인 목록 조회(기관) */
     public ResponseSuccessDto<List<GetCertAgencyResponseDto>> getCertAgency(UUID agencyId, EnumCertHistoryStatus status) {
 
-        List<CertHistory> certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(agencyId, status);
+        // 초기 선언
+        List<CertHistory> certHistoryList = null;
+
+        // 승인/미승인 status에 따라 정렬 기준 다름을 적용
+        if (status == EnumCertHistoryStatus.INACTIVE) {
+            certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(agencyId, status);
+        } else if (status == EnumCertHistoryStatus.ACTIVE) {
+            certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByUpdatedDateDesc(agencyId, status);
+        }
+
         List<GetCertAgencyResponseDto> result = new ArrayList<>();
 
         for (CertHistory certHistory : certHistoryList) {
@@ -59,9 +68,17 @@ public class OrganService {
 
     /* 증명 승인/미승인 목록 조회(병원) */
     public ResponseSuccessDto<List<GetCertHospitalResponseDto>> getCertHospital(UUID hospitalId, EnumCertHistoryStatus status) {
-        System.out.println("서비스 단" + hospitalId + status);
 
-        List<CertHistory> certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(hospitalId, status);
+        // 초기 선언
+        List<CertHistory> certHistoryList = null;
+
+        // 승인/미승인 status에 따라 정렬 기준 다름을 적용
+        if (status == EnumCertHistoryStatus.INACTIVE) {
+            certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(hospitalId, status);
+        } else if (status == EnumCertHistoryStatus.ACTIVE) {
+            certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByUpdatedDateDesc(hospitalId, status);
+        }
+
         List<GetCertHospitalResponseDto> result = new ArrayList<>();
 
         if(certHistoryList.isEmpty()) {
