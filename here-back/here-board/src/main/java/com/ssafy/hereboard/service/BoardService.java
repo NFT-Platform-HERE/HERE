@@ -49,9 +49,12 @@ public class BoardService {
         int percentage = curQ * 100 / goalQ;
 
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
-        List<String> imgUrlList = new ArrayList<>();
+        List<GetBoardImgResponseDto> boardImgUrlList = new ArrayList<>();
         for (BoardImg boardImg : boardImgs) {
-            imgUrlList.add(boardImg.getImgUrl());
+            boardImgUrlList.add(GetBoardImgResponseDto.builder()
+                            .boardImgId(boardImg.getId())
+                            .imgUrl(boardImg.getImgUrl())
+                            .build());
         }
 
         GetBoardResponseDto getBoardResponseDto = GetBoardResponseDto.builder()
@@ -64,7 +67,7 @@ public class BoardService {
                 .curQuantity(board.getCurQuantity())
                 .goalQuantity(board.getGoalQuantity())
                 .createdDate(board.getCreatedDate())
-                .boardImgUrlList(imgUrlList)
+                .boardImgUrlList(boardImgUrlList)
                 .status(board.getStatus())
                 .memberId(board.getMember().getId())
                 .build();
@@ -122,14 +125,32 @@ public class BoardService {
         // 1) 게시글의 title, content 수정
         board.updateBoard(updateBoardRequestDto, board);
 
-        // 2) 기존 이미지 수정(순서, 상태(ACTIVE, INACTIVE))
-        for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
-            Long boardImgId = updateBoardImgObject.getBoardImgId();
-            EnumBoardImgStatus status = updateBoardImgObject.getStatus();
-            int order = updateBoardImgObject.getOrders();
-            BoardImg boardImg = boardImgRepository.findById(boardImgId).orElseThrow(() -> new EntityIsNullException("해당 게시글 이미지가 존재하지 않습니다."));
-            boardImg.updateBoardImg(status, order);
+        List<BoardImg> boardImgList = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(board.getId(), EnumBoardImgStatus.ACTIVE);
+        for (BoardImg boardImg : boardImgList) {
+            boolean flag = false;
+
+            for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
+                if(updateBoardImgObject.getBoardImgId().equals(boardImg.getId())) {
+                    boardImg.updateBoardImg(EnumBoardImgStatus.ACTIVE, updateBoardImgObject.getOrders());
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(!flag) {
+                boardImg.updateBoardImg(EnumBoardImgStatus.INACTIVE, 0);
+            }
         }
+
+
+//        // 2) 기존 이미지 수정(순서, 상태(ACTIVE, INACTIVE))
+//        for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
+//            Long boardImgId = updateBoardImgObject.getBoardImgId();
+//            EnumBoardImgStatus status = updateBoardImgObject.getStatus();
+//            int order = updateBoardImgObject.getOrders();
+//            BoardImg boardImg = boardImgRepository.findById(boardImgId).orElseThrow(() -> new EntityIsNullException("해당 게시글 이미지가 존재하지 않습니다."));
+//            boardImg.updateBoardImg(status, order);
+//        }
 
         // 3) 4) 새롭게 들어온 이미지 추가(url, order)
         for(int i=0; i<imgUrlList.size(); i++) {

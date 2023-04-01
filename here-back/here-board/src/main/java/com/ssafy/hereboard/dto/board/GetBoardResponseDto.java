@@ -25,7 +25,7 @@ public class GetBoardResponseDto {
     private int curQuantity;
     private int goalQuantity;
     private LocalDateTime createdDate;
-    private List<String> boardImgUrlList;
+    private List<GetBoardImgResponseDto> boardImgUrlList;
     private EnumBoardStatus status;
     private UUID memberId;
 }
