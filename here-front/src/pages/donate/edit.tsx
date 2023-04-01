@@ -16,6 +16,8 @@ export default function DonateEditPage() {
 
   const donateInfo = useSelector((state: RootState) => state.donate);
 
+  const { memberId } = useSelector((state: RootState) => state.member);
+
   const [title, setTitle] = useState<string>(donateInfo.title);
   const [description, setDescription] = useState(donateInfo.content);
   const [targetQuantity, setTargetQuantity] = useState<number>(
@@ -32,9 +34,7 @@ export default function DonateEditPage() {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>(
-    donateInfo.boardImgUrlList,
-  );
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   const mutation = useDonateUpdate();
 
@@ -48,7 +48,7 @@ export default function DonateEditPage() {
       const editData = {
         title: title.trim(),
         content: description,
-        memberId: donateInfo.memberId,
+        writerId: memberId,
         boardId: donateInfo.boardId,
       };
 
@@ -56,21 +56,13 @@ export default function DonateEditPage() {
         "updateBoardRequestDto",
         new Blob([JSON.stringify(editData)], { type: "application/json" }),
       );
-
-      if (selectedFiles) {
-        for (let i = 0; i < selectedFiles.length; i++) {
-          formData.append(`multipartFileList`, selectedFiles[i]);
-        }
-      }
-
-      return formData;
     } else {
       const editData = {
         title: title.trim(),
         goalQuantity: targetQuantity,
         deadline: getDateString(deadLineDate),
         content: description,
-        memberId: donateInfo.memberId,
+        writerId: memberId,
         boardId: donateInfo.boardId,
       };
 
@@ -78,15 +70,45 @@ export default function DonateEditPage() {
         "updateBoardRequestDto",
         new Blob([JSON.stringify(editData)], { type: "application/json" }),
       );
-
-      if (selectedFiles) {
-        for (let i = 0; i < selectedFiles.length; i++) {
-          formData.append(`multipartFileList`, selectedFiles[i]);
-        }
-      }
-
-      return formData;
     }
+
+    const updateBoardImgObjectList = [];
+    const ordersList: number[] = [];
+
+    for (let index = 0; index < imagePreviewUrls.length; index++) {
+      const searchResult = donateInfo.boardImgUrlList.find(
+        (obj) => obj.imgUrl === imagePreviewUrls[index],
+      );
+
+      if (searchResult) {
+        updateBoardImgObjectList.push({
+          boardImgId: searchResult.boardImgId,
+          orders: index,
+        });
+      } else {
+        ordersList.push(index);
+      }
+    }
+
+    if (selectedFiles) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append(`multipartFileList`, selectedFiles[i]);
+      }
+    }
+
+    formData.append(
+      `ordersList`,
+      new Blob([JSON.stringify(ordersList)], { type: "application/json" }),
+    );
+
+    formData.append(
+      `updateBoardImgObjectList`,
+      new Blob([JSON.stringify(updateBoardImgObjectList)], {
+        type: "application/json",
+      }),
+    );
+
+    return formData;
   }
 
   function handleEditButton() {
@@ -106,22 +128,32 @@ export default function DonateEditPage() {
   }
 
   const handleRemoveClick = (index: number) => () => {
-    if (selectedFiles) {
-      const dt = new DataTransfer();
+    const searchResult = donateInfo.boardImgUrlList.find(
+      (obj) => obj.imgUrl === imagePreviewUrls[index],
+    );
+
+    if (searchResult) {
       const newImagePreviewUrls = [...imagePreviewUrls];
-
-      for (let i = 0; i < selectedFiles.length; i++) {
-        if (i === index) {
-          continue;
-        }
-        const file = selectedFiles[i];
-        dt.items.add(file);
-      }
-
       newImagePreviewUrls.splice(index, 1);
-
-      setSelectedFiles(dt.files);
       setImagePreviewUrls(newImagePreviewUrls);
+    } else {
+      if (selectedFiles) {
+        const dt = new DataTransfer();
+        const newImagePreviewUrls = [...imagePreviewUrls];
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+          if (i === index) {
+            continue;
+          }
+          const file = selectedFiles[i];
+          dt.items.add(file);
+        }
+
+        newImagePreviewUrls.splice(index, 1);
+
+        setSelectedFiles(dt.files);
+        setImagePreviewUrls(newImagePreviewUrls);
+      }
     }
   };
 
@@ -133,16 +165,33 @@ export default function DonateEditPage() {
 
   const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const fileList = event.target.files;
-      setSelectedFiles(fileList);
+      const fileList: FileList = event.target.files;
+      if (selectedFiles) {
+        const dt = new DataTransfer();
 
-      const urls = [];
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const file = selectedFiles[i];
+          dt.items.add(file);
+        }
+
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          dt.items.add(file);
+        }
+
+        setSelectedFiles(dt.files);
+      } else {
+        setSelectedFiles(fileList);
+      }
+
+      const urls: string[] = [];
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
         const imageUrl = URL.createObjectURL(file);
         urls.push(imageUrl);
       }
-      setImagePreviewUrls(urls);
+
+      setImagePreviewUrls([...imagePreviewUrls, ...urls]);
     }
   };
 
@@ -178,6 +227,16 @@ export default function DonateEditPage() {
   useEffect(() => {
     validateForm();
   }, [title, description]);
+
+  useEffect(() => {
+    const previewImageList = [];
+
+    for (let index = 0; index < donateInfo.boardImgUrlList.length; index++) {
+      previewImageList.push(donateInfo.boardImgUrlList[index].imgUrl);
+    }
+
+    setImagePreviewUrls(previewImageList);
+  }, []);
 
   return (
     <div className="mt-25 w-full">
@@ -316,23 +375,22 @@ export default function DonateEditPage() {
             description={description}
           />
           <div className="mb-25 flex items-center justify-start">
-            {selectedFiles &&
-              imagePreviewUrls.map((imageUrl, index) => (
-                <div className="relative mr-15 inline-block" key={index}>
+            {imagePreviewUrls.map((imageUrl, index) => (
+              <div className="relative mr-15 inline-block" key={index}>
+                <img
+                  key={index}
+                  src={imageUrl}
+                  alt={`Image Preview ${index}`}
+                  className="h-95 w-95 rounded-15"
+                />
+                <button onClick={handleRemoveClick(index)}>
                   <img
-                    key={index}
-                    src={imageUrl}
-                    alt={`Image Preview ${index}`}
-                    className="h-95 w-95 rounded-15"
+                    src="/icons/Dell.svg"
+                    className="absolute top-5 right-5 h-25 w-25"
                   />
-                  <button onClick={handleRemoveClick(index)}>
-                    <img
-                      src="/icons/Dell.svg"
-                      className="absolute top-5 right-5 h-25 w-25"
-                    />
-                  </button>
-                </div>
-              ))}
+                </button>
+              </div>
+            ))}
           </div>
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표

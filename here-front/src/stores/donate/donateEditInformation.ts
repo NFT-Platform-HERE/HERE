@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface donateEditInfo {
   boardId: number;
-  boardImgUrlList: string[];
+  boardImgUrlList: any[];
   content: string;
   goalQuantity: number;
   title: string;
