@@ -3,11 +3,7 @@ import { setMobileHeaderName } from "@/stores/header/mobileHeaderName";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-interface Iprops {
-  handleConnect: () => void;
-}
-
-export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
+export default function MobileHeaderMenuDropdown() {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -29,8 +25,8 @@ export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
       case "/my-nft":
         dispatch(setMobileHeaderName("나의 NFT"));
         break;
-      case "/signin":
-        dispatch(setMobileHeaderName("로그인"));
+      case "/register":
+        dispatch(setMobileHeaderName("종이 헌혈증 등록"));
         break;
       default:
         break;
@@ -57,9 +53,8 @@ export default function MobileHeaderMenuDropdown({ handleConnect }: Iprops) {
       <div className="text-14" onClick={() => movePage("/my-nft")}>
         나의 NFT
       </div>
-
-      <div className="text-14" onClick={handleConnect}>
-        LOGIN
+      <div className="text-14" onClick={() => movePage("/register")}>
+        종이 헌혈증 등록
       </div>
     </div>
   );

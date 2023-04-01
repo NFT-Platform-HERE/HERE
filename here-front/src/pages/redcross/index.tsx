@@ -1,56 +1,28 @@
+import useRedCrossNFTListQuery from "@/apis/redcross/useRedCrossNFTListQuery";
 import CommonBtn from "@/components/Button/CommonBtn";
 import Paging from "@/components/Pagination/Paging";
+import RedCrossNFTModal from "@/features/RedCross/RedCrossNFTModal";
 import usePagination from "@/hooks/organization/usePagination";
-import { Confirm } from "@/types/Confirm";
+import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 
-const testList = [
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-07",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-08",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-09",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-10",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-11",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-12",
-  },
-  {
-    memberName: "이경택",
-    createdDate: "2023-02-13",
-  },
-];
-
-// 페이지네이션은 FE-2003 merge 후 구현
 export default function RedCrossPage() {
   const router = useRouter();
-  const [nftList, setNftList] = useState<Confirm[]>(testList);
+  const nftList = useRedCrossNFTListQuery();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [nowToken, setNowToken] = useState<number>(0);
 
-  useEffect(() => {
-    setNftList(testList);
-  }, []);
+  const hanldleClick = (tokenId: number) => {
+    setIsOpen(!isOpen);
+    setNowToken(tokenId);
+  };
 
   const { page, currentList, postPerPage, handlePageChange } = usePagination({
-    confirmList: nftList,
+    confirmList: nftList?.data,
   });
 
   const moveToCreate = () => {
-    console.log("이동");
     router.push("/redcross/publish");
   };
   return (
@@ -77,29 +49,37 @@ export default function RedCrossPage() {
           발행일
         </p>
       </div>
-      {currentList?.map((item, idx) => (
-        <div key={idx}>
-          <div className="flex h-70 w-1000 justify-between text-center">
-            <p className="ml-40 mr-56 inline-block w-100 font-light leading-70">
-              {(page - 1) * postPerPage + idx + 1}
-            </p>
-            <p className="inline-block w-100 font-light leading-70">
-              {item.memberName}
-            </p>
-            <p className="mr-[6rem] inline-block w-100 font-light leading-70">
-              {item.createdDate}
-            </p>
+      <Suspense fallback={<CircularProgress />}>
+        {currentList?.map((item, idx) => (
+          <div key={idx}>
+            <div
+              onClick={() => hanldleClick(item.tokenId)}
+              className="flex h-70 w-1000 cursor-pointer justify-between text-center "
+            >
+              <p className="ml-40 mr-56 inline-block w-100 font-light leading-70">
+                {(page - 1) * postPerPage + idx + 1}
+              </p>
+              <p className="inline-block w-100 font-light leading-70">
+                {item.memberName}
+              </p>
+              <p className="mr-[6rem] inline-block w-100 font-light leading-70">
+                {item.createdDate.slice(0, 10)}
+              </p>
+            </div>
+            {item.tokenId === nowToken && isOpen && (
+              <RedCrossNFTModal tokenId={nowToken} onClick={hanldleClick} />
+            )}
+            <hr />
           </div>
-          <hr />
-        </div>
-      ))}
-      <Paging
-        totalCount={nftList.length}
-        page={page}
-        postPerPage={postPerPage}
-        pageRangeDisplayed={5}
-        handlePageChange={(newPage: number) => handlePageChange(newPage)}
-      />
+        ))}
+        <Paging
+          totalCount={nftList.data?.length}
+          page={page}
+          postPerPage={postPerPage}
+          pageRangeDisplayed={5}
+          handlePageChange={(newPage: number) => handlePageChange(newPage)}
+        />
+      </Suspense>
     </div>
   );
 }

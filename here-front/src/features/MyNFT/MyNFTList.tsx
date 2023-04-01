@@ -5,11 +5,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { MyNFTItem } from "@/types/MyNFTItem";
 
 interface Iprops {
-  myNFTList: any;
+  myNFTList: MyNFTItem[];
 }
-
 const swiperStyle = `            
   .swiper-wrapper{
     width: 100%;
@@ -72,9 +72,9 @@ export default function MyNFTList({ myNFTList }: Iprops) {
   useEffect(() => {
     dispatch(clearNFTList());
     if (myNFTList) {
-      dispatch(addNFT(myNFTList[0].index));
+      dispatch(addNFT(0));
     }
-  }, []);
+  }, [myNFTList]);
 
   return (
     <div className="w-full">
@@ -87,22 +87,22 @@ export default function MyNFTList({ myNFTList }: Iprops) {
           className="static flex h-520 w-123"
           css={[swiperStyle]}
         >
-          {myNFTList.map((item: any, index: number) => (
-            <SwiperSlide
-              className="relative mt-8 -mb-8 flex justify-center"
-              key={index}
-              onClick={() => handleSetSelectedCardList(item.index)}
-            >
-              <NFTCardFront width={100} imgUrl={`/NFT_bg_${item.index}.gif`} />
-
-              {selectedCardList.includes(item.index) && (
-                <img
-                  src="/icons/check.svg"
-                  className="absolute -top-8 right-5 h-25 w-25"
-                />
-              )}
-            </SwiperSlide>
-          ))}
+          {myNFTList &&
+            myNFTList.map((item: MyNFTItem, index: number) => (
+              <SwiperSlide
+                className="relative mt-8 -mb-8 flex justify-center"
+                key={index}
+                onClick={() => handleSetSelectedCardList(index)}
+              >
+                <NFTCardFront width={100} imgUrl={item.imgUrl} />
+                {selectedCardList.includes(index) && (
+                  <img
+                    src="/icons/check.svg"
+                    className="absolute -top-8 right-5 h-25 w-25"
+                  />
+                )}
+              </SwiperSlide>
+            ))}
         </Swiper>
       </div>
       <div className="hidden w-full mobile:block">
@@ -113,22 +113,23 @@ export default function MyNFTList({ myNFTList }: Iprops) {
           className="static flex h-137 w-[calc(100%-100px)]"
           css={[mobileStyle]}
         >
-          {myNFTList.map((item: any, index: number) => (
-            <SwiperSlide
-              className="relative mt-8 -mb-8 flex justify-center"
-              key={index}
-              onClick={() => handleSetSelectedCardList(item.index)}
-            >
-              <NFTCardFront width={80} imgUrl={`/NFT_bg_${item.index}.gif`} />
+          {myNFTList &&
+            myNFTList.map((item: MyNFTItem, index: number) => (
+              <SwiperSlide
+                className="relative mt-8 -mb-8 flex justify-center"
+                key={index}
+                onClick={() => handleSetSelectedCardList(index)}
+              >
+                <NFTCardFront width={80} imgUrl={item.imgUrl} />
 
-              {selectedCardList.includes(item.index) && (
-                <img
-                  src="/icons/check.svg"
-                  className="absolute -top-8 -right-5 h-25 w-25"
-                />
-              )}
-            </SwiperSlide>
-          ))}
+                {selectedCardList.includes(index) && (
+                  <img
+                    src="/icons/check.svg"
+                    className="absolute -top-8 -right-5 h-25 w-25"
+                  />
+                )}
+              </SwiperSlide>
+            ))}
         </Swiper>
       </div>
     </div>

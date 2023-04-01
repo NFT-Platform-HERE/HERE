@@ -239,31 +239,6 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
     inputs: [
       {
         internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "nfts",
-    outputs: [
-      {
-        internalType: "string",
-        name: "tokenURI",
-        type: "string",
-      },
-      {
-        internalType: "bytes32",
-        name: "hashValue",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "tokenId",
         type: "uint256",
       },
@@ -473,6 +448,35 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_tokenIdList",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256",
+        name: "_timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "donateNFTList",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+    payable: true,
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_tokenId",
         type: "uint256",
@@ -555,7 +559,12 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
       },
       {
         internalType: "string",
-        name: "_tokenURI",
+        name: "_tokenURI1",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_tokenURI2",
         type: "string",
       },
     ],
@@ -566,9 +575,40 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
         name: "",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllNFTs",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "tokenURI",
+            type: "string",
+          },
+          {
+            internalType: "bytes32",
+            name: "hashValue",
+            type: "bytes32",
+          },
+        ],
+        internalType: "struct HereNFT.NFT[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
   {
     inputs: [

@@ -12,7 +12,9 @@ interface Iprops {
   deactivate: () => void;
 }
 
-export const connectWallet = ({
+const SSAFYNETWORK = "0x79f5";
+
+export const connectWallet = async ({
   account,
   active,
   activate,
@@ -27,10 +29,60 @@ export const connectWallet = ({
     );
     return;
   }
-  if (active && account) {
-    deactivate();
-    // 이미 연결되어있는 상태면 연결해제 함수 호출
-  }
-  activate(Injected);
+
+  // if (active && account) {
+  //   // 이미 연결되어있는 상태면 연결해제 함수 호출
+  //   console.log("여깁니다");
+  //   deactivate();
+  //   return;
+  // }
   // activate 함수로, App에서 만든 Injected란 이름의 connector 인스턴스를 넘겨준다
+  activate(Injected);
+
+  const chainId = await getChainId();
+  console.log("chainId", chainId);
+
+  if (chainId !== SSAFYNETWORK) {
+    try {
+      changeNetwork();
+    } catch {}
+  }
+};
+
+const getChainId = async () => {
+  const chainId = await window.ethereum.request({
+    method: "eth_chainId",
+  });
+  return chainId;
+};
+
+const changeNetwork = async () => {
+  await window.ethereum
+    .request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: SSAFYNETWORK }],
+    })
+    .catch((e: any) => {
+      if (e.code === 4902) {
+        addNetwork();
+      }
+    });
+};
+
+const addNetwork = async () => {
+  await window.ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: SSAFYNETWORK,
+        chainName: "SSAFY",
+        rpcUrls: ["https://rpc.ssafy-blockchain.com"],
+        nativeCurrency: {
+          name: "SSF TOKEN",
+          decimals: 18,
+          symbol: "SSF",
+        },
+      },
+    ],
+  });
 };

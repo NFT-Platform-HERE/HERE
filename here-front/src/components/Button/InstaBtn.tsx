@@ -1,3 +1,5 @@
+import { FaCameraRetro } from "react-icons/fa";
+
 interface Iprops {
   width: number;
   height: number;
@@ -15,7 +17,7 @@ export default function InstaBtn({
 }: Iprops) {
   return (
     <button
-      className="flex items-center justify-center gap-10 rounded-10 border-3 border-red-2 font-semibold leading-20 text-red-2 hover:bg-red-2 hover:text-white"
+      className="flex h-45 items-center justify-center gap-10 rounded-10 border-3 border-red-2 bg-white font-semibold leading-20 text-red-2 hover:bg-red-2 hover:text-white"
       css={[
         {
           width: width,
@@ -25,8 +27,16 @@ export default function InstaBtn({
       ]}
       onClick={onClick}
     >
-      <img
+      {/* <img
         src="/icons/instagram.png"
+        css={[
+          {
+            width: height - 10,
+            height: height - 10,
+          },
+        ]}
+      /> */}
+      <FaCameraRetro
         css={[
           {
             width: height - 10,

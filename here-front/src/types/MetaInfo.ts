@@ -1,3 +1,5 @@
+import { Blood, NftType, RhType } from "@/enum/statusType";
+
 export interface MetaInfo {
   name: string;
   gender: string;
@@ -7,4 +9,8 @@ export interface MetaInfo {
   createdDate: string;
   place: string;
   imageURL: string;
+  nftType: NftType;
+  bloodAmount: string;
+  blood: Blood;
+  rhType: RhType;
 }

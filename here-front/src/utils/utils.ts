@@ -11,8 +11,12 @@ export function makeJsonMetaData({
   walletAddress,
   birth,
   createdDate,
+  bloodAmount,
+  blood,
+  rhType,
   place,
   imageURL,
+  nftType,
 }: MetaInfo) {
   const metadata = {
     name,
@@ -21,8 +25,12 @@ export function makeJsonMetaData({
     walletAddress,
     birth,
     createdDate,
+    bloodAmount,
+    blood,
+    rhType,
     place,
     imageURL,
+    nftType,
   };
 
   console.log("metadata", metadata);

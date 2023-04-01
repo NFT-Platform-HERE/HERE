@@ -25,6 +25,7 @@ module.exports = {
       zIndex: num(300),
       screens: {
         mobile: { max: "480px" },
+        banner: { max: "1200px" },
       },
       colors: {
         transparent: "transparent",
@@ -44,6 +45,8 @@ module.exports = {
         "pen-2": "#655f5f",
         "pen-3": "#443B3B",
         "pen-4": "#868E96",
+        "pen-5": "#d9d9d9",
+        "pen-00": "#F4F4F4",
         "icon-1": "#FFD8D9",
         "icon-2": "#FFC6CC",
         "icon-3": "#FFF4EF",
@@ -84,5 +87,5 @@ module.exports = {
     },
   },
   important: true,
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide"), require("tailwind-scrollbar")],
 };

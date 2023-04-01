@@ -11,6 +11,12 @@ pipeline {
                 echo 'Checkout Scm'
             }
         }
+
+        stage('env setting') {
+            steps{
+                sh 'cp /var/jenkins_home/env/.env /var/jenkins_home/workspace/develop-FE-pipeline/here-front'
+            }            
+        }
         
         stage('Build image') {
             steps {         
@@ -29,8 +35,8 @@ pipeline {
             steps {
                 script {
                     try {
-                            sh 'docker stop dev-front-container'
-                            sh 'docker rm dev-front-container'                        
+                        sh 'docker stop dev-front-container'
+                        sh 'docker rm dev-front-container'                        
                     } catch (e) {
                         echo 'fail to stop and remove container'
                     }    

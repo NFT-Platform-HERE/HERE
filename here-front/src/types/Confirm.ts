@@ -3,5 +3,7 @@ export interface Confirm {
   reason?: string;
   count?: number;
   createdDate: string;
-  hashValueList?: [hashValue: string]; // 나중에 물음표 빼기
+  tokenId: number;
+  hashValueList?: string[];
+  hashValue?: string;
 }

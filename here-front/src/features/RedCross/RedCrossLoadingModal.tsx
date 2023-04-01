@@ -1,5 +1,6 @@
 import useInterval from "../../hooks/redcross/useInterval";
 import { useState, useEffect } from "react";
+import Background from "@/components/Background/Background";
 
 const RedCrossLoadingModal = () => {
   const [index, setIndex] = useState<number>(0);
@@ -30,16 +31,19 @@ const RedCrossLoadingModal = () => {
   }, []);
 
   return (
-    <div className="fixed left-[50%] top-[50%] z-50 h-370 w-700 translate-x-[-50%] translate-y-[-50%] rounded-30 border-1 border-pen-0 bg-white text-center mobile:h-400 mobile:w-340">
-      <div className="flex w-full flex-col items-center justify-center p-40">
-        <div className="flex justify-center">
-          <img
-            src={"/images/ntf_cat.gif"}
-            className="my-20 h-150 w-150 rounded-15 mobile:h-100 mobile:w-100"
-          ></img>
+    <div>
+      <Background onClick={() => {}} />
+      <div className="fixed left-[50%] top-[50%] z-50 h-370 w-700 translate-x-[-50%] translate-y-[-50%] rounded-30 border-1 border-pen-0 bg-white text-center mobile:h-400 mobile:w-340">
+        <div className="flex w-full flex-col items-center justify-center p-40">
+          <div className="flex justify-center">
+            <img
+              src={"/images/ntf_cat.gif"}
+              className="my-20 h-150 w-150 rounded-15 mobile:h-100 mobile:w-100"
+            ></img>
+          </div>
+          <div className="mb-5 text-24 font-light text-red-500">{desc2}</div>
+          <div className="text-20 font-light text-pen-2">{desc1[index]}</div>
         </div>
-        <div className="mb-5 text-24 font-light text-red-500">{desc2}</div>
-        <div className="text-20 font-light text-pen-2">{desc1[index]}</div>
       </div>
     </div>
   );

@@ -1,38 +1,9 @@
-/**
- * @author JeongOn
- */
-
-{
-  /* 
-- 사용 예시:
-<DonateCard
-  title="제목"
-  nickname="닉네임"
-  expirationDate={"2023-03-14 16:46:08"}
-  donatePercent={25}
-  representativeImageUrl={"/next.svg"}
-  isCompleted={false}
-/>
-
-<DonateCardMobile
-  title="제목"
-  nickname="닉네임"
-  expirationDate={"2023-03-14 16:46:08"}
-  donatePercent={25}
-  representativeImageUrl={"/next.svg"}
-  isCompleted={false}
-/>
-
-- 특이 사항:
-반응형으로 하지 않고 별도 모바일 컴포넌트 제작
-*/
-}
-
 import CommonBar from "@/components/Bar/CommonBar";
 import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
+import { BoardStatus } from "@/enum/statusType";
 
 interface Iprops {
   boardId: number;
@@ -41,7 +12,7 @@ interface Iprops {
   expirationDate: string;
   donatePercent: number;
   representativeImageUrl?: string;
-  isCompleted: boolean;
+  isCompleted: BoardStatus;
 }
 
 export default function DonateCard({
@@ -60,7 +31,7 @@ export default function DonateCard({
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
       className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
-        isCompleted ? "opacity-30" : "bg-white"
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
       <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
@@ -101,9 +72,9 @@ export function DonateCardMobile({
 
   return (
     <div
-    onClick={() => router.push(`/donate/${boardId}`)}
+      onClick={() => router.push(`/donate/${boardId}`)}
       className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
-        isCompleted ? "opacity-30" : "bg-white"
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
       <img
