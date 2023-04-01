@@ -110,7 +110,7 @@ public class BoardService {
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
         int curQ = board.getCurQuantity();
         int goalQ = board.getGoalQuantity();
-        int percentage = curQ / goalQ * 100;
+        int percentage = curQ * 100 / goalQ;
 
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
 //        List<String> imgUrlList = boardImgs.stream()
