@@ -28,46 +28,6 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     }
 
     @Override
-    public List<Board> findBoardList() {
-        return queryFactory
-                .selectFrom(board)
-                .where(statusEq())
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
-
-    @Override
-    public List<Board> findMyBoardList(UUID memberId) {
-        return queryFactory
-                .selectFrom(board)
-                .where(
-                        memberIdEq(memberId),
-                        statusEq())
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
-
-    @Override
-    public List<Board> searchBoard(String word) {
-        return queryFactory
-                .selectFrom(board)
-                .where(
-                        statusEq(),
-                        wordContain(word)
-                )
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
-    @Override
     public Page<Board> searchBoardPaging(String word, Pageable pageable){
         List<Board> content = queryFactory
                 .select(board)
