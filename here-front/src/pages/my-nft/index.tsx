@@ -10,15 +10,23 @@ import QrCodeReader from "@/components/Register/QrCodeReader";
 import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
+import { useDispatch } from "react-redux";
+import { closeModal } from "@/stores/myNFT/selectedNFT";
 
 export default function MyNFTPage() {
+  const [capture, setCapture] = useState<string>("front-capture");
+
+  const { memberId } = useSelector((state: RootState) => state.member);
+
   const NFTCardBackIndex = useSelector((state: RootState) => {
     return state.selectedNFT.selectedNFT;
   });
 
-  const { memberId } = useSelector((state: RootState) => state.member);
+  const dispatch = useDispatch();
 
-  const [capture, setCapture] = useState<string>("front-capture");
+  useEffect(() => {
+    dispatch(closeModal());
+  }, []);
 
   useEffect(() => {
     if (NFTCardBackIndex === -1) {

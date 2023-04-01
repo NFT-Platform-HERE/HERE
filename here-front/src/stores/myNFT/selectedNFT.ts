@@ -20,9 +20,12 @@ const selectedNFTSlice = createSlice({
     setTokenId(state, action) {
       state.tokenId = action.payload;
     },
+    closeModal(state) {
+      state.selectedNFT = -1;
+    },
   },
 });
 
-export const { selectNFT, setTokenId } = selectedNFTSlice.actions;
+export const { selectNFT, setTokenId, closeModal } = selectedNFTSlice.actions;
 
 export default selectedNFTSlice.reducer;

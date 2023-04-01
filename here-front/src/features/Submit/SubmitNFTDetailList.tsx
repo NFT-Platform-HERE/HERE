@@ -6,6 +6,21 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+const swiperStyle = `
+.swiper-slide {
+  transform: none;
+  width: 300px !important;
+}
+.swiper-wrapper {
+  align-items: center;
+}
+@media(max-width: 480px){
+  .swiper-slide {
+    width: 33% !important;
+  }
+}
+`;
+
 export default function SubmitNFTDetailList() {
   const [curIdx, setCurIdx] = useState<number>(0);
   const organizationNFTInfo = useSelector((state: RootState) => {
@@ -16,13 +31,26 @@ export default function SubmitNFTDetailList() {
     return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
   });
 
+  const selectedCardList = useSelector((state: RootState) => {
+    return state.submitSelectedHospitalNFT.selectedHospitalNFTList;
+  });
+
+  const submitTab = useSelector((state: RootState) => {
+    return state.submitTab.tabName;
+  });
+
   const organizationData = useMyNFTMetaURLQuery(organizationNFTInfo?.tokenId);
-  const result = useMyNFTMetaDataQuery(organizationData?.data);
+
+  const organizationResult = useMyNFTMetaDataQuery(organizationData?.data);
 
   const hospitalData = useMyNFTMetaURLQuery(
     hospitalNFTInfoList?.[curIdx]?.tokenId,
   );
+
   const hospitalResult = useMyNFTMetaDataQuery(hospitalData?.data);
+
+  console.log("기관", organizationResult);
+  console.log("병원", hospitalResult);
 
   const marginStyle = (index: number) => {
     if (Math.abs(curIdx - index) > 1) return "invisible";
@@ -30,33 +58,6 @@ export default function SubmitNFTDetailList() {
     else if (curIdx < index) return "-ml-120 mr-120";
     else return "";
   };
-
-  const selectedCardList = useSelector((state: RootState) => {
-    return state.submitSelectedHospitalNFT.selectedHospitalNFTList;
-  });
-
-  const selectedCard = useSelector((state: RootState) => {
-    return state.submitSelectedOrganizationNFT.selectedOrganizationNFT;
-  });
-
-  const submitTab = useSelector((state: RootState) => {
-    return state.submitTab.tabName;
-  });
-
-  const swiperStyle = `
-  .swiper-slide {
-    transform: none;
-    width: 300px !important;
-  }
-  .swiper-wrapper {
-    align-items: center;
-  }
-  @media(max-width: 480px){
-    .swiper-slide {
-      width: 33% !important;
-    }
-  }
-  `;
 
   return submitTab === "HOSPITAL" ? (
     <div>
@@ -110,10 +111,22 @@ export default function SubmitNFTDetailList() {
   ) : (
     <div className="mt-25 flex justify-center mobile:mt-0">
       <div className="mobile:hidden">
-        <NFTCardBack height={350} fontSize={18} detail={result.data} />
+        {organizationResult?.data?.length !== 0 && (
+          <NFTCardBack
+            height={350}
+            fontSize={18}
+            detail={organizationResult.data}
+          />
+        )}
       </div>
       <div className="hidden mobile:block">
-        <NFTCardBack height={203} fontSize={12} detail={result.data} />
+        {organizationResult?.data?.length !== 0 && (
+          <NFTCardBack
+            height={203}
+            fontSize={12}
+            detail={organizationResult.data}
+          />
+        )}
       </div>
     </div>
   );

@@ -14,11 +14,13 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [hospital, setHospital] = useState<string>("");
 
-  const searchHospitalList = useSearchQuery("HOSPITAL", searchInput);
+  const { memberId } = useSelector((state: RootState) => state.member);
 
   const submitNFTList = useSelector((state: RootState) => {
     return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
   });
+
+  const searchHospitalList = useSearchQuery("HOSPITAL", searchInput);
 
   const { mutate } = useHospitalNFTSubmit();
 
