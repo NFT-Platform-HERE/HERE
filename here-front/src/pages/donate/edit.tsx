@@ -15,6 +15,7 @@ export default function DonateEditPage() {
   const router = useRouter();
 
   const donateInfo = useSelector((state: RootState) => state.donate);
+
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const [title, setTitle] = useState<string>(donateInfo.title);
@@ -33,9 +34,7 @@ export default function DonateEditPage() {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>(
-    donateInfo.boardImgUrlList,
-  );
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   const mutation = useDonateUpdate();
 
@@ -49,7 +48,7 @@ export default function DonateEditPage() {
       const editData = {
         title: title.trim(),
         content: description,
-        memberId: memberId,
+        writerId: memberId,
         boardId: donateInfo.boardId,
       };
 
@@ -63,7 +62,7 @@ export default function DonateEditPage() {
         goalQuantity: targetQuantity,
         deadline: getDateString(deadLineDate),
         content: description,
-        memberId: memberId,
+        writerId: memberId,
         boardId: donateInfo.boardId,
       };
 
@@ -77,9 +76,13 @@ export default function DonateEditPage() {
     const ordersList: number[] = [];
 
     for (let index = 0; index < imagePreviewUrls.length; index++) {
-      if (donateInfo.boardImgUrlList.includes(imagePreviewUrls[index])) {
+      const searchResult = donateInfo.boardImgUrlList.find(
+        (obj) => obj.imgUrl === imagePreviewUrls[index],
+      );
+
+      if (searchResult) {
         updateBoardImgObjectList.push({
-          boardImgId: imagePreviewUrls[index],
+          boardImgId: searchResult.boardImgId,
           orders: index,
         });
       } else {
@@ -125,7 +128,11 @@ export default function DonateEditPage() {
   }
 
   const handleRemoveClick = (index: number) => () => {
-    if (donateInfo.boardImgUrlList.includes(imagePreviewUrls[index])) {
+    const searchResult = donateInfo.boardImgUrlList.find(
+      (obj) => obj.imgUrl === imagePreviewUrls[index],
+    );
+
+    if (searchResult) {
       const newImagePreviewUrls = [...imagePreviewUrls];
       newImagePreviewUrls.splice(index, 1);
       setImagePreviewUrls(newImagePreviewUrls);
@@ -220,6 +227,16 @@ export default function DonateEditPage() {
   useEffect(() => {
     validateForm();
   }, [title, description]);
+
+  useEffect(() => {
+    const previewImageList = [];
+
+    for (let index = 0; index < donateInfo.boardImgUrlList.length; index++) {
+      previewImageList.push(donateInfo.boardImgUrlList[index].imgUrl);
+    }
+
+    setImagePreviewUrls(previewImageList);
+  }, []);
 
   return (
     <div className="mt-25 w-full">
