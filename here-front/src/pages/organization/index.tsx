@@ -16,8 +16,8 @@ export default function OrganizationPage() {
   const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
   const isHospital = false;
 
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [active, setActive] = useState<string>("ACTIVE");
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const [active, setActive] = useState<string>("INACTIVE");
 
   const [confirmList, setConfirmList] = useState<Confirm[]>([]);
 
@@ -48,7 +48,7 @@ export default function OrganizationPage() {
         width={500}
         height={70}
         fontSize={20}
-        isSelected={!isActive}
+        isSelected={isActive}
         children={"승인 대기"}
         onClick={changeTab}
       />
@@ -56,7 +56,7 @@ export default function OrganizationPage() {
         width={500}
         height={70}
         fontSize={20}
-        isSelected={isActive}
+        isSelected={!isActive}
         children={"승인 완료"}
         onClick={changeTab}
       />
