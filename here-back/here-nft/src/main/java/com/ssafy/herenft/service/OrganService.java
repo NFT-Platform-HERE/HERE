@@ -65,6 +65,10 @@ public class OrganService {
         List<CertHistory> certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(hospitalId, status);
         List<GetCertHospitalResponseDto> result = new ArrayList<>();
 
+        if(certHistoryList.isEmpty()) {
+            return responseUtil.successResponse(result, HereStatus.HERE_FIND_CERT_LIST_HOSPITAL);
+        }
+
         String nowName = certHistoryList.get(0).getMember().getName();
 
         List<NftObjectDto> someoneNfts = new ArrayList<>();
