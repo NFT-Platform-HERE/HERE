@@ -387,6 +387,11 @@ public class BoardService {
         // 지금 기부하려는 게시글 보고!
         Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
         UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
+
+        // 게시글 불러오기(기부 받은 만큼 curQuantity 갱신하기 위해)
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
+        board.updateCurQuantity(updateBoardBdHistoryRequestDto.getQuantity());
+
         // 주인공 boardBdHistory 가져오자
         BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
 
