@@ -84,6 +84,10 @@ public class Board {
     public void updateBoardStatus(EnumBoardStatus status) {
         this.status = status;
     }
+
+    public void updateCurQuantity(int quantity) {
+        this.curQuantity = quantity;
+    }
 //    public void closeBoard() {
 //        this.status = EnumBoardStatus.INACTIVE;
 //    }
