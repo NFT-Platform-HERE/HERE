@@ -12,7 +12,7 @@ const fetcher = (payload: DonationDelete) =>
     })
     .then(({ data }) => data);
 
-const useDonateDeleteQuery = () => {
+const useDonateDelete = () => {
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공!");
@@ -23,4 +23,4 @@ const useDonateDeleteQuery = () => {
   });
 };
 
-export default useDonateDeleteQuery;
+export default useDonateDelete;

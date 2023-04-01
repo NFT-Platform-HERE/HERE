@@ -1,5 +1,4 @@
 import HeartBar from "@/components/Bar/HeartBar";
-import CheerBtn from "@/components/Button/CheerBtn";
 import CommonBtn from "./../../components/Button/CommonBtn";
 import { Suspense, useState } from "react";
 import DonateSendModal from "@/features/Donate/DonateSendModal";
@@ -19,6 +18,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
+import useDonateDelete from "@/apis/donate/useDonateDelete";
+import { DonationDelete } from "@/types/DonationDelete";
+import { BoardStatus } from "@/enum/statusType";
+import { useRouter } from "next/navigation";
+
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 interface Iprops {
   boardId: string;
@@ -27,35 +36,122 @@ interface Iprops {
 SwiperCore.use([Navigation, Pagination]);
 
 export default function DonateDetailPage({ boardId }: Iprops) {
-  const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
   timeago.register("ko", koLocale);
 
+  const router = useRouter();
+
+  const [opendSendModal, setOpendSendModal] = useState<boolean>(false);
+
+  const memberId = useSelector((state: RootState) => state.member.memberId);
+
   const nowBoard = useDonateDetailQuery(parseInt(boardId));
+
+  console.log("nowBoard", nowBoard);
+  console.log("nowBoard", nowBoard.data.curQuantity);
 
   const writerId = nowBoard?.data.memberId;
   const writerInfo = useMemberInfoQuery(writerId);
 
-  const memberId = useSelector((state: RootState) => state.member.memberId);
+  const mutation = useDonateDelete();
+
+  async function handleDeleteButton() {
+    confirmDelete();
+  }
+
+  function handleEditButton() {}
+
+  function handleDonateButton() {
+    setOpendSendModal(true);
+  }
+
+  async function handleCloseButton() {
+    await closeDonateArticle();
+  }
 
   const closeModal = () => {
     setOpendSendModal(false);
   };
+
+  const confirmDelete = () => {
+    MySwal.fire({
+      title: "정말 삭제하시겠습니까?",
+      showDenyButton: true,
+      showConfirmButton: false,
+      denyButtonText: `삭제`,
+    }).then((result) => {
+      if (result.isDenied) {
+        deleteDonateArticle();
+      }
+    });
+  };
+
+  async function deleteDonateArticle() {
+    const payload: DonationDelete = {
+      boardId: parseInt(boardId),
+      writerId: writerId,
+      status: BoardStatus.DELETE,
+    };
+
+    try {
+      const result = await mutation.mutateAsync(payload);
+      console.log("result", result);
+      successDelete();
+      moveDonateListPage();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const successDelete = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "삭제가 완료되었습니다.",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  async function closeDonateArticle() {
+    const payload: DonationDelete = {
+      boardId: parseInt(boardId),
+      writerId: writerId,
+      status: BoardStatus.INACTIVE,
+    };
+
+    try {
+      const result = await mutation.mutateAsync(payload);
+      console.log("result", result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function moveDonateListPage() {
+    router.push("/donate");
+  }
 
   return (
     <div className="mb-30 min-h-fit w-full">
       <div className="mx-auto flex w-1200 justify-center mobile:w-350 mobile:flex-col ">
         <Suspense fallback={<CircularProgress />}>
           <div className="w-900 border border-pen-0 p-40 mobile:mb-25 mobile:w-330 mobile:border-none mobile:p-5">
-            <div className="flex justify-between mb-18">
+            <div className="mb-18 flex justify-between">
               <div className="h-30 w-110 rounded-15 bg-red-1 text-center text-14 font-normal leading-30 text-white mobile:h-24 mobile:w-90 mobile:text-11 mobile:leading-24">
                 <TimeAgo datetime={nowBoard.data.deadline} locale="ko" /> 마감
               </div>
-              {writerId == memberId ?
+              {writerId == memberId ? (
                 <div className="text-pen-2">
-                  <span className="mx-6" onClick={() => { }}>수정</span>
-                  <span className="mx-6" onClick={() => { }}>삭제</span>
-                </div> : null
-              }
+                  <button className="mx-6" onClick={handleEditButton}>
+                    수정
+                  </button>
+                  {nowBoard.data.curQuantity == 0 ? (
+                    <button className="mx-6" onClick={handleDeleteButton}>
+                      삭제
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
             <div className="mb-35 text-22 font-light mobile:text-18">
               {nowBoard.data.title}
@@ -134,24 +230,25 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 </p>
               </div>
             </div>
-            {writerId == memberId ?
+            {writerId == memberId ? (
               <CommonBtn
                 width={250}
                 height={50}
                 fontSize={18}
                 children={"마감하기"}
                 isDisabled={false}
-                onClick={() => { }}
-              /> :
+                onClick={handleCloseButton}
+              />
+            ) : (
               <CommonBtn
                 width={250}
                 height={50}
                 fontSize={18}
                 children={"기부하기"}
                 isDisabled={false}
-                onClick={() => setOpendSendModal(true)}
+                onClick={handleDonateButton}
               />
-            }
+            )}
             {opendSendModal && (
               <DonateSendModal
                 onClick={closeModal}
