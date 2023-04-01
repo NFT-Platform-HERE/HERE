@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class OrganService {
                     .memberName(certHistory.getMember().getName())
                     .reason(certHistory.getReason())
                     .createdDate(certHistory.getCreatedDate())
+                    .updatedDate(certHistory.getUpdatedDate())
                     .tokenId(certHistory.getTokenId())
                     .hashValue(certHistory.getHashValue())
                     .build();
@@ -86,12 +88,14 @@ public class OrganService {
         }
 
         String nowName = certHistoryList.get(0).getMember().getName();
+        LocalDateTime nowTime = certHistoryList.get(0).getCreatedDate();
 
         List<NftObjectDto> someoneNfts = new ArrayList<>();
 
         // 한 번에 제출한 여러 데이터 건들을 묶음 처리
         for (int i = 0; i < certHistoryList.size(); i++) {
             String targetName = certHistoryList.get(i).getMember().getName(); // 현재 순서의 이름 주인공
+            LocalDateTime targetTime = certHistoryList.get(i).getCreatedDate(); // 현재 순서의 시간 주인공
 
             // 만약 마지막 인덱스라면 (마지막 사람)
             // 이때까지 모은 nft 여러개를 묶어서 최종 responsedto에 입힘
@@ -106,13 +110,14 @@ public class OrganService {
                         .memberName(certHistoryList.get(i).getMember().getName())
                         .count(someoneNfts.size())
                         .createdDate(certHistoryList.get(i).getCreatedDate())
+                        .updatedDate(certHistoryList.get(i).getUpdatedDate())
                         .hashValueList(someoneNfts)
                         .build();
 
                 result.add(getCertHospitalResponseDto);
 
             // 한번에 제출한 내역이 이어질 경우 (주인공과 같은 이름)
-            } else if (targetName.equals(nowName)) {
+            } else if (targetName.equals(nowName) && (targetTime.isAfter(nowTime.minusMinutes(1)) && targetTime.isBefore(nowTime.plusMinutes(1)))) {
                 // nft정보 담는 dto에 담음
                 NftObjectDto nftObjectDto = NftObjectDto.builder()
                         .tokenId(certHistoryList.get(i).getTokenId())
@@ -130,6 +135,7 @@ public class OrganService {
                         .memberName(certHistoryList.get(i - 1).getMember().getName())
                         .count(someoneNfts.size())
                         .createdDate(certHistoryList.get(i - 1).getCreatedDate())
+                        .updatedDate(certHistoryList.get(i - 1).getUpdatedDate())
                         .hashValueList(someoneNfts)
                         .build();
 
@@ -148,6 +154,7 @@ public class OrganService {
                 // 다음 인덱스가 있는 경우에만 주인공 이름 갱신 (error 방지용)
                 if (i + 1 < certHistoryList.size()) {
                     nowName = certHistoryList.get(i + 1).getMember().getName();
+                    nowTime = certHistoryList.get(i + 1).getCreatedDate();
                 }
             }
         }

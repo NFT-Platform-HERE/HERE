@@ -11,6 +11,7 @@ public class GetCertAgencyResponseDto {
     private String memberName;
     private String reason;
     private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
     private Long tokenId;
     private String hashValue;
 }
