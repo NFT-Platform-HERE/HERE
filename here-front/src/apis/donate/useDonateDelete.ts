@@ -1,7 +1,8 @@
 import { DONATE_SERVER_URL } from "@/utils/urls";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { DonationDelete } from "@/types/DonationDelete";
+import * as queryKeys from "@/constants/queryKeys";
 
 const fetcher = (payload: DonationDelete) =>
   axios
@@ -13,9 +14,11 @@ const fetcher = (payload: DonationDelete) =>
     .then(({ data }) => data);
 
 const useDonateDelete = () => {
+  const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공!");
+      return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
     },
     onError: () => {
       console.log("onERROR");
