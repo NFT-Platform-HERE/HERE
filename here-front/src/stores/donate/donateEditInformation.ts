@@ -24,7 +24,7 @@ const donateSlice = createSlice({
   name: "donate",
   initialState,
   reducers: {
-    getBoardEditInfo(state, action) {
+    setBoardEditInfo(state, action) {
       state.boardId = action.payload.boardId;
       state.boardImgUrlList = action.payload.boardImgUrlList;
       state.content = action.payload.content;
@@ -45,6 +45,6 @@ const donateSlice = createSlice({
   },
 });
 
-export const { getBoardEditInfo, clearBoardEditInfo } = donateSlice.actions;
+export const { setBoardEditInfo, clearBoardEditInfo } = donateSlice.actions;
 
 export default donateSlice.reducer;
