@@ -1,8 +1,6 @@
 package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalRequestDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Api("조직 컨트롤러 V1")
+@Api("공식 기관 컨트롤러 V1")
 @RestController
 @RequiredArgsConstructor
 @Slf4j

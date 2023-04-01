@@ -56,18 +56,4 @@ public class Member {
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
-
-//    public void createMember(SignupRequestDto signupRequestDto) {
-//        this.role = EnumMemberRole.USER;
-//        this.walletAddress = signupRequestDto.getWalletAddress();
-//        this.name = signupRequestDto.getName();
-//        this.nickname = signupRequestDto.getNickname();
-//        this.email = signupRequestDto.getEmail();
-//    }
-//
-//    public void updateMemberExp(int curExp, int goalExp, int level) {
-//        this.curExp = curExp;
-//        this.goalExp = goalExp;
-//        this.level = level;
-//    }
 }

@@ -1,7 +1,6 @@
 package com.ssafy.herenft.service;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
-import com.ssafy.herenft.dto.nft.GetDonateNftCntResponseDto;
 import com.ssafy.herenft.dto.nft.NftObjectDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
@@ -64,11 +63,14 @@ public class OrganService {
         System.out.println("서비스 단" + hospitalId + status);
 
         List<CertHistory> certHistoryList = certHistoryRepository.findAllByAgencyIdAndStatusOrderByCreatedDateDesc(hospitalId, status);
-        System.out.println("히스토리 리스트" + certHistoryList);
         List<GetCertHospitalResponseDto> result = new ArrayList<>();
 
+        if(certHistoryList.isEmpty()) {
+            return responseUtil.successResponse(result, HereStatus.HERE_FIND_CERT_LIST_HOSPITAL);
+        }
+
         String nowName = certHistoryList.get(0).getMember().getName();
-        System.out.println("나우네임" + nowName);
+
         List<NftObjectDto> someoneNfts = new ArrayList<>();
 
         // 한 번에 제출한 여러 데이터 건들을 묶음 처리
@@ -95,24 +97,17 @@ public class OrganService {
 
             // 한번에 제출한 내역이 이어질 경우 (주인공과 같은 이름)
             } else if (targetName.equals(nowName)) {
-//                System.out.println("현재 인덱스-------------" + i);
-//                System.out.println("현재 네임과 타겟 네임이 같습니다");
-//                System.out.println(targetName + " " + nowName);
-
-                // nft정보 담는 dto에 담아서
+                // nft정보 담는 dto에 담음
                 NftObjectDto nftObjectDto = NftObjectDto.builder()
                         .tokenId(certHistoryList.get(i).getTokenId())
                         .hashValue(certHistoryList.get(i).getHashValue())
                         .build();
 
-                // 리스트에 넣고 다음 번째로 감
+                // 리스트에 넣고 다음 순서로 감
                 someoneNfts.add(nftObjectDto);
-                System.out.println("추가된 것" + nftObjectDto.getHashValue());
-                System.out.println("지금까지 완성된 nfts" + someoneNfts);
 
             // 만약 주인공과 다른 이름이 등장한다면 (같은 묶음이 아님)
             } else {
-                System.out.println("현재 인덱스-------------" + i);
 
                 // 현재 인덱스 전까지를 저장
                 GetCertHospitalResponseDto getCertHospitalResponseDto = GetCertHospitalResponseDto.builder()
@@ -123,7 +118,6 @@ public class OrganService {
                         .build();
 
                 result.add(getCertHospitalResponseDto);
-                System.out.println("리절트 확인" + result);
 
                 // nft정보 묶음 초기화
                 someoneNfts = new ArrayList<>();
@@ -134,7 +128,6 @@ public class OrganService {
                         .build();
 
                 someoneNfts.add(nftObjectDto);
-                System.out.println("한 번 바뀌고 난 someNfts" + someoneNfts);
 
                 // 다음 인덱스가 있는 경우에만 주인공 이름 갱신 (error 방지용)
                 if (i + 1 < certHistoryList.size()) {
@@ -147,9 +140,9 @@ public class OrganService {
     }
 
     /* 증명 승인/미승인 목록 조회(기관) */
+    // 발행 목록 조회(적십자)
     public ResponseSuccessDto<List<GetNftRedcrossResponseDto>> getNftRedcross() {
-
-        List<Nft> nfts = nftRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+        List<Nft> nfts = nftRepository.findAllByTypeOrderByCreatedDateDesc(EnumNftType.AGENCY);
         List<GetNftRedcrossResponseDto> result = new ArrayList<>();
 
         for (Nft nft : nfts) {
@@ -159,6 +152,7 @@ public class OrganService {
             String memberName = member.getName();
 
             GetNftRedcrossResponseDto getNftRedcrossResponseDto = GetNftRedcrossResponseDto.builder()
+                    .tokenId(nft.getTokenId())
                     .memberName(memberName)
                     .createdDate(nft.getCreatedDate())
                     .build();

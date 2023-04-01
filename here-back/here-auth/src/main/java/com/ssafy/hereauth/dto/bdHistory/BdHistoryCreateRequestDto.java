@@ -1,19 +1,13 @@
-package com.ssafy.hereauth.dto.member;
+package com.ssafy.hereauth.dto.bdHistory;
 
 import com.ssafy.hereauth.enumeration.EnumBdHistoryType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class BdHistoryCreateRequestDto {
     @NotNull(message = "memberId는 필수 값입니다.")
     private UUID memberId;

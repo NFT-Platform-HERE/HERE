@@ -60,25 +60,32 @@ public class Board {
     @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'")
     private EnumBoardStatus status = EnumBoardStatus.ACTIVE;
 
-    public Board createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
-        Board board = new Board();
-        board.member = member;
-        board.title = saveBoardRequestDto.getTitle();
-        board.content = saveBoardRequestDto.getContent();
-        board.deadline = saveBoardRequestDto.getDeadline();
-        board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
-        return board;
+    public void createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
+        this.member = member;
+        this.title = saveBoardRequestDto.getTitle();
+        this.content = saveBoardRequestDto.getContent();
+        this.deadline = saveBoardRequestDto.getDeadline().plusDays(1);
+        this.goalQuantity = saveBoardRequestDto.getGoalQuantity();
     }
 
-    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+    public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto, Board board) {
         this.title = updateBoardRequestDto.getTitle();
         this.content = updateBoardRequestDto.getContent();
+        if (updateBoardRequestDto.getDeadline() != null && board.getCurQuantity() == 0) {
+            this.deadline = updateBoardRequestDto.getDeadline().plusDays(1);
+        }
+        if (updateBoardRequestDto.getGoalQuantity() != null && board.getCurQuantity() == 0) {
+            this.goalQuantity = updateBoardRequestDto.getGoalQuantity();
+        }
     }
 
     public void updateBoardStatus(EnumBoardStatus status) {
         this.status = status;
     }
 
+    public void updateCurQuantity(int quantity) {
+        this.curQuantity = quantity;
+    }
 //    public void closeBoard() {
 //        this.status = EnumBoardStatus.INACTIVE;
 //    }

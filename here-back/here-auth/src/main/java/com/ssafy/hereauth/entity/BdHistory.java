@@ -1,6 +1,6 @@
 package com.ssafy.hereauth.entity;
 
-import com.ssafy.hereauth.dto.member.BdHistoryCreateRequestDto;
+import com.ssafy.hereauth.dto.bdHistory.BdHistoryCreateRequestDto;
 import com.ssafy.hereauth.enumeration.EnumBdHistoryStatus;
 import com.ssafy.hereauth.enumeration.EnumBdHistoryType;
 import lombok.AllArgsConstructor;

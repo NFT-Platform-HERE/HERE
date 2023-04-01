@@ -3,8 +3,6 @@ package com.ssafy.herenft.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.herenft.dto.nft.NftObjectDto;
 import com.ssafy.herenft.dto.nft.SubmitCertAgencyRequestDto;
-import com.ssafy.herenft.dto.nft.SubmitCertHospitalRequestDto;
-import com.ssafy.herenft.eunmeration.EnumBdHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryType;
 import lombok.AllArgsConstructor;
@@ -59,35 +57,21 @@ public class CertHistory {
     @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
     private String hashValue;
 
-    public CertHistory createCertHistoryAgency(Member member, Member agency, SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
-        CertHistory certHistory = new CertHistory();
-        certHistory.member = member;
-        certHistory.agency = agency;
-        certHistory.type = EnumCertHistoryType.AGENCY;
-        certHistory.reason = submitCertAgencyRequestDto.getReason();
-        certHistory.tokenId = submitCertAgencyRequestDto.getTokenId();
-        certHistory.hashValue = submitCertAgencyRequestDto.getHashValue();
-        return certHistory;
+    public void createCertHistoryAgency(Member member, Member agency, SubmitCertAgencyRequestDto submitCertAgencyRequestDto) {
+        this.member = member;
+        this.agency = agency;
+        this.type = EnumCertHistoryType.AGENCY;
+        this.reason = submitCertAgencyRequestDto.getReason();
+        this.tokenId = submitCertAgencyRequestDto.getTokenId();
+        this.hashValue = submitCertAgencyRequestDto.getHashValue();
     }
 
-    public CertHistory createCertHistoryHospital(Member member, Member agency, SubmitCertHospitalRequestDto submitCertHospitalRequestDto, NftObjectDto nft) {
-        CertHistory certHistory = new CertHistory();
-        certHistory.member = member;
-        certHistory.agency = agency;
-        certHistory.type = EnumCertHistoryType.HOSPITAL;
-        certHistory.tokenId = nft.getTokenId();
-        certHistory.hashValue = nft.getHashValue();
-        return certHistory;
+    public void createCertHistoryHospital(Member member, Member agency, NftObjectDto nft) {
+        this.member = member;
+        this.agency = agency;
+        this.type = EnumCertHistoryType.HOSPITAL;
+        this.tokenId = nft.getTokenId();
+        this.hashValue = nft.getHashValue();
+        this.reason = null;
     }
-
-
-//    public void createCertHistory(Member member, Member agency, CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-//        this.member = member;
-//        this.agency = agency;
-//        this.type = certHistoryCreateRequestDto.getType();
-//        this.status = EnumCertHistoryStatus.ACTIVE;
-//        this.reason = certHistoryCreateRequestDto.getReason();
-//        this.hashValue = certHistoryCreateRequestDto.getHashValue();
-//    }
-
 }

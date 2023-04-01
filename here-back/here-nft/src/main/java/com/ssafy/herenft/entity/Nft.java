@@ -37,6 +37,9 @@ public class Nft {
     @Type(type = "uuid-char")
     private UUID issuerId;
 
+    @Column(name = "place", columnDefinition = "varchar(50)", nullable = false)
+    private String place;
+
     @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
     private String hashValue;
 
@@ -52,14 +55,17 @@ public class Nft {
     private LocalDateTime createdDate;
 
 
-    public Nft createNft(SaveNftRequestDto saveNftRequestDto, EnumNftType type) {
-        Nft nft = new Nft();
-        nft.tokenId = saveNftRequestDto.getTokenId();
-        nft.hashValue = saveNftRequestDto.getHashValue();
-        nft.ownerId = saveNftRequestDto.getOwnerId();
-        nft.issuerId = saveNftRequestDto.getIssuerId();
-        nft.imgUrl = saveNftRequestDto.getImgUrl();
-        nft.type = type;
-        return nft;
+    public void createNft(SaveNftRequestDto saveNftRequestDto) {
+        this.tokenId = saveNftRequestDto.getTokenId();
+        this.hashValue = saveNftRequestDto.getHashValue();
+        this.place = saveNftRequestDto.getPlace();
+        this.ownerId = saveNftRequestDto.getOwnerId();
+        this.issuerId = saveNftRequestDto.getIssuerId();
+        this.imgUrl = saveNftRequestDto.getImgUrl();
+        this.type = saveNftRequestDto.getNftType();
+    }
+
+    public void updateOwnership(UUID ownerId) {
+        this.ownerId = ownerId;
     }
 }

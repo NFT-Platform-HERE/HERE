@@ -2,6 +2,7 @@ package com.ssafy.hereauth.controller;
 
 import com.ssafy.hereauth.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereauth.dto.member.*;
+import com.ssafy.hereauth.enumeration.EnumMemberRole;
 import com.ssafy.hereauth.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.List;
+import java.util.UUID;
 
 @Api("Member Controller v1")
 @RestController
@@ -55,7 +58,7 @@ public class MemberController {
     /* 멤버 명함 조회 */
     @ApiOperation(value = "멤버 명함 조회", notes = "회원의 기본 정보를 조회한다.")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") String memberId) {
+    public ResponseEntity<ResponseSuccessDto<MemberProfileResponseDto>> getProfile(@PathVariable("memberId") UUID memberId) {
         return ResponseEntity.ok(memberService.getProfile(memberId));
     }
 
@@ -69,28 +72,21 @@ public class MemberController {
     /* 경험치 상승 */
     @ApiOperation(value = "경험치 상승", notes = "회원 경험치를 갱신한다.")
     @PatchMapping("/update/exp")
-    public ResponseEntity<ResponseSuccessDto<ExpUpdateResponseDto>> updateExp(@RequestBody ExpUpdateRequestDto expUpdateRequestDto) {
-        return ResponseEntity.ok(memberService.updateExp(expUpdateRequestDto));
+    public ResponseEntity<ResponseSuccessDto<UpdateExpResponseDto>> updateExp(@RequestBody UpdateExpRequestDto updateExpRequestDto) {
+        return ResponseEntity.ok(memberService.updateExp(updateExpRequestDto));
     }
 
-    /* 증명 승인/미승인 목록 조회(기관) */
-//    @ApiOperation(value = "증명 승인/미승인 목록 조회(기관)", notes = "기관의 승인/미승인 상태의 제출 기록을 조회한다.")
-//    @GetMapping("{agency_id}/{status}")
-//    public ResponseEntity<ResponseSuccessDto<MemberInfoResponseDto>> getCertListAgency(@PathVariable("agency_id") String agencyId, @PathVariable("status")) {
-//        return ResponseEntity.ok(memberService.getMemberInfo(email));
-//    }
-
-    /* CertHistory 생성 */
-    @ApiOperation(value = "제출 기록 생성", notes = "헌혈증 증명 제출 기록을 생성한다.")
-    @PostMapping("/nft/agency")
-    public ResponseEntity<ResponseSuccessDto<CertHistoryCreateResponseDto>> createCertHistory(@RequestBody CertHistoryCreateRequestDto certHistoryCreateRequestDto) {
-        return ResponseEntity.ok(memberService.createCertHistory(certHistoryCreateRequestDto));
+    /* 스탬프 정보 조회 */
+    @ApiOperation(value = "스탬프 정보 조회", notes = "스탬프 정보를 조회한다.")
+    @GetMapping("/stamp/{memberId}")
+    public ResponseEntity<ResponseSuccessDto<GetStampResponseDto>> getStamp(@PathVariable("memberId") UUID memberId) {
+        return ResponseEntity.ok(memberService.getStampInfo(memberId));
     }
 
-    /* BdHistory 생성 */
-    @ApiOperation(value = "헌혈 기록 생성", notes = "헌혈증 발행 기록을 생성한다.")
-    @PostMapping("/nft/bd")
-    public ResponseEntity<ResponseSuccessDto<BdHistoryCreateResponseDto>> createBdHistory(@RequestBody BdHistoryCreateRequestDto bdHistoryCreateRequestDto) {
-        return ResponseEntity.ok(memberService.createBdHistory(bdHistoryCreateRequestDto));
+    /* 증명서 제출 기관/병원 검색 */
+    @ApiOperation(value = "증명서 제출 기관/병원 검색", notes = "제출할 기관/병원을 검색한다.")
+    @GetMapping("/search/organ/{organType}")
+    public ResponseEntity<ResponseSuccessDto<List<SearchOrganResponseDto>>> searchOrgan(@PathVariable("organType") EnumMemberRole organType, @RequestParam("query") String query) {
+        return ResponseEntity.ok(memberService.searchOrgan(organType, query));
     }
 }
