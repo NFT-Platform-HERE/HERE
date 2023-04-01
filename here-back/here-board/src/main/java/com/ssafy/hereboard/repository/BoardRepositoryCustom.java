@@ -1,6 +1,5 @@
 package com.ssafy.hereboard.repository;
 
-import com.ssafy.hereboard.dto.board.BoardResponseDto;
 import com.ssafy.hereboard.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
