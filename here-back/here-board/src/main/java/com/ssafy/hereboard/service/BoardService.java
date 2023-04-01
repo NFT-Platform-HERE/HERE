@@ -48,7 +48,7 @@ public class BoardService {
         int goalQ = board.getGoalQuantity();
         int percentage = curQ * 100 / goalQ;
 
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
         List<String> imgUrlList = new ArrayList<>();
         for (BoardImg boardImg : boardImgs) {
             imgUrlList.add(boardImg.getImgUrl());
@@ -344,7 +344,7 @@ public class BoardService {
     }
 
     private String findThumbnail(Long boardId) {
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
 
         if (boardImgs.size() > 0) {
             return boardImgs.get(0).getImgUrl();
