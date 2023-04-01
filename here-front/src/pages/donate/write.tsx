@@ -215,6 +215,7 @@ export default function DonateWritePage() {
                       value={deadLineDate.toString()}
                       onClick={() => {}}
                       forwardedRef={dateBtnRef}
+                      edit={true}
                     />
                   }
                 />
