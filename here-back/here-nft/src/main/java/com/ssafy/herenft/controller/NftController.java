@@ -56,13 +56,6 @@ public class NftController {
         return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 
-//    @ApiOperation(value = "병원용 헌혈증 소유권 이전", notes = "병원에 수납한 헌혈증애 대한 소유권 이전을 합니다.")
-//    @PatchMapping("/hospital/submit")
-//    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
-//            @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
-//        return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
-//    }
-
     @ApiOperation(value = "기부용 헌혈증 소유권 이전 + 기부 내역 등록", notes = "타인에게 기부한 헌혈증애 대한 소유권 이전을 하고 기부 내역을 등록합니다.")
     @PatchMapping("/donate")
     public ResponseEntity<ResponseSuccessDto<DonateNftResponseDto>> donateNft(
@@ -78,8 +71,8 @@ public class NftController {
 
     @ApiOperation(value = "기부/병원 제출용 자동선택 NFT 목록 조회", notes = "기부 또는 병원 제출용으로 자동선택된 NFT 목록을 조회합니다.")
     @GetMapping("/{memberId}/hospital/{count}")
-    public ResponseEntity<ResponseSuccessDto<List<FindHospitalNftResponseDto>>> findHospitalNftAuto(
+    public ResponseEntity<ResponseSuccessDto<List<FindHospitalNftResponseDto>>> findNftListAuto(
             @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {
-        return ResponseEntity.ok(nftService.findHospitalNftList(memberId, count));
+        return ResponseEntity.ok(nftService.findNftListAuto(memberId, count));
     }
 }

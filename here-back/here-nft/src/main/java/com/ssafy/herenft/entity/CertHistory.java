@@ -72,5 +72,6 @@ public class CertHistory {
         this.type = EnumCertHistoryType.HOSPITAL;
         this.tokenId = nft.getTokenId();
         this.hashValue = nft.getHashValue();
+        this.reason = null;
     }
 }
