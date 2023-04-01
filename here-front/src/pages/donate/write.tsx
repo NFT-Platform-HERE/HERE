@@ -241,7 +241,10 @@ export default function DonateWritePage() {
             hidden
             multiple
           />
-          <DonateTiptap setDescription={setDescription} />
+          <DonateTiptap
+            setDescription={setDescription}
+            description={description}
+          />
           <div className="mb-25 flex items-center justify-start">
             {selectedFiles &&
               imagePreviewUrls.map((imageUrl, index) => (
