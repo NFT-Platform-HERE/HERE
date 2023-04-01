@@ -50,7 +50,7 @@ public class CertHistory {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(name = "updated_date", updatable = false, nullable = false)
+    @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
     @Column(name = "reason", columnDefinition = "varchar(50)")
