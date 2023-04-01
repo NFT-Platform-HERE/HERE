@@ -382,34 +382,34 @@ public class BoardService {
     }
 
     /* 기부 내역 등록 */
-    public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
-
-        // 지금 기부하려는 게시글 보고!
-        Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
-        UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
-
-        // 게시글 불러오기(기부 받은 만큼 curQuantity 갱신하기 위해)
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
-        board.updateCurQuantity(updateBoardBdHistoryRequestDto.getQuantity());
-
-        // 주인공 boardBdHistory 가져오자
-        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
-
-        if (subjectBoardBdHistory == null) {
-            // 이 게시글에 아직 기부한 적 없는 사람
-            BoardBdHistory boardBdHistory = new BoardBdHistory().createBoardBdHistory(updateBoardBdHistoryRequestDto);
-            boardBdHistoryRepository.save(boardBdHistory);
-        } else {
-            int newQuantity = subjectBoardBdHistory.getQuantity() + updateBoardBdHistoryRequestDto.getQuantity();
-            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
-        }
-        UpdateBoardBdHistoryResponseDto updateBoardBdHistoryResponseDto = UpdateBoardBdHistoryResponseDto.builder()
-                .message("기부리스트 등록 성공")
-                .build();
-
-        ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
-        return res;
-    }
+//    public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
+//
+//        // 지금 기부하려는 게시글 보고!
+//        Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
+//        UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
+//
+//        // 게시글 불러오기(기부 받은 만큼 curQuantity 갱신하기 위해)
+//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
+//        board.updateCurQuantity(updateBoardBdHistoryRequestDto.getQuantity());
+//
+//        // 주인공 boardBdHistory 가져오자
+//        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
+//
+//        if (subjectBoardBdHistory == null) {
+//            // 이 게시글에 아직 기부한 적 없는 사람
+//            BoardBdHistory boardBdHistory = new BoardBdHistory().createBoardBdHistory(updateBoardBdHistoryRequestDto);
+//            boardBdHistoryRepository.save(boardBdHistory);
+//        } else {
+//            int newQuantity = subjectBoardBdHistory.getQuantity() + updateBoardBdHistoryRequestDto.getQuantity();
+//            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
+//        }
+//        UpdateBoardBdHistoryResponseDto updateBoardBdHistoryResponseDto = UpdateBoardBdHistoryResponseDto.builder()
+//                .message("기부리스트 등록 성공")
+//                .build();
+//
+//        ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
+//        return res;
+//    }
 
     /* 기부 해시값 총 개수 확인 */
 
