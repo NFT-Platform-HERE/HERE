@@ -44,7 +44,7 @@ public class NftController {
         return ResponseEntity.ok(nftService.submitCertAgency(submitCertAgencyRequestDto));
     }
 
-    @ApiOperation(value = "내 증명서 제출(병원)", notes = "병원에 나의 증명서를 제출합니다.")
+    @ApiOperation(value = "내 증명서 제출 및 소유권 이전(병원)", notes = "병원에 나의 증명서를 제출하고 소유권을 병원으로 이전합니다.")
     @PostMapping("/hospital")
     public ResponseEntity<ResponseSuccessDto<SubmitCertHospitalResponseDto>> submitCertHospital(@RequestBody @Valid SubmitCertHospitalRequestDto submitCertHospitalRequestDto) {
         return ResponseEntity.ok(nftService.submitCertHospital(submitCertHospitalRequestDto));
@@ -56,12 +56,12 @@ public class NftController {
         return ResponseEntity.ok(nftService.getDonateNftCnt(senderId));
     }
 
-    @ApiOperation(value = "병원용 헌혈증 소유권 이전", notes = "병원에 수납한 헌혈증애 대한 소유권 이전을 합니다.")
-    @PatchMapping("/hospital/submit")
-    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
-            @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
-        return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
-    }
+//    @ApiOperation(value = "병원용 헌혈증 소유권 이전", notes = "병원에 수납한 헌혈증애 대한 소유권 이전을 합니다.")
+//    @PatchMapping("/hospital/submit")
+//    public ResponseEntity<ResponseSuccessDto<TransferOwnershipResponseDto>> transferNftOwnership(
+//            @RequestBody TransferOwnershipRequestDto transferOwnershipRequestDto) {
+//        return ResponseEntity.ok(nftService.transferNftOwnership(transferOwnershipRequestDto));
+//    }
 
     @ApiOperation(value = "기부용 헌혈증 소유권 이전 + 기부 내역 등록", notes = "타인에게 기부한 헌혈증애 대한 소유권 이전을 하고 기부 내역을 등록합니다.")
     @PatchMapping("/donate")
