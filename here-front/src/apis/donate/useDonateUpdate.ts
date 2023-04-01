@@ -1,25 +1,23 @@
 import { DONATE_SERVER_URL } from "@/utils/urls";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
-import { DonationUpdate } from "@/types/DonationUpdate";
+import * as queryKeys from "@/constants/queryKeys";
 
-const fetcher = (payload: DonationUpdate) =>
+const config = {
+  headers: { "Content-Type": "multipart/form-data" },
+};
+
+const fetcher = (formData: FormData) =>
   axios
-    .patch(DONATE_SERVER_URL + `/board/update`, {
-      boardId: payload.boardId,
-      writerId: payload.writerId,
-      title: payload.title,
-      content: payload.content,
-      deadline: payload.deadline,
-      goalQuantity: payload.goalQuantity,
-      imgUrlList: payload.imgUrlList,
-    })
+    .patch(DONATE_SERVER_URL + `/board/update`, formData, config)
     .then(({ data }) => data);
 
 const useDonateUpdate = () => {
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("성공!");
+      console.log("Update 성공", data);
+      const queryClient = useQueryClient();
+      return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
     },
     onError: () => {
       console.log("onERROR");
