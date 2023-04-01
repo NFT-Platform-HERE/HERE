@@ -16,7 +16,7 @@ const fetcher = (payload: DonationUpdate) =>
     })
     .then(({ data }) => data);
 
-const useDonateUpdateQuery = () => {
+const useDonateUpdate = () => {
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공!");
@@ -27,4 +27,4 @@ const useDonateUpdateQuery = () => {
   });
 };
 
-export default useDonateUpdateQuery;
+export default useDonateUpdate;
