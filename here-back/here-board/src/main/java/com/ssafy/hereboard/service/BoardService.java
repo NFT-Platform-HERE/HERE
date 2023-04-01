@@ -3,6 +3,7 @@ package com.ssafy.hereboard.service;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
+import com.ssafy.hereboard.enumeration.EnumBoardImgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
@@ -47,7 +48,7 @@ public class BoardService {
         int goalQ = board.getGoalQuantity();
         int percentage = curQ * 100 / goalQ;
 
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
         List<String> imgUrlList = new ArrayList<>();
         for (BoardImg boardImg : boardImgs) {
             imgUrlList.add(boardImg.getImgUrl());
@@ -73,7 +74,7 @@ public class BoardService {
     }
 
     /* 게시글 생성 */
-    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
+    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList, List<Integer> imgOrderList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         Board board = new Board();
@@ -86,9 +87,9 @@ public class BoardService {
 
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
-            for (String img : imgUrlList) {
+            for(int i=0; i< imgUrlList.size(); i++) {
                 BoardImg boardImg = new BoardImg();
-                boardImg.createBoardImg(board, img);
+                boardImg.createBoardImg(board, imgUrlList.get(i), imgOrderList.get(i));
                 boardImgRepository.save(boardImg);
             }
         }
@@ -103,7 +104,11 @@ public class BoardService {
     }
 
     /* 게시글 수정 */
-    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto, List<String> imgUrlList) {
+    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(
+            UpdateBoardRequestDto updateBoardRequestDto,
+            List<UpdateBoardImgObject> updateBoardImgObjectList,
+            List<String> imgUrlList,
+            List<Integer> ordersList) {
         // 수정할 게시글 가져오기
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
@@ -114,20 +119,25 @@ public class BoardService {
             throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
         }
 
-        // 게시글의 title, content 수정
+        // 1) 게시글의 title, content 수정
         board.updateBoard(updateBoardRequestDto, board);
 
-        // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
+        // 2) 기존 이미지 수정(순서, 상태(ACTIVE, INACTIVE))
+        for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
+            Long boardImgId = updateBoardImgObject.getBoardImgId();
+            EnumBoardImgStatus status = updateBoardImgObject.getStatus();
+            int order = updateBoardImgObject.getOrders();
+            BoardImg boardImg = boardImgRepository.findById(boardImgId).orElseThrow(() -> new EntityIsNullException("해당 게시글 이미지가 존재하지 않습니다."));
+            boardImg.updateBoardImg(status, order);
+        }
 
-        boardImgRepository.deleteAll(boardImgs);
-
-        // 새롭게 들어온 이미지 리스트로 db에 추가
-        for (String img : imgUrlList) {
+        // 3) 4) 새롭게 들어온 이미지 추가(url, order)
+        for(int i=0; i<imgUrlList.size(); i++) {
             BoardImg boardImg = new BoardImg();
-            boardImg.createBoardImg(board, img);
+            boardImg.createBoardImg(board, imgUrlList.get(i), ordersList.get(i));
             boardImgRepository.save(boardImg);
         }
+
         UpdateBoardResponseDto updateBoardResponseDto = UpdateBoardResponseDto.builder()
                 .boardId(board.getId())
                 .message("게시글 수정 성공")
@@ -334,7 +344,7 @@ public class BoardService {
     }
 
     private String findThumbnail(Long boardId) {
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
 
         if (boardImgs.size() > 0) {
             return boardImgs.get(0).getImgUrl();
