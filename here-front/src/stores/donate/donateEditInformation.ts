@@ -8,6 +8,7 @@ interface donateEditInfo {
   title: string;
   memberId: string;
   deadline: string;
+  curQuantity: number;
 }
 
 const initialState: donateEditInfo = {
@@ -18,6 +19,7 @@ const initialState: donateEditInfo = {
   goalQuantity: 0,
   memberId: "",
   deadline: "",
+  curQuantity: 0,
 };
 
 const donateSlice = createSlice({
@@ -32,6 +34,7 @@ const donateSlice = createSlice({
       state.title = action.payload.title;
       state.memberId = action.payload.memberId;
       state.deadline = action.payload.deadline;
+      state.curQuantity = action.payload.curQuantity;
     },
     clearBoardEditInfo(state) {
       state.title = "";
@@ -41,6 +44,7 @@ const donateSlice = createSlice({
       state.goalQuantity = 0;
       state.memberId = "";
       state.deadline = "";
+      state.curQuantity = 0;
     },
   },
 });
