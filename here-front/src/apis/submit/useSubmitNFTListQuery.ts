@@ -16,6 +16,7 @@ const useSubmitNFTListQuery = (memberId: string, organType: string) => {
       onSuccess: (data) => {
         console.log(organType, "NFT 정보", data);
       },
+      refetchOnWindowFocus: false,
     },
   );
 };

@@ -142,6 +142,7 @@ export default function SubmitNFTList({ count }: Iprops) {
         }
       }
     }
+    console.log("자동");
   }, [autoSelectList?.data]);
 
   useEffect(() => {
