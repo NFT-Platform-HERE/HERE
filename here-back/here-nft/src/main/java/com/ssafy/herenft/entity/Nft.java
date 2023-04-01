@@ -37,6 +37,9 @@ public class Nft {
     @Type(type = "uuid-char")
     private UUID issuerId;
 
+    @Column(name = "place", columnDefinition = "varchar(50)", nullable = false)
+    private String place;
+
     @Column(name = "hash_value", columnDefinition = "varchar(200)", nullable = false)
     private String hashValue;
 
@@ -55,6 +58,7 @@ public class Nft {
     public void createNft(SaveNftRequestDto saveNftRequestDto) {
         this.tokenId = saveNftRequestDto.getTokenId();
         this.hashValue = saveNftRequestDto.getHashValue();
+        this.place = saveNftRequestDto.getPlace();
         this.ownerId = saveNftRequestDto.getOwnerId();
         this.issuerId = saveNftRequestDto.getIssuerId();
         this.imgUrl = saveNftRequestDto.getImgUrl();
