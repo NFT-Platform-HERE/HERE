@@ -11,15 +11,23 @@ import { saveNFTImage } from "@/utils/saveAsImg";
 import { useEffect, useState } from "react";
 import useMyNFTListQuery from "@/apis/my-nft/useMyNFTListQuery";
 import { FaCameraRetro } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { closeModal } from "@/stores/myNFT/selectedNFT";
 
 export default function MyNFTPage() {
+  const [capture, setCapture] = useState<string>("front-capture");
+
+  const { memberId } = useSelector((state: RootState) => state.member);
+
   const NFTCardBackIndex = useSelector((state: RootState) => {
     return state.selectedNFT.selectedNFT;
   });
 
-  const { memberId } = useSelector((state: RootState) => state.member);
+  const dispatch = useDispatch();
 
-  const [capture, setCapture] = useState<string>("front-capture");
+  useEffect(() => {
+    dispatch(closeModal());
+  }, []);
 
   useEffect(() => {
     if (NFTCardBackIndex === -1) {
@@ -31,7 +39,6 @@ export default function MyNFTPage() {
 
   const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
 
-  console.log(myNFTList);
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">
       <div className="flex h-[calc(100vh-65px)] min-h-630 w-full min-w-[1200px] items-center justify-center mobile:h-[calc(100vh-60px)] mobile:min-h-full mobile:w-full mobile:min-w-full">
