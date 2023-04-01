@@ -22,6 +22,7 @@ import useDonateDelete from "@/apis/donate/useDonateDelete";
 import { DonationDelete } from "@/types/DonationDelete";
 import { BoardStatus } from "@/enum/statusType";
 import { useRouter } from "next/navigation";
+import useDonateNftCountQuery from "@/apis/donate/useDonateNftCountQuery";
 
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -44,10 +45,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
   const memberId = useSelector((state: RootState) => state.member.memberId);
 
-  const nowBoard = useDonateDetailQuery(parseInt(boardId));
+  const maxCnt = useDonateNftCountQuery(memberId);
 
-  console.log("nowBoard", nowBoard);
-  console.log("nowBoard", nowBoard.data.curQuantity);
+  const nowBoard = useDonateDetailQuery(parseInt(boardId));
 
   const writerId = nowBoard?.data.memberId;
   const writerInfo = useMemberInfoQuery(writerId);
@@ -129,6 +129,21 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
   function moveDonateListPage() {
     router.push("/donate");
+  }
+
+  function disableDonateButton() {
+    if (maxCnt) {
+      if (
+        maxCnt.data?.cnt < 1 ||
+        nowBoard.data.status == BoardStatus.INACTIVE
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 
   return (
@@ -257,9 +272,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 height={50}
                 fontSize={18}
                 children={"기부하기"}
-                isDisabled={
-                  nowBoard.data.status == BoardStatus.INACTIVE ? true : false
-                }
+                isDisabled={disableDonateButton()}
                 onClick={handleDonateButton}
               />
             )}
