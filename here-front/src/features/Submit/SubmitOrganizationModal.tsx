@@ -42,7 +42,7 @@ export default function SubmitOrganizationModal({ onClick }: Iprops) {
     mutate({
       agencyId: organization,
       hashValue: submitNFT.hashValue,
-      memberId: "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
+      memberId: memberId,
       reason: purposeInput,
       tokenId: submitNFT.tokenId,
     });
