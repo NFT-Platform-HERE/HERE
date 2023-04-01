@@ -185,16 +185,18 @@ export default function DonateWritePage() {
             <div className="mr-8 flex h-55 w-85 items-center justify-center rounded-60 border border-pen-0 text-18 font-normal text-pen-2 mobile:h-39 mobile:w-56 mobile:text-12">
               {targetQuantity}
             </div>
-            <img
-              src={"/icons/minus-circle-button.svg"}
-              onClick={handleTargetQuantityMinus}
-              className="h-70 w-70 mobile:h-45 mobile:w-45"
-            />
-            <img
-              src={"/icons/add-circle-button.svg"}
-              onClick={handleTargetQuantityPlus}
-              className="h-70 w-70 mobile:h-45 mobile:w-45"
-            />
+            <button onClick={handleTargetQuantityMinus}>
+              <img
+                src={"/icons/minus-circle-button.svg"}
+                className="h-70 w-70 mobile:h-45 mobile:w-45"
+              />
+            </button>
+            <button onClick={handleTargetQuantityPlus}>
+              <img
+                src={"/icons/add-circle-button.svg"}
+                className="h-70 w-70 mobile:h-45 mobile:w-45"
+              />
+            </button>
           </div>
           <div className="mb-25 flex flex-wrap items-center justify-between">
             <div className="flex items-center justify-start mobile:mb-10">
@@ -218,18 +220,17 @@ export default function DonateWritePage() {
                 />
               </div>
             </div>
-            <div
-              className="flex items-center justify-end"
-              onClick={handleImageSelectButtonClick}
-            >
-              <img
-                src={"/icons/Img_box_duotone_line.svg"}
-                className="h-52 w-52 mobile:h-35 mobile:w-35"
-              />
-              <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
-                사진 첨부
+            <button onClick={handleImageSelectButtonClick}>
+              <div className="flex items-center justify-end">
+                <img
+                  src={"/icons/Img_box_duotone_line.svg"}
+                  className="h-52 w-52 mobile:h-35 mobile:w-35"
+                />
+                <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
+                  사진 첨부
+                </div>
               </div>
-            </div>
+            </button>
           </div>
           <input
             type="file"
@@ -255,11 +256,12 @@ export default function DonateWritePage() {
                     alt={`Image Preview ${index}`}
                     className="h-95 w-95 rounded-15"
                   />
-                  <img
-                    src="/icons/Dell.svg"
-                    className="absolute top-5 right-5 h-25 w-25"
-                    onClick={handleRemoveClick(index)}
-                  ></img>
+                  <button onClick={handleRemoveClick(index)}>
+                    <img
+                      src="/icons/Dell.svg"
+                      className="absolute top-5 right-5 h-25 w-25"
+                    />
+                  </button>
                 </div>
               ))}
           </div>
