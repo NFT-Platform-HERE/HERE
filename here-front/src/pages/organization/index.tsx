@@ -56,6 +56,9 @@ export default function OrganizationPage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const hanldleClick = (idx: number) => {
+    if (!isActive) {
+      return;
+    }
     setIsOpen(!isOpen);
     if (isHospital) {
       dispatch(getHospitalNft(currentList[idx].hashValueList));
@@ -103,9 +106,15 @@ export default function OrganizationPage() {
             사유
           </p>
         )}
-        <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
-          등록일
-        </p>
+        {isActive ? (
+          <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
+            등록일
+          </p>
+        ) : (
+          <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
+            승인일
+          </p>
+        )}
       </div>
       {currentList?.map((item, idx) => (
         <div key={idx}>
@@ -132,8 +141,12 @@ export default function OrganizationPage() {
               {item.createdDate.slice(0, 10)}
             </p>
           </div>
-          {isOpen && !isHospital && <AgencyNFTModal onClick={hanldleClick} />}
-          {isOpen && isHospital && <HospitalNFTModal onClick={hanldleClick} />}
+          {isOpen && isActive && !isHospital && (
+            <AgencyNFTModal onClick={hanldleClick} />
+          )}
+          {isOpen && isActive && isHospital && (
+            <HospitalNFTModal onClick={hanldleClick} />
+          )}
           <hr />
         </div>
       ))}
