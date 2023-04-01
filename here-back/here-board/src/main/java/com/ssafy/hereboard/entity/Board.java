@@ -60,12 +60,14 @@ public class Board {
     @Column(name = "status", columnDefinition = "char(10) default 'ACTIVE'")
     private EnumBoardStatus status = EnumBoardStatus.ACTIVE;
 
-    public void createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
-        this.member = member;
-        this.title = saveBoardRequestDto.getTitle();
-        this.content = saveBoardRequestDto.getContent();
-        this.deadline = saveBoardRequestDto.getDeadline().plusDays(1);
-        this.goalQuantity = saveBoardRequestDto.getGoalQuantity();
+    public Board createBoard(Member member, SaveBoardRequestDto saveBoardRequestDto) {
+        Board board = new Board();
+        board.member = member;
+        board.title = saveBoardRequestDto.getTitle();
+        board.content = saveBoardRequestDto.getContent();
+        board.deadline = saveBoardRequestDto.getDeadline().plusDays(1);
+        board.goalQuantity = saveBoardRequestDto.getGoalQuantity();
+        return board;
     }
 
     public void updateBoard(UpdateBoardRequestDto updateBoardRequestDto, Board board) {
@@ -82,4 +84,11 @@ public class Board {
     public void updateBoardStatus(EnumBoardStatus status) {
         this.status = status;
     }
+
+    public void updateCurQuantity(int quantity) {
+        this.curQuantity = quantity;
+    }
+//    public void closeBoard() {
+//        this.status = EnumBoardStatus.INACTIVE;
+//    }
 }

@@ -41,14 +41,18 @@ public class BoardService {
     private final BoardBdHistoryRepository boardBdHistoryRepository;
 
     /* 전체 게시글 조회 */
-    public ResponseSuccessDto<List<BoardObjectDto>> getBoardList() {
+    public ResponseSuccessDto<List<BoardResponseDto>> getBoardList() {
 
+//        List<Board> boards = boardRepository.findAllByStatusOrderByCreatedDateDesc();
         List<Board> boards = boardRepository.findBoardList();
-        List<BoardObjectDto> result = new ArrayList<>();
+//        List<BoardResponseDto> boardList = boards.stream()
+//                .map(b -> new BoardResponseDto(b))
+//                .collect(Collectors.toList());
+        List<BoardResponseDto> result = new ArrayList<>();
 
         for (Board board : boards) {
             String thumbnail = findThumbnail(board.getId());
-            BoardObjectDto boardObjectDto = BoardObjectDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                     .boardId(board.getId())
                     .title(board.getTitle())
                     .nickname(board.getMember().getNickname())
@@ -57,10 +61,10 @@ public class BoardService {
                     .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
-            result.add(boardObjectDto);
+            result.add(boardResponseDto);
         }
 
-        ResponseSuccessDto<List<BoardObjectDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
 
@@ -75,15 +79,16 @@ public class BoardService {
     }
 
     /* 내 게시글 조회 */
-    public ResponseSuccessDto<List<BoardObjectDto>> getMyBoardList(UUID memberId) {
+    public ResponseSuccessDto<List<BoardResponseDto>> getMemberBoardList(UUID memberId) {
 
+//        List<Board> boards = boardRepository.findMineAllByStatusOrderByCreatedDateDesc(memberId);
         List<Board> boards = boardRepository.findMyBoardList(memberId);
 
-        List<BoardObjectDto> result = new ArrayList<>();
+        List<BoardResponseDto> result = new ArrayList<>();
 
         for (Board board : boards) {
             String thumbnail = findThumbnail(board.getId());
-            BoardObjectDto boardObjectDto = BoardObjectDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                     .boardId(board.getId())
                     .title(board.getTitle())
                     .nickname(board.getMember().getNickname())
@@ -92,10 +97,10 @@ public class BoardService {
                     .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
-            result.add(boardObjectDto);
+            result.add(boardResponseDto);
         }
 
-        ResponseSuccessDto<List<BoardObjectDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
 
@@ -108,8 +113,10 @@ public class BoardService {
         int percentage = curQ / goalQ * 100;
 
         List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+//        List<String> imgUrlList = boardImgs.stream()
+//                        .map(BoardImg::getImgUrl)
+//                                .collect(Collectors.toList());
         List<String> imgUrlList = new ArrayList<>();
-
         for (BoardImg boardImg : boardImgs) {
             imgUrlList.add(boardImg.getImgUrl());
         }
@@ -137,8 +144,7 @@ public class BoardService {
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        Board board = new Board();
-        board.createBoard(member, saveBoardRequestDto);
+        Board board = new Board().createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
 
         if(imgUrlList.size() > 4) {
@@ -148,8 +154,7 @@ public class BoardService {
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
             for (String img : imgUrlList) {
-                BoardImg boardImg = new BoardImg();
-                boardImg.createBoardImg(board, img);
+                BoardImg boardImg = new BoardImg().createBoardImg(board, img);
                 boardImgRepository.save(boardImg);
             }
         }
@@ -185,8 +190,7 @@ public class BoardService {
 
         // 새롭게 들어온 이미지 리스트로 db에 추가
         for (String img : imgUrlList) {
-            BoardImg boardImg = new BoardImg();
-            boardImg.createBoardImg(board, img);
+            BoardImg boardImg = new BoardImg().createBoardImg(board, img);
             boardImgRepository.save(boardImg);
         }
         UpdateBoardResponseDto updateBoardResponseDto = UpdateBoardResponseDto.builder()
@@ -198,7 +202,6 @@ public class BoardService {
         return res;
     }
 
-    /* 게시글 업데이트 권한 확인 */
     private static void checkAuthorizationToUpdateBoard(UUID writerId, Board board) {
         if(!board.getMember().getId().equals(writerId)) {
             throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
@@ -241,8 +244,7 @@ public class BoardService {
 
     /* 응원 메시지 수정 */
     public ResponseSuccessDto<UpdateMsgResponseDto> updateMsg(UpdateMsgRequestDto updateMsgRequestDto) {
-
-        // 해당하는 멤버가 이 board의 cheeringMsg를 누른 적 있는지 확인
+        // 일단 request로 들어온 memberId에 해당하는 멤버가 이 board의 cheeringMsg를 누른 적 있는지 확인
         Long boardId = updateMsgRequestDto.getBoardId();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 게시글입니다."));
@@ -251,24 +253,33 @@ public class BoardService {
 
         Long cheeringMsgId = updateMsgRequestDto.getCheeringMsgId();
 
-        // 해당 조합 게시글메시지 객체 찾기
+        // 리포로 가서 해당 조합 게시글메시지 객체 찾기!
+
         Optional<BoardMsg> boardCheeringMsg = boardMsgRepository.findByBoardAndMemberIdAndMsgId(board, memberId, cheeringMsgId);
+        System.out.println("객체 찾기 완료!");
 
         // 만약 아예 db에 게시글메시지 객체가 없으면 insert, 아니면 update
         if (boardCheeringMsg.isEmpty()) {
             BoardMsg boardMsg = new BoardMsg();
             boardMsg.createBoardMsg(board, memberId, cheeringMsgId);
+            System.out.println("db에 없을 때 createBoardMsg 완료!");
             boardMsgRepository.save(boardMsg);
             boardMsgRepository.flush();
+            System.out.println("db에 없을 때 리포에 save 완료!");
+
         } else {
             boardCheeringMsg.get().updateBoardMsg(boardCheeringMsg.get().getStatus());
+            System.out.println("db에 있을 때, updateBoardMsg 환료!");
         }
 
-        // ACTIVE 메시지 개수 세기
+        // 리포에서 ACTIVE인 애들 개수 세기
         List<BoardMsg> cheeringMsgs = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
         int count = cheeringMsgs.size();
-        // 있으면? -> -1 / 없으면? -> + 1 count 해주고 그걸 테이블에 반영
-        // count한 결과 resposne에 담기
+        System.out.println("해당 board에서의 cherringMsgs 개수 세기 완료!");
+
+//        // 있으면? -> -1 / 없으면? -> + 1 count 해주고 그걸 테이블에 반영
+//        // count한 결과를 resposne로 주기
+//
         UpdateMsgResponseDto updateMsgResponseDto = UpdateMsgResponseDto.builder()
                 .cnt(count)
                 .build();
@@ -284,6 +295,11 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
+//        List<BoardMsg> boardMsgs = boardMsgRepository.findAllByBoard(board);
+//        System.out.println("리스트 확인" + boardMsgs);
+//
+//        List<?> test = boardMsgRepository.findAllByBoardGroupByCheeringMsgId(board);
+//        System.out.println("테스트" + test);
         List<CheeringMsg> cheeringMsgList = cheeringMsgRepository.findAll();
         List<GetBoardMsgResponseDto> result = new ArrayList<>();
 
@@ -292,6 +308,7 @@ public class BoardService {
             String content = cheeringMsg.getContent();
             Boolean isSelected = false;
 
+            // cnt를 위해서 리포지토리에 접근!
             List<BoardMsg> boardMsgList = boardMsgRepository.findAllByBoardAndCheeringMsgIdAndStatusActive(board, cheeringMsgId);
             int cnt = boardMsgList.size();
             Optional<BoardMsg> boardMsg = boardMsgRepository.findByBoardAndCheeringMsgIdAndMemberIdAndStatus(board, cheeringMsgId, memberId, EnumBoardMsgStatus.ACTIVE);
@@ -314,6 +331,7 @@ public class BoardService {
 
     /* 게시글 검색 */
     public ResponseSuccessDto<List<SearchBoardResponseDto>> searchBoard(String query) {
+//        List<Board> searchedList = boardRepository.findAllBySearch(query);
         List<Board> searchedList = boardRepository.searchBoard(query);
         List<SearchBoardResponseDto> result = new ArrayList<>();
 
@@ -340,14 +358,14 @@ public class BoardService {
     }
 
     /* 종료 임박 게시글 목록 조회 */
-    public ResponseSuccessDto<List<BoardObjectDto>> getDeadlineBoardList() {
+    public ResponseSuccessDto<List<BoardResponseDto>> getDeadlineBoardList() {
 
         List<Board> boards = boardRepository.findTop4ByStatusOrderByDeadlineAscCurQuantityAsc(EnumBoardStatus.ACTIVE);
-        List<BoardObjectDto> result = new ArrayList<>();
+        List<BoardResponseDto> result = new ArrayList<>();
 
         for (Board board : boards) {
             String thumbnail = findThumbnail(board.getId());
-            BoardObjectDto boardObjectDto = BoardObjectDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                     .boardId(board.getId())
                     .title(board.getTitle())
                     .nickname(board.getMember().getNickname())
@@ -356,45 +374,53 @@ public class BoardService {
                     .dDay(board.getDeadline().atTime(LocalTime.MIDNIGHT))
                     .percentage(board.getCurQuantity() / board.getGoalQuantity() * 100)
                     .build();
-            result.add(boardObjectDto);
+            result.add(boardResponseDto);
         }
 
-        ResponseSuccessDto<List<BoardObjectDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+        ResponseSuccessDto<List<BoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
         return res;
     }
 
     /* 기부 내역 등록 */
-    public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
-
-        Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
-        UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
-
-        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
-
-        if (subjectBoardBdHistory == null) {
-            // 이 게시글에 아직 기부한 적 없는 사람
-            BoardBdHistory boardBdHistory = new BoardBdHistory();
-            boardBdHistory.createBoardBdHistory(updateBoardBdHistoryRequestDto);
-            boardBdHistoryRepository.save(boardBdHistory);
-        } else {
-            int newQuantity = subjectBoardBdHistory.getQuantity() + updateBoardBdHistoryRequestDto.getQuantity();
-            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
-        }
-        UpdateBoardBdHistoryResponseDto updateBoardBdHistoryResponseDto = UpdateBoardBdHistoryResponseDto.builder()
-                .message("기부리스트 등록 성공")
-                .build();
-
-        ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
-        return res;
-    }
+//    public ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> updateBoardBdHistory(UpdateBoardBdHistoryRequestDto updateBoardBdHistoryRequestDto) {
 //
-//    /* 기부 해시값 조회(자동 선택) */
-//    public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
+//        // 지금 기부하려는 게시글 보고!
+//        Long boardId = updateBoardBdHistoryRequestDto.getBoardId();
+//        UUID senderId = updateBoardBdHistoryRequestDto.getSenderId();
 //
-////        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
-////        return res;
-//        return null;
+//        // 게시글 불러오기(기부 받은 만큼 curQuantity 갱신하기 위해)
+//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
+//        board.updateCurQuantity(updateBoardBdHistoryRequestDto.getQuantity());
+//
+//        // 주인공 boardBdHistory 가져오자
+//        BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId); // 없으면 null이 나옴
+//
+//        if (subjectBoardBdHistory == null) {
+//            // 이 게시글에 아직 기부한 적 없는 사람
+//            BoardBdHistory boardBdHistory = new BoardBdHistory().createBoardBdHistory(updateBoardBdHistoryRequestDto);
+//            boardBdHistoryRepository.save(boardBdHistory);
+//        } else {
+//            int newQuantity = subjectBoardBdHistory.getQuantity() + updateBoardBdHistoryRequestDto.getQuantity();
+//            subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
+//        }
+//        UpdateBoardBdHistoryResponseDto updateBoardBdHistoryResponseDto = UpdateBoardBdHistoryResponseDto.builder()
+//                .message("기부리스트 등록 성공")
+//                .build();
+//
+//        ResponseSuccessDto<UpdateBoardBdHistoryResponseDto> res = responseUtil.successResponse(updateBoardBdHistoryResponseDto, HereStatus.HERE_CREATE_DONATION);
+//        return res;
 //    }
+
+    /* 기부 해시값 총 개수 확인 */
+
+
+    /* 기부 해시값 조회(자동 선택) */
+    public ResponseSuccessDto<List<GetBoardBdHistoryResponseDto>> getBoardBdHistory(UUID senderId, int quantity) {
+
+//        ResponseSuccessDto<List<SearchBoardResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_BOARD);
+//        return res;
+        return null;
+    }
 
 //    public ResponseSuccessDto<Page<Board>> getBoardListPaging(Pageable pageable) {
 //        Page<Board> boardListPaging = boardRepository.findBoardListPaging(pageable);
@@ -405,12 +431,12 @@ public class BoardService {
 //    }
 
     /* 전체 게시글 조회(페이징) */
-    public ResponseSuccessDto<Page<BoardObjectDto>> getBoardListPaging(Pageable pageable) {
+    public ResponseSuccessDto<Page<BoardResponseDto>> getBoardListPaging(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findBoardListPaging(pageable);
         List<Board> boardList = boardPage.getContent();
 
-        List<BoardObjectDto> boardResponseDtoList = boardList.stream()
-                .map(board -> BoardObjectDto.builder()
+        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardResponseDto.builder()
                         .boardId(board.getId())
                         .title(board.getTitle())
                         .nickname(board.getMember().getNickname())
@@ -421,17 +447,17 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
 
-        Page<BoardObjectDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
         return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
     /* 내 게시글 조회(페이징) */
-    public ResponseSuccessDto<Page<BoardObjectDto>> getMemberBoardListPaging(UUID memberId, Pageable pageable) {
+    public ResponseSuccessDto<Page<BoardResponseDto>> getMemberBoardListPaging(UUID memberId, Pageable pageable) {
 
         Page<Board> boardPage = boardRepository.findMyBoardListPaging(memberId,pageable);
         List<Board> boardList = boardPage.getContent();
 
-        List<BoardObjectDto> boardResponseDtoList = boardList.stream()
-                .map(board -> BoardObjectDto.builder()
+        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
+                .map(board -> BoardResponseDto.builder()
                         .boardId(board.getId())
                         .title(board.getTitle())
                         .nickname(board.getMember().getNickname())
@@ -442,7 +468,7 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
 
-        Page<BoardObjectDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
+        Page<BoardResponseDto> boardResponseDtoPage = new PageImpl<>(boardResponseDtoList, pageable, boardPage.getTotalElements());
         return responseUtil.successResponse(boardResponseDtoPage, HereStatus.HERE_FIND_BOARD);
     }
 
