@@ -74,7 +74,7 @@ public class BoardService {
     }
 
     /* 게시글 생성 */
-    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList, List<Integer> imgOrderList) {
+    public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         Board board = new Board();
@@ -89,7 +89,7 @@ public class BoardService {
             // 이미지 저장
             for(int i=0; i< imgUrlList.size(); i++) {
                 BoardImg boardImg = new BoardImg();
-                boardImg.createBoardImg(board, imgUrlList.get(i), imgOrderList.get(i));
+                boardImg.createBoardImg(board, imgUrlList.get(i), i);
                 boardImgRepository.save(boardImg);
             }
         }

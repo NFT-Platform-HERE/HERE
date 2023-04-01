@@ -36,13 +36,12 @@ public class BoardController {
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
             @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
-            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList,
-            @RequestPart List<Integer> imgOrderList) throws Exception{
+            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList) throws Exception{
         List<String> imgUrlList = new ArrayList<>();
         if(multipartFileList != null) {
             imgUrlList = s3Service.upload(multipartFileList);
         }
-        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList, imgOrderList));
+        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList));
     }
 
     @ApiOperation(value = "board 상세 조회", notes = "board의 상세 정보를 조회합니다.")
