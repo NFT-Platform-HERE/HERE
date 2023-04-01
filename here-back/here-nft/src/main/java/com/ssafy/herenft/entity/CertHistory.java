@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -47,6 +48,10 @@ public class CertHistory {
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(name = "updated_date", updatable = false, nullable = false)
+    private LocalDateTime updatedDate;
 
     @Column(name = "reason", columnDefinition = "varchar(50)")
     private String reason;
