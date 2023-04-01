@@ -36,6 +36,12 @@ contract HereNFT is ERC721 {
         uint256 tokenId;
         uint256 timestamp;
     }
+
+    struct NFTInput {
+        uint256 tokenId;
+        bytes32 hashValue;
+    }
+    
     // 이벤트 배열
     TransactionLog[] public transactionLogs;
 
@@ -198,21 +204,20 @@ contract HereNFT is ERC721 {
         return verified;
     }
 
-    function verifyNFTList(uint256[][] memory inputList) public view returns (bool[] memory results) {
-        results = new bool[](inputList.length);
+    function verifyNFTList(uint256[] memory tokenIds, bytes32[] memory hashes) public view returns (bool[] memory results) {
+        require(tokenIds.length == hashes.length, "Invalid input: lengths do not match");
 
-        for (uint256 i = 0; i < inputList.length; i++) {
-            require(inputList[i].length == 2, "Invalid input: array length must be 2");
-            uint256 tokenId = inputList[i][0];
-            bytes32 hash = bytes32(inputList[i][1]);
+        results = new bool[](tokenIds.length);
 
-            require(_exists(tokenId), "NFT does not exist");
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            require(_exists(tokenIds[i]), "NFT does not exist");
 
-            string memory metadataURI = tokenURI(tokenId);
+            string memory metadataURI = tokenURI(tokenIds[i]);
             bytes32 transactionHash = keccak256(bytes(metadataURI));
-            bool verified = transactionHash == hash;
+            bool verified = transactionHash == hashes[i];
             results[i] = verified;
         }
+
         return results;
     }
 }
