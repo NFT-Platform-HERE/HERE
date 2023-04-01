@@ -1,14 +1,22 @@
 import useRedCrossNFTListQuery from "@/apis/redcross/useRedCrossNFTListQuery";
 import CommonBtn from "@/components/Button/CommonBtn";
 import Paging from "@/components/Pagination/Paging";
+import RedCrossNFTModal from "@/features/RedCross/RedCrossNFTModal";
 import usePagination from "@/hooks/organization/usePagination";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
 export default function RedCrossPage() {
   const router = useRouter();
   const nftList = useRedCrossNFTListQuery();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [nowToken, setNowToken] = useState<number>(0);
+
+  const hanldleClick = (tokenId: number) => {
+    setIsOpen(!isOpen);
+    setNowToken(tokenId);
+  };
 
   const { page, currentList, postPerPage, handlePageChange } = usePagination({
     confirmList: nftList?.data,
@@ -44,7 +52,10 @@ export default function RedCrossPage() {
       <Suspense fallback={<CircularProgress />}>
         {currentList?.map((item, idx) => (
           <div key={idx}>
-            <div className="flex h-70 w-1000 justify-between text-center">
+            <div
+              onClick={() => hanldleClick(item.tokenId)}
+              className="flex h-70 w-1000 justify-between text-center"
+            >
               <p className="ml-40 mr-56 inline-block w-100 font-light leading-70">
                 {(page - 1) * postPerPage + idx + 1}
               </p>
@@ -54,6 +65,9 @@ export default function RedCrossPage() {
               <p className="mr-[6rem] inline-block w-100 font-light leading-70">
                 {item.createdDate.slice(0, 10)}
               </p>
+              {item.tokenId === nowToken && isOpen && (
+                <RedCrossNFTModal tokenId={nowToken} onClick={hanldleClick} />
+              )}
             </div>
             <hr />
           </div>
