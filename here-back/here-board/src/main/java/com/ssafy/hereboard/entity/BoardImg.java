@@ -28,6 +28,7 @@ public class BoardImg {
     @Column(name = "img_url", columnDefinition = "varchar(200)")
     private String imgUrl;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10)")
     private EnumBoardImgStatus status = EnumBoardImgStatus.ACTIVE;
 
