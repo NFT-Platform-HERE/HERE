@@ -161,24 +161,6 @@ public class NftService {
         return res;
     }
 
-//    /* 병원용 헌혈증 소유권 이전 */
-//    public ResponseSuccessDto<TransferOwnershipResponseDto> transferNftOwnership(TransferOwnershipRequestDto transferOwnershipRequestDto) {
-//        UUID senderId = transferOwnershipRequestDto.getSenderId();
-//        UUID receiverId = transferOwnershipRequestDto.getReceiverId();
-//        List<Long> nftTokenList = transferOwnershipRequestDto.getNftTokenList();
-//
-//        for (Long nftToken : nftTokenList) {
-//            Nft nft = nftRepository.findByTokenId(nftToken);
-//            nft.updateOwnership(receiverId);
-//        }
-//
-//        TransferOwnershipResponseDto transferOwnershipResponseDto = TransferOwnershipResponseDto.builder()
-//                .message("헌혈증 소유권 이전이 완료되었습니다.")
-//                .build();
-//        ResponseSuccessDto<TransferOwnershipResponseDto> res = responseUtil.successResponse(transferOwnershipResponseDto, HereStatus.HERE_TRANSFER_OWNERSHIP);
-//        return res;
-//    }
-
     /* 기부용 헌혈증 소유권 이전 + 기부 내역 등록 */
     public ResponseSuccessDto<DonateNftResponseDto> donateNft(DonateNftRequestDto donateNftRequestDto) {
         Long boardId = donateNftRequestDto.getBoardId();
@@ -243,10 +225,6 @@ public class NftService {
             isOwner = issuerId.equals(memberId);
 
             if(organType == EnumNftType.HOSPITAL) {
-                System.out.println("@@@ createdDate @@@");
-                System.out.println("tokenId = " + nft.getTokenId());
-                System.out.println(nft.getCreatedDate());
-
                 GetNftHospitalResponseDto getNftHospitalResponseDto = GetNftHospitalResponseDto.builder()
                         .tokenId(nft.getTokenId())
                         .hashValue(nft.getHashValue())
@@ -273,7 +251,7 @@ public class NftService {
     }
 
     /* 기부/병원 제출용 자동선택 NFT 목록 조회 */
-    public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findHospitalNftList(UUID memberId, int count) {
+    public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findNftListAuto(UUID memberId, int count) {
         List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(memberId, count);
         List<FindHospitalNftResponseDto> result = new ArrayList<>();
         for (Nft nft : hospitalNftAutoList) {
