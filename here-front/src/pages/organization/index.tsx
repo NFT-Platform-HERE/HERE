@@ -1,136 +1,39 @@
 import TabBtn from "@/components/Button/TabBtn";
 import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Confirm } from "@/types/Confirm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
 
-const testOne = [
-  {
-    memberName: "이경택",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    reason: "예비군",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "김도언",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-];
-
-const testTwo = [
-  {
-    memberName: "김도언",
-    reason: "대학입시 가산점",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    reason: "예비군",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    reason: "봉사활동",
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이경택",
-    reason: "공가",
-    createdDate: "2022-01-01",
-  },
-];
-
-const testThree = [
-  {
-    memberName: "이경택",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최규림",
-    count: 2,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "최정온",
-    count: 5,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "이현구",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "조용현",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-  {
-    memberName: "김도언",
-    count: 1,
-    createdDate: "2022-01-01",
-  },
-];
-
 export default function OrganizationPage() {
-  const { organizationId, isHospital } = useSelector(
-    (state: RootState) => state.member,
-  );
+  // const { organizationId, isHospital } = useSelector(
+  //   (state: RootState) => state.member,
+  // );
+
+  // 현재 테스트 데이터
+  const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
+  const isHospital = false;
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [active, setActive] = useState<string>("ACTIVE");
 
-  const [confirmList, setConfirmList] = useState<Confirm[]>(testOne);
+  const [confirmList, setConfirmList] = useState<Confirm[]>([]);
 
-  // const activeList = useOrganizationNFTListQuery(
-  //   !isHospital ? "agency" : "hospital",
-  //   organizationId,
-  //   active,
-  // );
-  // console.log(activeList); // 나중에 이걸로 바꿔주기
+  const activeList = useOrganizationNFTListQuery(
+    !isHospital ? "agency" : "hospital",
+    organizationId,
+    active,
+    setConfirmList,
+  );
 
   const changeTab = () => {
     setIsActive(!isActive);
     if (isActive) {
       setActive("ACTIVE");
-      setConfirmList(testOne);
     } else {
       setActive("INACTIVE");
-      setConfirmList(testTwo);
     }
   };
 
@@ -177,7 +80,7 @@ export default function OrganizationPage() {
           등록일
         </p>
       </div>
-      {currentList.map((item, idx) => (
+      {currentList?.map((item, idx) => (
         <div key={idx}>
           <div className="flex h-70 w-1000 justify-between text-center">
             <p className="ml-40 inline-block w-100 font-light leading-70">
@@ -196,14 +99,14 @@ export default function OrganizationPage() {
               </p>
             )}
             <p className="mr-[6rem] inline-block w-100 font-light leading-70">
-              {item.createdDate}
+              {item.createdDate.slice(0, 10)}
             </p>
           </div>
           <hr />
         </div>
       ))}
       <Paging
-        totalCount={confirmList.length}
+        totalCount={confirmList?.length}
         page={page}
         postPerPage={postPerPage}
         pageRangeDisplayed={5}

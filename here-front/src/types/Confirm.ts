@@ -5,4 +5,5 @@ export interface Confirm {
   createdDate: string;
   tokenId: number;
   hashValueList?: string[];
+  hashValue?: string;
 }
