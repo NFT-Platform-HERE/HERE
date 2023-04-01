@@ -4,10 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import DonateTiptapMenu from "./DonateTiptapMenu";
 import Underline from "@tiptap/extension-underline";
 
-const DonateTiptap = ({ setDescription }: any) => {
+const DonateTiptap = ({ setDescription, description }: any) => {
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: ``,
+    content: description,
 
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();

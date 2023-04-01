@@ -61,16 +61,9 @@ export default function SubmitNFTList({ count }: Iprops) {
     return state.clickAutoSelectBtn.onClick;
   });
 
-  const autoSelectList = useAutoSelectQuery(
-    "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
-    count,
-    isClickBtn,
-  );
+  const autoSelectList = useAutoSelectQuery(memberId, count, isClickBtn);
 
-  const submitNFTList = useSubmitNFTListQuery(
-    "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
-    submitTab,
-  );
+  const submitNFTList = useSubmitNFTListQuery(memberId, submitTab);
 
   const handleSetSelectedCard = (
     tokenId: number,

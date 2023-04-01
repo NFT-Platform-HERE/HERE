@@ -36,7 +36,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
   const onClickSubmit = () => {
     mutate({
       agencyId: hospital,
-      memberId: "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
+      memberId: memberId,
       nftList: submitNFTList,
     });
   };

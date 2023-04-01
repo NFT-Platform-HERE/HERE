@@ -3,6 +3,9 @@ import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { DonationNft } from "@/types/DonationNft";
 import * as queryKeys from "@/constants/queryKeys";
+import useExpUpdate from "../member/useExpUpdate";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 const fetcher = (payload: DonationNft) =>
   axios
@@ -16,9 +19,16 @@ const fetcher = (payload: DonationNft) =>
 
 const useDonateNftWrite = () => {
   const queryClient = useQueryClient();
+  const { mutate } = useExpUpdate();
+  const { memberId } = useSelector((state: RootState) => state.member);
+
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("성공!");
+      const payload = {
+        memberId,
+        exp: 10,
+      };
+      mutate(payload);
       return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
     },
     onError: () => {

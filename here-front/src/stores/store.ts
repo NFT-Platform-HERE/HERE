@@ -13,6 +13,7 @@ import submitTabSlice from "./submit/submitTab";
 import submitSelectedHospitalNFTSlice from "./submit/selectedHospitalNFT";
 import submitSelectedOrganizationNFTSlice from "./submit/selectedOrganizationNFT";
 import clickAutoSelectBtnSlice from "./submit/clickAutoSelectBtn";
+import donateSlice from "./donate/donateEditInformation";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   submitSelectedOrganizationNFT: submitSelectedOrganizationNFTSlice,
   webHeaderDropdown: webHeaderDropdownSlice,
   clickAutoSelectBtn: clickAutoSelectBtnSlice,
+  donate: donateSlice,
   organization: organizationSlice,
 });
 
