@@ -74,4 +74,8 @@ public class CertHistory {
         this.hashValue = nft.getHashValue();
         this.reason = null;
     }
+
+    public void updateCertHistory() {
+        this.status = EnumCertHistoryStatus.ACTIVE;
+    }
 }

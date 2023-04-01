@@ -127,7 +127,7 @@ public class NftService {
         Member agency = memberRepository.findById(submitCertHospitalRequestDto.getAgencyId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 병원 ID입니다."));
 
-        List<NftObjectDto> nftList = submitCertHospitalRequestDto.getNftList();
+        List<NftObjectDto> nftList = submitCertHospitalRequestDto.getHashValueList();
 
         // 제출기록 db에 nft 하나씩 insert하면서 소유권 이전 작업
         for (NftObjectDto nft : nftList) {
