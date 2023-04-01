@@ -33,6 +33,7 @@ public class NftService {
     private final CertHistoryRepository certHistoryRepository;
     private final StampRepository stampRepository;
     private final BoardBdHistoryRepository boardBdHistoryRepository;
+    private final BoardRepository boardRepository;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -185,12 +186,13 @@ public class NftService {
         UUID receiverId = donateNftRequestDto.getReceiverId();
         List<Long> nftTokenList = donateNftRequestDto.getNftTokenList();
 
+        // 1) 소유권 이전
         for (Long nftToken : nftTokenList) {
             Nft nft = nftRepository.findByTokenId(nftToken);
             nft.updateOwnership(receiverId);
         }
 
-        // 주인공 boardBdHistory 가져오기
+        // 2) 주인공 boardBdHistory 가져와서 기부 내역 등록
         BoardBdHistory subjectBoardBdHistory = boardBdHistoryRepository.findByBoardIdAndSenderId(boardId, senderId);
 
         if (subjectBoardBdHistory == null) {
@@ -203,6 +205,12 @@ public class NftService {
             subjectBoardBdHistory.updateBoardBdHistory(newQuantity);
         }
 
+        // 3) 게시글 현재 수량 갱신
+        Board board = boardRepository.findById(donateNftRequestDto.getBoardId())
+                .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
+        board.updateCurQuantity(donateNftRequestDto.getNftTokenList().size());
+
+        // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
                 .message("기부한 헌혈증 소유권 이전이 완료되었습니다.")
                 .build();
