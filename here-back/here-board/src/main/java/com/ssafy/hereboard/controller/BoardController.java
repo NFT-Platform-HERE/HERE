@@ -36,12 +36,13 @@ public class BoardController {
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseSuccessDto<SaveBoardResponseDto>> save(
             @RequestPart @Valid SaveBoardRequestDto saveBoardRequestDto,
-            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList) throws Exception{
+            @RequestPart(value = "multipartFileList", required = false)List<MultipartFile> multipartFileList,
+            @RequestPart List<Integer> imgOrderList) throws Exception{
         List<String> imgUrlList = new ArrayList<>();
         if(multipartFileList != null) {
             imgUrlList = s3Service.upload(multipartFileList);
         }
-        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList));
+        return ResponseEntity.ok(boardService.save(saveBoardRequestDto, imgUrlList, imgOrderList));
     }
 
     @ApiOperation(value = "board 상세 조회", notes = "board의 상세 정보를 조회합니다.")
@@ -54,12 +55,14 @@ public class BoardController {
     @PatchMapping(value = "/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseSuccessDto<UpdateBoardResponseDto>> updateBoard(
             @RequestPart UpdateBoardRequestDto updateBoardRequestDto,
-            @RequestPart(value = "multipartFileList", required = false) List<MultipartFile> multipartFileList) throws Exception {
+            @RequestPart List<UpdateBoardImgObject> updateBoardImgObjectList,
+            @RequestPart(value = "multipartFileList", required = false) List<MultipartFile> multipartFileList,
+            @RequestPart List<Integer> ordersList) throws Exception {
         List<String> imgUrlList = new ArrayList<>();
         if (multipartFileList != null) {
             imgUrlList = s3Service.upload(multipartFileList);
         }
-        return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto, imgUrlList));
+        return ResponseEntity.ok(boardService.updateBoard(updateBoardRequestDto, updateBoardImgObjectList, imgUrlList, ordersList));
     }
 
     @ApiOperation(value = "board 삭제/마감", notes = "board를 삭제 또는 마감합니다.")

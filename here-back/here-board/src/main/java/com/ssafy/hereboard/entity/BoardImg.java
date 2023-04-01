@@ -1,6 +1,7 @@
 package com.ssafy.hereboard.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.hereboard.enumeration.EnumBoardImgStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +28,20 @@ public class BoardImg {
     @Column(name = "img_url", columnDefinition = "varchar(200)")
     private String imgUrl;
 
-    public void createBoardImg(Board board, String imgUrl) {
+    @Column(name = "status", columnDefinition = "char(10)")
+    private EnumBoardImgStatus status = EnumBoardImgStatus.ACTIVE;
+
+    @Column(name = "orders", columnDefinition = "")
+    private int orders;
+
+    public void createBoardImg(Board board, String imgUrl, int orders) {
         this.board = board;
         this.imgUrl = imgUrl;
+        this.orders = orders;
+    }
+
+    public void updateBoardImg(EnumBoardImgStatus status, int order) {
+        this.status = status;
+        this.orders = order;
     }
 }
