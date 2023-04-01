@@ -25,6 +25,7 @@ export default function AgencyNFTModal({ onClick }: Iprops) {
       hash,
     };
     mutate(payload);
+    onClick(0);
   };
 
   return (
