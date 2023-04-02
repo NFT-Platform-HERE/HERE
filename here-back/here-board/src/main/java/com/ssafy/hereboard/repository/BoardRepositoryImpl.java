@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +49,17 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .where(statusEq());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public List<Board> findDeadlineBoardList() {
+        return queryFactory
+                .selectFrom(board)
+                .where(
+                        board.status.eq(EnumBoardStatus.ACTIVE),
+                        board.deadline.eq(LocalDate.now())
+                )
+                .fetch();
     }
 
     @Override
