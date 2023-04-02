@@ -75,4 +75,11 @@ public class NftController {
             @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {
         return ResponseEntity.ok(nftService.findNftListAuto(memberId, count));
     }
+
+//    @ApiOperation(value = "기부/병원 제출용 자동선택 NFT 목록 조회", notes = "기부 또는 병원 제출용으로 자동선택된 NFT 목록을 조회합니다.")
+//    @GetMapping("/{memberId}/hospital/{count}")
+//    public ResponseEntity<ResponseSuccessDto<List<FindHospitalNftResponseDto>>> findNftListAuto(
+//            @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {
+//        return ResponseEntity.ok(nftService.findNftListAuto(memberId, count));
+//    }
 }
