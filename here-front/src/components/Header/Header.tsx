@@ -20,6 +20,24 @@ export default function Header() {
   };
 
   useCheckMemberQuery(walletAddress);
+
+  useEffect(() => {
+    const sseEvents = new EventSource(
+      `http://localhost:9003/api/test/subscribe/${memberId}`,
+    );
+
+    sseEvents.onopen = function () {
+      console.log("SSE 연결!!");
+    };
+    sseEvents.onerror = function (error) {
+      console.log("SSE 에러", error);
+    };
+    sseEvents.onmessage = function (stream) {
+      const parsedData = JSON.parse(stream.data);
+      console.log("SSE 데이터", parsedData);
+    };
+  }, []);
+
   useEffect(() => {
     if (memberId) {
       setWalletAddress("");

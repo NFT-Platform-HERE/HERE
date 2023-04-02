@@ -156,7 +156,8 @@ export default function NFTCardBack({ height, fontSize, detail }: Iprops) {
             <tr>
               <td className="border-r-1 border-black">{detail?.blood}</td>
               <td className="border-r-1 border-black">
-                {detail?.rhType === RhType.RHPLUS ? "Rh+" : "Rh-"}
+                {detail?.rhType === RhType.RHPLUS && "Rh+"}
+                {detail?.rhType === RhType.RHMINUS && "Rh-"}
               </td>
               <td className="border-r-1 border-black">
                 {detail?.type === BloodType.WHOLE && "O"}
