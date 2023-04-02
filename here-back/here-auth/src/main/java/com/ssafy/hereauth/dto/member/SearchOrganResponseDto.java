@@ -10,4 +10,5 @@ import java.util.UUID;
 public class SearchOrganResponseDto {
     private UUID agencyId;
     private String agencyName;
+    private String agencyWalletAddress;
 }
