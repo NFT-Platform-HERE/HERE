@@ -41,6 +41,7 @@ public class NftService {
     private final BoardRepository boardRepository;
     private final RestTemplate restTemplate;
     private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
+    private final PaperBdCertRepository paperBdCertRepository;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -308,6 +309,31 @@ public class NftService {
         }
 
         ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
+        return res;
+    }
+
+    /* 종이헌혈증서 NFT 발급 */
+    public ResponseSuccessDto<SavePaperBdCertToNftResponseDto> savePaperBdCertToNft(SavePaperBdCertToNftRequestDto savePaperBdCertToNftRequestDto) {
+
+        PaperBdCert paperBdCert = paperBdCertRepository.findById(savePaperBdCertToNftRequestDto.getSerialNumber())
+                .orElseThrow(() -> new EntityIsNullException("해당 정보와 일치하는 헌혈 기록이 없습니다."));
+        Member member = memberRepository.findById(savePaperBdCertToNftRequestDto.getMemberId())
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
+
+        SavePaperBdCertToNftResponseDto savePaperBdCertToNftResponseDto = SavePaperBdCertToNftResponseDto.builder()
+                .name(paperBdCert.getName())
+                .genderType(paperBdCert.getGenderType())
+                .bloodType(paperBdCert.getBloodType())
+                .blood(paperBdCert.getBlood())
+                .rhType(paperBdCert.getRhType())
+                .bloodVolume(paperBdCert.getBloodVolume())
+                .walletAddress(member.getWalletAddress())
+                .birth(paperBdCert.getBirth())
+                .bdDate(paperBdCert.getBdDate())
+                .place(paperBdCert.getPlace())
+                .build();
+
+        ResponseSuccessDto<SavePaperBdCertToNftResponseDto> res = responseUtil.successResponse(savePaperBdCertToNftResponseDto, HereStatus.HERE_FIND_PAPER_BD_CERT);
         return res;
     }
 }

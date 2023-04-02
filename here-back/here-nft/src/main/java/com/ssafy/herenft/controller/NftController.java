@@ -75,4 +75,10 @@ public class NftController {
             @PathVariable("memberId") UUID memberId, @PathVariable("count") int count) {
         return ResponseEntity.ok(nftService.findNftListAuto(memberId, count));
     }
+
+    @ApiOperation(value = "종이헌혈증서 NFT 발급", notes = "QR을 통하여 종이헌혈증서를 NFT로 발급합니다.")
+    @GetMapping("/paper-bd-cert")
+    public ResponseEntity<ResponseSuccessDto<SavePaperBdCertToNftResponseDto>> savePaperBdCertToNft(@RequestBody SavePaperBdCertToNftRequestDto savePaperBdCertToNftRequestDto) {
+        return ResponseEntity.ok(nftService.savePaperBdCertToNft(savePaperBdCertToNftRequestDto));
+    }
 }
