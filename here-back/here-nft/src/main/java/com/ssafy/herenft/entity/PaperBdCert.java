@@ -1,7 +1,6 @@
 package com.ssafy.herenft.entity;
 
-import com.ssafy.herenft.eunmeration.EnumPaperBdCertBdType;
-import com.ssafy.herenft.eunmeration.EnumPaperBdCertStatus;
+import com.ssafy.herenft.eunmeration.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,12 +22,24 @@ public class PaperBdCert {
     @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
-    @Column(name = "gender", columnDefinition = "char(10)", nullable = false)
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender_type", columnDefinition = "char(10)", nullable = false)
+    private EnumPaperBdCertGenderType genderType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "bd_type", columnDefinition = "char(20)", nullable = false)
-    private EnumPaperBdCertBdType bdType;
+    @Column(name = "blood_type", columnDefinition = "char(20)", nullable = false)
+    private EnumPaperBdCertBdType bloodType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "blood", columnDefinition = "char(10)", nullable = false)
+    private EnumPaperBdCertBlood blood;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rh_type", columnDefinition = "char(10)", nullable = false)
+    private EnumPaperBdCertRhType rhType;
+
+    @Column(name = "blood_volume", columnDefinition = "int default 0", nullable = false)
+    private int bloodVolume;
 
     @Column(name = "place", columnDefinition = "char(20)", nullable = false)
     private String place;

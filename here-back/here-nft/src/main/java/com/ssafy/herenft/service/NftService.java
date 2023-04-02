@@ -1,5 +1,8 @@
 package com.ssafy.herenft.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.entity.*;
@@ -10,8 +13,10 @@ import com.ssafy.herenft.repository.*;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -34,6 +39,8 @@ public class NftService {
     private final StampRepository stampRepository;
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
+    private final RestTemplate restTemplate;
+    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
     private final PaperBdCertRepository paperBdCertRepository;
 
     /* NFT 생성 */
@@ -140,6 +147,23 @@ public class NftService {
             // 2) 해당 nft를 멤버에서 병원으로 소유권 이전하기
             Nft subjectNft = nftRepository.findByTokenId(nft.getTokenId());
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
+
+            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
+            ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+            UUID issuerId = subjectNft.getIssuerId();
+            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
+            jsonNodes.put("content", message);
+            jsonNodes.put("receiverId", issuerId.toString());
+            jsonNodes.put("senderId", agency.getId().toString());
+
+            ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                    URI,
+                    jsonNodes,
+                    JsonNode.class
+            );
+
+            log.info("POST RESULT = {}", postResult.toString());
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
@@ -191,7 +215,26 @@ public class NftService {
         // 3) 게시글 현재 수량 갱신
         Board board = boardRepository.findById(donateNftRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
-        board.updateCurQuantity(donateNftRequestDto.getNftTokenList().size());
+        int donateCnt = donateNftRequestDto.getNftTokenList().size();
+        board.updateCurQuantity(donateCnt);
+
+        // 4) 게시글 작성자에게 기부 받은 내용 알림 등록
+        Member receiver = board.getMember();
+        Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+        String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                URI,
+                jsonNodes,
+                JsonNode.class
+        );
+
+        log.info("POST RESULT = {}", postResult.toString());
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
@@ -274,21 +317,23 @@ public class NftService {
 
         PaperBdCert paperBdCert = paperBdCertRepository.findById(savePaperBdCertToNftRequestDto.getSerialNumber())
                 .orElseThrow(() -> new EntityIsNullException("해당 정보와 일치하는 헌혈 기록이 없습니다."));
+        Member member = memberRepository.findById(savePaperBdCertToNftRequestDto.getMemberId())
+                .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
-        SaveNftRequestDto saveNftRequestDto = SaveNftRequestDto.builder()
-                .
-        List<FindHospitalNftResponseDto> result = new ArrayList<>();
-        for (Nft nft : hospitalNftAutoList) {
-            Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-            FindHospitalNftResponseDto findHospitalNftResponseDto = FindHospitalNftResponseDto.builder()
-                    .tokenId(nft.getTokenId())
-                    .issuerName(findMember.getName())
-                    .createdDate(nft.getCreatedDate())
-                    .build();
-            result.add(findHospitalNftResponseDto);
-        }
+        SavePaperBdCertToNftResponseDto savePaperBdCertToNftResponseDto = SavePaperBdCertToNftResponseDto.builder()
+                .name(paperBdCert.getName())
+                .genderType(paperBdCert.getGenderType())
+                .bloodType(paperBdCert.getBloodType())
+                .blood(paperBdCert.getBlood())
+                .rhType(paperBdCert.getRhType())
+                .bloodVolume(paperBdCert.getBloodVolume())
+                .walletAddress(member.getWalletAddress())
+                .birth(paperBdCert.getBirth())
+                .bdDate(paperBdCert.getBdDate())
+                .place(paperBdCert.getPlace())
+                .build();
 
-        ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
+        ResponseSuccessDto<SavePaperBdCertToNftResponseDto> res = responseUtil.successResponse(savePaperBdCertToNftResponseDto, HereStatus.HERE_FIND_PAPER_BD_CERT);
         return res;
     }
 }
