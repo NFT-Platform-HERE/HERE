@@ -1,5 +1,8 @@
 package com.ssafy.herenft.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.entity.*;
@@ -10,8 +13,10 @@ import com.ssafy.herenft.repository.*;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -34,6 +39,7 @@ public class NftService {
     private final StampRepository stampRepository;
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
+    private final RestTemplate restTemplate;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -190,7 +196,26 @@ public class NftService {
         // 3) 게시글 현재 수량 갱신
         Board board = boardRepository.findById(donateNftRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 존재하지 않습니다."));
-        board.updateCurQuantity(donateNftRequestDto.getNftTokenList().size());
+        int donateCnt = donateNftRequestDto.getNftTokenList().size();
+        board.updateCurQuantity(donateCnt);
+
+        // 4) 게시글 작성자에게 기부 받은 내용 알림 등록
+        Member receiver = board.getMember();
+        Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+        String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                "https://j8b209.p.ssafy.io:9010/api/notification",
+                jsonNodes,
+                JsonNode.class
+        );
+
+        log.info("POST RESULT = {}", postResult.toString());
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
