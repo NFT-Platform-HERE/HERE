@@ -288,6 +288,7 @@ public class MemberService {
             SearchOrganResponseDto searchOrganResponseDto = SearchOrganResponseDto.builder()
                     .agencyId(organ.getId())
                     .agencyName(organ.getName())
+                    .agencyWalletAddress(organ.getWalletAddress())
                     .build();
             result.add(searchOrganResponseDto);
         }
