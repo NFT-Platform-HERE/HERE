@@ -65,7 +65,7 @@ export default function MyNFTPage() {
     }
   }, [NFTCardBackIndex]);
 
-  const myNFTList = useMyNFTListQuery("ae4c93d4-67f0-4502-9a0c-04d003ce6f0c");
+  const myNFTList = useMyNFTListQuery(memberId);
 
   return (
     <div className="w-min-[1200px] mobile:w-min-full mobile:w-full">

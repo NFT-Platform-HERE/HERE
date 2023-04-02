@@ -58,7 +58,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     confirmDelete();
   }
 
-  function handleEditButton() {}
+  function handleEditButton() {
+    moveDonateEditPage();
+  }
 
   function handleDonateButton() {
     setOpendSendModal(true);
@@ -129,6 +131,10 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
   function moveDonateListPage() {
     router.push("/donate");
+  }
+
+  function moveDonateEditPage() {
+    router.push("/donate/edit");
   }
 
   function disableDonateButton() {
@@ -216,17 +222,15 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   pagination={{ clickable: true }}
                   className="flex h-400 w-800 flex-wrap items-center justify-center mobile:mt-30 mobile:h-300 mobile:w-full mobile:min-w-300"
                 >
-                  {nowBoard.data.boardImgUrlList.map(
-                    (item: string, index: number) => (
-                      <SwiperSlide key={index}>
-                        <img
-                          src={item}
-                          alt="boardImg"
-                          className="max-w-600 mobile:max-w-300 mx-auto h-400 mobile:h-300"
-                        />
-                      </SwiperSlide>
-                    ),
-                  )}
+                  {nowBoard.data.boardImgUrlList.map((item: any) => (
+                    <SwiperSlide key={item.boardImgId}>
+                      <img
+                        src={item.imgUrl}
+                        alt="boardImg"
+                        className="max-w-600 mobile:max-w-300 mx-auto h-400 mobile:h-300"
+                      />
+                    </SwiperSlide>
+                  ))}
                 </Swiper>
               </div>
             )}

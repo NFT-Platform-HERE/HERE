@@ -2,12 +2,12 @@ import "../index.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@/components/Header/Header";
-import { Web3ReactProvider } from "@web3-react/core";
+import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { useState } from "react";
-import { Provider } from "react-redux";
-import store from "@/stores/store";
+import { useEffect, useState } from "react";
+import { Provider, useSelector } from "react-redux";
+import store, { RootState } from "@/stores/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 
@@ -16,7 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const getLibrary = (provider: any) => {
     return new Web3Provider(provider);
   };
-
   return (
     <>
       <Head>

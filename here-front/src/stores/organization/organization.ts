@@ -1,9 +1,10 @@
+import { HashValueList } from "@/types/HashValueList";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface organizationState {
   tokenId: number;
   hash: string;
-  hashValueList: [];
+  hashValueList: HashValueList[];
 }
 
 const initialState: organizationState = {

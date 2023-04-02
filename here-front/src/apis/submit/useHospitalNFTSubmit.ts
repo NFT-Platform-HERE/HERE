@@ -9,7 +9,7 @@ const fetcher = (info: SubmitHospitalNFT) =>
     .post(NFT_SERVER_URL + `/nft/hospital`, {
       agencyId: info.agencyId,
       memberId: info.memberId,
-      nftList: info.nftList,
+      hashValueList: info.nftList,
     })
     .then(({ data }) => data);
 
