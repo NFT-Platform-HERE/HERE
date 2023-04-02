@@ -13,10 +13,11 @@ const fetcher = (formData: FormData) =>
     .then(({ data }) => data);
 
 const useDonateUpdate = () => {
+  const queryClient = useQueryClient();
+
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("Update 성공", data);
-      const queryClient = useQueryClient();
       return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
     },
     onError: () => {
