@@ -16,4 +16,7 @@ public interface BoardRepositoryCustom {
 
     // 게시글 검색 (페이징)
     Page<Board> searchBoardPaging(String word, Pageable pageable);
+
+    // 마감시간 게시글 조회
+    List<Board> findDeadlineBoardList();
 }
