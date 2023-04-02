@@ -40,6 +40,7 @@ public class NftService {
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
     private final RestTemplate restTemplate;
+    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -145,6 +146,23 @@ public class NftService {
             // 2) 해당 nft를 멤버에서 병원으로 소유권 이전하기
             Nft subjectNft = nftRepository.findByTokenId(nft.getTokenId());
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
+
+            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
+            ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+            UUID issuerId = subjectNft.getIssuerId();
+            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
+            jsonNodes.put("content", message);
+            jsonNodes.put("receiverId", issuerId.toString());
+            jsonNodes.put("senderId", agency.getId().toString());
+
+            ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                    URI,
+                    jsonNodes,
+                    JsonNode.class
+            );
+
+            log.info("POST RESULT = {}", postResult.toString());
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
@@ -210,7 +228,7 @@ public class NftService {
         jsonNodes.put("senderId", sender.getId().toString());
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                "https://j8b209.p.ssafy.io:9010/api/notification",
+                URI,
                 jsonNodes,
                 JsonNode.class
         );
