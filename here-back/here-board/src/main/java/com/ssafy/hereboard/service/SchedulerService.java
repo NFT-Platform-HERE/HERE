@@ -54,7 +54,8 @@ public class SchedulerService {
                 Member receiver = memberRepository.findById(boardBdHistory.getSenderId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
 
                 ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
-                jsonNodes.put("content", sender.getNickname() + " -> " + receiver.getNickname());
+                String message = sender.getNickname() + "님께서 기부하신 " + receiver.getNickname() + "님의 게시글이 마감되었습니다.";
+                jsonNodes.put("content", message);
                 jsonNodes.put("receiverId", receiver.getId().toString());
                 jsonNodes.put("senderId", sender.getId().toString());
 
