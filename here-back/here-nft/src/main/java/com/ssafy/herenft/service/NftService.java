@@ -34,6 +34,7 @@ public class NftService {
     private final StampRepository stampRepository;
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
+    private final PaperBdCertRepository paperBdCertRepository;
 
     /* NFT 생성 */
     public ResponseSuccessDto<SaveNftResponseDto> save(@Valid SaveNftRequestDto saveNftRequestDto) {
@@ -253,6 +254,29 @@ public class NftService {
     /* 기부/병원 제출용 자동선택 NFT 목록 조회 */
     public ResponseSuccessDto<List<FindHospitalNftResponseDto>> findNftListAuto(UUID memberId, int count) {
         List<Nft> hospitalNftAutoList = nftRepository.findHospitalNftAuto(memberId, count);
+        List<FindHospitalNftResponseDto> result = new ArrayList<>();
+        for (Nft nft : hospitalNftAutoList) {
+            Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+            FindHospitalNftResponseDto findHospitalNftResponseDto = FindHospitalNftResponseDto.builder()
+                    .tokenId(nft.getTokenId())
+                    .issuerName(findMember.getName())
+                    .createdDate(nft.getCreatedDate())
+                    .build();
+            result.add(findHospitalNftResponseDto);
+        }
+
+        ResponseSuccessDto<List<FindHospitalNftResponseDto>> res = responseUtil.successResponse(result, HereStatus.HERE_FIND_NFT_LIST_HOSPITAL);
+        return res;
+    }
+
+    /* 종이헌혈증서 NFT 발급 */
+    public ResponseSuccessDto<SavePaperBdCertToNftResponseDto> savePaperBdCertToNft(SavePaperBdCertToNftRequestDto savePaperBdCertToNftRequestDto) {
+
+        PaperBdCert paperBdCert = paperBdCertRepository.findById(savePaperBdCertToNftRequestDto.getSerialNumber())
+                .orElseThrow(() -> new EntityIsNullException("해당 정보와 일치하는 헌혈 기록이 없습니다."));
+
+        SaveNftRequestDto saveNftRequestDto = SaveNftRequestDto.builder()
+                .
         List<FindHospitalNftResponseDto> result = new ArrayList<>();
         for (Nft nft : hospitalNftAutoList) {
             Member findMember = memberRepository.findById(nft.getIssuerId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
