@@ -79,4 +79,5 @@ public class Member {
         this.goalExp = goalExp;
         this.level = level;
     }
+
 }

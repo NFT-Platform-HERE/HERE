@@ -44,13 +44,12 @@ public class Notification {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
-    public Notification createNotification(Member sender, Member receiver, String content) {
-        Notification notification = new Notification();
-        notification.sender = sender;
-        notification.receiver = receiver;
-        notification.content = content;
-        return notification;
+    public Notification (Member sender, Member receiver, String content) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
     }
+
 
     public void updateNotificationStatus() {
         this.status = EnumNotificationStatus.ACTIVE;

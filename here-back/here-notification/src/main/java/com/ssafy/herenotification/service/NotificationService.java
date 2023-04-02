@@ -1,18 +1,19 @@
 package com.ssafy.herenotification.service;
 
-import com.ssafy.herenotification.entity.NotificationTest;
+import com.ssafy.herenotification.entity.Member;
+import com.ssafy.herenotification.entity.Notification;
+import com.ssafy.herenotification.repository.EmitterRepository;
 import com.ssafy.herenotification.repository.EmitterRepositoryImpl;
+import com.ssafy.herenotification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import static com.ssafy.herenotification.dto.SseMapStruct.SSE_MAPPER;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class NotificationService {
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
-    public SseEmitter subscribe(Long memberId, String lastEventId) {
+    public SseEmitter subscribe(UUID memberId, String lastEventId) {
         String emitterId = memberId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
@@ -40,15 +41,17 @@ public class NotificationService {
 
         return emitter;
     }
-    public void send(Member receiver, NotificationType notificationType, String content, String url) {
-        Notification notification = notificationRepository.save(createNotification(receiver, notificationType, content, url));
+   // public void send(Member sender, Member receiver, String content) {
+   public void send(Member sender, Member receiver, String content) {
+        Notification notification = notificationRepository.save(new Notification(sender, receiver, content));
         String memberId = String.valueOf(receiver.getId());
 
-        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(memberId);
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
         sseEmitters.forEach(
                 (key, emitter) -> {
                     emitterRepository.saveEventCache(key, notification);
-                    sendToClient(emitter, key, SSE_MAPPER.NotificationtoResponseNotificationDto(notification));
+                    sendToClient(emitter, key, "테스트");
+//                    sendToClient(emitter, key, SSE_MAPPER.NotificationtoResponseNotificationDto(notification));
                 }
         );
     }
@@ -60,7 +63,7 @@ public class NotificationService {
                     .data(data));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
-            throw new InvalidRequestException(SSE, SERVICE, UNHANDLED_SERVER_ERROR);
+            // throw new InvalidRequestException(SSE, SERVICE, UNHANDLED_SERVER_ERROR);
         }
     }
 }
