@@ -1,7 +1,7 @@
 package com.ssafy.herenotification.controller;
 
+import com.ssafy.herenotification.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenotification.dto.notification.*;
-import com.ssafy.herenotification.dto.response.ResponseSuccessDto;
 import com.ssafy.herenotification.entity.Member;
 import com.ssafy.herenotification.repository.MemberRepository;
 import com.ssafy.herenotification.service.NotificationService;

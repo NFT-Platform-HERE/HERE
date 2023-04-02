@@ -49,7 +49,13 @@ public class Notification {
         this.receiver = receiver;
         this.content = content;
     }
-
+    public Notification createNotification(Member sender, Member receiver, String content) {
+        Notification notification = new Notification();
+        notification.sender = sender;
+        notification.receiver = receiver;
+        notification.content = content;
+        return notification;
+    }
 
     public void updateNotificationStatus() {
         this.status = EnumNotificationStatus.ACTIVE;
