@@ -41,8 +41,12 @@ const RedCrossLoadingModal = () => {
               className="my-20 h-150 w-150 rounded-15 mobile:h-100 mobile:w-100"
             ></img>
           </div>
-          <div className="mb-5 text-24 font-light text-red-500">{desc2}</div>
-          <div className="text-20 font-light text-pen-2">{desc1[index]}</div>
+          <div className="mb-5 text-24 font-light text-red-500 mobile:text-18">
+            {desc2}
+          </div>
+          <div className="text-20 font-light text-pen-2 mobile:text-14">
+            {desc1[index]}
+          </div>
         </div>
       </div>
     </div>

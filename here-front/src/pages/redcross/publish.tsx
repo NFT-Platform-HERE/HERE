@@ -113,14 +113,8 @@ export default function RedCrossPublishPage() {
     return;
   };
 
-  const publishNFT = async () => {
-    //랜덤 숫자 생성(0~12)
-    const randomNumber = randomFromZeroToN(12);
-    // 랜덤 이미지 선택
-    const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
-
-    //기관용 메타데이터
-    const metaInfoAgency = {
+  function makeMetaDataAgency(mintImageURL: string) {
+    return {
       name: name.trim(),
       rhType: rhType,
       blood: blood,
@@ -134,9 +128,10 @@ export default function RedCrossPublishPage() {
       imageURL: mintImageURL,
       nftType: NftType.AGENCY,
     };
+  }
 
-    //병원용 메타데이터
-    const metaInfoHospital = {
+  function makeMetaDataHospital(mintImageURL: string) {
+    return {
       name: name.trim(),
       rhType: rhType,
       blood: blood,
@@ -150,52 +145,110 @@ export default function RedCrossPublishPage() {
       imageURL: mintImageURL,
       nftType: NftType.HOSPITAL,
     };
+  }
 
+  function makeAgencyPayload(
+    agencyHashValue: string,
+    mintImageURL: string,
+    agencyTokenId: number,
+  ) {
+    const agencyPayload: Mint = {
+      bdType: bloodType,
+      hashValue: agencyHashValue,
+      imgUrl: mintImageURL,
+      issuerId: memberId,
+      ownerId: memberId,
+      place: place.trim(),
+      tokenId: agencyTokenId,
+      nftType: NftType.AGENCY,
+    };
+
+    return agencyPayload;
+  }
+
+  function makeHospitalPayload(
+    hospitalHashValue: string,
+    mintImageURL: string,
+    hospitalTokenId: number,
+  ) {
+    const agencyPayload: Mint = {
+      bdType: bloodType,
+      hashValue: hospitalHashValue,
+      imgUrl: mintImageURL,
+      issuerId: memberId,
+      ownerId: memberId,
+      place: place.trim(),
+      tokenId: hospitalTokenId,
+      nftType: NftType.HOSPITAL,
+    };
+
+    return agencyPayload;
+  }
+
+  function makeBlockChainMintPayload(
+    ipfsResultAgencyUrl: string,
+    ipfsResultHospitalUrl: string,
+  ) {
+    const mintPayload: BlockChainMint = {
+      account: wallet,
+      agencyTokenUrl: ipfsResultAgencyUrl,
+      hospitalTokenUrl: ipfsResultHospitalUrl,
+    };
+
+    return mintPayload;
+  }
+
+  const publishNFT = async () => {
+    //랜덤 숫자 생성(0~12)
+    const randomNumber = randomFromZeroToN(12);
+    // 랜덤 이미지 선택
+    const mintImageURL = NFT_IMAGE_URL_LIST[randomNumber];
+
+    //기관용 메타데이터
+    const metaInfoAgency = makeMetaDataAgency(mintImageURL);
+
+    //병원용 메타데이터
+    const metaInfoHospital = makeMetaDataHospital(mintImageURL);
+
+    // 기관/병원용 메타데이터 JSON 변환
     const jsonMetaDataAgency = makeJsonMetaData(metaInfoAgency);
     const jsonMetaDataHospital = makeJsonMetaData(metaInfoHospital);
 
     try {
+      setOpendLoadingModal(true);
+
+      // IPFS서버에 메타데이터 저장
       const ipfsResultAgencyUrl = await sendIpfs(jsonMetaDataAgency);
       const ipfsResultHospitalUrl = await sendIpfs(jsonMetaDataHospital);
 
-      setOpendLoadingModal(true);
+      const mintPayload = makeBlockChainMintPayload(
+        ipfsResultAgencyUrl,
+        ipfsResultHospitalUrl,
+      );
 
-      const mintPayload: BlockChainMint = {
-        account: wallet,
-        agencyTokenUrl: ipfsResultAgencyUrl,
-        hospitalTokenUrl: ipfsResultHospitalUrl,
-      };
-
+      // 블록체인 네트워크에 저장
       const result = await blockChainMutation.mutateAsync(mintPayload);
 
       const agencyTokenId = result.events.Transfer[0].returnValues.tokenId;
       const hospitalTokenId = result.events.Transfer[1].returnValues.tokenId;
 
+      // TokenId로 HashValue 조회
       const agencyHashValue = await getHashValue(agencyTokenId);
       const hospitalHashValue = await getHashValue(hospitalTokenId);
 
-      const agencyPayload: Mint = {
-        bdType: bloodType,
-        hashValue: agencyHashValue,
-        imgUrl: mintImageURL,
-        issuerId: memberId,
-        ownerId: memberId,
-        place: place.trim(),
-        tokenId: agencyTokenId,
-        nftType: NftType.AGENCY,
-      };
+      const agencyPayload = makeAgencyPayload(
+        agencyHashValue,
+        mintImageURL,
+        agencyTokenId,
+      );
 
-      const hospitalPayload: Mint = {
-        bdType: bloodType,
-        hashValue: hospitalHashValue,
-        imgUrl: mintImageURL,
-        issuerId: memberId,
-        ownerId: memberId,
-        place: place.trim(),
-        tokenId: hospitalTokenId,
-        nftType: NftType.HOSPITAL,
-      };
+      const hospitalPayload = makeHospitalPayload(
+        hospitalHashValue,
+        mintImageURL,
+        hospitalTokenId,
+      );
 
+      // 백엔드 서버에 저장
       const agencyNftMintResult = await mutation.mutateAsync(agencyPayload);
       const hospitalNftMintResult = await mutation.mutateAsync(hospitalPayload);
 
