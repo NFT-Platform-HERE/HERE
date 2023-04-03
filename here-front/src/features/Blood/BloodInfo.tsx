@@ -38,7 +38,7 @@ export default function BloodInfo() {
           alt="characterImgUrl"
           className="mx-auto mt-50 mb-20 h-300 w-300 mobile:mt-30 mobile:h-240 mobile:w-240"
         />
-        <div className="h-128 w-399 rounded-b-30 bg-white pt-16">
+        <div className="h-127 w-398 rounded-b-30 bg-white pt-16 mobile:h-108 mobile:w-298">
           <div>
             <span className="mr-10 text-22 font-semibold text-red-3">
               LEVEL.

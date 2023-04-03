@@ -24,10 +24,10 @@ export default function BloodPage() {
           imgUrl={"banners/bloodBannerMobile.png"}
         />
       </div>
-      <div className="mx-auto mb-100 flex w-1200 flex-wrap justify-between px-60 mobile:w-full mobile:px-30">
+      <div className="mx-auto mb-100 flex w-1200 flex-wrap justify-between px-60 mobile:mb-50 mobile:w-full mobile:px-30">
         <BloodInfo />
       </div>
-      <div className="mx-auto mb-100 w-1200  px-60 mobile:w-full mobile:px-30">
+      <div className="mx-auto mb-100 w-1200 px-60 mobile:w-full mobile:px-30">
         <BloodStamp />
         <BloodMap />
       </div>
