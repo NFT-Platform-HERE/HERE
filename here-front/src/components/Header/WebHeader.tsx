@@ -39,6 +39,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
   };
 
   useEffect(() => {
+    dispatch(closeWebHeaderDropdown());
     setIsDisabled(
       !(
         router.asPath !== "/organization" &&
