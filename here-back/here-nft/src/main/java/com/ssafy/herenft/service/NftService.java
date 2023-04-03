@@ -223,7 +223,7 @@ public class NftService {
                 Member sender = board.getMember();
                 String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
 
-                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
+//                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
             }
 
         }
@@ -233,7 +233,7 @@ public class NftService {
         Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
 
-        postNotification(sender, receiver, message, EnumNotificationCode.DONATED);
+//        postNotification(sender, receiver, message, EnumNotificationCode.DONATED);
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
