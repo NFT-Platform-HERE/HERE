@@ -4,6 +4,7 @@ import com.ssafy.herenotification.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenotification.dto.notification.*;
 import com.ssafy.herenotification.entity.Member;
 import com.ssafy.herenotification.entity.Notification;
+import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import com.ssafy.herenotification.enumeration.response.HereStatus;
 import com.ssafy.herenotification.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.herenotification.repository.EmitterRepository;
@@ -114,7 +115,7 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        List<Notification> notificationList = notificationRepository.findAllByReceiverOrderByCreatedDate(member);
+        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDate(member, EnumNotificationStatus.ACTIVE);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
