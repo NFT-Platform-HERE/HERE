@@ -251,7 +251,7 @@ pipeline {
                 stage('run-here-notification') {
                     when {
                         anyOf {
-                            changeset "here-back/here-nft/**/*"
+                            changeset "here-back/here-notification/**/*"
                         }
                     }
                     steps {
