@@ -57,9 +57,8 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
     dispatch(selectNFT(selectedNFT));
     dispatch(setTokenId(tokenId));
   }
-  console.log(MyNFTList);
 
-  return MyNFTList.length != 0 ? (
+  return MyNFTList?.length !== 0 ? (
     <div className="w-full">
       <Swiper
         slidesPerView={3}

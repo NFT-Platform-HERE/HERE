@@ -25,9 +25,10 @@ export default function LiveAlarmModal() {
       console.log("SSE 데이터", parsedData);
     };
 
-    // return () => {
-    //   sseEvents.close();
-    // };
+    return () => {
+      sseEvents.close();
+      console.log("close!");
+    };
 
     // setTimeout(() => {
     //   setOpen(true);
