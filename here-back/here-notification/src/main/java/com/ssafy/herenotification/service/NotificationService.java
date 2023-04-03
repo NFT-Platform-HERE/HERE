@@ -65,6 +65,7 @@ public class NotificationService {
 
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+       System.out.println("sseEmitters = " + sseEmitters);
         sseEmitters.forEach(
                 (key, emitter) -> {
                     // 데이터 캐시 저장(유실 데이터 처리)
@@ -81,6 +82,7 @@ public class NotificationService {
                     .id(emitterId)
                     .name("sse")
                     .data(data));
+            System.out.println("emitter = " + emitter);
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
             throw new RuntimeException("연결 오류");
@@ -115,7 +117,7 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDate(member, EnumNotificationStatus.ACTIVE);
+        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDate(member, EnumNotificationStatus.INACTIVE);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
