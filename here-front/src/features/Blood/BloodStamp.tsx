@@ -8,7 +8,6 @@ export default function BloodStamp() {
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const stamp = useStampQuery(memberId);
-  console.log("stamp", stamp.data);
 
   const stepList = [1, 2, 3, 4, 5, 6, 7];
 
