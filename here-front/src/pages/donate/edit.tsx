@@ -10,6 +10,7 @@ import { RootState } from "@/stores/store";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import useDonateUpdate from "@/apis/donate/useDonateUpdate";
+import { HiPhoto } from "react-icons/hi2";
 
 export default function DonateEditPage() {
   const router = useRouter();
@@ -350,10 +351,8 @@ export default function DonateEditPage() {
             </div>
             <button onClick={handleImageSelectButtonClick}>
               <div className="flex items-center justify-end">
-                <img
-                  src={"/icons/Img_box_duotone_line.svg"}
-                  className="h-52 w-52 mobile:h-35 mobile:w-35"
-                />
+                <HiPhoto className="text-45 text-pen-2 mobile:text-35" />
+
                 <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
                   사진 첨부
                 </div>
