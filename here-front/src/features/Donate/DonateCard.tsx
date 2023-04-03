@@ -4,7 +4,7 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
 import { BoardStatus } from "@/enum/statusType";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 interface Iprops {
   boardId: number;
