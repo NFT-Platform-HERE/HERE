@@ -13,7 +13,7 @@ const fetcher = (boardId: number, memberId: string) =>
 
 const useDonateCheerUpListQuery = (boardId: number, memberId: string) => {
   return useQuery(
-    queryKeys.DONATE_CHEER_UP_LIST,
+    [queryKeys.DONATE_CHEER_UP_LIST, boardId],
     () => fetcher(boardId, memberId),
     {
       suspense: true,
