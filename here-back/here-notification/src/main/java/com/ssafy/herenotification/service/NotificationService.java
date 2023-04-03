@@ -128,6 +128,7 @@ public class NotificationService {
                     .senderNickname(notification.getSender().getNickname())
                     .status(notification.getStatus())
                     .content(notification.getContent())
+                    .code(notification.getCode())
                     .build();
             checkNotificationResponseDtoList.add(checkNotificationResponseDto);
         }
