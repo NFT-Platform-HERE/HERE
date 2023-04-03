@@ -28,6 +28,7 @@ export default function LiveAlarmModal() {
 
     return () => {
       sseEvents.close();
+      console.log("SSE close!");
     };
   }, []);
 
