@@ -13,12 +13,13 @@
     function login() {
         const id = document.getElementById('id').value;
 
-        const eventSource = new EventSource(`test/subscribe/` + id);
+        const eventSource = new EventSource(`/api/test/subscribe/` + id);
+        console.log(eventSource);
 
         eventSource.addEventListener("sse", function (event) {
             console.log(event.data);
 
-            const data = JSON.parse(event.data);
+            const data = event.data;
 
             (async () => {
                 // 브라우저 알림

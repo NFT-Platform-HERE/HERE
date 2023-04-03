@@ -18,36 +18,26 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/test")
+@RequestMapping("/notification")
 @Log4j2
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final MemberRepository memberRepository;
-    @GetMapping(value = "/subscribe/{uu}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@PathVariable String uu, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
-        UUID uuid = UUID.fromString(uu);
+
+    /* SSE 구독 */
+    @ApiOperation(value = "SSE 구독", notes = "알림에 멤버ID를 구독합니다.")
+    @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe(@PathVariable String memberId, @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId){
+        UUID uuid = UUID.fromString(memberId);
         return notificationService.subscribe(uuid, lastEventId);
-    }
-
-    @GetMapping(value = "/send/{uu}")
-    public String send(@PathVariable String uu){
-        UUID uuid = UUID.fromString(uu);
-        Member member1  = memberRepository.findById(uuid)
-                .orElseThrow(() -> new RuntimeException());
-        System.out.println("멤버1:" + member1.getNickname());
-        Member member2  = memberRepository.findById(uuid)
-                .orElseThrow(() -> new RuntimeException());
-        String content = "테스트";
-
-        notificationService.send(member1, member1,content);
-        return content;
     }
 
     /* 알림 등록 */
     @ApiOperation(value = "알림 등록", notes = "알림을 등록합니다.")
     @PostMapping()
     public ResponseEntity<ResponseSuccessDto<SaveNotificationResponseDto>> saveNotification(@RequestBody SaveNotificationRequestDto saveNotificationRequestDto) {
+
+        //notificationService.send(saveNotificationRequestDto.getSenderId(), saveNotificationRequestDto.getReceiverId(),saveNotificationRequestDto.getContent());
         return ResponseEntity.ok(notificationService.save(saveNotificationRequestDto));
     }
 
