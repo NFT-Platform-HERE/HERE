@@ -122,7 +122,7 @@ public class NotificationService {
         notification.updateNotificationStatus();
 
         UpdateNotificationResponseDto updateNotificationResponseDto = UpdateNotificationResponseDto.builder()
-                .message("알림 읽은 처리 완료")
+                .message("알림 읽음 처리 완료")
                 .build();
 
         ResponseSuccessDto<UpdateNotificationResponseDto> res = responseUtil.successResponse(updateNotificationResponseDto, HereStatus.HERE_READ_NOTIFICATION);

@@ -1,6 +1,6 @@
 package com.ssafy.herenotification.dto.notification;
 
-import com.ssafy.hereauth.enumeration.EnumNotificationStatus;
+import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

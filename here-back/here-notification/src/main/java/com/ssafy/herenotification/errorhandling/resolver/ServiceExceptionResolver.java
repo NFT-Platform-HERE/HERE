@@ -1,9 +1,9 @@
 package com.ssafy.herenotification.errorhandling.resolver;
 
-import com.ssafy.hereauth.dto.common.response.ResponseErrorDto;
-import com.ssafy.hereauth.errorhandling.exception.service.EntityIsNullException;
-import com.ssafy.hereauth.mattermost.NotificationManager;
-import com.ssafy.hereauth.util.ResponseUtil;
+import com.ssafy.herenotification.dto.common.response.ResponseErrorDto;
+import com.ssafy.herenotification.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.herenotification.mattermost.NotificationManager;
+import com.ssafy.herenotification.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
