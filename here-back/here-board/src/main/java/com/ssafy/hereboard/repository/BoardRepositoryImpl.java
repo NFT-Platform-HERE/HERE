@@ -57,7 +57,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .selectFrom(board)
                 .where(
                         board.status.eq(EnumBoardStatus.ACTIVE),
-                        board.deadline.eq(LocalDate.now())
+                        board.deadline.loe(LocalDate.now())
                 )
                 .fetch();
     }

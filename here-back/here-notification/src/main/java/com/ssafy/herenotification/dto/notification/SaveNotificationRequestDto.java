@@ -1,5 +1,6 @@
 package com.ssafy.herenotification.dto.notification;
 
+import com.ssafy.herenotification.enumeration.EnumNotificationCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +24,7 @@ public class SaveNotificationRequestDto {
     @NotNull(message = "content는 필수 값입니다.")
     @NotBlank(message = "content를 입력해주세요")
     private String content;
+
+    @NotNull(message = "code는 필수 값입니다.")
+    private EnumNotificationCode code;
 }
