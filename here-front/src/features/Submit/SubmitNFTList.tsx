@@ -119,23 +119,22 @@ export default function SubmitNFTList({ count }: Iprops) {
             dispatch(selectNFT(j));
             dispatch(
               setNFTInfo({
-                tokenId: autoSelectData[i].tokenId,
-                hashValue: autoSelectData[i].hashValue,
+                tokenId: submitNFTData[j].tokenId,
+                hashValue: submitNFTData[j].hashValue,
               }),
             );
           } else if (submitTab === "HOSPITAL") {
             dispatch(addNFT(j));
             dispatch(
               addNFTInfo({
-                tokenId: autoSelectData[i].tokenId,
-                hashValue: autoSelectData[i].hashValue,
+                tokenId: submitNFTData[j].tokenId,
+                hashValue: submitNFTData[j].hashValue,
               }),
             );
           }
         }
       }
     }
-    console.log("자동");
   }, [autoSelectList?.data]);
 
   useEffect(() => {
