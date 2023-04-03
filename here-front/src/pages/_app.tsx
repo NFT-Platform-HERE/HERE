@@ -10,6 +10,7 @@ import { Provider, useSelector } from "react-redux";
 import store, { RootState } from "@/stores/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import LiveAlarmModal from "@/features/Alarm/LiveAlarmModal";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -57,7 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Provider store={store}>
               <PersistGate loading={null} persistor={persistStore(store)}>
                 <Header />
-
+                <LiveAlarmModal />
                 <Component {...pageProps} />
               </PersistGate>
             </Provider>

@@ -10,12 +10,13 @@ import { useSelector } from "react-redux";
 
 export default function WebHeaderDropdown() {
   const dispatch = useDispatch();
-  const { nickname, characterImgUrl } = useSelector(
+  const { nickname, characterImgUrl, memberId } = useSelector(
     (state: RootState) => state.member,
   );
-  const { account, active, deactivate } = useWeb3React();
+
+  const { deactivate } = useWeb3React();
   const Logout = () => {
-    unConnectWallet({ account, active, deactivate });
+    unConnectWallet({ memberId, deactivate });
     dispatch(deleteMemberInfo());
     dispatch(closeWebHeaderDropdown());
   };

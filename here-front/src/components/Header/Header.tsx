@@ -1,8 +1,5 @@
 import useCheckMemberQuery from "@/apis/member/useCheckMemberQuery";
-import member, {
-  deleteMemberInfo,
-  getWalletAddress,
-} from "@/stores/member/member";
+import { getWalletAddress } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
 import { connectWallet } from "@/utils/connectWallet";
 import { useWeb3React } from "@web3-react/core";
@@ -23,33 +20,16 @@ export default function Header() {
       if (active && account) {
         return;
       } else {
-        dispatch(deleteMemberInfo());
+        connectWallet({ account, active, activate, deactivate });
       }
     }
-  });
+  }, []);
 
   const handleConnect = () => {
     connectWallet({ account, active, activate, deactivate });
   };
 
   useCheckMemberQuery(walletAddress);
-
-  useEffect(() => {
-    const sseEvents = new EventSource(
-      `http://localhost:9003/api/test/subscribe/${memberId}`,
-    );
-
-    sseEvents.onopen = function () {
-      console.log("SSE 연결!!");
-    };
-    sseEvents.onerror = function (error) {
-      console.log("SSE 에러", error);
-    };
-    sseEvents.onmessage = function (stream) {
-      const parsedData = JSON.parse(stream.data);
-      console.log("SSE 데이터", parsedData);
-    };
-  }, []);
 
   useEffect(() => {
     if (memberId) {
