@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "bd_history")
+@Table(name = "paper_bd_cert")
 @Getter
 @NoArgsConstructor
 public class PaperBdCert {
