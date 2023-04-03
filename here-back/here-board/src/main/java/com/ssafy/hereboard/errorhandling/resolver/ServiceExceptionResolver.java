@@ -68,7 +68,8 @@ public class ServiceExceptionResolver {
     @ExceptionHandler(value = MaxUploadSizeExceededException.class)
     public ResponseErrorDto<?> handle(MaxUploadSizeExceededException e, HttpServletRequest request) {
         notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
-        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
+        String errorMessage = "업로드 용량 크기를 초과하였습니다.";
+        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage, request.getRequestURI());
     }
 
     private String getParams(HttpServletRequest req) {
