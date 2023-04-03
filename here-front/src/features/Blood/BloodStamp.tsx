@@ -10,7 +10,7 @@ export default function BloodStamp() {
   const stamp = useStampQuery(memberId);
   console.log("stamp", stamp.data);
 
-  const stepList = [2, 3, 4, 5, 6, 7, 8];
+  const stepList = [1, 2, 3, 4, 5, 6, 7];
 
   const getStamp = [
     "absolute left-[305px] top-52 w-138",
@@ -38,8 +38,8 @@ export default function BloodStamp() {
           <>
             {num <= stamp.data?.step && (
               <img
-                src={`stamp/step${num + 1}.png`}
-                className={getStamp[num - 1]}
+                src={`stamp/step${num - 1}.png`}
+                className={getStamp[num - 2]}
               />
             )}
           </>
