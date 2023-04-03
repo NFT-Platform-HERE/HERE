@@ -36,8 +36,6 @@ public class NotificationController {
     @ApiOperation(value = "알림 등록", notes = "알림을 등록합니다.")
     @PostMapping()
     public ResponseEntity<ResponseSuccessDto<SaveNotificationResponseDto>> saveNotification(@RequestBody SaveNotificationRequestDto saveNotificationRequestDto) {
-
-        //notificationService.send(saveNotificationRequestDto.getSenderId(), saveNotificationRequestDto.getReceiverId(),saveNotificationRequestDto.getContent());
         return ResponseEntity.ok(notificationService.save(saveNotificationRequestDto));
     }
 
