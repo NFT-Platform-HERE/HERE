@@ -1,0 +1,17 @@
+server:
+  port: 9003
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+
+spring:
+  profiles:
+    default: local
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
