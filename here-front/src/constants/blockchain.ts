@@ -681,7 +681,6 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
     constant: true,
   },
 ];
-
 export const HERE_ERC_721_CA = HERE_CA;
 
 export const NFT_IMAGE_URL_LIST: string[] = [
