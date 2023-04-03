@@ -37,6 +37,7 @@ public class NotificationController {
     @PostMapping()
     public ResponseEntity<ResponseSuccessDto<SaveNotificationResponseDto>> saveNotification(@RequestBody SaveNotificationRequestDto saveNotificationRequestDto) {
 
+        //notificationService.send(saveNotificationRequestDto.getSenderId(), saveNotificationRequestDto.getReceiverId(),saveNotificationRequestDto.getContent());
         return ResponseEntity.ok(notificationService.save(saveNotificationRequestDto));
     }
 
