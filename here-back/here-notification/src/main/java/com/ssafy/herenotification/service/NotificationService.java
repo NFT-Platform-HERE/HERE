@@ -99,7 +99,7 @@ public class NotificationService {
         Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
         notificationRepository.save(notification);
         String code = String.valueOf(saveNotificationRequestDto.getCode());
-        Object con;
+        String con;
         if(code.equals("DONATED")){
             con = "따뜻한 마음이 손길을 전해왔어요.";
         }else if(code.equals("CLOSED")){
