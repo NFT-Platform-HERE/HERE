@@ -61,4 +61,9 @@ public class Board {
     public void updateCurQuantity(int quantity) {
         this.curQuantity += quantity;
     }
+
+    public void updateBoardStatus(EnumBoardStatus status) {
+        this.status = status;
+    }
+
 }
