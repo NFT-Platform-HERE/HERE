@@ -16,11 +16,9 @@ const fetcher = (payload: Payload) =>
     .then(({ data }) => data);
 
 const useAlarmReadUpdate = () => {
-  const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: (data) => {
       console.log("성공", data);
-      queryClient.invalidateQueries([queryKeys.ALARM_LIST]);
     },
   });
 };

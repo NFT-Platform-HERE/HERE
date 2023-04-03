@@ -30,7 +30,6 @@ export default function WebAlarmModal() {
           <div key={item.notificationId}>
             <AlarmList
               text={item.content}
-              status={item.status}
               onClick={() => changeStatus(item.notificationId)}
             />
             {openCard && <MemberCard senderId={item.senderId} />}

@@ -11,6 +11,7 @@ const fetcher = (memberId: string) =>
 const useAlarmQuery = (memberId: string) => {
   return useQuery([queryKeys.ALARM_LIST, memberId], () => fetcher(memberId), {
     enabled: !!memberId,
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       console.log("알람 리스트 성공", data);
     },

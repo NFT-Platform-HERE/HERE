@@ -20,19 +20,15 @@ export default function LiveAlarmModal() {
       sseEvents.close();
     };
     sseEvents.onmessage = function (stream) {
-      const parsedData = JSON.parse(stream.data);
-      setOpen(true);
-      console.log("SSE 데이터", parsedData);
+      if (stream.data.split(" ")[0] !== "EventStream") {
+        setOpen(true);
+        console.log("SSE 데이터", stream.data);
+      }
     };
 
     return () => {
       sseEvents.close();
-      console.log("close!");
     };
-
-    // setTimeout(() => {
-    //   setOpen(true);
-    // }, 1000);
   }, []);
 
   return (
