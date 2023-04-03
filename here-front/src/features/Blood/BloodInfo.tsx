@@ -87,7 +87,9 @@ export default function BloodInfo() {
           </div>
           <p className="mr-20 inline-block text-center text-40 font-bold leading-100 text-pen-1 mobile:mr-0 mobile:w-100 mobile:text-18 mobile:leading-30">
             {member.data
-              ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
+              ? member.data.recentBdDate
+                ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
+                : "없음"
               : ""}
           </p>
         </div>
