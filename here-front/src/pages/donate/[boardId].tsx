@@ -67,7 +67,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
   }
 
   async function handleCloseButton() {
-    await closeDonateArticle();
+    confirmClose();
   }
 
   const closeModal = () => {
@@ -80,6 +80,12 @@ export default function DonateDetailPage({ boardId }: Iprops) {
       showDenyButton: true,
       showConfirmButton: false,
       denyButtonText: `삭제`,
+      padding: "1rem",
+      customClass: {
+        popup: "w-400 h-200",
+        title: "text-26 font-medium mt-20",
+        denyButton: "w-100",
+      },
     }).then((result) => {
       if (result.isDenied) {
         deleteDonateArticle();
@@ -114,6 +120,25 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     });
   };
 
+  const confirmClose = () => {
+    MySwal.fire({
+      title: "정말 마감하시겠습니까?",
+      showDenyButton: true,
+      showConfirmButton: false,
+      denyButtonText: `네`,
+      padding: "1rem",
+      customClass: {
+        popup: "w-400 h-200",
+        title: "text-26 font-medium mt-20",
+        denyButton: "w-100",
+      },
+    }).then((result) => {
+      if (result.isDenied) {
+        closeDonateArticle();
+      }
+    });
+  };
+
   async function closeDonateArticle() {
     const payload: DonationDelete = {
       boardId: parseInt(boardId),
@@ -124,10 +149,21 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     try {
       const result = await mutation.mutateAsync(payload);
       console.log("result", result);
+      successClose();
     } catch (error) {
       console.error(error);
     }
   }
+
+  const successClose = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "마감이 완료되었습니다.",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
   function moveDonateListPage() {
     router.push("/donate");
@@ -188,15 +224,15 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               {nowBoard.data.title}
             </div>
             <div className="flex justify-start">
-              <div className="mobile:hidden">
+              <div className="mx-auto mobile:hidden">
                 <HeartBar
-                  width={735}
+                  width={816}
                   height={12}
                   fontSize={15}
                   percent={nowBoard.data.percentage}
                 />
               </div>
-              <div className="hidden mobile:block">
+              <div className="mx-auto hidden mobile:block">
                 <HeartBar
                   width={300}
                   height={8}
@@ -264,7 +300,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 width={250}
                 height={50}
                 fontSize={18}
-                children={"마감하기"}
+                children={
+                  nowBoard.data.status == BoardStatus.INACTIVE
+                    ? "마감완료"
+                    : "마감하기"
+                }
                 isDisabled={
                   nowBoard.data.status == BoardStatus.INACTIVE ? true : false
                 }
@@ -275,7 +315,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 width={250}
                 height={50}
                 fontSize={18}
-                children={"기부하기"}
+                children={
+                  nowBoard.data.status == BoardStatus.INACTIVE
+                    ? "마감완료"
+                    : "기부하기"
+                }
                 isDisabled={disableDonateButton()}
                 onClick={handleDonateButton}
               />

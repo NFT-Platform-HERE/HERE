@@ -36,7 +36,11 @@ export default function DonateCard({
       }`}
     >
       <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
-        <TimeAgo datetime={expirationDate} locale="ko" />
+        {isCompleted == BoardStatus.ACTIVE ? (
+          <TimeAgo datetime={expirationDate} locale="ko" />
+        ) : (
+          "마감"
+        )}
       </div>
       <div className="mb-14 flex justify-center">
         <Image
@@ -90,7 +94,11 @@ export function DonateCardMobile({
 
       <div className="mr-3 flex w-full flex-col">
         <div className="flex justify-end text-9 font-medium text-pen-2">
-          <TimeAgo datetime={expirationDate} locale="ko" />
+          {isCompleted == BoardStatus.ACTIVE ? (
+            <TimeAgo datetime={expirationDate} locale="ko" />
+          ) : (
+            "마감"
+          )}
         </div>
         <div className="mb-3 flex justify-start text-11 font-bold text-pen-3">
           {title}
