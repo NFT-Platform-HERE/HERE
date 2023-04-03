@@ -5,21 +5,20 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 
 interface Iprops {
-  memberId: string;
   boardId: string;
 }
 
-export default function DonateCheerMsg({ memberId, boardId }: Iprops) {
+export default function DonateCheerMsg({ boardId }: Iprops) {
   const { mutate } = useDonateCheerUpUpdateQuery();
+  const { memberId } = useSelector((state: RootState) => state.member);
   const cheerMsgCnt = useDonateCheerUpListQuery(parseInt(boardId), memberId);
-  const myMemberId = useSelector((state: RootState) => state.member.memberId);
-  //   console.log(cheerMsgCnt.data);
+  console.log(cheerMsgCnt.data);
 
   const selectCheerBtn = (msgId: number) => {
     const payload = {
       boardId: parseInt(boardId),
       cheeringMsgId: msgId,
-      memberId: myMemberId,
+      memberId,
     };
     mutate(payload);
   };

@@ -332,7 +332,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 boardId={parseInt(boardId)}
               />
             )}
-            <DonateCheerMsg memberId={writerId} boardId={boardId} />
+            <DonateCheerMsg boardId={boardId} />
           </Suspense>
         </div>
       </div>
