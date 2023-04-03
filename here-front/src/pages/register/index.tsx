@@ -2,31 +2,42 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { QrScanner } from "@yudiel/react-qr-scanner";
 import CommonBtn from "@/components/Button/CommonBtn";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useRegisterPaperNftQuery from "@/apis/register/useRegisterPaperNftQuery";
 
 export default function RegisterPage() {
-  const [data, setData] = useState<number>(0);
+  const [serialNumber, setSerialNumber] = useState<string>("");
+  const [debugState, setDebugState] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const router = useRouter();
 
-  const registerPaper = () => {
+  const { memberId } = useSelector((state: RootState) => state.member);
+
+  const { refetch } = useRegisterPaperNftQuery(memberId, serialNumber);
+
+  const registerPaper = async () => {
+    const value = await refetch();
+    setDebugState(JSON.stringify(value));
+    console.log("value", value);
     //if(openModal)
-    router.push("/my-nft");
+    // router.push("/my-nft");
   };
 
   const cancelRegister = () => {
-    setData(0);
+    setSerialNumber("");
     setOpenModal(false);
   };
 
   const decode = (result: string) => {
     if (!openModal) {
-      setData(Number(result));
+      setSerialNumber(result);
     }
   };
 
   useEffect(() => {
-    if (data) setOpenModal(true);
-  }, [data]);
+    if (serialNumber) setOpenModal(true);
+  }, [serialNumber]);
 
   return (
     <div className="flex w-full items-center justify-center mobile:h-[calc(100vh-60px)]">
@@ -46,7 +57,8 @@ export default function RegisterPage() {
           <div className="flex h-240 w-300 flex-col items-center justify-center">
             <div className="mb-30 text-18">등록하시겠습니까?</div>
             <div className="text-15">헌혈증 ID</div>
-            <div className="text-15">{data}</div>
+            <div className="text-15">{debugState}</div>
+            <div className="text-15">{serialNumber}</div>
             <div className="mt-30 flex gap-20">
               <CommonBtn
                 width={100}
