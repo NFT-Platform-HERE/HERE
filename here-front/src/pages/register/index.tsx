@@ -29,7 +29,7 @@ const MySwal = withReactContent(Swal);
 
 export default function RegisterPage() {
   const [serialNumber, setSerialNumber] = useState<string>("");
-  const [openModal, setOpenModal] = useState<boolean>(true);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const router = useRouter();
 
   const mutation = useNftMint();
