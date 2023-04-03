@@ -22,8 +22,9 @@ pipeline {
                     }
                     steps {
                         sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-auth/src/main/resource'
-                    }
-                    echo 'Insert keystore...'
+
+                        echo 'Insert keystore...'
+                    }                    
                 }
 
                 stage('insert-keystore-board') {
@@ -34,8 +35,9 @@ pipeline {
                     }
                     steps {
                         sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-board/src/main/resource'
-                    }
-                    echo 'Insert keystore...'
+
+                        echo 'Insert keystore...'
+                    }                    
                 }
 
                 stage('insert-keystore-nft') {
@@ -46,8 +48,9 @@ pipeline {
                     }
                     steps {
                         sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-nft/src/main/resource'
-                    }
-                    echo 'Insert keystore...'
+
+                        echo 'Insert keystore...'
+                    }                    
                 }
 
                 stage('insert-keystore-notification') {
@@ -58,8 +61,9 @@ pipeline {
                     }
                     steps {
                         sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-notification/src/main/resource'
-                    }
-                    echo 'Insert keystore...'
+
+                        echo 'Insert keystore...'
+                    }                    
                 }
             }            
         }
