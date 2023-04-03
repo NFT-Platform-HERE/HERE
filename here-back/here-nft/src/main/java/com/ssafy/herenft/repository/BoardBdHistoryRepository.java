@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface BoardBdHistoryRepository extends JpaRepository<BoardBdHistory, Long> {
@@ -16,4 +15,6 @@ public interface BoardBdHistoryRepository extends JpaRepository<BoardBdHistory, 
     List<BoardBdHistory> findAllByBoardId(Long boardId);
 
     BoardBdHistory findByBoardIdAndSenderId(Long boardId, UUID senderId);
+
+    List<BoardBdHistory> findDistinctByBoardIdAndSenderId(Long boardId, UUID senderId);
 }

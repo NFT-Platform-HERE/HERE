@@ -1,10 +1,15 @@
 server:
-  port: 9000
+  port: 9013
+  ssl:
+    enabled: true
+    key-store: ${KEY_STORE}
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-store-type: ${KEY_STORE_TYPE}
 
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
 
   jpa:
     hibernate:
@@ -16,13 +21,14 @@ spring:
         show_sql: true
         format_sql: true
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/here?serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 notification:
   mattermost:
     enabled: true
-    webhook-url: https://meeting.ssafy.com/hooks/zqmjek3mi7fgmg4zh5knfu3ndy
+    webhook-url: ${MM_WEBHOOK_URL}

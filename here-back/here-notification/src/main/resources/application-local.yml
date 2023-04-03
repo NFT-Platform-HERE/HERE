@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 9003
 
 spring:
   config:
@@ -15,6 +15,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -12,6 +12,62 @@ pipeline {
             }
         }
 
+        stage('env setting') {
+            parallel {
+                stage('insert-keystore-auth') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-auth/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-auth/src/main/resources'
+
+                        echo 'Insert keystore...'
+                    }                    
+                }
+
+                stage('insert-keystore-board') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-board/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-board/src/main/resources'
+
+                        echo 'Insert keystore...'
+                    }                    
+                }
+
+                stage('insert-keystore-nft') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-nft/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-nft/src/main/resources'
+
+                        echo 'Insert keystore...'
+                    }                    
+                }
+
+                stage('insert-keystore-notification') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-notification/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-notification/src/main/resources'
+
+                        echo 'Insert keystore...'
+                    }                    
+                }
+            }            
+        }
+
         stage('Build image') {
             parallel {
                 stage('build-here-auth') {
@@ -61,6 +117,23 @@ pipeline {
                             sh 'chmod +x ./gradlew'
                             sh './gradlew build'
                             sh 'docker build -t ${HERE_NFT_IMAGE} .'
+                        }
+                        echo 'Build image...'
+                    }
+                }
+                stage('build-here-notification') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-notification/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'ls -al'
+                        dir('here-back/here-notification'){
+                            sh 'ls -al'
+                            sh 'chmod +x ./gradlew'
+                            sh './gradlew build'
+                            sh 'docker build -t ${HERE_NOTIFICATION_IMAGE} .'
                         }
                         echo 'Build image...'
                     }
@@ -121,6 +194,23 @@ pipeline {
                         }
                     }
                 }
+                stage('remove-here-notification') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-notification/**/*"
+                        }
+                    }
+                    steps {
+                        script {
+                            try {
+                                sh 'docker stop ${HERE_NOTIFICATION_CONTAINER}'
+                                sh 'docker rm ${HERE_NOTIFICATION_CONTAINER}'
+                            } catch (e) {
+                                echo 'fail to stop and remove container'
+                            }
+                        }
+                    }
+                }
             }
         }
         stage('Run New image') {
@@ -155,6 +245,17 @@ pipeline {
                     }
                     steps {
                         sh 'docker run --name ${HERE_NFT_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -e TZ=Asia/Seoul -d -p 9012:9012 ${HERE_NFT_IMAGE}'
+                        echo 'Run New image'
+                    }
+                }
+                stage('run-here-notification') {
+                    when {
+                        anyOf {
+                            changeset "here-back/here-nft/**/*"
+                        }
+                    }
+                    steps {
+                        sh 'docker run --name ${HERE_NOTIFICATION_CONTAINER} -e KEY_STORE=${KEY_STORE} -e KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD} -e KEY_STORE_TYPE=${KEY_STORE_TYPE} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} -e MM_WEBHOOK_URL=${MM_WEBHOOK_URL} -e TZ=Asia/Seoul -d -p 9012:9012 ${HERE_NOTIFICATION_IMAGE}'
                         echo 'Run New image'
                     }
                 }

@@ -7,7 +7,9 @@ import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.entity.*;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
+import com.ssafy.herenft.eunmeration.EnumBoardStatus;
 import com.ssafy.herenft.eunmeration.EnumNftType;
+import com.ssafy.herenft.eunmeration.EnumNotificationCode;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
 import com.ssafy.herenft.repository.*;
 import com.ssafy.herenft.util.ResponseUtil;
@@ -149,21 +151,11 @@ public class NftService {
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
 
             // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
-            ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
             UUID issuerId = subjectNft.getIssuerId();
             Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
             String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
-            jsonNodes.put("content", message);
-            jsonNodes.put("receiverId", issuerId.toString());
-            jsonNodes.put("senderId", agency.getId().toString());
 
-            ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                    URI,
-                    jsonNodes,
-                    JsonNode.class
-            );
-
-            log.info("POST RESULT = {}", postResult.toString());
+            postNotification(agency, issuer, message, EnumNotificationCode.HOSPITAL);
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
@@ -218,23 +210,30 @@ public class NftService {
         int donateCnt = donateNftRequestDto.getNftTokenList().size();
         board.updateCurQuantity(donateCnt);
 
+        // 현재 수량이 목표 수량을 넘어가면 마감 처리
+        if (board.getCurQuantity() >= board.getGoalQuantity()) {
+            board.updateBoardStatus(EnumBoardStatus.INACTIVE);
+
+            // 현재 마감 처리된 board에 기부된 기부리스트 가져오기 (게시글과 기부자 기준으로 distinct)
+            List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findDistinctByBoardIdAndSenderId(boardId, senderId);
+
+            for (BoardBdHistory eachBoardBdHistory : boardBdHistoryList) {
+                Member receiver = memberRepository.findById(eachBoardBdHistory.getSenderId())
+                        .orElseThrow(() -> new EntityIsNullException("알림 수신자가 존재하지 않습니다."));
+                Member sender = board.getMember();
+                String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
+
+                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
+            }
+
+        }
+
         // 4) 게시글 작성자에게 기부 받은 내용 알림 등록
         Member receiver = board.getMember();
         Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-
-        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
         String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
-        jsonNodes.put("content", message);
-        jsonNodes.put("receiverId", receiver.getId().toString());
-        jsonNodes.put("senderId", sender.getId().toString());
 
-        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                URI,
-                jsonNodes,
-                JsonNode.class
-        );
-
-        log.info("POST RESULT = {}", postResult.toString());
+        postNotification(sender, receiver, message, EnumNotificationCode.DONATED);
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
@@ -335,5 +334,22 @@ public class NftService {
 
         ResponseSuccessDto<SavePaperBdCertToNftResponseDto> res = responseUtil.successResponse(savePaperBdCertToNftResponseDto, HereStatus.HERE_FIND_PAPER_BD_CERT);
         return res;
+    }
+
+    // 알림 post 메서드
+    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code) {
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+        jsonNodes.put("code", code.toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                "https://j8b209.p.ssafy.io:9013/api/notification",
+                jsonNodes,
+                JsonNode.class
+        );
+        System.out.println(postResult.toString());
     }
 }
