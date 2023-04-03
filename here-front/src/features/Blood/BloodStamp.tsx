@@ -35,7 +35,7 @@ export default function BloodStamp() {
         <img src="images/stamp_nobg.png" alt="stamp" className="w-1100" />
         {stepList.map((num) => (
           <>
-            {num <= stamp.data.step && (
+            {num <= stamp.data?.step && (
               <img src={`stamp/step${num}.png`} className={getStamp[num - 1]} />
             )}
           </>
