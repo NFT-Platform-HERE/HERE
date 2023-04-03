@@ -65,7 +65,7 @@ export default function SignUpPage() {
   // 이름 길이 확인
   useEffect(() => {
     if ((name.length < 2 || name.length > 4) && nameRef.current) {
-      setNameMessage("유효하지 않은 이름입니다");
+      setNameMessage("2글자 이상 5글자 미만으로 입력해주세요");
       nameRef.current.focus();
       setIsValidName(false);
     } else {
@@ -77,6 +77,19 @@ export default function SignUpPage() {
       setIsValidName(false);
     }
   }, [name]);
+
+  useEffect(() => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (!emailRegex.test(email)) {
+      setEmailMessage("올바른 이메일을 입력해주세요");
+    } else {
+      setEmailMessage("");
+    }
+    if (email.length === 0) {
+      setEmailMessage("");
+    }
+  }, [email]);
 
   useEffect(() => {
     if (!isValidName) {
