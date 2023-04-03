@@ -20,9 +20,11 @@ import {
 
 import useNftMint from "@/apis/redcross/useNftMint";
 import { Mint } from "@/types/Mint";
-import useBlockChainNftMint from "./../../apis/redcross/useBlockChainNftMint";
-import { BlockChainMint } from "@/types/BlockChainMint";
 import { useRouter } from "next/router";
+import useBlockChainRedCrossNftMint from "@/apis/redcross/useBlockChainRedCrossNftMint";
+import { BlockChainRedCrossNftMint } from "@/types/BlockChainRedCrossNftMint";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 const MySwal = withReactContent(Swal);
 
@@ -47,12 +49,14 @@ export default function RedCrossPublishPage() {
     place: "",
   });
 
+  const { walletAddress } = useSelector((state: RootState) => state.member);
+
   const [formValid, setFormValid] = useState(false);
   const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
 
   const mutation = useNftMint();
 
-  const blockChainMutation = useBlockChainNftMint();
+  const blockChainMutation = useBlockChainRedCrossNftMint();
 
   const {
     blood,
@@ -189,8 +193,9 @@ export default function RedCrossPublishPage() {
     ipfsResultAgencyUrl: string,
     ipfsResultHospitalUrl: string,
   ) {
-    const mintPayload: BlockChainMint = {
-      account: wallet,
+    const mintPayload: BlockChainRedCrossNftMint = {
+      from: walletAddress,
+      to: wallet,
       agencyTokenUrl: ipfsResultAgencyUrl,
       hospitalTokenUrl: ipfsResultHospitalUrl,
     };
