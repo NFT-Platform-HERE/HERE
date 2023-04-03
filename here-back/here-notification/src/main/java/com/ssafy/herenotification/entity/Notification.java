@@ -1,6 +1,7 @@
 package com.ssafy.herenotification.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.herenotification.enumeration.EnumNotificationCode;
 import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,10 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "char(10) default 'INACTIVE'")
     private EnumNotificationStatus status = EnumNotificationStatus.INACTIVE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "code", columnDefinition = "char(10)")
+    private EnumNotificationCode code;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
