@@ -35,13 +35,13 @@ export default function Section3() {
           className="flex h-full w-full flex-wrap items-center justify-center"
         >
           <SwiperSlide>
-            <img src="images/pic1.jpg" />
+            <img src="images/pic3.jpg" />
           </SwiperSlide>
           <SwiperSlide>
             <img src="images/pic2.jpg" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="images/pic3.jpg" />
+            <img src="images/pic1.jpg" />
           </SwiperSlide>
         </Swiper>
       </div>

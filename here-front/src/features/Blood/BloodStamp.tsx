@@ -13,18 +13,13 @@ export default function BloodStamp() {
   const stepList = [1, 2, 3, 4, 5, 6, 7];
 
   const getStamp = [
+    "hidden",
     "absolute left-[305px] top-52 w-138",
-
     "absolute left-[589px] top-52 w-138",
-
     "absolute left-[685px] top-247 w-138",
-
     "absolute left-[407px] top-244 w-136",
-
     "absolute left-[140px] top-248 w-136",
-
     "absolute left-[305px] bottom-30 w-136",
-
     "absolute left-[606px] bottom-33 w-136",
   ];
   return (
@@ -39,7 +34,7 @@ export default function BloodStamp() {
             {num <= stamp.data?.step && (
               <img
                 src={`stamp/step${num - 1}.png`}
-                className={getStamp[num - 2]}
+                className={getStamp[num - 1]}
               />
             )}
           </>
