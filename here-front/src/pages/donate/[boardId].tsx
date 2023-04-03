@@ -188,9 +188,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               {nowBoard.data.title}
             </div>
             <div className="flex justify-start">
-              <div className="mobile:hidden">
+              <div className="mx-auto mobile:hidden">
                 <HeartBar
-                  width={735}
+                  width={816}
                   height={12}
                   fontSize={15}
                   percent={nowBoard.data.percentage}

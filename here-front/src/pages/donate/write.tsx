@@ -174,6 +174,7 @@ export default function DonateWritePage() {
           </div>
           <input
             type="text"
+            maxLength={20}
             onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
             className="mb-5 w-950 text-20 text-pen-2 outline-none mobile:w-full mobile:text-16"
@@ -265,8 +266,9 @@ export default function DonateWritePage() {
               ))}
           </div>
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
-            ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
-            수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
+            ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면{" "}
+            <strong>‘목표수량’,‘마감기한’</strong>을 수정할 수 없으니 신중하게
+            작성해주세요!
           </p>
         </div>
       </div>
