@@ -38,3 +38,6 @@ export const SUBMIT_AUTO_SELECT = "/submitAutoSelect";
 export const MYNFT_LIST = "/mynftList";
 export const MYNFT_META_URL = "/mynftMetaUrl";
 export const MYNFT_METADATA = "/mynftMetaData";
+
+// register
+export const REGISTER_PAPER_NFT = "/registerPaperNft";
