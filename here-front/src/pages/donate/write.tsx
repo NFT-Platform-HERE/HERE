@@ -130,7 +130,6 @@ export default function DonateWritePage() {
   const handleTitleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log("event.target.value", event.target.value);
     setTitle(event.target.value);
   };
 
