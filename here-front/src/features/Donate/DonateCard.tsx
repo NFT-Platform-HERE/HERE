@@ -4,6 +4,7 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
 import { BoardStatus } from "@/enum/statusType";
+import Image from "next/image";
 
 interface Iprops {
   boardId: number;
@@ -38,7 +39,12 @@ export default function DonateCard({
         <TimeAgo datetime={expirationDate} locale="ko" />
       </div>
       <div className="mb-14 flex justify-center">
-        <img src={representativeImageUrl} className="h-160 w-160"></img>
+        <Image
+          src={representativeImageUrl}
+          alt={representativeImageUrl}
+          width={160}
+          height={160}
+        />
       </div>
       <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">
         {title}
