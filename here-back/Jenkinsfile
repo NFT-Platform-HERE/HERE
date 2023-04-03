@@ -21,7 +21,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-auth/src/main/resource'
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-auth/src/main/resources'
 
                         echo 'Insert keystore...'
                     }                    
@@ -34,7 +34,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-board/src/main/resource'
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-board/src/main/resources'
 
                         echo 'Insert keystore...'
                     }                    
@@ -47,7 +47,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-nft/src/main/resource'
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-nft/src/main/resources'
 
                         echo 'Insert keystore...'
                     }                    
@@ -60,7 +60,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-notification/src/main/resource'
+                        sh 'cp /var/jenkins_home/env/keystore.p12 /var/jenkins_home/workspace/develop-BE-pipeline/here-back/here-notification/src/main/resources'
 
                         echo 'Insert keystore...'
                     }                    
