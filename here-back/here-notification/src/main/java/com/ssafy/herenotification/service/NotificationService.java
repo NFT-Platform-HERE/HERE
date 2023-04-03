@@ -99,14 +99,16 @@ public class NotificationService {
         Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
         notificationRepository.save(notification);
         String code = String.valueOf(saveNotificationRequestDto.getCode());
-//         con = "";
-//        if(code.equals("DONATED")){
-//            con = "따뜻한 마음이 도착했어요!";
-//        }else if(code.equals("CLOSED")){
-//            con = "게시글이 마감되었습니다.";
-//        }else if(code.equals("HOSPITAL")){
-//            con = "따뜻한 마음이 병원에 전달됐어요.";
-//        }
+        Object con;
+        if(code.equals("DONATED")){
+            con = "따뜻한 마음이 손길을 전해왔어요.";
+        }else if(code.equals("CLOSED")){
+            con = "당신의 정이 담긴 나눔글이 마감되었어요.";
+        }else if(code.equals("HOSPITAL")){
+            con = "따뜻한 마음이 병원에 전달되어 위로가 전해졌어요.";
+        } else {
+            con = "메시지가 도착했습니다.";
+        }
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         String memberId = String.valueOf(receiver.getId());
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
@@ -115,7 +117,7 @@ public class NotificationService {
                     // 데이터 캐시 저장(유실 데이터 처리)
                     emitterRepository.saveEventCache(key, notification);
                     // 데이터 전송
-                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
+                    sendToClient(emitter, key, con);
                 }
         );
 
