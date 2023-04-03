@@ -170,6 +170,41 @@ contract HereNFT is ERC721 {
         return (newItemId1, newItemId2);
     }
 
+    // 민팅하고 바로 소유권 이전하는 함수
+    function createAndTransfer(address from, address to, string memory _tokenURI1, string memory _tokenURI2) public returns (uint256, uint256) {
+        _tokenIds.increment();
+
+        uint256 newItemId1 = _tokenIds.current();
+        _mint(from, newItemId1);
+        tokenURIs[newItemId1] = _tokenURI1;
+
+        bytes32 hashValue1 = keccak256(bytes(_tokenURI1));
+        NFT memory nft1 = NFT({
+            tokenURI: _tokenURI1,
+            hashValue: hashValue1
+        });
+        _nftIds.push(newItemId1);
+        _nfts[newItemId1] = nft1;
+
+        _tokenIds.increment();
+
+        uint256 newItemId2 = _tokenIds.current();
+        _mint(from, newItemId2);
+        tokenURIs[newItemId2] = _tokenURI2;
+
+        bytes32 hashValue2 = keccak256(bytes(_tokenURI2));
+        NFT memory nft2 = NFT({
+            tokenURI: _tokenURI2,
+            hashValue: hashValue2
+        });
+        _nftIds.push(newItemId2);
+        _nfts[newItemId2] = nft2;
+
+        safeTransferFrom(from, to, newItemId1);
+        safeTransferFrom(from, to, newItemId2);
+        return (newItemId1, newItemId2);
+    }
+
     // 모든 NFT를 반환하는 함수
     function getAllNFTs() public view returns (NFT[] memory) {
         uint256 totalNFTs = _nftIds.length;
