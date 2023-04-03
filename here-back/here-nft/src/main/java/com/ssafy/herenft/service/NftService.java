@@ -312,11 +312,11 @@ public class NftService {
     }
 
     /* 종이헌혈증서 NFT 발급 */
-    public ResponseSuccessDto<SavePaperBdCertToNftResponseDto> savePaperBdCertToNft(SavePaperBdCertToNftRequestDto savePaperBdCertToNftRequestDto) {
+    public ResponseSuccessDto<SavePaperBdCertToNftResponseDto> savePaperBdCertToNft(UUID memberId, String serialNumber) {
 
-        PaperBdCert paperBdCert = paperBdCertRepository.findById(savePaperBdCertToNftRequestDto.getSerialNumber())
+        PaperBdCert paperBdCert = paperBdCertRepository.findById(serialNumber)
                 .orElseThrow(() -> new EntityIsNullException("해당 정보와 일치하는 헌혈 기록이 없습니다."));
-        Member member = memberRepository.findById(savePaperBdCertToNftRequestDto.getMemberId())
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 회원입니다."));
 
         SavePaperBdCertToNftResponseDto savePaperBdCertToNftResponseDto = SavePaperBdCertToNftResponseDto.builder()
