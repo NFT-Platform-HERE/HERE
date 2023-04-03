@@ -1,6 +1,8 @@
 import useDonateCheerUpListQuery from "@/apis/donate/useDonateCheerUpListQuery";
 import useDonateCheerUpUpdateQuery from "@/apis/donate/useDonateCheerUpUpdateQuery";
 import CheerBtn from "@/components/Button/CheerBtn";
+import { RootState } from "@/stores/store";
+import { useSelector } from "react-redux";
 
 interface Iprops {
   memberId: string;
@@ -10,13 +12,14 @@ interface Iprops {
 export default function DonateCheerMsg({ memberId, boardId }: Iprops) {
   const { mutate } = useDonateCheerUpUpdateQuery();
   const cheerMsgCnt = useDonateCheerUpListQuery(parseInt(boardId), memberId);
+  const myMemberId = useSelector((state: RootState) => state.member.memberId);
   //   console.log(cheerMsgCnt.data);
 
   const selectCheerBtn = (msgId: number) => {
     const payload = {
       boardId: parseInt(boardId),
       cheeringMsgId: msgId,
-      memberId,
+      memberId: myMemberId,
     };
     mutate(payload);
   };
