@@ -8,8 +8,9 @@ export default function BloodStamp() {
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const stamp = useStampQuery(memberId);
+  console.log("stamp", stamp.data);
 
-  const stepList = [1, 2, 3, 4, 5, 6, 7];
+  const stepList = [2, 3, 4, 5, 6, 7, 8];
 
   const getStamp = [
     "absolute left-[305px] top-52 w-138",
@@ -36,39 +37,13 @@ export default function BloodStamp() {
         {stepList.map((num) => (
           <>
             {num <= stamp.data?.step && (
-              <img src={`stamp/step${num}.png`} className={getStamp[num - 1]} />
+              <img
+                src={`stamp/step${num + 1}.png`}
+                className={getStamp[num - 1]}
+              />
             )}
           </>
         ))}
-
-        {/* <img
-          src="stamp/step1.png"
-          className="absolute left-[305px] top-51 w-140"
-        />
-        <img
-          src="stamp/step2.png"
-          className="absolute left-[587px] top-51 w-140"
-        />
-        <img
-          src="stamp/step3.png"
-          className="absolute left-[685px] top-247 w-138"
-        />
-        <img
-          src="stamp/step4.png"
-          className="absolute left-[407px] top-244 w-136"
-        />
-        <img
-          src="stamp/step5.png"
-          className="absolute left-[140px] top-248 w-136"
-        />
-        <img
-          src="stamp/step6.png"
-          className="absolute left-[305px] bottom-28 w-136"
-        />
-        <img
-          src="stamp/step7.png"
-          className="absolute left-[606px] bottom-32 w-136"
-        /> */}
 
         <Lottie
           loop
