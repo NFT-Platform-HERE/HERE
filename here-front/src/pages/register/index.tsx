@@ -36,9 +36,7 @@ export default function RegisterPage() {
 
   const blockChainMutation = useBlockChainNftMint();
 
-  const { memberId, walletAddress } = useSelector(
-    (state: RootState) => state.member,
-  );
+  const { memberId } = useSelector((state: RootState) => state.member);
 
   const { refetch } = useRegisterPaperNftQuery(memberId, serialNumber);
 
@@ -222,6 +220,7 @@ export default function RegisterPage() {
       showConfirmButton: false,
       timer: 1500,
     });
+    setOpenModal(false);
     router.push("/my-nft");
   };
 
