@@ -1,11 +1,15 @@
 package com.ssafy.hereboard.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
 import com.ssafy.hereboard.enumeration.EnumBoardImgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
+import com.ssafy.hereboard.enumeration.EnumNotificationCode;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
@@ -17,8 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -38,7 +44,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
     private final BoardMsgRepository boardMsgRepository;
+    private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final CheeringMsgRepository cheeringMsgRepository;
+    private final RestTemplate restTemplate;
 
     /* 게시글 상세 조회 */
     public ResponseSuccessDto<GetBoardResponseDto> getBoard(Long boardId) {
@@ -144,16 +152,6 @@ public class BoardService {
             }
         }
 
-
-//        // 2) 기존 이미지 수정(순서, 상태(ACTIVE, INACTIVE))
-//        for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
-//            Long boardImgId = updateBoardImgObject.getBoardImgId();
-//            EnumBoardImgStatus status = updateBoardImgObject.getStatus();
-//            int order = updateBoardImgObject.getOrders();
-//            BoardImg boardImg = boardImgRepository.findById(boardImgId).orElseThrow(() -> new EntityIsNullException("해당 게시글 이미지가 존재하지 않습니다."));
-//            boardImg.updateBoardImg(status, order);
-//        }
-
         // 3) 4) 새롭게 들어온 이미지 추가(url, order)
         for(int i=0; i<imgUrlList.size(); i++) {
             BoardImg boardImg = new BoardImg();
@@ -191,6 +189,14 @@ public class BoardService {
         if (updateBoardStatusRequestDto.getStatus() == EnumBoardStatus.INACTIVE) {
             message = "게시글 마감 성공";
             hereStatus = HereStatus.HERE_CLOSE_BOARD;
+
+            List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardId(board.getId());
+            for (BoardBdHistory boardBdHistory : boardBdHistoryList) {
+                Member sender = board.getMember();
+                Member receiver = memberRepository.findById(boardBdHistory.getSenderId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+                postNotification(sender, receiver, EnumNotificationCode.CLOSED);
+            }
+
         } else {
             message = "게시글 삭제 성공";
             hereStatus = HereStatus.HERE_DELETE_BOARD;
@@ -382,5 +388,21 @@ public class BoardService {
         if(!board.getMember().getId().equals(writerId)) {
             throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
         }
+    }
+
+    private void postNotification(Member sender, Member receiver, EnumNotificationCode code) {
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+        String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+        jsonNodes.put("code", code.toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                "https://j8b209.p.ssafy.io:9013/api/notification",
+                jsonNodes,
+                JsonNode.class
+        );
+        System.out.println(postResult.toString());
     }
 }
