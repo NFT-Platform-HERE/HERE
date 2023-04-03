@@ -43,8 +43,10 @@ public class NotificationService {
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
+        // 503 에러 방지
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
 
+        // 미수신한 event 목록 존재할 경우 전송하여 유실 예방
         if (!lastEventId.isEmpty()) {
             Map<String, Object> events = emitterRepository.findAllEventCacheStartWithByMemberId(String.valueOf(memberId));
             events.entrySet().stream()
@@ -57,14 +59,17 @@ public class NotificationService {
    // public void send(Member sender, Member receiver, String content) {
    public void send(Member sender, Member receiver, String content) {
         Notification notification = notificationRepository.save(new Notification(sender, receiver, content));
-        String memberId = String.valueOf(receiver.getId());
+        //String memberId = String.valueOf(receiver.getId());
+        String memberId = String.valueOf(receiver);
 
+        // 로그인 한 유저의 SseEmitter 모두 가져오기
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
         sseEmitters.forEach(
                 (key, emitter) -> {
+                    // 데이터 캐시 저장(유실 데이터 처리)
                     emitterRepository.saveEventCache(key, notification);
-                    sendToClient(emitter, key, "테스트");
-//                    sendToClient(emitter, key, SSE_MAPPER.NotificationtoResponseNotificationDto(notification));
+                    // 데이터 전송
+                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
                 }
         );
     }
@@ -73,10 +78,11 @@ public class NotificationService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
+                    .name("sse")
                     .data(data));
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
-            // throw new InvalidRequestException(SSE, SERVICE, UNHANDLED_SERVER_ERROR);
+            throw new RuntimeException("연결 오류");
         }
     }
 
@@ -88,6 +94,18 @@ public class NotificationService {
 
         Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
         notificationRepository.save(notification);
+
+        // 로그인 한 유저의 SseEmitter 모두 가져오기
+        String memberId = String.valueOf(receiver.getId());
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    // 데이터 캐시 저장(유실 데이터 처리)
+                    emitterRepository.saveEventCache(key, notification);
+                    // 데이터 전송
+                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
+                }
+        );
 
         SaveNotificationResponseDto saveNotificationResponseDto = new SaveNotificationResponseDto("알림 저장 성공");
         ResponseSuccessDto<SaveNotificationResponseDto> res = responseUtil.successResponse(saveNotificationResponseDto, HereStatus.HERE_CREATE_NOTIFICATION);
