@@ -585,6 +585,45 @@ export const HERE_ERC_721_ABI: AbiItem[] = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "_tokenURI1",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_tokenURI2",
+        type: "string",
+      },
+    ],
+    name: "createAndTransfer",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getAllNFTs",
     outputs: [
