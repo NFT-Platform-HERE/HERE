@@ -1,6 +1,8 @@
+import { endSaveImg } from "@/stores/myNFT/saveImg";
 import * as htmlToImage from "html-to-image";
+import { useDispatch } from "react-redux";
 
-export const saveNFTImage = (id: string) => {
+export const saveNFTImage = (id: string, dispatch: any) => {
   let width;
   let height;
 
@@ -20,6 +22,7 @@ export const saveNFTImage = (id: string) => {
   htmlToImage
     .toPng(node, { canvasWidth: width, canvasHeight: height, cacheBust: true })
     .then((dataUrl) => {
+      dispatch(endSaveImg());
       const link = window.document.createElement("a");
       link.download = "blood_donation.png";
       link.href = dataUrl;

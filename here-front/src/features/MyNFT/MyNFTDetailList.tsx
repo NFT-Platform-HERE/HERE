@@ -57,8 +57,9 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
     dispatch(selectNFT(selectedNFT));
     dispatch(setTokenId(tokenId));
   }
+  console.log(MyNFTList);
 
-  return (
+  return MyNFTList.length != 0 ? (
     <div className="w-full">
       <Swiper
         slidesPerView={3}
@@ -115,6 +116,10 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
           </SwiperSlide>
         ))}
       </Swiper>
+    </div>
+  ) : (
+    <div className="flex h-170 w-600 items-center justify-center rounded-20 border-2 border-red-2 text-18 text-red-2 mobile:mt-250 mobile:h-200 mobile:w-300">
+      소유한 NFT 헌혈증서가 없습니다
     </div>
   );
 }

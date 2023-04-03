@@ -7,7 +7,7 @@ interface Iprops {
 export default function AlarmList({ text, status, onClick }: Iprops) {
   return (
     <>
-      {status === "INACTIVE" ? (
+      {status === "ACTIVE" ? (
         <div
           className="mx-auto my-5 flex min-h-40 w-320 cursor-pointer items-center rounded-10 bg-pen-00 py-8 px-10 text-14 font-light text-pen-2 mobile:w-[100%]"
           onClick={onClick}
