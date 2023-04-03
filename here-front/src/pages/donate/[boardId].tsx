@@ -196,7 +196,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   percent={nowBoard.data.percentage}
                 />
               </div>
-              <div className="hidden mobile:block">
+              <div className="mx-auto hidden mobile:block">
                 <HeartBar
                   width={300}
                   height={8}
