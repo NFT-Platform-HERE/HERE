@@ -80,9 +80,10 @@ public class NotificationService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    .name("sse")
+                    //.name("sse")
                     .data(data));
-            System.out.println("emitter = " + emitter);
+            System.out.println("Sent SSE to client with emitterId: " + emitterId);
+            System.out.println("SseEmitter.toString(): " + emitter.toString());
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
             throw new RuntimeException("연결 오류");
