@@ -42,9 +42,17 @@ public class NotificationService {
         String emitterId = memberId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
-        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
-
+        //emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onCompletion(() -> {
+            log.info("onCompletion callback");
+            emitterRepository.deleteById(emitterId);   // 만료되면 리스트에서 삭제
+        });
+        //emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> {
+            log.info("onTimeout callback");
+            emitterRepository.deleteById(emitterId);
+            emitter.complete();
+        });
         System.out.println("subscribe + emitter = " + emitter);
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
         System.out.println("sseEmitters = " + sseEmitters);
@@ -66,13 +74,11 @@ public class NotificationService {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    //.name("sse")
                     .data(data, MediaType.APPLICATION_JSON)
                     .reconnectTime(500));
 
             System.out.println("Sent SSE to client with emitterId: " + emitterId);
             System.out.println("SseEmitter.toString(): " + emitter.toString());
-            return ;
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
