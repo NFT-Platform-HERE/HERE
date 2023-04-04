@@ -109,7 +109,7 @@ export default function BloodMap() {
   }, [geolocation]);
 
   return (
-    <div className="flex h-500 w-full gap-45 mobile:h-full mobile:flex-col">
+    <div className="mx-auto flex h-500 w-350 gap-45 mobile:h-full mobile:flex-col">
       <div
         ref={mapElement}
         className="h-500 w-[calc(100%-425px)] mobile:h-[100vw] mobile:w-full"
