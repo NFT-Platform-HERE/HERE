@@ -16,6 +16,7 @@ import { RootState } from "@/stores/store";
 import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
 import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
 import { useInView } from "react-intersection-observer";
+import { IoCaretUpCircle } from "react-icons/io5";
 
 export default function DonatePage() {
   const router = useRouter();
@@ -46,6 +47,13 @@ export default function DonatePage() {
       donateList.fetchNextPage();
     }
   }, [inView]);
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -123,6 +131,10 @@ export default function DonatePage() {
         </div>
       </div>
       <div className="w-full mobile:flex">
+        <IoCaretUpCircle
+          className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1"
+          onClick={goToTop}
+        />
         <div className="mx-auto w-1200 mobile:min-w-350">
           <div className="mr-10 mt-7 flex justify-end mobile:hidden">
             <CommonBtn

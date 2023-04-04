@@ -12,8 +12,6 @@ export default function DonateCheerMsg({ boardId }: Iprops) {
   const { mutate } = useDonateCheerUpUpdateQuery();
   const { memberId } = useSelector((state: RootState) => state.member);
   const cheerMsgCnt = useDonateCheerUpListQuery(parseInt(boardId), memberId);
-  console.log(cheerMsgCnt.data);
-  console.log(boardId, memberId);
 
   const selectCheerBtn = (msgId: number) => {
     const payload = {

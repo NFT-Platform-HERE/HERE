@@ -31,8 +31,8 @@ export default function DonateCard({
   return (
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
-      className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
-        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
+      className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border-2 border-pen-0 p-16 shadow-[5px_5px_10px_-5px_rgba(0,0,0,0.15)]  transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-40"
       }`}
     >
       <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
