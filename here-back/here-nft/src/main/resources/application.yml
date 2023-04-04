@@ -1,0 +1,20 @@
+server:
+  port: 9002
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  profiles:
+    default: local
+  jpa:
+    hibernate:
+      jdbc:
+        time_zone: Asia/Seoul
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
