@@ -61,24 +61,6 @@ public class NotificationService {
 
         return emitter;
     }
-   // public void send(Member sender, Member receiver, String content) {
-   public void send(Member sender, Member receiver, String content) {
-        Notification notification = notificationRepository.save(new Notification(sender, receiver, content));
-        //String memberId = String.valueOf(receiver.getId());
-        String memberId = String.valueOf(receiver);
-
-        // 로그인 한 유저의 SseEmitter 모두 가져오기
-        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
-       System.out.println("sseEmitters = " + sseEmitters);
-        sseEmitters.forEach(
-                (key, emitter) -> {
-                    // 데이터 캐시 저장(유실 데이터 처리)
-                    emitterRepository.saveEventCache(key, notification);
-                    // 데이터 전송
-                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
-                }
-        );
-    }
 
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
@@ -93,7 +75,6 @@ public class NotificationService {
             return ;
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
-            throw new RuntimeException("연결 오류");
         }
     }
 
