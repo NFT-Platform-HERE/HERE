@@ -223,6 +223,11 @@ public class NftService {
                 Member sender = board.getMember();
                 String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
 
+                log.info("receiver : {}", receiver.getNickname());
+                log.info("sender : {}", sender.getNickname());
+                System.out.println("receiver = " + receiver.getNickname());
+                System.out.println("sender = " + sender.getNickname());
+
                 postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
             }
 
