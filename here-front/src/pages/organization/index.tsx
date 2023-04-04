@@ -11,20 +11,22 @@ import {
   getHospitalNft,
 } from "@/stores/organization/organization";
 import HospitalNFTModal from "@/features/Organization/HospitalNFTModal";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 export default function OrganizationPage() {
   const dispatch = useDispatch();
-  // const { organizationId, isHospital } = useSelector(
-  //   (state: RootState) => state.member,
-  // );
+  const { organizationId, isHospital } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   // 기관 테스트 데이터
   // const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
   // const isHospital = false;
 
   // 병원 테스트 데이터
-  const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
-  const isHospital = true;
+  // const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
+  // const isHospital = true;
 
   const [isActive, setIsActive] = useState<boolean>(true);
   const [active, setActive] = useState<string>("INACTIVE");
