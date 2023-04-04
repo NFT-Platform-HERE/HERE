@@ -92,7 +92,7 @@ export default function SubmitNFTDetailList() {
                         detail={hospitalResult.data}
                       />
                     ) : (
-                      <div className="absolute -left-70 top-75 z-100 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
+                      <div className="absolute -left-70 top-75 z-25 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
                         제출 가능한 NFT 헌혈증서가 없습니다.
                       </div>
                     )}
@@ -105,7 +105,7 @@ export default function SubmitNFTDetailList() {
                         detail={hospitalResult.data}
                       />
                     ) : (
-                      <div className="absolute left-5 top-55 z-100 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
+                      <div className="absolute left-5 top-55 z-25 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
                         제출 가능한 NFT 헌혈증서가 없습니다.
                       </div>
                     )}
@@ -127,7 +127,7 @@ export default function SubmitNFTDetailList() {
             detail={organizationResult.data}
           />
         ) : (
-          <div className="absolute -left-70 top-75 z-100 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
+          <div className="absolute -left-70 top-75 z-25 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
             제출 가능한 NFT 헌혈증서가 없습니다.
           </div>
         )}
@@ -140,7 +140,7 @@ export default function SubmitNFTDetailList() {
             detail={organizationResult.data}
           />
         ) : (
-          <div className="absolute left-5 top-55 z-100 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
+          <div className="absolute left-5 top-55 z-25 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
             제출 가능한 NFT 헌혈증서가 없습니다.
           </div>
         )}
