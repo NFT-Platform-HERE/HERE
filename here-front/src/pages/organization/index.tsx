@@ -1,10 +1,8 @@
 import TabBtn from "@/components/Button/TabBtn";
 import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
-import { Suspense, useEffect, useState } from "react";
+import { useState } from "react";
 import { Confirm } from "@/types/Confirm";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
 import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
 import AgencyNFTModal from "@/features/Organization/AgencyNFTModal";
 import { useDispatch } from "react-redux";
