@@ -8,6 +8,7 @@ export default function LiveAlarmModal() {
   const memberId = useSelector((state: RootState) => state.member.memberId);
 
   useEffect(() => {
+    if (!memberId) return;
     const sseEvents = new EventSource(
       `https://j8b209.p.ssafy.io:9013/api/notification/subscribe/${memberId}`,
     );
@@ -30,7 +31,7 @@ export default function LiveAlarmModal() {
       sseEvents.close();
       console.log("SSE close!");
     };
-  }, []);
+  }, [memberId]);
 
   return (
     <div
