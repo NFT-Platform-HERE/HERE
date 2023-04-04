@@ -208,12 +208,6 @@ export default function RedCrossPublishPage() {
   }
 
   const publishNFT = async () => {
-    if (active && account) {
-      return;
-    } else {
-      await connectWallet({ account, active, activate, deactivate });
-    }
-
     //랜덤 숫자 생성(0~12)
     const randomNumber = randomFromZeroToN(12);
     // 랜덤 이미지 선택
