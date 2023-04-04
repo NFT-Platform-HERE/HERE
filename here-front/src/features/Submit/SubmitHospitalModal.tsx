@@ -69,17 +69,17 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
     try {
       // 블록체인 네트워크 소유권 이전
       const blockResult = await mutation.mutateAsync(payload);
+
+      // 백엔드 로직 처리
+      mutate({
+        agencyId: hospital,
+        memberId: memberId,
+        nftList: submitNFTList,
+      });
     } catch (error) {
       setOpendLoadingModal(false);
       console.error("error", error);
     }
-
-    // 백엔드 로직 처리
-    mutate({
-      agencyId: hospital,
-      memberId: memberId,
-      nftList: submitNFTList,
-    });
   };
 
   function handleHospitalListSelect(item: any) {
