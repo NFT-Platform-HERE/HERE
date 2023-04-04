@@ -11,6 +11,6 @@ export const NOTIFICATION_SERVER_URL = "https://j8b209.p.ssafy.io:9013/api";
 
 export const IPFS_SERVER_URL = "https://j8b2091.p.ssafy.io/";
 
-export const HERE_CA = "0xe7058f52F1D1878df3106c73861cD49cA8F05cd5";
+export const HERE_CA = "0xDBf3CCb539c78132Ae74Cf6861D105D1B36c491B";
 
 export const IPFS_SERVER_METAINFO_URL = "https://ipfs.io/ipfs/";

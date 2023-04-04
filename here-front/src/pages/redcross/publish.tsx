@@ -25,6 +25,8 @@ import useBlockChainRedCrossNftMint from "@/apis/redcross/useBlockChainRedCrossN
 import { BlockChainRedCrossNftMint } from "@/types/BlockChainRedCrossNftMint";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
+import { useWeb3React } from "@web3-react/core";
+import { connectWallet } from "@/utils/connectWallet";
 
 const MySwal = withReactContent(Swal);
 
@@ -48,6 +50,8 @@ export default function RedCrossPublishPage() {
     createdDate: today,
     place: "",
   });
+
+  const { account, active, activate, deactivate } = useWeb3React();
 
   const { walletAddress } = useSelector((state: RootState) => state.member);
 
@@ -204,6 +208,12 @@ export default function RedCrossPublishPage() {
   }
 
   const publishNFT = async () => {
+    if (active && account) {
+      return;
+    } else {
+      await connectWallet({ account, active, activate, deactivate });
+    }
+
     //랜덤 숫자 생성(0~12)
     const randomNumber = randomFromZeroToN(12);
     // 랜덤 이미지 선택
