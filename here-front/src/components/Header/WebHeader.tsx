@@ -10,6 +10,8 @@ import {
   closeWebHeaderDropdown,
   openWebHeaderDropdown,
 } from "@/stores/header/webHeaderDropdown";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface Iprops {
   handleConnect: () => void;
@@ -39,6 +41,11 @@ export default function WebHeader({ handleConnect }: Iprops) {
   };
 
   useEffect(() => {
+    AOS.init();
+  }, []);
+
+  useEffect(() => {
+    dispatch(closeWebHeaderDropdown());
     setIsDisabled(
       !(
         router.asPath !== "/organization" &&
@@ -108,7 +115,11 @@ export default function WebHeader({ handleConnect }: Iprops) {
           </div>
         )}
         {dropDown && (
-          <div className="absolute top-[65px] right-0 z-40">
+          <div
+            className="absolute top-[65px] right-0 z-40"
+            data-aos="fade-down"
+            data-aos-duration="500"
+          >
             <WebHeaderDropdown />
           </div>
         )}

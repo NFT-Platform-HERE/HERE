@@ -9,7 +9,13 @@ const fetcher = (memberId: string) =>
     .then(({ data }) => data.data);
 
 const useBloodHistoryQuery = (memberId: string) => {
-  return useQuery(queryKeys.BLOOD_HISTORY, () => fetcher(memberId));
+  return useQuery(
+    [queryKeys.BLOOD_HISTORY, memberId],
+    () => fetcher(memberId),
+    {
+      enabled: !!memberId,
+    },
+  );
 };
 
 export default useBloodHistoryQuery;

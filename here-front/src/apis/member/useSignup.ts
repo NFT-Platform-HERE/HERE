@@ -5,6 +5,11 @@ import { useRouter } from "next/router";
 import { Signup } from "@/types/Signup";
 import { useDispatch } from "react-redux";
 import { getMemberInfo } from "@/stores/member/member";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const fetcher = (payload: Signup) =>
   axios
@@ -23,12 +28,33 @@ const useSignup = () => {
 
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("성공!");
       dispatch(getMemberInfo(data.data));
-      router.push("/");
+      MySwal.fire({
+        icon: "success",
+        title: "회원가입이 완료되었습니다",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          title: "text-20 font-medium",
+          popup: "w-440 h-260",
+        },
+      }).then(() => {
+        router.push("/");
+      });
     },
     onError: () => {
-      console.log("onERROR");
+      MySwal.fire({
+        icon: "error",
+        title: "회원가입에 실패하였습니다",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          title: "text-20 font-medium",
+          popup: "w-440 h-260",
+        },
+      }).then(() => {
+        router.push("/member");
+      });
     },
   });
 };

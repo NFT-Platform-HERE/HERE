@@ -1,8 +1,5 @@
 import useCheckMemberQuery from "@/apis/member/useCheckMemberQuery";
-import member, {
-  deleteMemberInfo,
-  getWalletAddress,
-} from "@/stores/member/member";
+import { getWalletAddress } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
 import { connectWallet } from "@/utils/connectWallet";
 import { useWeb3React } from "@web3-react/core";
@@ -23,16 +20,17 @@ export default function Header() {
       if (active && account) {
         return;
       } else {
-        dispatch(deleteMemberInfo());
+        connectWallet({ account, active, activate, deactivate });
       }
     }
-  });
+  }, []);
 
   const handleConnect = () => {
     connectWallet({ account, active, activate, deactivate });
   };
 
   useCheckMemberQuery(walletAddress);
+
   useEffect(() => {
     if (memberId) {
       setWalletAddress("");

@@ -9,7 +9,9 @@ const fetcher = (memberId: string) =>
     .then(({ data }) => data.data);
 
 const useStampQuery = (memberId: string) => {
-  return useQuery(queryKeys.STAMP_INFO, () => fetcher(memberId));
+  return useQuery([queryKeys.STAMP_INFO, memberId], () => fetcher(memberId), {
+    enabled: !!memberId,
+  });
 };
 
 export default useStampQuery;

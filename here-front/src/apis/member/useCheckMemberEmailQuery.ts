@@ -30,6 +30,9 @@ const useCheckMemberEmailQuery = ({ email, setEmailMessage }: Iprops) => {
     onError: () => {
       setEmailMessage("유효하지 않은 이메일입니다");
     },
+    onSettled: () => {
+      console.log("하하");
+    },
     retry: false,
   });
 };

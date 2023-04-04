@@ -4,18 +4,19 @@ import { deleteMemberInfo } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
 import { unConnectWallet } from "@/utils/unConnectWallet";
 import { useWeb3React } from "@web3-react/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 export default function WebHeaderDropdown() {
   const dispatch = useDispatch();
-  const { nickname, characterImgUrl } = useSelector(
+  const { nickname, characterImgUrl, memberId } = useSelector(
     (state: RootState) => state.member,
   );
-  const { account, active, deactivate } = useWeb3React();
+
+  const { deactivate } = useWeb3React();
   const Logout = () => {
-    unConnectWallet({ account, active, deactivate });
+    unConnectWallet({ memberId, deactivate });
     dispatch(deleteMemberInfo());
     dispatch(closeWebHeaderDropdown());
   };
@@ -23,6 +24,7 @@ export default function WebHeaderDropdown() {
   const openAlarm = () => {
     setOpenAlarmModal(!openAlarmModal);
   };
+
   return (
     <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
       <div>

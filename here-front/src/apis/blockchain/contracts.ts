@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
 import { HashValueList } from "@/types/HashValueList";
 
-// 민팅 함수(적십자)
+// 민팅 함수(종이 헌혈증 발행)
 export const mintBloodNFT = async (
   account: string,
   agencyTokenUrl: string,
@@ -18,6 +18,21 @@ export const mintBloodNFT = async (
     .send({ from: account });
   return result;
 };
+
+// 민팅 함수(적십자 헌혈증 발행)
+export const createAndTransfer = async (
+  from: string,
+  to: string,
+  agencyTokenUrl: string,
+  hospitalTokenUrl: string
+  ) => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract || !from || !to) return;
+  const result = await hereContract.methods.createAndTransfer(from, to, agencyTokenUrl, hospitalTokenUrl).send({ from: from });
+  return result;
+}
 
 // 해당 NFT의 소유주를 알려주는 함수
 export const ownerOf = async (tokenId: string) => {

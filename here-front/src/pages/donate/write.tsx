@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import dynamic from "next/dynamic";
 import CircularProgress from "@mui/material/CircularProgress";
+import { HiPhoto } from "react-icons/hi2";
 
 const DonateTiptap = dynamic(() => import("@/features/Donate/DonateTiptap"), {
   loading: () => (
@@ -139,7 +140,6 @@ export default function DonateWritePage() {
   const handleTitleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log("event.target.value", event.target.value);
     setTitle(event.target.value);
   };
 
@@ -183,6 +183,7 @@ export default function DonateWritePage() {
           </div>
           <input
             type="text"
+            maxLength={20}
             onChange={handleTitleInputChange}
             placeholder="제목을 입력하세요"
             className="mb-5 w-950 text-20 text-pen-2 outline-none mobile:w-full mobile:text-16"
@@ -233,10 +234,7 @@ export default function DonateWritePage() {
             </div>
             <button onClick={handleImageSelectButtonClick}>
               <div className="flex items-center justify-end">
-                <img
-                  src={"/icons/Img_box_duotone_line.svg"}
-                  className="h-52 w-52 mobile:h-35 mobile:w-35"
-                />
+                <HiPhoto className="text-45 text-pen-2 mobile:text-35" />
                 <div className="ml-10 text-18 font-normal text-pen-2 mobile:text-14">
                   사진 첨부
                 </div>
@@ -277,8 +275,9 @@ export default function DonateWritePage() {
               ))}
           </div>
           <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
-            ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면 ‘목표
-            수량’,‘마감기한’을 수정할 수 없으니 신중하게 작성해주세요!
+            ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면{" "}
+            <strong>‘목표수량’,‘마감기한’</strong>을 수정할 수 없으니 신중하게
+            작성해주세요!
           </p>
         </div>
       </div>
