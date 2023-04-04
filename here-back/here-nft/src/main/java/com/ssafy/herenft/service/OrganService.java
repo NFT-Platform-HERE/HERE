@@ -1,5 +1,8 @@
 package com.ssafy.herenft.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenft.dto.nft.*;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
@@ -11,6 +14,7 @@ import com.ssafy.herenft.entity.Nft;
 import com.ssafy.herenft.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.herenft.eunmeration.EnumCertHistoryStatus;
 import com.ssafy.herenft.eunmeration.EnumNftType;
+import com.ssafy.herenft.eunmeration.EnumNotificationCode;
 import com.ssafy.herenft.eunmeration.response.HereStatus;
 import com.ssafy.herenft.repository.CertHistoryRepository;
 import com.ssafy.herenft.repository.MemberRepository;
@@ -18,13 +22,13 @@ import com.ssafy.herenft.repository.NftRepository;
 import com.ssafy.herenft.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -36,6 +40,8 @@ public class OrganService {
     private final CertHistoryRepository certHistoryRepository;
     private final NftRepository nftRepository;
     private final MemberRepository memberRepository;
+    private final RestTemplate restTemplate;
+    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
 
     /* 증명 승인/미승인 목록 조회(기관) */
     public ResponseSuccessDto<List<GetCertAgencyResponseDto>> getCertAgency(UUID agencyId, EnumCertHistoryStatus status) {
@@ -192,6 +198,15 @@ public class OrganService {
 
         certHistory.updateCertHistory();
 
+        // 기관이 제출 기록 승인했을 때, 발행자에게 알림 등록
+        UUID memberId = certHistory.getMember().getId();
+        UUID agencyId = certHistory.getAgency().getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+        Member agency = memberRepository.findById(agencyId).orElseThrow(() -> new EntityIsNullException("해당 기관이 존재하지 않습니다."));
+        String message = agency.getName() + "에 제출한 " + member.getNickname() + "님의 헌혈증서가 승인 완료되었습니다.";
+
+        postNotification(agency, member, message, EnumNotificationCode.AGENCY);
+
         UpdateCertAgencyResponseDto updateCertAgencyResponseDto = UpdateCertAgencyResponseDto.builder()
                 .message("제출 기록 승인이 완료되었습니다.")
                 .build();
@@ -204,9 +219,34 @@ public class OrganService {
     public ResponseSuccessDto<UpdateCertHospitalResponseDto> updateCertHospital(UpdateCertHospitalRequestDto updateCertHospitalRequestDto) {
         List<Long> tokenIdList = updateCertHospitalRequestDto.getTokenIdList();
 
+        HashMap<UUID, Integer> issuerMap = new HashMap<UUID, Integer>();
+        UUID agencyId = null;
+
         for (Long tokenId : tokenIdList) {
             CertHistory certHistory = certHistoryRepository.findByTokenId(tokenId);
             certHistory.updateCertHistory();
+            agencyId = certHistory.getAgency().getId();
+
+            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
+            UUID issuerId = nftRepository.findByTokenId(tokenId).getIssuerId(); // 최초 발행자 아이디
+
+            if (issuerMap.containsKey(issuerId)) {
+                issuerMap.put(issuerId, issuerMap.get(issuerId) + 1);
+            } else {
+                issuerMap.put(issuerId, 1);
+            }
+        }
+        System.out.println(issuerMap);
+
+        for (Map.Entry<UUID, Integer> entry : issuerMap.entrySet()) {
+
+            Member issuer = memberRepository.findById(entry.getKey()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+
+            Member hospital = memberRepository.findById(agencyId).orElseThrow(() -> new EntityIsNullException("해당 병원이 존재하지 않습니다."));
+
+            String message = hospital.getName() + "에 " + issuer.getNickname() + "님의 헌혈증서 " + entry.getValue() + "장이 사용되었습니다.";
+
+            postNotification(hospital, issuer, message, EnumNotificationCode.HOSPITAL);
         }
 
         UpdateCertHospitalResponseDto updateCertHospitalResponseDto = UpdateCertHospitalResponseDto.builder()
@@ -215,5 +255,22 @@ public class OrganService {
 
         ResponseSuccessDto<UpdateCertHospitalResponseDto> res = responseUtil.successResponse(updateCertHospitalResponseDto, HereStatus.HERE_UPDATE_CERT_HOSPITAL);
         return res;
+    }
+
+    // 알림 post 메서드
+    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code) {
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+        jsonNodes.put("code", code.toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                "https://j8b209.p.ssafy.io:9013/api/notification",
+                jsonNodes,
+                JsonNode.class
+        );
+        System.out.println(postResult.toString());
     }
 }
