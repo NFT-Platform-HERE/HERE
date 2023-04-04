@@ -87,6 +87,7 @@ public class NotificationService {
 
             System.out.println("Sent SSE to client with emitterId: " + emitterId);
             System.out.println("SseEmitter.toString(): " + emitter.toString());
+            return ;
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
             throw new RuntimeException("연결 오류");
@@ -115,10 +116,14 @@ public class NotificationService {
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         String memberId = String.valueOf(receiver.getId());
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+        System.out.println("sseEmitters = " + sseEmitters.toString());
+        System.out.println("sseEmitters = " + sseEmitters);
         sseEmitters.forEach(
                 (key, emitter) -> {
                     // 데이터 캐시 저장(유실 데이터 처리)
                     emitterRepository.saveEventCache(key, notification);
+                    System.out.println("key = " + key);
+                    System.out.println("emitter = " + emitter);
                     // 데이터 전송
                     sendToClient(emitter, key, con);
                 }
