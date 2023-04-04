@@ -25,8 +25,6 @@ import useBlockChainRedCrossNftMint from "@/apis/redcross/useBlockChainRedCrossN
 import { BlockChainRedCrossNftMint } from "@/types/BlockChainRedCrossNftMint";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import { useWeb3React } from "@web3-react/core";
-import { connectWallet } from "@/utils/connectWallet";
 
 const MySwal = withReactContent(Swal);
 
@@ -50,8 +48,6 @@ export default function RedCrossPublishPage() {
     createdDate: today,
     place: "",
   });
-
-  const { account, active, activate, deactivate } = useWeb3React();
 
   const { walletAddress } = useSelector((state: RootState) => state.member);
 
