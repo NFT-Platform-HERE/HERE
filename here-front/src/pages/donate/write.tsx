@@ -4,12 +4,22 @@ import DatePicker from "react-datepicker";
 import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
-import DonateTiptap from "@/features/Donate/DonateTiptap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
+import dynamic from "next/dynamic";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const DonateTiptap = dynamic(() => import("@/features/Donate/DonateTiptap"), {
+  loading: () => (
+    <div className="mb-30 h-330 w-full">
+      <CircularProgress color="error" />
+    </div>
+  ),
+  ssr: false,
+});
 
 export default function DonateWritePage() {
   const router = useRouter();
