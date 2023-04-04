@@ -2,17 +2,16 @@ import useStampQuery from "@/apis/blood/useStampQuery";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import Lottie from "react-lottie-player";
-import stampHeart from "../../..//public/lottieJson/stamp_heart.json";
+import stampHeart from "../../../public/lottieJson/stamp_heart.json";
 
-export default function BloodStamp() {
+export default function BloodStampWeb() {
   const { memberId } = useSelector((state: RootState) => state.member);
 
   const stamp = useStampQuery(memberId);
-  console.log("stamp", stamp.data);
 
   const stepList = [1, 2, 3, 4, 5, 6, 7];
 
-  const getStamp = [
+  const getStampWeb = [
     "hidden",
     "absolute left-[305px] top-52 w-138",
     "absolute left-[589px] top-52 w-138",
@@ -24,17 +23,17 @@ export default function BloodStamp() {
   ];
   return (
     <div className="mb-100">
-      <div className="relative z-20 mx-auto -mb-30 h-60 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-50 text-red-2 mobile:h-50 mobile:w-[calc(100%-70px)] mobile:text-16 mobile:leading-40">
+      <div className="relative z-20 mx-auto -mb-30 h-60 w-300 rounded-50 border-5 border-red-2 bg-white text-center text-20 font-semibold leading-50 text-red-2">
         헌혈 스탬프
       </div>
-      <div className="relative z-10 h-615 w-1100 rounded-30 border-3 border-pen-5 mobile:w-full ">
-        <img src="images/stamp_nobg.png" alt="stamp" className="w-1100" />
+      <div className="relative z-10 h-615 w-1100 rounded-30 border-3 border-pen-5">
+        <img src="stamp/stamp_nobg.png" alt="stamp" className="w-1100" />
         {stepList.map((num) => (
           <>
             {num <= stamp.data?.step && (
               <img
                 src={`stamp/step${num - 1}.png`}
-                className={getStamp[num - 1]}
+                className={getStampWeb[num - 1]}
               />
             )}
           </>
