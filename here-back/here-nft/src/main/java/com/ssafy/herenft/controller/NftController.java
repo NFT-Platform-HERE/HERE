@@ -59,7 +59,7 @@ public class NftController {
     @ApiOperation(value = "기부용 헌혈증 소유권 이전 + 기부 내역 등록", notes = "타인에게 기부한 헌혈증애 대한 소유권 이전을 하고 기부 내역을 등록합니다.")
     @PatchMapping("/donate")
     public ResponseEntity<ResponseSuccessDto<DonateNftResponseDto>> donateNft(
-            @RequestBody DonateNftRequestDto donateNftRequestDto) {
+            @RequestBody @Valid DonateNftRequestDto donateNftRequestDto) {
         return ResponseEntity.ok(nftService.donateNft(donateNftRequestDto));
     }
 
@@ -76,8 +76,8 @@ public class NftController {
         return ResponseEntity.ok(nftService.findNftListAuto(memberId, count));
     }
 
-    @ApiOperation(value = "종이헌혈증서 NFT 발급", notes = "QR을 통하여 종이헌혈증서를 NFT로 발급합니다.")
-    @GetMapping("/paper-bd-cert/{memberId}/{serialNumber}")
+    @ApiOperation(value = "종이헌혈증서 NFT 발급용 정보 조회", notes = "QR을 통하여 종이헌혈증서를 NFT로 발급하기 위해 기존 헌혈 정보를 조회합니다.")
+    @GetMapping("/paper-bd-cert")
     public ResponseEntity<ResponseSuccessDto<SavePaperBdCertToNftResponseDto>> savePaperBdCertToNft(
             @PathVariable("memberId") UUID memberId, @PathVariable("serialNumber") String serialNumber
     ) {

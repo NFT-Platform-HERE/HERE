@@ -150,12 +150,12 @@ public class NftService {
             Nft subjectNft = nftRepository.findByTokenId(nft.getTokenId());
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
 
-            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
-            UUID issuerId = subjectNft.getIssuerId();
-            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
-
-            postNotification(agency, issuer, message, EnumNotificationCode.HOSPITAL);
+//            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
+//            UUID issuerId = subjectNft.getIssuerId();
+//            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+//            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
+//
+//            postNotification(agency, issuer, message, EnumNotificationCode.HOSPITAL);
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
