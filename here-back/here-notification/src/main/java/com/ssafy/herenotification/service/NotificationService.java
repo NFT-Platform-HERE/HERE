@@ -45,6 +45,7 @@ public class NotificationService {
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
+        System.out.println("subscribe + emitter = " + emitter);
         // 503 에러 방지
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
 
@@ -83,7 +84,7 @@ public class NotificationService {
                     .id(emitterId)
                     //.name("sse")
                     .data(data, MediaType.APPLICATION_JSON)
-                    .reconnectTime(0));
+                    .reconnectTime(500));
 
             System.out.println("Sent SSE to client with emitterId: " + emitterId);
             System.out.println("SseEmitter.toString(): " + emitter.toString());
