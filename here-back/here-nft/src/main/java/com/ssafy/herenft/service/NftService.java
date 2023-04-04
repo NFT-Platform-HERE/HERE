@@ -215,7 +215,8 @@ public class NftService {
             board.updateBoardStatus(EnumBoardStatus.INACTIVE);
 
             // 현재 마감 처리된 board에 기부된 기부리스트 가져오기 (게시글과 기부자 기준으로 distinct)
-            List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardIdAndSenderId(boardId, senderId);
+            List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardId(boardId);
+            System.out.println(boardBdHistoryList.toString());
 
             for (BoardBdHistory eachBoardBdHistory : boardBdHistoryList) {
                 Member receiver = memberRepository.findById(eachBoardBdHistory.getSenderId())
