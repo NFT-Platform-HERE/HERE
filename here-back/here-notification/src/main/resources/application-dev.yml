@@ -5,6 +5,8 @@ server:
     key-store: ${KEY_STORE}
     key-store-password: ${KEY_STORE_PASSWORD}
     key-store-type: ${KEY_STORE_TYPE}
+  http2:
+    enabled: true
 
 spring:
   config:
@@ -20,6 +22,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+    open-in-view: false
 
 
   datasource:

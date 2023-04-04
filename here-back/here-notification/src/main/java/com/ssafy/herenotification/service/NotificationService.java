@@ -4,6 +4,7 @@ import com.ssafy.herenotification.dto.common.response.ResponseSuccessDto;
 import com.ssafy.herenotification.dto.notification.*;
 import com.ssafy.herenotification.entity.Member;
 import com.ssafy.herenotification.entity.Notification;
+import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import com.ssafy.herenotification.enumeration.response.HereStatus;
 import com.ssafy.herenotification.errorhandling.exception.service.EntityIsNullException;
 import com.ssafy.herenotification.repository.EmitterRepository;
@@ -13,6 +14,7 @@ import com.ssafy.herenotification.repository.NotificationRepository;
 import com.ssafy.herenotification.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -40,9 +42,20 @@ public class NotificationService {
         String emitterId = memberId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
-        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
-
+        //emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onCompletion(() -> {
+            log.info("onCompletion callback");
+            emitterRepository.deleteById(emitterId);   // 만료되면 리스트에서 삭제
+        });
+        //emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> {
+            log.info("onTimeout callback");
+            emitterRepository.deleteById(emitterId);
+            emitter.complete();
+        });
+        System.out.println("subscribe + emitter = " + emitter);
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+        System.out.println("sseEmitters = " + sseEmitters);
         // 503 에러 방지
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
 
@@ -56,33 +69,18 @@ public class NotificationService {
 
         return emitter;
     }
-   // public void send(Member sender, Member receiver, String content) {
-   public void send(Member sender, Member receiver, String content) {
-        Notification notification = notificationRepository.save(new Notification(sender, receiver, content));
-        //String memberId = String.valueOf(receiver.getId());
-        String memberId = String.valueOf(receiver);
-
-        // 로그인 한 유저의 SseEmitter 모두 가져오기
-        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
-        sseEmitters.forEach(
-                (key, emitter) -> {
-                    // 데이터 캐시 저장(유실 데이터 처리)
-                    emitterRepository.saveEventCache(key, notification);
-                    // 데이터 전송
-                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
-                }
-        );
-    }
 
     private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    .name("sse")
-                    .data(data));
+                    .data(data, MediaType.APPLICATION_JSON)
+                    .reconnectTime(500));
+
+            System.out.println("Sent SSE to client with emitterId: " + emitterId);
+            System.out.println("SseEmitter.toString(): " + emitter.toString());
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
-            throw new RuntimeException("연결 오류");
         }
     }
 
@@ -94,16 +92,30 @@ public class NotificationService {
 
         Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
         notificationRepository.save(notification);
-
+        String code = String.valueOf(saveNotificationRequestDto.getCode());
+        String con;
+        if(code.equals("DONATED")){
+            con = "따뜻한 마음이 손길을 전해왔어요.";
+        }else if(code.equals("CLOSED")){
+            con = "당신의 정이 담긴 나눔글이 마감되었어요.";
+        }else if(code.equals("HOSPITAL")){
+            con = "따뜻한 마음이 병원에 전달되어 위로가 전해졌어요.";
+        } else {
+            con = "메시지가 도착했습니다.";
+        }
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         String memberId = String.valueOf(receiver.getId());
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+        System.out.println("sseEmitters = " + sseEmitters.toString());
+        System.out.println("sseEmitters = " + sseEmitters);
         sseEmitters.forEach(
                 (key, emitter) -> {
                     // 데이터 캐시 저장(유실 데이터 처리)
                     emitterRepository.saveEventCache(key, notification);
+                    System.out.println("key = " + key);
+                    System.out.println("emitter = " + emitter);
                     // 데이터 전송
-                    sendToClient(emitter, key, "새로운 메시지가 도착했습니다.");
+                    sendToClient(emitter, key, con);
                 }
         );
 
@@ -114,7 +126,7 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        List<Notification> notificationList = notificationRepository.findAllByReceiverOrderByCreatedDate(member);
+        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDate(member, EnumNotificationStatus.INACTIVE);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
@@ -124,6 +136,7 @@ public class NotificationService {
                     .senderNickname(notification.getSender().getNickname())
                     .status(notification.getStatus())
                     .content(notification.getContent())
+                    .code(notification.getCode())
                     .build();
             checkNotificationResponseDtoList.add(checkNotificationResponseDto);
         }

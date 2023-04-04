@@ -1,5 +1,6 @@
 package com.ssafy.herenotification.dto.notification;
 
+import com.ssafy.herenotification.enumeration.EnumNotificationCode;
 import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,5 @@ public class CheckNotificationResponseDto {
     private String senderNickname;
     private EnumNotificationStatus status;
     private String content;
+    private EnumNotificationCode code;
 }
