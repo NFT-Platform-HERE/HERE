@@ -14,6 +14,7 @@ import com.ssafy.herenotification.repository.NotificationRepository;
 import com.ssafy.herenotification.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -81,7 +82,9 @@ public class NotificationService {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
                     //.name("sse")
-                    .data(data));
+                    .data(data, MediaType.APPLICATION_JSON)
+                    .reconnectTime(0));
+
             System.out.println("Sent SSE to client with emitterId: " + emitterId);
             System.out.println("SseEmitter.toString(): " + emitter.toString());
         } catch (IOException exception) {
