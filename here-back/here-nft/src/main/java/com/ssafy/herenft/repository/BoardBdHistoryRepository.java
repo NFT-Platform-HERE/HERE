@@ -16,5 +16,5 @@ public interface BoardBdHistoryRepository extends JpaRepository<BoardBdHistory, 
 
     BoardBdHistory findByBoardIdAndSenderId(Long boardId, UUID senderId);
 
-    List<BoardBdHistory> findDistinctByBoardIdAndSenderId(Long boardId, UUID senderId);
+    List<BoardBdHistory> findAllByBoardIdAndSenderId(Long boardId, UUID senderId);
 }
