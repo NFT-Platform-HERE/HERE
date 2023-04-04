@@ -46,6 +46,8 @@ public class NotificationService {
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
         System.out.println("subscribe + emitter = " + emitter);
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
+        System.out.println("sseEmitters = " + sseEmitters);
         // 503 에러 방지
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
 
