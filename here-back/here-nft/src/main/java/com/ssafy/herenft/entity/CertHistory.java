@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -48,6 +49,10 @@ public class CertHistory {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
+    @LastModifiedDate
+    @Column(name = "updated_date", nullable = false)
+    private LocalDateTime updatedDate;
+
     @Column(name = "reason", columnDefinition = "varchar(50)")
     private String reason;
 
@@ -73,5 +78,9 @@ public class CertHistory {
         this.tokenId = nft.getTokenId();
         this.hashValue = nft.getHashValue();
         this.reason = null;
+    }
+
+    public void updateCertHistory() {
+        this.status = EnumCertHistoryStatus.ACTIVE;
     }
 }

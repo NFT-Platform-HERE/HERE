@@ -1,10 +1,15 @@
 package com.ssafy.hereboard.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ssafy.hereboard.dto.board.*;
 import com.ssafy.hereboard.dto.common.response.ResponseSuccessDto;
 import com.ssafy.hereboard.entity.*;
+import com.ssafy.hereboard.enumeration.EnumBoardImgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardMsgStatus;
 import com.ssafy.hereboard.enumeration.EnumBoardStatus;
+import com.ssafy.hereboard.enumeration.EnumNotificationCode;
 import com.ssafy.hereboard.enumeration.response.HereStatus;
 import com.ssafy.hereboard.errorhandling.exception.service.BadRequestVariableException;
 import com.ssafy.hereboard.errorhandling.exception.service.EntityIsNullException;
@@ -16,8 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -37,7 +44,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgRepository boardImgRepository;
     private final BoardMsgRepository boardMsgRepository;
+    private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final CheeringMsgRepository cheeringMsgRepository;
+    private final RestTemplate restTemplate;
 
     /* 게시글 상세 조회 */
     public ResponseSuccessDto<GetBoardResponseDto> getBoard(Long boardId) {
@@ -47,10 +56,13 @@ public class BoardService {
         int goalQ = board.getGoalQuantity();
         int percentage = curQ * 100 / goalQ;
 
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
-        List<String> imgUrlList = new ArrayList<>();
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
+        List<GetBoardImgResponseDto> boardImgUrlList = new ArrayList<>();
         for (BoardImg boardImg : boardImgs) {
-            imgUrlList.add(boardImg.getImgUrl());
+            boardImgUrlList.add(GetBoardImgResponseDto.builder()
+                            .boardImgId(boardImg.getId())
+                            .imgUrl(boardImg.getImgUrl())
+                            .build());
         }
 
         GetBoardResponseDto getBoardResponseDto = GetBoardResponseDto.builder()
@@ -63,7 +75,7 @@ public class BoardService {
                 .curQuantity(board.getCurQuantity())
                 .goalQuantity(board.getGoalQuantity())
                 .createdDate(board.getCreatedDate())
-                .boardImgUrlList(imgUrlList)
+                .boardImgUrlList(boardImgUrlList)
                 .status(board.getStatus())
                 .memberId(board.getMember().getId())
                 .build();
@@ -86,9 +98,9 @@ public class BoardService {
 
         if(!imgUrlList.isEmpty()) {
             // 이미지 저장
-            for (String img : imgUrlList) {
+            for(int i=0; i< imgUrlList.size(); i++) {
                 BoardImg boardImg = new BoardImg();
-                boardImg.createBoardImg(board, img);
+                boardImg.createBoardImg(board, imgUrlList.get(i), i);
                 boardImgRepository.save(boardImg);
             }
         }
@@ -103,31 +115,50 @@ public class BoardService {
     }
 
     /* 게시글 수정 */
-    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(UpdateBoardRequestDto updateBoardRequestDto, List<String> imgUrlList) {
+    public ResponseSuccessDto<UpdateBoardResponseDto> updateBoard(
+            UpdateBoardRequestDto updateBoardRequestDto,
+            List<UpdateBoardImgObject> updateBoardImgObjectList,
+            List<String> imgUrlList,
+            List<Integer> ordersList) {
         // 수정할 게시글 가져오기
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
+        System.out.println("updateBoardRequestDto = " + updateBoardRequestDto);
+        System.out.println("board.getId() = " + board.getId());
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
 
         if(imgUrlList.size() > 4) {
             throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
         }
 
-        // 게시글의 title, content 수정
+        // 1) 게시글의 title, content 수정
         board.updateBoard(updateBoardRequestDto, board);
 
-        // 해당 게시글의 기존 이미지 리스트를 db에서 삭제
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(updateBoardRequestDto.getBoardId());
+        List<BoardImg> boardImgList = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(board.getId(), EnumBoardImgStatus.ACTIVE);
+        for (BoardImg boardImg : boardImgList) {
+            boolean flag = false;
 
-        boardImgRepository.deleteAll(boardImgs);
+            for (UpdateBoardImgObject updateBoardImgObject : updateBoardImgObjectList) {
+                if(updateBoardImgObject.getBoardImgId().equals(boardImg.getId())) {
+                    boardImg.updateBoardImg(EnumBoardImgStatus.ACTIVE, updateBoardImgObject.getOrders());
+                    flag = true;
+                    break;
+                }
+            }
 
-        // 새롭게 들어온 이미지 리스트로 db에 추가
-        for (String img : imgUrlList) {
+            if(!flag) {
+                boardImg.updateBoardImg(EnumBoardImgStatus.INACTIVE, 0);
+            }
+        }
+
+        // 3) 4) 새롭게 들어온 이미지 추가(url, order)
+        for(int i=0; i<imgUrlList.size(); i++) {
             BoardImg boardImg = new BoardImg();
-            boardImg.createBoardImg(board, img);
+            boardImg.createBoardImg(board, imgUrlList.get(i), ordersList.get(i));
             boardImgRepository.save(boardImg);
         }
+
         UpdateBoardResponseDto updateBoardResponseDto = UpdateBoardResponseDto.builder()
                 .boardId(board.getId())
                 .message("게시글 수정 성공")
@@ -158,6 +189,14 @@ public class BoardService {
         if (updateBoardStatusRequestDto.getStatus() == EnumBoardStatus.INACTIVE) {
             message = "게시글 마감 성공";
             hereStatus = HereStatus.HERE_CLOSE_BOARD;
+
+            List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardId(board.getId());
+            for (BoardBdHistory boardBdHistory : boardBdHistoryList) {
+                Member sender = board.getMember();
+                Member receiver = memberRepository.findById(boardBdHistory.getSenderId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+                postNotification(sender, receiver, EnumNotificationCode.CLOSED);
+            }
+
         } else {
             message = "게시글 삭제 성공";
             hereStatus = HereStatus.HERE_DELETE_BOARD;
@@ -334,7 +373,7 @@ public class BoardService {
     }
 
     private String findThumbnail(Long boardId) {
-        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardId(boardId);
+        List<BoardImg> boardImgs = boardImgRepository.findAllByBoardIdAndStatusOrderByOrders(boardId, EnumBoardImgStatus.ACTIVE);
 
         if (boardImgs.size() > 0) {
             return boardImgs.get(0).getImgUrl();
@@ -344,8 +383,26 @@ public class BoardService {
     }
 
     private static void checkAuthorizationToUpdateBoard(UUID writerId, Board board) {
+        System.out.println("writerId = " + writerId);
+        System.out.println("board.getMember().getId() = " + board.getMember().getId());
         if(!board.getMember().getId().equals(writerId)) {
             throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
         }
+    }
+
+    private void postNotification(Member sender, Member receiver, EnumNotificationCode code) {
+        ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
+        String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
+        jsonNodes.put("content", message);
+        jsonNodes.put("receiverId", receiver.getId().toString());
+        jsonNodes.put("senderId", sender.getId().toString());
+        jsonNodes.put("code", code.toString());
+
+        ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
+                "https://j8b209.p.ssafy.io:9013/api/notification",
+                jsonNodes,
+                JsonNode.class
+        );
+        System.out.println(postResult.toString());
     }
 }

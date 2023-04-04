@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -61,6 +62,14 @@ public class ServiceExceptionResolver {
     public ResponseErrorDto<?> handle(NotAuthorizedUserException e, HttpServletRequest request) {
         notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
         return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MaxUploadSizeExceededException.class)
+    public ResponseErrorDto<?> handle(MaxUploadSizeExceededException e, HttpServletRequest request) {
+        notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
+        String errorMessage = "업로드 용량 크기를 초과하였습니다.";
+        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage, request.getRequestURI());
     }
 
     private String getParams(HttpServletRequest req) {

@@ -31,5 +31,13 @@ public enum HereStatus {
     HERE_NOT_FOUND_NFT_LIST,
 
     // 기부 데이터 조회 성공
-    HERE_TRANSFER_OWNERSHIP
+    HERE_TRANSFER_OWNERSHIP,
+
+    // 기관 제출 기록 승인 성공
+    HERE_UPDATE_CERT_AGENCY,
+
+    // 병원 제출 기록 승인 성공
+    HERE_UPDATE_CERT_HOSPITAL,
+    // 종이헌혈증서 정보 조회
+    HERE_FIND_PAPER_BD_CERT,
 }

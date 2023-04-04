@@ -1,6 +1,10 @@
 package com.ssafy.herenft.controller;
 
 import com.ssafy.herenft.dto.common.response.ResponseSuccessDto;
+import com.ssafy.herenft.dto.nft.UpdateCertAgencyRequestDto;
+import com.ssafy.herenft.dto.nft.UpdateCertAgencyResponseDto;
+import com.ssafy.herenft.dto.nft.UpdateCertHospitalRequestDto;
+import com.ssafy.herenft.dto.nft.UpdateCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertAgencyResponseDto;
 import com.ssafy.herenft.dto.organ.GetCertHospitalResponseDto;
 import com.ssafy.herenft.dto.organ.GetNftRedcrossResponseDto;
@@ -11,8 +15,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +26,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 @RequestMapping("/organ")
 public class OrganController {
 
@@ -42,4 +49,17 @@ public class OrganController {
     public ResponseEntity<ResponseSuccessDto<List<GetNftRedcrossResponseDto>>> getNftRedCross() {
         return ResponseEntity.ok(organService.getNftRedcross());
     }
+
+    @ApiOperation(value = "제출 기록 승인 여부 갱신(기관)", notes = "기관이 증명 미승인 제출 기록을 승인합니다.")
+    @PatchMapping("/agency")
+    public ResponseEntity<ResponseSuccessDto<UpdateCertAgencyResponseDto>> updateCertAgency(@RequestBody @Valid UpdateCertAgencyRequestDto updateCertAgencyRequestDto) {
+        return ResponseEntity.ok(organService.updateCertAgency(updateCertAgencyRequestDto));
+    }
+
+    @ApiOperation(value = "제출 기록 승인 여부 갱신(병원)", notes = "병원이 증명 미승인 제출 기록을 승인합니다.")
+    @PatchMapping("/hospital")
+    public ResponseEntity<ResponseSuccessDto<UpdateCertHospitalResponseDto>> updateCertHospital(@RequestBody @Valid UpdateCertHospitalRequestDto updateCertHospitalRequestDto) {
+        return ResponseEntity.ok(organService.updateCertHospital(updateCertHospitalRequestDto));
+    }
+
 }

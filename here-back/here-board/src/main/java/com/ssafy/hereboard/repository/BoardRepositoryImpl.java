@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,46 +28,6 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public List<Board> findBoardList() {
-        return queryFactory
-                .selectFrom(board)
-                .where(statusEq())
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
-
-    @Override
-    public List<Board> findMyBoardList(UUID memberId) {
-        return queryFactory
-                .selectFrom(board)
-                .where(
-                        memberIdEq(memberId),
-                        statusEq())
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
-
-    @Override
-    public List<Board> searchBoard(String word) {
-        return queryFactory
-                .selectFrom(board)
-                .where(
-                        statusEq(),
-                        wordContain(word)
-                )
-                .orderBy(
-                        provideStatusOrder(),
-                        board.createdDate.desc()
-                )
-                .fetch();
-    }
     @Override
     public Page<Board> searchBoardPaging(String word, Pageable pageable){
         List<Board> content = queryFactory
@@ -88,6 +49,17 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .where(statusEq());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public List<Board> findDeadlineBoardList() {
+        return queryFactory
+                .selectFrom(board)
+                .where(
+                        board.status.eq(EnumBoardStatus.ACTIVE),
+                        board.deadline.loe(LocalDate.now())
+                )
+                .fetch();
     }
 
     @Override

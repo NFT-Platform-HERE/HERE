@@ -51,6 +51,10 @@ public class S3Service {
     public List<String> upload(List<MultipartFile> multipartFile) {
         List<String> imgUrlList = new ArrayList<>();
 
+        if(multipartFile.size() > 4) {
+            throw new BadRequestVariableException("이미지는 4개 이하로 업로드해주세요!");
+        }
+
         // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileNameList에 추가
         for (MultipartFile file : multipartFile) {
             String fileName = createFileName(file.getOriginalFilename());
@@ -83,9 +87,11 @@ public class S3Service {
         fileValidate.add(".jpg");
         fileValidate.add(".jpeg");
         fileValidate.add(".png");
+        fileValidate.add(".gif");
         fileValidate.add(".JPG");
         fileValidate.add(".JPEG");
         fileValidate.add(".PNG");
+        fileValidate.add(".GIF");
         String idxFileName = fileName.substring(fileName.lastIndexOf("."));
         if (!fileValidate.contains(idxFileName)) {
             throw new BadRequestVariableException("파일 형식이 맞지 않습니다.");
