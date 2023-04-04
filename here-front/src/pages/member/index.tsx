@@ -24,6 +24,8 @@ export default function SignUpPage() {
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
 
+  const [isValidName, setIsValidName] = useState<boolean>(false);
+
   const [newEmail, setNewEmail] = useState<string>("");
   const [newNickname, setNewNickname] = useState<string>("");
 
@@ -60,11 +62,37 @@ export default function SignUpPage() {
     setNewNickname(nickname);
   };
 
+  // 이름 길이 확인
   useEffect(() => {
-    // 이름 길이 확인
-    if ((name.length < 2 || name.length > 5) && nameRef.current) {
-      setNameMessage("유효하지 않은 이름입니다");
+    if ((name.length < 2 || name.length > 4) && nameRef.current) {
+      setNameMessage("2글자 이상 5글자 미만으로 입력해주세요");
       nameRef.current.focus();
+      setIsValidName(false);
+    } else {
+      setNameMessage("");
+      setIsValidName(true);
+    }
+    if (name.length === 0) {
+      setNameMessage("");
+      setIsValidName(false);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (!emailRegex.test(email)) {
+      setEmailMessage("올바른 이메일을 입력해주세요");
+    } else {
+      setEmailMessage("");
+    }
+    if (email.length === 0) {
+      setEmailMessage("");
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (!isValidName) {
       return;
     }
     // 이메일
@@ -179,7 +207,7 @@ export default function SignUpPage() {
               />
               <label
                 htmlFor="cat"
-                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
+                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 peer-checked:border-red-2 hover:border-red-2"
               >
                 <img
                   src={data ? data[0].characterImgUrl : ""}
@@ -199,7 +227,7 @@ export default function SignUpPage() {
               />
               <label
                 htmlFor="deer"
-                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
+                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 peer-checked:border-red-2 hover:border-red-2"
               >
                 <img
                   src={data ? data[1].characterImgUrl : ""}
@@ -219,7 +247,7 @@ export default function SignUpPage() {
               />
               <label
                 htmlFor="dog"
-                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 hover:border-red-2 peer-checked:border-red-2"
+                className="mx-8 inline-block cursor-pointer rounded-20 border-4 border-pen-0 peer-checked:border-red-2 hover:border-red-2"
               >
                 <img
                   src={data ? data[2].characterImgUrl : ""}

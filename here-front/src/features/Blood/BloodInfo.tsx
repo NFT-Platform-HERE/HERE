@@ -10,7 +10,6 @@ export default function BloodInfo() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
   const member = useMemberInfoQuery(memberId);
-  console.log(member.data);
 
   const handleModal = () => {
     setOpenHistory(!openHistory);
@@ -38,7 +37,7 @@ export default function BloodInfo() {
           alt="characterImgUrl"
           className="mx-auto mt-50 mb-20 h-300 w-300 mobile:mt-30 mobile:h-240 mobile:w-240"
         />
-        <div className="h-128 w-399 rounded-b-30 bg-white pt-16">
+        <div className="h-127 w-398 rounded-b-30 bg-white pt-16 mobile:h-108 mobile:w-298">
           <div>
             <span className="mr-10 text-22 font-semibold text-red-3">
               LEVEL.
@@ -87,7 +86,9 @@ export default function BloodInfo() {
           </div>
           <p className="mr-20 inline-block text-center text-40 font-bold leading-100 text-pen-1 mobile:mr-0 mobile:w-100 mobile:text-18 mobile:leading-30">
             {member.data
-              ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
+              ? member.data.recentBdDate
+                ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
+                : "없음"
               : ""}
           </p>
         </div>

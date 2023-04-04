@@ -18,7 +18,7 @@ export default function CommonBtn({
   return (
     <button
       disabled={isDisabled}
-      className="rounded-10 border-3 border-red-2 bg-white font-semibold leading-20 text-red-2 disabled:border-red-0 disabled:bg-white disabled:text-red-0 hover:bg-red-2 hover:text-white"
+      className="rounded-10 border-3 border-red-2 bg-white font-semibold leading-20 text-red-2 disabled:border-red-0 disabled:bg-white disabled:text-red-0 hover:enabled:bg-red-2 hover:enabled:text-white"
       css={[
         {
           width: width,

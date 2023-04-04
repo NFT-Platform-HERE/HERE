@@ -153,7 +153,7 @@ export default function SubmitPage() {
                 />
                 <img
                   src="/icons/auto-select-info.svg"
-                  className="absolute -top-100 right-0 z-100 hidden group-hover:block"
+                  className="absolute -top-100 right-0 z-25 hidden group-hover:block"
                 />
               </div>
             </div>

@@ -7,6 +7,7 @@ export const MEMBER_STARTING_CHARACTER = "/memberCharacter";
 // blood
 export const MEMBER_INFO = "/memberInfo";
 export const BLOOD_HISTORY = "/bloodHistory";
+export const STAMP_INFO = "/stampInfo";
 
 // organization
 export const ORGANIZATION_NFT_LIST = "/organizationNFTList";
@@ -37,3 +38,6 @@ export const SUBMIT_AUTO_SELECT = "/submitAutoSelect";
 export const MYNFT_LIST = "/mynftList";
 export const MYNFT_META_URL = "/mynftMetaUrl";
 export const MYNFT_METADATA = "/mynftMetaData";
+
+// register
+export const REGISTER_PAPER_NFT = "/registerPaperNft";

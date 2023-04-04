@@ -135,7 +135,7 @@ export default function DonatePage() {
             />
           </div>
           <DonateTitle title={"종료가 얼마 남지 않았어요!"} />
-          <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-10">
+          <div className="mt-55 flex justify-center mobile:mt-10 mobile:mb-40">
             <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
               <Suspense fallback={<CircularProgress />}>
                 <DonateCardList items={donateDeadLineList.data!} />
@@ -164,7 +164,7 @@ export default function DonatePage() {
             </div>
           </div>
           <div className="flex justify-center">
-            <div className="flex w-1112 flex-wrap justify-start mobile:justify-center">
+            <div className="mx-auto flex w-1112 flex-wrap justify-start mobile:w-326 mobile:justify-center">
               {/* <Suspense fallback={<CircularProgress />}> */}
               {isChecked &&
                 donateMyList.data?.pages?.map((page, idx) => (

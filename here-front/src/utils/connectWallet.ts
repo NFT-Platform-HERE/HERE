@@ -40,7 +40,6 @@ export const connectWallet = async ({
   activate(Injected);
 
   const chainId = await getChainId();
-  console.log("chainId", chainId);
 
   if (chainId !== SSAFYNETWORK) {
     try {

@@ -84,19 +84,31 @@ export default function SubmitNFTDetailList() {
                     isActive && { zIndex: 100 },
                   ]}
                 >
-                  <div className="mobile:hidden">
-                    <NFTCardBack
-                      height={isActive ? 350 : 300}
-                      fontSize={isActive ? 18 : 16}
-                      detail={hospitalResult.data}
-                    />
+                  <div className="h-350 w-566 mobile:hidden">
+                    {hospitalResult?.data ? (
+                      <NFTCardBack
+                        height={isActive ? 350 : 300}
+                        fontSize={isActive ? 18 : 16}
+                        detail={hospitalResult.data}
+                      />
+                    ) : (
+                      <div className="absolute -left-70 top-75 z-25 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
+                        제출 가능한 NFT 헌혈증서가 없습니다.
+                      </div>
+                    )}
                   </div>
-                  <div className="hidden mobile:block">
-                    <NFTCardBack
-                      height={isActive ? 203 : 150}
-                      fontSize={isActive ? 12 : 10}
-                      detail={hospitalResult.data}
-                    />
+                  <div className="hidden h-203 w-328 mobile:block">
+                    {hospitalResult?.data ? (
+                      <NFTCardBack
+                        height={isActive ? 203 : 150}
+                        fontSize={isActive ? 12 : 10}
+                        detail={hospitalResult.data}
+                      />
+                    ) : (
+                      <div className="absolute left-5 top-55 z-25 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
+                        제출 가능한 NFT 헌혈증서가 없습니다.
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -107,22 +119,30 @@ export default function SubmitNFTDetailList() {
     </div>
   ) : (
     <div className="mt-25 flex justify-center mobile:mt-0">
-      <div className="mobile:hidden">
-        {organizationResult?.data?.length !== 0 && (
+      <div className="relative h-350 w-566 mobile:hidden">
+        {organizationResult?.data ? (
           <NFTCardBack
             height={350}
             fontSize={18}
             detail={organizationResult.data}
           />
+        ) : (
+          <div className="absolute -left-70 top-75 z-25 flex h-200 w-700 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-20 text-red-2">
+            제출 가능한 NFT 헌혈증서가 없습니다.
+          </div>
         )}
       </div>
-      <div className="hidden mobile:block">
-        {organizationResult?.data?.length !== 0 && (
+      <div className="relative hidden h-203 w-328 mobile:block">
+        {organizationResult?.data ? (
           <NFTCardBack
             height={203}
             fontSize={12}
             detail={organizationResult.data}
           />
+        ) : (
+          <div className="absolute left-5 top-55 z-25 flex h-100 w-320 items-center justify-center rounded-20 border-2 border-red-2 bg-white text-15 text-red-2">
+            제출 가능한 NFT 헌혈증서가 없습니다.
+          </div>
         )}
       </div>
     </div>

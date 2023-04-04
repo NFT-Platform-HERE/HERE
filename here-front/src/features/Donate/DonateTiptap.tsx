@@ -4,10 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import DonateTiptapMenu from "./DonateTiptapMenu";
 import Underline from "@tiptap/extension-underline";
 
-const DonateTiptap = ({ setDescription }: any) => {
+const DonateTiptap = ({ setDescription, description }: any) => {
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: ``,
+    content: description,
 
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
@@ -24,15 +24,16 @@ const DonateTiptap = ({ setDescription }: any) => {
       <style jsx={undefined}>{`
         .ProseMirror {
           padding: 10px;
-          border-top: 1px solid grey;
+          border-top: 1px solid #d9d9d9;
           background: white;
           border-radius: 0 0 5px 5px;
           height: 330px;
-          overflow: scroll;
+          overflow-x: hidden;
+          overflow-y: auto;
         }
         .ProseMirror:focus {
           border: none;
-          outline: 1px solid black;
+          outline: 2px solid #e5e5e5;
         }
 
         .ProseMirror > * + * {
@@ -90,7 +91,19 @@ const DonateTiptap = ({ setDescription }: any) => {
 
         .textEditor {
           border-radius: 5px;
-          border: 1px solid grey;
+          border: 1px solid #d9d9d9;
+        }
+
+        .ProseMirror::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        .ProseMirror::-webkit-scrollbar-thumb {
+          background-color: #9f9f9f;
+          border-radius: 30px;
+        }
+        .ProseMirror::-webkit-scrollbar-track {
+          background-color: #e5e5e5;
         }
       `}</style>
     </>

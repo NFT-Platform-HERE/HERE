@@ -1,6 +1,6 @@
 import useMyNFTMetaDataQuery from "@/apis/my-nft/useMyNFTMetaDataQuery";
 import useMyNFTMetaURLQuery from "@/apis/my-nft/useMyNFTMetaURLQuery";
-import useBlockChainNftVerity from "@/apis/organization/useBlockChainNftVerify";
+import useAgencyNftVerity from "@/apis/organization/useAgencyNftVerity";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
 import NFTCardBack from "@/components/Card/NFTCardBack";
@@ -17,7 +17,7 @@ export default function AgencyNFTModal({ onClick }: Iprops) {
   );
   const MetaUrl = useMyNFTMetaURLQuery(tokenId);
   const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
-  const { mutate } = useBlockChainNftVerity();
+  const { mutate } = useAgencyNftVerity();
 
   const checkNFT = () => {
     const payload = {

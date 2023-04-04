@@ -1,7 +1,8 @@
 import Web3 from "web3";
 import { HERE_ERC_721_ABI, HERE_ERC_721_CA } from "@/constants/blockchain";
+import { HashValueList } from "@/types/HashValueList";
 
-// 민팅 함수(적십자)
+// 민팅 함수(종이 헌혈증 발행)
 export const mintBloodNFT = async (
   account: string,
   agencyTokenUrl: string,
@@ -17,6 +18,21 @@ export const mintBloodNFT = async (
     .send({ from: account });
   return result;
 };
+
+// 민팅 함수(적십자 헌혈증 발행)
+export const createAndTransfer = async (
+  from: string,
+  to: string,
+  agencyTokenUrl: string,
+  hospitalTokenUrl: string
+  ) => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract || !from || !to) return;
+  const result = await hereContract.methods.createAndTransfer(from, to, agencyTokenUrl, hospitalTokenUrl).send({ from: from });
+  return result;
+}
 
 // 해당 NFT의 소유주를 알려주는 함수
 export const ownerOf = async (tokenId: string) => {
@@ -98,6 +114,25 @@ export const verifyNFT = async (tokenId: number, hash: string) => {
   const result = await hereContract.methods.verifyNFT(tokenId, hash).call();
 
   console.log("verifyNFT result", result);
+};
+
+export const verifyNFTList = async (hashValueList: HashValueList[]) => {
+  const web3 = new Web3(window.ethereum);
+  const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
+
+  if (!hereContract) return;
+
+  const hashes = hashValueList.map((item) => item.hashValue);
+  const tokenIds = hashValueList.map((item) => item.tokenId);
+  console.log("hashes", hashes);
+  console.log("tokenIds", tokenIds);
+
+  const result = await hereContract.methods
+    .verifyNFTList(tokenIds, hashes)
+    .call();
+
+  console.log("verifyNFTList result", result);
+  return result;
 };
 
 // 발행한 모든 NFT 조회(테스트 용으로만 사용)

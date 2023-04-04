@@ -1,5 +1,5 @@
 import useCheckMemberQuery from "@/apis/member/useCheckMemberQuery";
-import member, { getWalletAddress } from "@/stores/member/member";
+import { getWalletAddress } from "@/stores/member/member";
 import { RootState } from "@/stores/store";
 import { connectWallet } from "@/utils/connectWallet";
 import { useWeb3React } from "@web3-react/core";
@@ -15,11 +15,22 @@ export default function Header() {
   const [walletAddress, setWalletAddress] = useState<string>("");
   const { account, active, activate, deactivate } = useWeb3React();
 
+  useEffect(() => {
+    if (memberId) {
+      if (active && account) {
+        return;
+      } else {
+        connectWallet({ account, active, activate, deactivate });
+      }
+    }
+  }, []);
+
   const handleConnect = () => {
     connectWallet({ account, active, activate, deactivate });
   };
 
   useCheckMemberQuery(walletAddress);
+
   useEffect(() => {
     if (memberId) {
       setWalletAddress("");

@@ -10,7 +10,7 @@ export default function SubmitBanner() {
 
   return (
     <>
-      <div className="mobile:hidden">
+      <div className="w-full min-w-[1200px] mobile:hidden">
         <Swiper
           loop={true}
           autoplay={{

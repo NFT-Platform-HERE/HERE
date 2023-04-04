@@ -4,6 +4,7 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
 import { BoardStatus } from "@/enum/statusType";
+import Image from "next/legacy/image";
 
 interface Iprops {
   boardId: number;
@@ -35,10 +36,19 @@ export default function DonateCard({
       }`}
     >
       <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
-        <TimeAgo datetime={expirationDate} locale="ko" />
+        {isCompleted == BoardStatus.ACTIVE ? (
+          <TimeAgo datetime={expirationDate} locale="ko" />
+        ) : (
+          "마감"
+        )}
       </div>
       <div className="mb-14 flex justify-center">
-        <img src={representativeImageUrl} className="h-160 w-160"></img>
+        <Image
+          src={representativeImageUrl}
+          alt={representativeImageUrl}
+          width={160}
+          height={160}
+        />
       </div>
       <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">
         {title}
@@ -84,7 +94,11 @@ export function DonateCardMobile({
 
       <div className="mr-3 flex w-full flex-col">
         <div className="flex justify-end text-9 font-medium text-pen-2">
-          <TimeAgo datetime={expirationDate} locale="ko" />
+          {isCompleted == BoardStatus.ACTIVE ? (
+            <TimeAgo datetime={expirationDate} locale="ko" />
+          ) : (
+            "마감"
+          )}
         </div>
         <div className="mb-3 flex justify-start text-11 font-bold text-pen-3">
           {title}

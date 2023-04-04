@@ -1,10 +1,8 @@
 import TabBtn from "@/components/Button/TabBtn";
 import Paging from "@/components/Pagination/Paging";
 import usePagination from "@/hooks/organization/usePagination";
-import { Suspense, useEffect, useState } from "react";
+import { useState } from "react";
 import { Confirm } from "@/types/Confirm";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
 import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
 import AgencyNFTModal from "@/features/Organization/AgencyNFTModal";
 import { useDispatch } from "react-redux";
@@ -21,12 +19,12 @@ export default function OrganizationPage() {
   // );
 
   // 기관 테스트 데이터
-  const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
-  const isHospital = false;
+  // const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
+  // const isHospital = false;
 
   // 병원 테스트 데이터
-  // const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
-  // const isHospital = true;
+  const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
+  const isHospital = true;
 
   const [isActive, setIsActive] = useState<boolean>(true);
   const [active, setActive] = useState<string>("INACTIVE");
@@ -56,6 +54,9 @@ export default function OrganizationPage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const hanldleClick = (idx: number) => {
+    if (!isActive) {
+      return;
+    }
     setIsOpen(!isOpen);
     if (isHospital) {
       dispatch(getHospitalNft(currentList[idx].hashValueList));
@@ -103,9 +104,15 @@ export default function OrganizationPage() {
             사유
           </p>
         )}
-        <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
-          등록일
-        </p>
+        {isActive ? (
+          <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
+            등록일
+          </p>
+        ) : (
+          <p className="mr-[6rem] inline-block w-100 text-18 font-medium leading-70">
+            승인일
+          </p>
+        )}
       </div>
       {currentList?.map((item, idx) => (
         <div key={idx}>
@@ -132,8 +139,12 @@ export default function OrganizationPage() {
               {item.createdDate.slice(0, 10)}
             </p>
           </div>
-          {isOpen && !isHospital && <AgencyNFTModal onClick={hanldleClick} />}
-          {isOpen && isHospital && <HospitalNFTModal onClick={hanldleClick} />}
+          {isOpen && isActive && !isHospital && (
+            <AgencyNFTModal onClick={hanldleClick} />
+          )}
+          {isOpen && isActive && isHospital && (
+            <HospitalNFTModal onClick={hanldleClick} />
+          )}
           <hr />
         </div>
       ))}

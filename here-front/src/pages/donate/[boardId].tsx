@@ -58,14 +58,16 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     confirmDelete();
   }
 
-  function handleEditButton() {}
+  function handleEditButton() {
+    moveDonateEditPage();
+  }
 
   function handleDonateButton() {
     setOpendSendModal(true);
   }
 
   async function handleCloseButton() {
-    await closeDonateArticle();
+    confirmClose();
   }
 
   const closeModal = () => {
@@ -78,6 +80,12 @@ export default function DonateDetailPage({ boardId }: Iprops) {
       showDenyButton: true,
       showConfirmButton: false,
       denyButtonText: `삭제`,
+      padding: "1rem",
+      customClass: {
+        popup: "w-400 h-200",
+        title: "text-26 font-medium mt-20",
+        denyButton: "w-100",
+      },
     }).then((result) => {
       if (result.isDenied) {
         deleteDonateArticle();
@@ -112,6 +120,25 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     });
   };
 
+  const confirmClose = () => {
+    MySwal.fire({
+      title: "정말 마감하시겠습니까?",
+      showDenyButton: true,
+      showConfirmButton: false,
+      denyButtonText: `네`,
+      padding: "1rem",
+      customClass: {
+        popup: "w-400 h-200",
+        title: "text-26 font-medium mt-20",
+        denyButton: "w-100",
+      },
+    }).then((result) => {
+      if (result.isDenied) {
+        closeDonateArticle();
+      }
+    });
+  };
+
   async function closeDonateArticle() {
     const payload: DonationDelete = {
       boardId: parseInt(boardId),
@@ -122,13 +149,28 @@ export default function DonateDetailPage({ boardId }: Iprops) {
     try {
       const result = await mutation.mutateAsync(payload);
       console.log("result", result);
+      successClose();
     } catch (error) {
       console.error(error);
     }
   }
 
+  const successClose = () => {
+    MySwal.fire({
+      icon: "success",
+      title: "마감이 완료되었습니다.",
+
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   function moveDonateListPage() {
     router.push("/donate");
+  }
+
+  function moveDonateEditPage() {
+    router.push("/donate/edit");
   }
 
   function disableDonateButton() {
@@ -182,15 +224,15 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               {nowBoard.data.title}
             </div>
             <div className="flex justify-start">
-              <div className="mobile:hidden">
+              <div className="mx-auto mobile:hidden">
                 <HeartBar
-                  width={735}
+                  width={816}
                   height={12}
                   fontSize={15}
                   percent={nowBoard.data.percentage}
                 />
               </div>
-              <div className="hidden mobile:block">
+              <div className="mx-auto hidden mobile:block">
                 <HeartBar
                   width={300}
                   height={8}
@@ -203,7 +245,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               <span className="text-16 font-medium text-pen-3">
                 현재 수량: {nowBoard.data.curQuantity}개
               </span>
-              <span className="text-16 font-medium text-pen-0">
+              <span className="text-16 font-medium text-pen-3">
                 목표 수량: {nowBoard.data.goalQuantity}개
               </span>
             </div>
@@ -216,17 +258,15 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   pagination={{ clickable: true }}
                   className="flex h-400 w-800 flex-wrap items-center justify-center mobile:mt-30 mobile:h-300 mobile:w-full mobile:min-w-300"
                 >
-                  {nowBoard.data.boardImgUrlList.map(
-                    (item: string, index: number) => (
-                      <SwiperSlide key={index}>
-                        <img
-                          src={item}
-                          alt="boardImg"
-                          className="max-w-600 mobile:max-w-300 mx-auto h-400 mobile:h-300"
-                        />
-                      </SwiperSlide>
-                    ),
-                  )}
+                  {nowBoard.data.boardImgUrlList.map((item: any) => (
+                    <SwiperSlide key={item.boardImgId}>
+                      <img
+                        src={item.imgUrl}
+                        alt="boardImg"
+                        className="max-w-600 mobile:max-w-300 mx-auto h-400 mobile:h-300"
+                      />
+                    </SwiperSlide>
+                  ))}
                 </Swiper>
               </div>
             )}
@@ -260,7 +300,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 width={250}
                 height={50}
                 fontSize={18}
-                children={"마감하기"}
+                children={
+                  nowBoard.data.status == BoardStatus.INACTIVE
+                    ? "마감완료"
+                    : "마감하기"
+                }
                 isDisabled={
                   nowBoard.data.status == BoardStatus.INACTIVE ? true : false
                 }
@@ -271,7 +315,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 width={250}
                 height={50}
                 fontSize={18}
-                children={"기부하기"}
+                children={
+                  nowBoard.data.status == BoardStatus.INACTIVE
+                    ? "마감완료"
+                    : "기부하기"
+                }
                 isDisabled={disableDonateButton()}
                 onClick={handleDonateButton}
               />
@@ -284,7 +332,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                 boardId={parseInt(boardId)}
               />
             )}
-            <DonateCheerMsg memberId={writerId} boardId={boardId} />
+            <DonateCheerMsg boardId={boardId} />
           </Suspense>
         </div>
       </div>

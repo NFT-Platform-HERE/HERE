@@ -1,13 +1,16 @@
+import useBlockChainNftDonate from "@/apis/donate/useBlockChainNftDonate";
 import useHospitalNFTSubmit from "@/apis/submit/useHospitalNFTSubmit";
 import useSearchQuery from "@/apis/submit/useSearchQuery";
 import Background from "@/components/Background/Background";
 import CommonBtn from "@/components/Button/CommonBtn";
 import { RootState } from "@/stores/store";
+import { DonationNftList } from "@/types/DonationNftList";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
+import SubmitHospitalLoadingModal from "./SubmitHospitalLoadingModal";
 
 const MySwal = withReactContent(Swal);
 
@@ -18,8 +21,14 @@ interface Iprops {
 export default function SubmitHospitalModal({ onClick }: Iprops) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [hospital, setHospital] = useState<string>("");
+  const [hospitalWalletAddress, setHospitalWalletAddress] =
+    useState<string>("");
 
-  const { memberId } = useSelector((state: RootState) => state.member);
+  const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
+
+  const { memberId, walletAddress } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   const submitNFTList = useSelector((state: RootState) => {
     return state.submitSelectedHospitalNFT.selectedHospitalNFTInfoList;
@@ -29,21 +38,60 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
 
   const { mutate, isSuccess, isError } = useHospitalNFTSubmit();
 
+  const mutation = useBlockChainNftDonate();
+
   const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
-  const onClickSubmit = () => {
-    mutate({
-      agencyId: hospital,
-      memberId: "ae4c93d4-67f0-4502-9a0c-04d003ce6f0c",
-      nftList: submitNFTList,
+  function makeTokenIdList() {
+    const tokenIdList: string[] = [];
+
+    submitNFTList.forEach((value) => {
+      tokenIdList.push(value.tokenId.toString());
     });
+
+    return tokenIdList;
+  }
+
+  const onClickSubmit = async () => {
+    setOpendLoadingModal(true);
+    const tokenIdList = makeTokenIdList();
+
+    const payload: DonationNftList = {
+      myAccount: walletAddress,
+      sendAccount: hospitalWalletAddress,
+      tokenIdList: tokenIdList,
+    };
+
+    console.log("payload", payload);
+
+    try {
+      // 블록체인 네트워크 소유권 이전
+      const blockResult = await mutation.mutateAsync(payload);
+
+      // 백엔드 로직 처리
+      mutate({
+        agencyId: hospital,
+        memberId: memberId,
+        nftList: submitNFTList,
+      });
+    } catch (error) {
+      setOpendLoadingModal(false);
+      console.error("error", error);
+    }
   };
+
+  function handleHospitalListSelect(item: any) {
+    console.log("handleHospitalListSelect", item);
+    setHospital(item.agencyId);
+    setHospitalWalletAddress(item.agencyWalletAddress);
+  }
 
   useEffect(() => {
     if (isSuccess) {
       onClick();
+      setOpendLoadingModal(false);
       MySwal.fire({
         icon: "success",
         title: "헌혈증 NFT 제출 완료",
@@ -56,6 +104,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
 
   useEffect(() => {
     if (isError) {
+      setOpendLoadingModal(false);
       MySwal.fire({
         icon: "error",
         title: "헌혈증 NFT 제출 실패",
@@ -96,7 +145,7 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
                 "h-54 w-full cursor-pointer border-red-2 pl-10 leading-50"
               }
               key={index}
-              onClick={() => setHospital(item.agencyId)}
+              onClick={() => handleHospitalListSelect(item)}
             >
               {item.agencyName}
             </div>
@@ -107,11 +156,12 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
           height={60}
           fontSize={18}
           onClick={onClickSubmit}
-          isDisabled={false}
+          isDisabled={hospital.length == 0 ? true : false}
         >
           제출하기
         </CommonBtn>
       </div>
+      {opendLoadingModal && <SubmitHospitalLoadingModal />}
     </div>
   );
 }
