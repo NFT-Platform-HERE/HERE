@@ -15,15 +15,13 @@ import { HiPhoto } from "react-icons/hi2";
 import dynamic from "next/dynamic";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
 const DonateTiptap = dynamic(() => import("@/features/Donate/DonateTiptap"), {
   loading: () => (
-    <div className="mb-30 h-330 w-full">
+    <div className="mb-30 flex h-330 w-full items-center justify-center">
       <CircularProgress color="error" />
     </div>
   ),
 });
-
 
 export default function DonateWritePage() {
   const router = useRouter();
@@ -254,10 +252,12 @@ export default function DonateWritePage() {
             hidden
             multiple
           />
-          <DonateTiptap
-            setDescription={setDescription}
-            description={description}
-          />
+          <div className="mb-30 h-340 w-full">
+            <DonateTiptap
+              setDescription={setDescription}
+              description={description}
+            />
+          </div>
           <div className="mb-25 flex items-center justify-start">
             {selectedFiles &&
               imagePreviewUrls.map((imageUrl, index) => (
@@ -277,7 +277,7 @@ export default function DonateWritePage() {
                 </div>
               ))}
           </div>
-          <p className="mb-30 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
+          <p className="mb-15 w-510 text-16 font-light text-pen-1 mobile:mt-50 mobile:w-270 mobile:text-12">
             ※ 게시글 작성 이후 헌혈증 NFT 양도가 시작되면{" "}
             <strong>‘목표수량’,‘마감기한’</strong>을 수정할 수 없으니 신중하게
             작성해주세요!
