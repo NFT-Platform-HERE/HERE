@@ -10,6 +10,7 @@ import Lottie from "react-lottie-player";
 import mainArrow from "../../public/lottieJson/main_arrow.json";
 import MainBannerWeb from "@/components/Banner/MainBannerWeb";
 import MainBannerMobile from "@/components/Banner/MainBannerMobile";
+import { IoCaretUpCircle } from "react-icons/io5";
 
 export default function HomePage() {
   const goToDown = () => {
@@ -25,8 +26,19 @@ export default function HomePage() {
     }
   };
 
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div>
+      <IoCaretUpCircle
+        className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1"
+        onClick={goToTop}
+      />
       <div className="hidden mobile:block">
         <MainBannerMobile />
       </div>
