@@ -15,7 +15,7 @@ import { RootState } from "@/stores/store";
 
 export default function OrganizationPage() {
   const dispatch = useDispatch();
-  const { organizationId, isHospital } = useSelector(
+  const { organizationId, organName, isHospital } = useSelector(
     (state: RootState) => state.member,
   );
 
@@ -63,7 +63,7 @@ export default function OrganizationPage() {
 
   return (
     <div className="mx-auto mt-50 w-1000 text-center">
-      <p className="mb-30 text-24">헌혈 사실 확인 요청</p>
+      <p className="mb-30 text-24">NFT 헌혈증서 제출 목록 ({organName})</p>
       <TabBtn
         width={500}
         height={70}

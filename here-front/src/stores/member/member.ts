@@ -6,6 +6,7 @@ interface memberState {
   nickname: string;
   characterImgUrl: string;
   organizationId: string;
+  organName: string;
   isHospital: boolean;
 }
 
@@ -15,6 +16,7 @@ const initialState: memberState = {
   nickname: "",
   characterImgUrl: "",
   organizationId: "",
+  organName: "",
   isHospital: false,
 };
 
@@ -38,10 +40,12 @@ const memberSlice = createSlice({
     },
     getAgencyId(state, action) {
       state.organizationId = action.payload.memberId;
+      state.organName = action.payload.nickname;
       state.isHospital = false;
     },
     getHospitalId(state, action) {
       state.organizationId = action.payload.memberId;
+      state.organName = action.payload.nickname;
       state.isHospital = true;
     },
   },
