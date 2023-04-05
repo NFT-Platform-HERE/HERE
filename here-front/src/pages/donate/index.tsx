@@ -132,7 +132,7 @@ export default function DonatePage() {
       </div>
       <div className="w-full mobile:flex">
         <IoCaretUpCircle
-          className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1"
+          className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1 mobile:hidden"
           onClick={goToTop}
         />
         <div className="mx-auto w-1200 mobile:min-w-350">
