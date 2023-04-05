@@ -13,11 +13,13 @@ export default function WebAlarmDetailModal() {
     (state: RootState) => state.alarm,
   );
 
+  const memberId = useSelector((state: RootState) => state.member.memberId);
+
   return isOpen ? (
     <div>
       <Background onClick={() => dispatch(setClose())} />
-      {alarmCode === "HOSPITAL" ? (
-        <DonateListModal nftHistoryList={nftHistoryList} />
+      {alarmCode !== "HOSPITAL" ? (
+        <DonateListModal nftHistoryList={nftHistoryList} memberId={memberId} />
       ) : (
         <MemberCard senderId={senderId} />
       )}
