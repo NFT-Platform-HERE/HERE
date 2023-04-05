@@ -27,8 +27,6 @@ export default function WebHeader({ handleConnect }: Iprops) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
   const movePage = (path: string) => {
     router.push(path);
     dispatch(closeWebHeaderDropdown());
@@ -46,16 +44,9 @@ export default function WebHeader({ handleConnect }: Iprops) {
 
   useEffect(() => {
     dispatch(closeWebHeaderDropdown());
-    setIsDisabled(
-      !(
-        router.asPath !== "/organization" &&
-        router.asPath !== "/redcross" &&
-        router.asPath !== "/redcross/publish"
-      ),
-    );
   }, []);
 
-  return isDisabled ? null : (
+  return (
     <div className="justify-content flex h-65 w-full  min-w-[1200px] justify-center shadow-sm">
       <div className="relative flex h-65 w-[1200px] justify-between">
         <img

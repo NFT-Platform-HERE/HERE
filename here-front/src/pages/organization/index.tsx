@@ -30,7 +30,6 @@ export default function OrganizationPage() {
     active,
     setConfirmList,
   );
-
   const changeTab = () => {
     setIsActive(!isActive);
     if (isActive) {
