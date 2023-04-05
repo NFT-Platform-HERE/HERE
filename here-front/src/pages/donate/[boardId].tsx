@@ -229,7 +229,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   width={816}
                   height={12}
                   fontSize={15}
-                  percent={nowBoard.data.percentage}
+                  percent={
+                    nowBoard.data.percentage < 100
+                      ? nowBoard.data.percentage
+                      : 100
+                  }
                 />
               </div>
               <div className="mx-auto hidden mobile:block">
@@ -237,7 +241,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   width={300}
                   height={8}
                   fontSize={11}
-                  percent={nowBoard.data.percentage}
+                  percent={
+                    nowBoard.data.percentage < 100
+                      ? nowBoard.data.percentage
+                      : 100
+                  }
                 />
               </div>
             </div>

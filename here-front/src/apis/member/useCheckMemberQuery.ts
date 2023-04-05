@@ -24,8 +24,8 @@ const useCheckMemberQuery = (walletAddress: string) => {
     () => fetcher(walletAddress),
     {
       enabled: !!walletAddress,
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
-        console.log(data.data);
         if (data.status === "HERE_NOT_SUCCESS_FIND_MEMBER") {
           router.push("/member");
           return;

@@ -32,13 +32,13 @@ export default function Header() {
         connectWallet({ account, active, activate, deactivate });
       }
     }
-  }, []);
+  }, [active, account]);
 
-  useEffect(() => {
-    if (memberId) {
-      setWalletAddress("");
-    }
-  }, [memberId]);
+  // useEffect(() => {
+  //   if (memberId) {
+  //     setWalletAddress("");
+  //   }
+  // }, [memberId]);
 
   useEffect(() => {
     if (account) {
