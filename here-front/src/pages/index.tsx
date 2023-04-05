@@ -9,6 +9,7 @@ import { BsChevronDoubleDown } from "react-icons/bs";
 import Lottie from "react-lottie-player";
 import mainArrow from "../../public/lottieJson/main_arrow.json";
 import MainBannerWeb from "@/components/Banner/MainBannerWeb";
+import MainBannerMobile from "@/components/Banner/MainBannerMobile";
 
 export default function HomePage() {
   const goToDown = () => {
@@ -26,8 +27,13 @@ export default function HomePage() {
 
   return (
     <div>
+      <div className="hidden mobile:block">
+        <MainBannerMobile />
+      </div>
+      <div className="mobile:hidden">
+        <MainBannerWeb />
+      </div>
       {/* <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div> */}
-      <MainBannerWeb />
       <div className="flex h-[calc(100vh-(100vw/3)-65px)] max-h-250 w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
         <button
           onClick={goToDown}
