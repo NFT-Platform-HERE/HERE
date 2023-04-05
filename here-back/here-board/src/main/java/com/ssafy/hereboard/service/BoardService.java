@@ -192,7 +192,7 @@ public class BoardService {
             for (BoardBdHistory boardBdHistory : boardBdHistoryList) {
                 Member sender = board.getMember();
                 Member receiver = memberRepository.findById(boardBdHistory.getSenderId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-                postNotification(sender, receiver, EnumNotificationCode.CLOSED);
+                postNotification(sender, receiver, EnumNotificationCode.CLOSED, 0L);
             }
 
         } else {
@@ -386,13 +386,14 @@ public class BoardService {
         }
     }
 
-    private void postNotification(Member sender, Member receiver, EnumNotificationCode code) {
+    private void postNotification(Member sender, Member receiver, EnumNotificationCode code, Long nftId) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
         String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
         jsonNodes.put("content", message);
         jsonNodes.put("receiverId", receiver.getId().toString());
         jsonNodes.put("senderId", sender.getId().toString());
         jsonNodes.put("code", code.toString());
+        jsonNodes.put("nftId", nftId);
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
                 "https://j8b209.p.ssafy.io:9013/api/notification",
