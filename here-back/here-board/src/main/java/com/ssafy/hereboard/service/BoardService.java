@@ -88,6 +88,12 @@ public class BoardService {
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+
+        String content = saveBoardRequestDto.getContent();
+        if(content.length() >= 1000) {
+            throw new BadRequestVariableException("게시글을 1000자 이하로 작성해주세요!");
+        }
+
         Board board = new Board();
         board.createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
