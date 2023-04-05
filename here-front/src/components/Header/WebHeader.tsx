@@ -116,7 +116,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
         )}
         {dropDown && (
           <div
-            className="absolute top-[65px] right-0 z-40"
+            className="absolute top-[65px] right-0 z-20"
             data-aos="fade-down"
             data-aos-duration="500"
           >

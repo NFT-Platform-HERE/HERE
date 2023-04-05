@@ -11,12 +11,17 @@ import store, { RootState } from "@/stores/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import LiveAlarmModal from "@/features/Alarm/LiveAlarmModal";
+import Background from "@/components/Background/Background";
+import { useDispatch } from "react-redux";
+import { setClose } from "@/stores/alarm/alarm";
+import WebAlarmDetailModal from "@/features/Alarm/WebAlarmDetailModal";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
   const getLibrary = (provider: any) => {
     return new Web3Provider(provider);
   };
+
   return (
     <>
       <Head>
@@ -59,6 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <PersistGate loading={null} persistor={persistStore(store)}>
                 <Header />
                 <LiveAlarmModal />
+                <WebAlarmDetailModal />
                 <Component {...pageProps} />
               </PersistGate>
             </Provider>
