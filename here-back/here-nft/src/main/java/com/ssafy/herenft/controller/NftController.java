@@ -77,7 +77,7 @@ public class NftController {
     }
 
     @ApiOperation(value = "종이헌혈증서 NFT 발급용 정보 조회", notes = "QR을 통하여 종이헌혈증서를 NFT로 발급하기 위해 기존 헌혈 정보를 조회합니다.")
-    @GetMapping("/paper-bd-cert")
+    @GetMapping("/paper-bd-cert/{memberId}/{serialNumber}")
     public ResponseEntity<ResponseSuccessDto<SavePaperBdCertToNftResponseDto>> savePaperBdCertToNft(
             @PathVariable("memberId") UUID memberId, @PathVariable("serialNumber") String serialNumber
     ) {
