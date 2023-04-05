@@ -27,7 +27,7 @@ const DonateTiptap = ({ setDescription, description }: any) => {
           border-top: 1px solid #d9d9d9;
           background: white;
           border-radius: 0 0 5px 5px;
-          height: 330px;
+          height: 310px;
           overflow-x: hidden;
           overflow-y: auto;
         }
