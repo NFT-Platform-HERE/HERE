@@ -231,7 +231,7 @@ public class NftService {
                 System.out.println("receiver = " + receiver.getNickname());
                 System.out.println("sender = " + sender.getNickname());
 
-                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
+                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED, 0L);
             }
 
         }
@@ -241,7 +241,7 @@ public class NftService {
         Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
 
-        postNotification(sender, receiver, message, EnumNotificationCode.DONATED);
+        postNotification(sender, receiver, message, EnumNotificationCode.DONATED, 0L);
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
@@ -345,13 +345,14 @@ public class NftService {
     }
 
     // 알림 post 메서드
-    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code) {
+    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code, Long nftId) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
 
         jsonNodes.put("content", message);
         jsonNodes.put("receiverId", receiver.getId().toString());
         jsonNodes.put("senderId", sender.getId().toString());
         jsonNodes.put("code", code.toString());
+        jsonNodes.put("nftId", nftId);
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
                 URI,
