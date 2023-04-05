@@ -79,10 +79,24 @@ module.exports = {
             "border-radius": "65% 60% 35% 50% / 65% 38% 75% 36%",
           },
         },
+        typing: {
+          "0%": {
+            width: "0",
+          },
+          "100%": {
+            width: "100%",
+          },
+        },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
       },
       animation: {
         wave: "wave 5s ease-in-out infinite",
         blob: "blob 15s ease-in-out infinite",
+        typing: "typing 3s steps(25) 1",
+        wiggle: "wiggle 1s ease-in-out infinite",
       },
     },
   },
