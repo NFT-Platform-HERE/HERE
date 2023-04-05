@@ -26,6 +26,9 @@ public class Notification {
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
 
+    @Column(name = "nft_id", columnDefinition = "int unsigned", nullable = false)
+    private Long nftId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender", nullable = false)
     private Member sender;
