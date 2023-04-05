@@ -41,7 +41,7 @@ public class OrganService {
     private final NftRepository nftRepository;
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
-    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
+    private final String URI = "https://j8b209.p.ssafy.io:9013/api/notification";
 
     /* 증명 승인/미승인 목록 조회(기관) */
     public ResponseSuccessDto<List<GetCertAgencyResponseDto>> getCertAgency(UUID agencyId, EnumCertHistoryStatus status) {
@@ -276,10 +276,9 @@ public class OrganService {
         jsonNodes.put("code", code.toString());
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                "https://j8b209.p.ssafy.io:9013/api/notification",
+                URI,
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }

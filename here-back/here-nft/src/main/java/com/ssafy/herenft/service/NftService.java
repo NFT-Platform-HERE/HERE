@@ -35,6 +35,7 @@ public class NftService {
 
     private final ResponseUtil responseUtil;
     private final NftRepository nftRepository;
+    private final NftHistoryRepository nftHistoryRepository;
     private final BdHistoryRepository bdHistoryRepository;
     private final MemberRepository memberRepository;
     private final CertHistoryRepository certHistoryRepository;
@@ -42,7 +43,7 @@ public class NftService {
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
     private final RestTemplate restTemplate;
-    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
+    private final String URI = "https://j8b209.p.ssafy.io:9013/api/notification";
     private final PaperBdCertRepository paperBdCertRepository;
 
     /* NFT 생성 */
@@ -53,6 +54,10 @@ public class NftService {
         Nft nft = new Nft();
         nft.createNft(saveNftRequestDto);
         nftRepository.save(nft);
+
+        NftHistory nftHistory = new NftHistory();
+        nftHistory.createNftHistory(nft.getId(), member.getId());
+        nftHistoryRepository.save(nftHistory);
 
         Boolean isLevelUp = false;
 
@@ -149,13 +154,6 @@ public class NftService {
             // 2) 해당 nft를 멤버에서 병원으로 소유권 이전하기
             Nft subjectNft = nftRepository.findByTokenId(nft.getTokenId());
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
-
-//            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
-//            UUID issuerId = subjectNft.getIssuerId();
-//            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-//            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
-//
-//            postNotification(agency, issuer, message, EnumNotificationCode.HOSPITAL);
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
@@ -185,10 +183,14 @@ public class NftService {
         UUID receiverId = donateNftRequestDto.getReceiverId();
         List<Long> nftTokenList = donateNftRequestDto.getNftTokenList();
 
-        // 1) 소유권 이전
+        // 1) 소유권 이전 + NFT 소유권 history
         for (Long nftToken : nftTokenList) {
             Nft nft = nftRepository.findByTokenId(nftToken);
             nft.updateOwnership(receiverId);
+
+            NftHistory nftHistory = new NftHistory();
+            nftHistory.createNftHistory(nft.getId(), receiverId);
+            nftHistoryRepository.save(nftHistory);
         }
 
         // 2) 주인공 boardBdHistory 가져와서 기부 내역 등록
@@ -352,10 +354,9 @@ public class NftService {
         jsonNodes.put("code", code.toString());
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                "https://j8b209.p.ssafy.io:9013/api/notification",
+                URI,
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }
