@@ -6,12 +6,12 @@ export const saveNFTImage = (id: string, dispatch: any) => {
   let width;
   let height;
 
-  const node = document.getElementById(id);
+  const node = document.getElementsByClassName(id);
 
   if (node === null) {
     return;
   }
-  if (id === "front-capture") {
+  if (id === "relative overflow-hidden rounded-20 shadow-lg") {
     width = 500;
     height = 809;
   } else if (id === "back-capture") {
@@ -19,14 +19,20 @@ export const saveNFTImage = (id: string, dispatch: any) => {
     height = 350;
   }
 
-  htmlToImage
-    .toPng(node, { canvasWidth: width, canvasHeight: height, cacheBust: true })
-    .then((dataUrl) => {
-      dispatch(endSaveImg());
-      const link = window.document.createElement("a");
-      link.download = "blood_donation.png";
-      link.href = dataUrl;
-      link.click();
-    })
-    .catch((err) => console.log(err));
+  for (let i = 0; i < node.length; i++) {
+    htmlToImage
+      .toPng(node[i], {
+        canvasWidth: width,
+        canvasHeight: height,
+        cacheBust: true,
+      })
+      .then((dataUrl) => {
+        dispatch(endSaveImg());
+        const link = window.document.createElement("a");
+        link.download = "blood_donation.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => console.log(err));
+  }
 };
