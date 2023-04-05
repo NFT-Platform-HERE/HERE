@@ -167,8 +167,8 @@ public class OrganService {
 
                 // 다음 인덱스가 있는 경우에만 주인공 이름 갱신 (error 방지용)
                 if (i + 1 < certHistoryList.size()) {
-                    nowName = certHistoryList.get(i + 1).getMember().getName();
-                    nowTime = certHistoryList.get(i + 1).getCreatedDate();
+                    nowName = certHistoryList.get(i).getMember().getName();
+                    nowTime = certHistoryList.get(i).getCreatedDate();
                 }
             }
         }
