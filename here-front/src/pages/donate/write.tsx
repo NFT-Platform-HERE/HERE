@@ -1,6 +1,5 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState, useRef, useEffect } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateWrite from "../../apis/donate/useDonateWrite";
