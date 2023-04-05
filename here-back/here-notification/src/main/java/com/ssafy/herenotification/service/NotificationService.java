@@ -52,9 +52,9 @@ public class NotificationService {
             emitterRepository.deleteById(emitterId);
             emitter.complete();
         });
-        System.out.println("subscribe + emitter = " + emitter);
+
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
-        System.out.println("sseEmitters = " + sseEmitters);
+
         // 503 에러 방지
         sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
 
@@ -75,9 +75,6 @@ public class NotificationService {
                     .id(emitterId)
                     .data(data, MediaType.APPLICATION_JSON)
                     .reconnectTime(500));
-
-            System.out.println("Sent SSE to client with emitterId: " + emitterId);
-            System.out.println("SseEmitter.toString(): " + emitter.toString());
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
@@ -110,14 +107,12 @@ public class NotificationService {
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         String memberId = String.valueOf(receiver.getId());
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(memberId));
-        System.out.println("sseEmitters = " + sseEmitters.toString());
-        System.out.println("sseEmitters = " + sseEmitters);
+
         sseEmitters.forEach(
                 (key, emitter) -> {
                     // 데이터 캐시 저장(유실 데이터 처리)
                     emitterRepository.saveEventCache(key, notification);
-                    System.out.println("key = " + key);
-                    System.out.println("emitter = " + emitter);
+
                     // 데이터 전송
                     sendToClient(emitter, key, con);
                 }
@@ -135,7 +130,7 @@ public class NotificationService {
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
             Long nftId = notification.getNftId();
-            List<NftHistory> nftHistoryList = nftHistoryRepository.findAllByNftId(nftId);
+            List<NftHistory> nftHistoryList = nftId != 0L ? nftHistoryRepository.findAllByNftId(nftId): new ArrayList<>();
             List<UUID> memberIdList = new ArrayList<>();
             for (NftHistory nftHistory : nftHistoryList) {
                 memberIdList.add(nftHistory.getMemberId());

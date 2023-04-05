@@ -64,6 +64,7 @@ public class Notification {
         notification.receiver = receiver;
         notification.content = saveNotificationRequestDto.getContent();
         notification.code = saveNotificationRequestDto.getCode();
+        notification.nftId = saveNotificationRequestDto.getNftId();
         return notification;
     }
 
