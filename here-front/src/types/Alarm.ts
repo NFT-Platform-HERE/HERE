@@ -5,5 +5,5 @@ export interface Alarm {
   status: string;
   content: string;
   code: string;
-  nftHistoryList: string[];
+  memberIdList: string[];
 }

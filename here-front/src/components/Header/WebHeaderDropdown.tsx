@@ -1,3 +1,4 @@
+import useAlarmQuery from "@/apis/alarm/useAlarmQuery";
 import WebAlarmModal from "@/features/Alarm/WebAlarmModal";
 import { closeWebHeaderDropdown } from "@/stores/header/webHeaderDropdown";
 import { deleteMemberInfo } from "@/stores/member/member";
@@ -25,6 +26,8 @@ export default function WebHeaderDropdown() {
     setOpenAlarmModal(!openAlarmModal);
   };
 
+  const alarmList = useAlarmQuery(memberId);
+
   return (
     <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
       <div>
@@ -34,10 +37,13 @@ export default function WebHeaderDropdown() {
         ></img>
       </div>
       <div className="mt-10 text-15">{nickname}</div>
-      <div className="mt-10 cursor-pointer" onClick={openAlarm}>
-        <img src="/icons/alarm.svg"></img>
+      <div className="relative mt-10 cursor-pointer" onClick={openAlarm}>
+        <img src="/icons/alarm.svg" />
+        {alarmList?.data?.length !== 0 && (
+          <div className="absolute top-0 right-0 h-10 w-10 animate-pulse rounded-50 bg-red-2"></div>
+        )}
       </div>
-      {openAlarmModal && <WebAlarmModal />}
+      {openAlarmModal && <WebAlarmModal alarmList={alarmList} />}
 
       <div className="mt-10 cursor-pointer text-15" onClick={Logout}>
         LOGOUT
