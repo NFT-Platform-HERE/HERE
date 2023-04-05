@@ -86,7 +86,7 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
                   ]}
                 >
                   <div
-                    className="mobile:hidden"
+                    className="camera mobile:hidden"
                     onClick={() =>
                       isActive &&
                       handleNFTCardFrontClick(item, MyNFTList[item]?.tokenId)
@@ -98,7 +98,7 @@ export default function MyNFTDetailList({ MyNFTList }: Iprops) {
                     />
                   </div>
                   <div
-                    className="hidden mobile:block"
+                    className="mobile-camera hidden mobile:block"
                     onClick={() =>
                       isActive &&
                       handleNFTCardFrontClick(item, MyNFTList[item]?.tokenId)
