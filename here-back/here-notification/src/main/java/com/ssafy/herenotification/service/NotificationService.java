@@ -90,7 +90,7 @@ public class NotificationService {
         Member receiver = memberRepository.findById(saveNotificationRequestDto.getReceiverId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
 
-        Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto.getContent());
+        Notification notification = new Notification().createNotification(sender, receiver, saveNotificationRequestDto);
         notificationRepository.save(notification);
         String code = String.valueOf(saveNotificationRequestDto.getCode());
         String con;
