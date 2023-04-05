@@ -5,6 +5,8 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import withReactContent from "sweetalert2-react-content";
 import useHospitalAccept from "./useHospitalAccept";
 import { HashValueList } from "@/types/HashValueList";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 const MySwal = withReactContent(Swal);
 
@@ -13,6 +15,9 @@ const fetcher = (hashValueList: HashValueList[]) =>
 
 const useHospitalNftVerify = () => {
   const { mutate } = useHospitalAccept();
+  const organizationId = useSelector(
+    (state: RootState) => state.member.organizationId,
+  );
 
   return useMutation(fetcher, {
     onSuccess: (data, variables) => {
@@ -30,7 +35,10 @@ const useHospitalNftVerify = () => {
       const verifyTokenIds = tokenIds.filter((token, idx) => {
         return data[idx] && token;
       });
-      mutate(verifyTokenIds);
+      mutate({
+        tokenIdList: verifyTokenIds,
+        agencyId: organizationId,
+      });
     },
     onError: () => {
       MySwal.fire({
