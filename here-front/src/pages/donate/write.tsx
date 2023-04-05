@@ -282,3 +282,9 @@ export default function DonateWritePage() {
     </div>
   );
 }
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}
