@@ -1,6 +1,7 @@
 package com.ssafy.herenotification.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.herenotification.dto.notification.SaveNotificationRequestDto;
 import com.ssafy.herenotification.enumeration.EnumNotificationCode;
 import com.ssafy.herenotification.enumeration.EnumNotificationStatus;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,9 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int unsigned", nullable = false)
     private Long id;
+
+    @Column(name = "nft_id", columnDefinition = "int unsigned", nullable = false)
+    private Long nftId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender", nullable = false)
@@ -54,11 +58,12 @@ public class Notification {
         this.receiver = receiver;
         this.content = content;
     }
-    public Notification createNotification(Member sender, Member receiver, String content) {
+    public Notification createNotification(Member sender, Member receiver, SaveNotificationRequestDto saveNotificationRequestDto) {
         Notification notification = new Notification();
         notification.sender = sender;
         notification.receiver = receiver;
-        notification.content = content;
+        notification.content = saveNotificationRequestDto.getContent();
+        notification.code = saveNotificationRequestDto.getCode();
         return notification;
     }
 
