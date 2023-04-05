@@ -13,4 +13,6 @@ public interface CertHistoryRepository extends JpaRepository<CertHistory, Long> 
     CertHistory findByTokenId(Long tokenId);
 
     List<CertHistory> findAllByAgencyIdAndStatusOrderByUpdatedDateDesc(UUID agencyId, EnumCertHistoryStatus status);
+
+    CertHistory findByTokenIdAndAgencyId(Long tokenId, UUID agencyId);
 }
