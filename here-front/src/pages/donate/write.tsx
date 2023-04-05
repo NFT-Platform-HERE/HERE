@@ -241,6 +241,7 @@ export default function DonateWritePage() {
             hidden
             multiple
           />
+
           <DonateTiptap
             setDescription={setDescription}
             description={description}
