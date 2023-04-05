@@ -31,10 +31,10 @@ const useCheckMemberQuery = (walletAddress: string) => {
           return;
         }
         if (data.data.role === "AGENCY") {
-          dispatch(getAgencyId(data.data.memberId));
+          dispatch(getAgencyId(data.data));
           router.push("/organization");
         } else if (data.data.role === "HOSPITAL") {
-          dispatch(getHospitalId(data.data.memberId));
+          dispatch(getHospitalId(data.data));
           router.push("/organization");
         } else if (data.data.role === "REDCROSS") {
           router.push("/redcross");

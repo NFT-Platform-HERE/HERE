@@ -99,7 +99,7 @@ export default function DonatePage() {
           width={1200}
           height={240}
           marginTop={50}
-          bgColor={"#FF9999"}
+          bgColor={"#FFB0B0"}
           imgUrl={"banners/donateBannerWeb.png"}
         />
         <div className="absolute top-196 left-[50%] translate-x-[-50%] banner:left-[600px]">
