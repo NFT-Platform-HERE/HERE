@@ -48,6 +48,7 @@ export default function DonateCard({
           alt={representativeImageUrl}
           width={160}
           height={160}
+          className="object-cover"
         />
       </div>
       <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">
@@ -83,7 +84,7 @@ export function DonateCardMobile({
   return (
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
-      className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
+      className={`m-8 flex h-95 w-310 flex-row rounded-15 border-2  border-pen-0 pt-8 pr-8 shadow-[5px_5px_10px_-5px_rgba(0,0,0,0.15)] ${
         isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
