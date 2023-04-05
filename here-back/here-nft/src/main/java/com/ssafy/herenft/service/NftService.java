@@ -121,6 +121,17 @@ public class NftService {
         Member agency = memberRepository.findById(submitCertAgencyRequestDto.getAgencyId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 기관 ID입니다."));
 
+        Long tokenId = submitCertAgencyRequestDto.getTokenId();
+        CertHistory byTokenIdAndAgencyId = certHistoryRepository.findByTokenIdAndAgencyId(tokenId, agency.getId());
+
+        if(byTokenIdAndAgencyId != null) {
+            SubmitCertAgencyResponseDto submitCertAgencyResponseDto = SubmitCertAgencyResponseDto.builder()
+                    .message("이 헌혈증서는 해당 기관에 이미 제출되었습니다")
+                    .build();
+            ResponseSuccessDto<SubmitCertAgencyResponseDto> res = responseUtil.successResponse(submitCertAgencyResponseDto, HereStatus.HERE_SUBMIT_DUPLICATED_CERTIFICATION);
+            return res;
+        }
+
         CertHistory certHistory = new CertHistory();
         certHistory.createCertHistoryAgency(member, agency, submitCertAgencyRequestDto);
         certHistoryRepository.save(certHistory);

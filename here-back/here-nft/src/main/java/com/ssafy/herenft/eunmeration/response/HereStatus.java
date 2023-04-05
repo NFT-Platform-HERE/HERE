@@ -9,6 +9,8 @@ public enum HereStatus {
 
     // 내 증명서 제출(기관)
     HERE_SUBMIT_CERTIFICATION,
+    // 내 증명서 제출 중복(기관)
+    HERE_SUBMIT_DUPLICATED_CERTIFICATION,
 
     // 증명 승인/미승인 목록 조회 (기관) 성공
     HERE_FIND_CERT_LIST_AGENCY,
