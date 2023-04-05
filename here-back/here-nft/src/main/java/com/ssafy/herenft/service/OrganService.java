@@ -41,7 +41,7 @@ public class OrganService {
     private final NftRepository nftRepository;
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
-    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
+    private final String URI = "https://j8b209.p.ssafy.io:9013/api/notification";
 
     /* 증명 승인/미승인 목록 조회(기관) */
     public ResponseSuccessDto<List<GetCertAgencyResponseDto>> getCertAgency(UUID agencyId, EnumCertHistoryStatus status) {
@@ -202,13 +202,14 @@ public class OrganService {
     /* 제출 기록 승인 여부 갱신(기관) */
     public ResponseSuccessDto<UpdateCertAgencyResponseDto> updateCertAgency(UpdateCertAgencyRequestDto updateCertAgencyRequestDto) {
         Long tokenId = updateCertAgencyRequestDto.getTokenId();
-        CertHistory certHistory = certHistoryRepository.findByTokenId(tokenId);
+        UUID agencyId = updateCertAgencyRequestDto.getAgencyId();
+        CertHistory certHistory = certHistoryRepository.findByTokenIdAndAgencyId(tokenId, agencyId);
 
         certHistory.updateCertHistory();
 
         // 기관이 제출 기록 승인했을 때, 발행자에게 알림 등록
         UUID memberId = certHistory.getMember().getId();
-        UUID agencyId = certHistory.getAgency().getId();
+//        UUID agencyId = certHistory.getAgency().getId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         Member agency = memberRepository.findById(agencyId).orElseThrow(() -> new EntityIsNullException("해당 기관이 존재하지 않습니다."));
         String message = agency.getName() + "에 제출한 " + member.getNickname() + "님의 헌혈증서가 승인 완료되었습니다.";
@@ -228,14 +229,14 @@ public class OrganService {
         List<Long> tokenIdList = updateCertHospitalRequestDto.getTokenIdList();
 
         HashMap<UUID, Integer> issuerMap = new HashMap<UUID, Integer>();
-        UUID agencyId = null;
+        UUID agencyId = updateCertHospitalRequestDto.getAgencyId();
 
         for (Long tokenId : tokenIdList) {
             CertHistory certHistory = certHistoryRepository.findByTokenId(tokenId);
             certHistory.updateCertHistory();
-            agencyId = certHistory.getAgency().getId();
+//            agencyId = certHistory.getAgency().getId();
 
-            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
+            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 승인되었다는 알림 등록
             UUID issuerId = nftRepository.findByTokenId(tokenId).getIssuerId(); // 최초 발행자 아이디
 
             if (issuerMap.containsKey(issuerId)) {
@@ -275,10 +276,9 @@ public class OrganService {
         jsonNodes.put("code", code.toString());
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                "https://j8b209.p.ssafy.io:9013/api/notification",
+                URI,
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }
