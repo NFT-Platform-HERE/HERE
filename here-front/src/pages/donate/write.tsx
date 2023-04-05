@@ -10,7 +10,20 @@ import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import { HiPhoto } from "react-icons/hi2";
-import DonateTiptap from "@/features/Donate/DonateTiptap";
+// import DonateTiptap from "@/features/Donate/DonateTiptap";
+
+import dynamic from "next/dynamic";
+import CircularProgress from "@mui/material/CircularProgress";
+
+
+const DonateTiptap = dynamic(() => import("@/features/Donate/DonateTiptap"), {
+  loading: () => (
+    <div className="mb-30 h-330 w-full">
+      <CircularProgress color="error" />
+    </div>
+  ),
+});
+
 
 export default function DonateWritePage() {
   const router = useRouter();
