@@ -1,12 +1,12 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState, useRef, useEffect } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import { HiPhoto } from "react-icons/hi2";
+import "react-datepicker/dist/react-datepicker.css";
 
 import dynamic from "next/dynamic";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -281,4 +281,10 @@ export default function DonateWritePage() {
       </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
 }

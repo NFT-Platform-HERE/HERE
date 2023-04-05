@@ -1,4 +1,5 @@
 import { RootState } from "@/stores/store";
+import { NOTIFICATION_SERVER_URL } from "@/utils/urls";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -10,7 +11,7 @@ export default function LiveAlarmModal() {
   useEffect(() => {
     if (!memberId) return;
     const sseEvents = new EventSource(
-      `https://j8b209.p.ssafy.io:9013/api/notification/subscribe/${memberId}`,
+      `${NOTIFICATION_SERVER_URL}/notification/subscribe/${memberId}`,
     );
 
     sseEvents.onopen = function () {
@@ -37,7 +38,7 @@ export default function LiveAlarmModal() {
     <div
       className={
         (isOpen
-          ? "visible translate-x-300 duration-1000 ease-out "
+          ? "visible translate-x-300 animate-pulse duration-1000 ease-out "
           : "invisible ") +
         "fixed bottom-20 -left-250 z-100 flex h-70 w-300 cursor-pointer items-center justify-center rounded-10 bg-red-2 text-18 font-medium text-white"
       }

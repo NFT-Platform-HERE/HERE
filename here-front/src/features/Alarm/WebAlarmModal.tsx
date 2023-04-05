@@ -7,33 +7,57 @@ import { RootState } from "@/stores/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Alarm } from "@/types/Alarm";
+import { useDispatch } from "react-redux";
+import {
+  setAlarmCode,
+  setNFTHistoryList,
+  setOpen,
+  setSenderId,
+} from "@/stores/alarm/alarm";
 
 export default function WebAlarmModal() {
   const { mutate } = useAlarmReadUpdate();
   const { memberId } = useSelector((state: RootState) => state.member);
   const alarmList = useAlarmQuery(memberId);
-  const [openCard, setOpenCard] = useState<boolean>(false);
 
-  const changeStatus = (notificationId: number) => {
+  const dispatch = useDispatch();
+
+  const changeStatus = (
+    notificationId: number,
+    code: string,
+    senderId: string,
+    nftHistoryList: string[],
+  ) => {
     const payload = {
       memberId,
       notificationId,
     };
     mutate(payload);
-    setOpenCard(!openCard);
+    dispatch(setOpen());
+    dispatch(setAlarmCode(code));
+    if (code === "HOSPITAL") {
+      dispatch(setNFTHistoryList(nftHistoryList));
+    } else {
+      dispatch(setSenderId(senderId));
+    }
   };
 
   return (
-    <div className="absolute -left-[320px] top-60 h-280 w-400 bg-[url('/images/alarmBack.png')] bg-contain bg-no-repeat  py-20 pr-24 ">
+    <div className="absolute -left-[320px] top-60 h-280 w-400 bg-[url('/images/alarmBack.png')] bg-contain bg-no-repeat py-20 pr-24 ">
       <div className="h-230 w-365 overflow-y-auto overflow-x-hidden scrollbar-hide ">
         {alarmList?.data?.map((item: Alarm) => (
           <div key={item.notificationId}>
             <AlarmList
               text={item.content}
-              onClick={() => changeStatus(item.notificationId)}
+              onClick={() =>
+                changeStatus(
+                  item.notificationId,
+                  item.code,
+                  item.senderId,
+                  item.nftHistoryList,
+                )
+              }
             />
-            {openCard && <MemberCard senderId={item.senderId} />}
-            {openCard && <Background onClick={() => setOpenCard(!openCard)} />}
           </div>
         ))}
       </div>

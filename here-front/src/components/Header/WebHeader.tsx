@@ -10,8 +10,6 @@ import {
   closeWebHeaderDropdown,
   openWebHeaderDropdown,
 } from "@/stores/header/webHeaderDropdown";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface Iprops {
   handleConnect: () => void;
@@ -37,10 +35,6 @@ export default function WebHeader({ handleConnect }: Iprops) {
       ? dispatch(closeWebHeaderDropdown())
       : dispatch(openWebHeaderDropdown());
   };
-
-  useEffect(() => {
-    AOS.init();
-  }, []);
 
   useEffect(() => {
     dispatch(closeWebHeaderDropdown());
@@ -105,15 +99,15 @@ export default function WebHeader({ handleConnect }: Iprops) {
             <div className="ml-10 w-70 text-15 font-normal">{nickname}</div>
           </div>
         )}
-        {dropDown && (
-          <div
-            className="absolute top-[65px] right-0 z-40"
-            data-aos="fade-down"
-            data-aos-duration="500"
-          >
-            <WebHeaderDropdown />
-          </div>
-        )}
+        <div
+          className={
+            (dropDown
+              ? "visible opacity-100 transition-opacity duration-500 "
+              : "invisible opacity-0 ") + "absolute top-[65px] right-0 z-20"
+          }
+        >
+          <WebHeaderDropdown />
+        </div>
       </div>
     </div>
   );
