@@ -25,7 +25,7 @@ pipeline {
                 sh 'node -v'
                 dir('here-front'){
                     sh 'ls -al'
-                    sh 'docker build -t dev-front-img .'    
+                    sh 'docker build -t ${HERE_FRONT_IMAGE} .'    
                 }                                                
                 echo 'Build image...'
             }
@@ -35,8 +35,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker stop dev-front-container'
-                        sh 'docker rm dev-front-container'                        
+                        sh 'docker stop ${HERE_FRONT_CONTAINER}'
+                        sh 'docker rm ${HERE_FRONT_CONTAINER}'                        
                     } catch (e) {
                         echo 'fail to stop and remove container'
                     }    
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 dir('here-front'){
                     sh 'ls -al'
-                    sh 'docker run --name dev-front-container -d -p 3000:3000 dev-front-img'
+                    sh 'docker run --name ${HERE_FRONT_CONTAINER} -d -p 3000:3000 ${HERE_FRONT_IMAGE}'
                     echo 'Run New image'
                 }                
             }
