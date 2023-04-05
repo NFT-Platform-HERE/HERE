@@ -10,7 +10,6 @@ export default function BloodInfo() {
 
   const { memberId } = useSelector((state: RootState) => state.member);
   const member = useMemberInfoQuery(memberId);
-  console.log(member.data);
 
   const handleModal = () => {
     setOpenHistory(!openHistory);

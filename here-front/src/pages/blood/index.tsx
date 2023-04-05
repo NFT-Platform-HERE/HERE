@@ -1,7 +1,8 @@
 import CommonBanner from "@/components/Banner/CommonBanner";
 import BloodInfo from "@/features/Blood/BloodInfo";
 import BloodMap from "@/features/Blood/BloodMap";
-import BloodStamp from "@/features/Blood/BloodStamp";
+import BloodStampMobile from "@/features/Blood/BloodStampMobile";
+import BloodStampWeb from "@/features/Blood/BloodStampWeb";
 
 export default function BloodPage() {
   return (
@@ -27,8 +28,13 @@ export default function BloodPage() {
       <div className="mx-auto mb-100 flex w-1200 flex-wrap justify-between px-60 mobile:mb-50 mobile:w-full mobile:px-30">
         <BloodInfo />
       </div>
-      <div className="mx-auto mb-100 w-1200 px-60 mobile:w-full mobile:px-30">
-        <BloodStamp />
+      <div className="mx-auto mb-100 w-1200 px-60 mobile:w-full mobile:px-0">
+        <div className="hidden mobile:block">
+          <BloodStampMobile />
+        </div>
+        <div className="pb-30 mobile:hidden">
+          <BloodStampWeb />
+        </div>
         <BloodMap />
       </div>
     </>

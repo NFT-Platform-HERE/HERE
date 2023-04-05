@@ -245,7 +245,7 @@ export default function DonateDetailPage({ boardId }: Iprops) {
               <span className="text-16 font-medium text-pen-3">
                 현재 수량: {nowBoard.data.curQuantity}개
               </span>
-              <span className="text-16 font-medium text-pen-0">
+              <span className="text-16 font-medium text-pen-3">
                 목표 수량: {nowBoard.data.goalQuantity}개
               </span>
             </div>

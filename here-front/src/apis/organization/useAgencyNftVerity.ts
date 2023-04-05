@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import withReactContent from "sweetalert2-react-content";
 import useAgencyAccept from "./useAgencyAccept";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
 
 interface Iprops {
   tokenId: number;
@@ -17,6 +19,9 @@ const fetcher = (payload: Iprops) =>
 
 const useAgencyNftVerity = () => {
   const { mutate } = useAgencyAccept();
+  const organizationId = useSelector(
+    (state: RootState) => state.member.organizationId,
+  );
 
   return useMutation(fetcher, {
     onSuccess: (data, variables) => {
@@ -31,7 +36,10 @@ const useAgencyNftVerity = () => {
           popup: "w-440 h-260",
         },
       });
-      mutate(variables.tokenId);
+      mutate({
+        tokenId: variables.tokenId,
+        agencyId: organizationId,
+      });
     },
     onError: () => {
       console.log("error");

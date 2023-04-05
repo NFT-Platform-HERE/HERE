@@ -8,12 +8,21 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import MobileHeader from "./MobileHeader";
 import WebHeader from "./WebHeader";
+import router from "next/router";
 
 export default function Header() {
   const dispatch = useDispatch();
   const memberId = useSelector((state: RootState) => state.member.memberId);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const { account, active, activate, deactivate } = useWeb3React();
+
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+
+  const handleConnect = () => {
+    connectWallet({ account, active, activate, deactivate });
+  };
+
+  useCheckMemberQuery(walletAddress);
 
   useEffect(() => {
     if (memberId) {
@@ -24,12 +33,6 @@ export default function Header() {
       }
     }
   }, []);
-
-  const handleConnect = () => {
-    connectWallet({ account, active, activate, deactivate });
-  };
-
-  useCheckMemberQuery(walletAddress);
 
   useEffect(() => {
     if (memberId) {
@@ -44,11 +47,23 @@ export default function Header() {
     }
   }, [account]);
 
+  useEffect(() => {
+    setIsDisabled(
+      !(
+        router.asPath !== "/organization" &&
+        router.asPath !== "/redcross" &&
+        router.asPath !== "/redcross/publish"
+      ),
+    );
+  }, [router.asPath]);
+
   return (
     <div>
-      <div className="mobile:hidden">
-        <WebHeader handleConnect={handleConnect} />
-      </div>
+      {!isDisabled && (
+        <div className="mobile:hidden">
+          <WebHeader handleConnect={handleConnect} />
+        </div>
+      )}
       <div className="hidden mobile:block">
         <MobileHeader handleConnect={handleConnect} />
       </div>

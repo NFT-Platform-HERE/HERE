@@ -16,6 +16,7 @@ import { RootState } from "@/stores/store";
 import useDonateMyListQuery from "@/apis/donate/useDonateMyListQuery";
 import useDonateSearchQuery from "@/apis/donate/useDonateSearchQuery";
 import { useInView } from "react-intersection-observer";
+import { IoCaretUpCircle } from "react-icons/io5";
 
 export default function DonatePage() {
   const router = useRouter();
@@ -46,6 +47,13 @@ export default function DonatePage() {
       donateList.fetchNextPage();
     }
   }, [inView]);
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -91,7 +99,7 @@ export default function DonatePage() {
           width={1200}
           height={240}
           marginTop={50}
-          bgColor={"#FF9999"}
+          bgColor={"#FFB0B0"}
           imgUrl={"banners/donateBannerWeb.png"}
         />
         <div className="absolute top-196 left-[50%] translate-x-[-50%] banner:left-[600px]">
@@ -123,6 +131,10 @@ export default function DonatePage() {
         </div>
       </div>
       <div className="w-full mobile:flex">
+        <IoCaretUpCircle
+          className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1 mobile:hidden"
+          onClick={goToTop}
+        />
         <div className="mx-auto w-1200 mobile:min-w-350">
           <div className="mr-10 mt-7 flex justify-end mobile:hidden">
             <CommonBtn
@@ -165,7 +177,6 @@ export default function DonatePage() {
           </div>
           <div className="flex justify-center">
             <div className="mx-auto flex w-1112 flex-wrap justify-start mobile:w-326 mobile:justify-center">
-              {/* <Suspense fallback={<CircularProgress />}> */}
               {isChecked &&
                 donateMyList.data?.pages?.map((page, idx) => (
                   <div key={idx} className="flex flex-wrap">
@@ -194,7 +205,6 @@ export default function DonatePage() {
                     )}
                   </div>
                 ))}
-              {/* </Suspense> */}
             </div>
           </div>
         </div>

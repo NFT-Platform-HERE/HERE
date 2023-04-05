@@ -17,7 +17,7 @@ const DonateTiptap = ({ setDescription, description }: any) => {
 
   return (
     <>
-      <div className="textEditor mb-30">
+      <div className="textEditor">
         <DonateTiptapMenu editor={editor} />
         <EditorContent editor={editor} />
       </div>

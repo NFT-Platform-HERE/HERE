@@ -31,12 +31,16 @@ const useCheckMemberQuery = (walletAddress: string) => {
           return;
         }
         if (data.data.role === "AGENCY") {
-          dispatch(getAgencyId(data.data.memberId));
+          dispatch(getAgencyId(data.data));
           router.push("/organization");
-        } else if (data.data.role === "HOSPITAL") {
-          dispatch(getHospitalId(data.data.memberId));
+          return;
+        }
+        if (data.data.role === "HOSPITAL") {
+          dispatch(getHospitalId(data.data));
           router.push("/organization");
-        } else if (data.data.role === "REDCROSS") {
+          return;
+        }
+        if (data.data.role === "REDCROSS") {
           router.push("/redcross");
         }
         // 멤버ID, 닉네임, 이미지 받아서 저장

@@ -5,16 +5,11 @@ import Section2Mobile from "@/features/Home/Section2Mobile";
 import Section2Web from "@/features/Home/Section2Web";
 import Section3 from "@/features/Home/Section3";
 import Section4 from "@/features/Home/Section4";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
 import { BsChevronDoubleDown } from "react-icons/bs";
+import Lottie from "react-lottie-player";
+import mainArrow from "../../public/lottieJson/main_arrow.json";
 
 export default function HomePage() {
-  useEffect(() => {
-    AOS.init();
-  }, []);
-
   const goToDown = () => {
     const element = document.getElementById(
       "section1",
@@ -34,15 +29,19 @@ export default function HomePage() {
       <div className="flex h-[calc(100vh-(100vw/3.2)-65px)] max-h-300 w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
         <button
           onClick={goToDown}
-          className="my-auto h-150 w-150 animate-pulse rounded-full active:bg-[#f6f6f6]"
+          className="my-auto h-200 w-200 animate-pulse rounded-full active:bg-[#f6f6f6]"
         >
-          <BsChevronDoubleDown className="mx-auto text-70 text-pen-0" />
+          <Lottie
+            loop
+            animationData={mainArrow}
+            play
+            style={{ width: 200, height: 200 }}
+            className="mx-auto"
+          />
         </button>
       </div>
       <section
         id="section1"
-        // data-aos="fade-up"
-        // data-aos-duration="3000"
         className="my-50 min-w-[1200px] mobile:my-50 mobile:w-full mobile:min-w-[300px]"
       >
         <div className="relative mx-auto mb-30 h-60 w-500 text-center mobile:w-300 ">

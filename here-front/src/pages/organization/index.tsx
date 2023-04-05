@@ -5,26 +5,19 @@ import { useState } from "react";
 import { Confirm } from "@/types/Confirm";
 import useOrganizationNFTListQuery from "@/apis/organization/useOrganizationNFTListQuery";
 import AgencyNFTModal from "@/features/Organization/AgencyNFTModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAgencyNft,
   getHospitalNft,
 } from "@/stores/organization/organization";
 import HospitalNFTModal from "@/features/Organization/HospitalNFTModal";
+import { RootState } from "@/stores/store";
 
 export default function OrganizationPage() {
   const dispatch = useDispatch();
-  // const { organizationId, isHospital } = useSelector(
-  //   (state: RootState) => state.member,
-  // );
-
-  // 기관 테스트 데이터
-  // const organizationId = "696d4121-ab33-45c0-9413-f744d6a241c2";
-  // const isHospital = false;
-
-  // 병원 테스트 데이터
-  const organizationId = "33674ae5-e7ae-4619-a7c4-ac4d11ac3b44";
-  const isHospital = true;
+  const { organizationId, organName, isHospital } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   const [isActive, setIsActive] = useState<boolean>(true);
   const [active, setActive] = useState<string>("INACTIVE");
@@ -37,7 +30,6 @@ export default function OrganizationPage() {
     active,
     setConfirmList,
   );
-
   const changeTab = () => {
     setIsActive(!isActive);
     if (isActive) {
@@ -71,7 +63,7 @@ export default function OrganizationPage() {
 
   return (
     <div className="mx-auto mt-50 w-1000 text-center">
-      <p className="mb-30 text-24">헌혈 사실 확인 요청</p>
+      <p className="mb-30 text-24">NFT 헌혈증서 제출 목록 ({organName})</p>
       <TabBtn
         width={500}
         height={70}
