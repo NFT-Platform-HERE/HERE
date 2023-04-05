@@ -16,7 +16,7 @@ public class SwaggerConfig {
 
     private ApiInfo commonInfo() {
         return new ApiInfoBuilder()
-                .title("Member API")
+                .title("Notification API")
                 .version("1.0")
                 .build();
     }
@@ -24,11 +24,11 @@ public class SwaggerConfig {
     @Bean
     public Docket allApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Auth")
+                .groupName("Notification")
                 .useDefaultResponseMessages(false)
                 .select()
                 //.apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.ssafy.hereauth.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.herenotification.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(commonInfo());
