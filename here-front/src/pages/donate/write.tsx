@@ -6,6 +6,7 @@ import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import { HiPhoto } from "react-icons/hi2";
+import "react-datepicker/dist/react-datepicker.css";
 
 import dynamic from "next/dynamic";
 import CircularProgress from "@mui/material/CircularProgress";
