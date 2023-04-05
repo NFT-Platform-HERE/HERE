@@ -229,7 +229,6 @@ public class NftService {
 
             // 현재 마감 처리된 board에 기부된 기부리스트 가져오기 (게시글과 기부자 기준으로 distinct)
             List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardId(boardId);
-            System.out.println(boardBdHistoryList.toString());
 
             for (BoardBdHistory eachBoardBdHistory : boardBdHistoryList) {
                 Member receiver = memberRepository.findById(eachBoardBdHistory.getSenderId())
@@ -239,8 +238,6 @@ public class NftService {
 
                 log.info("receiver : {}", receiver.getNickname());
                 log.info("sender : {}", sender.getNickname());
-                System.out.println("receiver = " + receiver.getNickname());
-                System.out.println("sender = " + sender.getNickname());
 
                 postNotification(sender, receiver, message, EnumNotificationCode.CLOSED, 0L);
             }
