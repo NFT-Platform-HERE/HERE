@@ -61,7 +61,7 @@ public class SchedulerService {
 
     private void postNotification(Member sender, Member receiver, EnumNotificationCode code) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
-        String message = sender.getNickname() + "님께서 기부하신 " + receiver.getNickname() + "님의 게시글이 마감되었습니다.";
+        String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
         jsonNodes.put("content", message);
         jsonNodes.put("receiverId", receiver.getId().toString());
         jsonNodes.put("senderId", sender.getId().toString());
@@ -72,6 +72,5 @@ public class SchedulerService {
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }
