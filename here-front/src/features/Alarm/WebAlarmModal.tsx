@@ -15,10 +15,13 @@ import {
   setSenderId,
 } from "@/stores/alarm/alarm";
 
-export default function WebAlarmModal() {
+interface Iprops {
+  alarmList: any;
+}
+
+export default function WebAlarmModal({ alarmList }: Iprops) {
   const { mutate } = useAlarmReadUpdate();
   const { memberId } = useSelector((state: RootState) => state.member);
-  const alarmList = useAlarmQuery(memberId);
 
   const dispatch = useDispatch();
 
@@ -33,7 +36,9 @@ export default function WebAlarmModal() {
       notificationId,
     };
     mutate(payload);
-    dispatch(setOpen());
+    if (code === "DONATED" || code === "CLOSED" || code === "HOSPITAL") {
+      dispatch(setOpen());
+    }
     dispatch(setAlarmCode(code));
     if (code === "HOSPITAL") {
       dispatch(setNFTHistoryList(nftHistoryList));
@@ -54,7 +59,7 @@ export default function WebAlarmModal() {
                   item.notificationId,
                   item.code,
                   item.senderId,
-                  item.nftHistoryList,
+                  item.memberIdList,
                 )
               }
             />

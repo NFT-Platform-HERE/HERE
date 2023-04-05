@@ -18,9 +18,10 @@ export default function WebAlarmDetailModal() {
   return isOpen ? (
     <div>
       <Background onClick={() => dispatch(setClose())} />
-      {alarmCode !== "HOSPITAL" ? (
+      {alarmCode === "HOSPITAL" && (
         <DonateListModal nftHistoryList={nftHistoryList} memberId={memberId} />
-      ) : (
+      )}
+      {(alarmCode === "DONATED" || alarmCode === "CLOSED") && (
         <MemberCard senderId={senderId} />
       )}
     </div>
