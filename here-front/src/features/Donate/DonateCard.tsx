@@ -48,6 +48,7 @@ export default function DonateCard({
           alt={representativeImageUrl}
           width={160}
           height={160}
+          className="object-cover"
         />
       </div>
       <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">

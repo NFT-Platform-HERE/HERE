@@ -42,9 +42,7 @@ export const connectWallet = async ({
   const chainId = await getChainId();
 
   if (chainId !== SSAFYNETWORK) {
-    try {
-      changeNetwork();
-    } catch {}
+    await changeNetwork();
   }
 };
 
