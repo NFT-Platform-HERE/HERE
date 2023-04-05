@@ -177,7 +177,6 @@ export default function DonatePage() {
           </div>
           <div className="flex justify-center">
             <div className="mx-auto flex w-1112 flex-wrap justify-start mobile:w-326 mobile:justify-center">
-              {/* <Suspense fallback={<CircularProgress />}> */}
               {isChecked &&
                 donateMyList.data?.pages?.map((page, idx) => (
                   <div key={idx} className="flex flex-wrap">
@@ -206,7 +205,6 @@ export default function DonatePage() {
                     )}
                   </div>
                 ))}
-              {/* </Suspense> */}
             </div>
           </div>
         </div>
