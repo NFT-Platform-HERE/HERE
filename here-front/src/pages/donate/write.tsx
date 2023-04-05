@@ -1,16 +1,12 @@
 import CommonBtn from "@/components/Button/CommonBtn";
 import React, { useState, useRef, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import DonateDateButton from "@/features/Donate/DonateDateButton";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/locale";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useDonateWrite from "../../apis/donate/useDonateWrite";
 import { useRouter } from "next/navigation";
 import getDateString from "@/utils/getDateString";
 import { HiPhoto } from "react-icons/hi2";
-// import DonateTiptap from "@/features/Donate/DonateTiptap";
 
 import dynamic from "next/dynamic";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -22,6 +18,15 @@ const DonateTiptap = dynamic(() => import("@/features/Donate/DonateTiptap"), {
     </div>
   ),
 });
+
+const DonateDatePicker = dynamic(
+  () => import("@/features/Donate/DonateDatePicker"),
+  {
+    loading: () => (
+      <div className="h-55 w-240 rounded-60 border border-pen-0"></div>
+    ),
+  },
+);
 
 export default function DonateWritePage() {
   const router = useRouter();
@@ -216,20 +221,10 @@ export default function DonateWritePage() {
                 * 마감기한
               </div>
               <div className="flex-auto">
-                <DatePicker
-                  selected={deadLineDate}
-                  dateFormat="yyyy년 MM월 dd일"
+                <DonateDatePicker
+                  dateBtnRef={dateBtnRef}
+                  deadLineDate={deadLineDate}
                   onChange={(date: Date) => setDeadLineDate(date)}
-                  minDate={new Date()}
-                  locale={ko}
-                  customInput={
-                    <DonateDateButton
-                      value={deadLineDate.toString()}
-                      onClick={() => {}}
-                      forwardedRef={dateBtnRef}
-                      edit={true}
-                    />
-                  }
                 />
               </div>
             </div>
