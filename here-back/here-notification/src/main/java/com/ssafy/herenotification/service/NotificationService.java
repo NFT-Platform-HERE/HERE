@@ -125,8 +125,8 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-//        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDateDesc(member, EnumNotificationStatus.INACTIVE);
-        List<Notification> notificationList = notificationRepository.findAllByReceiverOrderByCreatedDateDesc(member);
+        List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDateDesc(member, EnumNotificationStatus.INACTIVE);
+//        List<Notification> notificationList = notificationRepository.findAllByReceiverOrderByCreatedDateDesc(member);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
