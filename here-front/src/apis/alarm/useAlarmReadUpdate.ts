@@ -16,11 +16,7 @@ const fetcher = (payload: Payload) =>
     .then(({ data }) => data);
 
 const useAlarmReadUpdate = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공", data);
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useAlarmReadUpdate;

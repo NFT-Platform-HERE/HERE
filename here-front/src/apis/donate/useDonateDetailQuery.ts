@@ -17,8 +17,6 @@ const useDonateDetailQuery = (boardId: number) => {
   return useQuery([queryKeys.DONATE_DETAIL, boardId], () => fetcher(boardId), {
     suspense: true,
     onSuccess: (data) => {
-      console.log("자동선택!", data);
-
       dispatch(setBoardEditInfo(data));
     },
   });

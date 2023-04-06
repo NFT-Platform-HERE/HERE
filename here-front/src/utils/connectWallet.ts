@@ -30,21 +30,12 @@ export const connectWallet = async ({
     return;
   }
 
-  // if (active && account) {
-  //   // 이미 연결되어있는 상태면 연결해제 함수 호출
-  //   console.log("여깁니다");
-  //   deactivate();
-  //   return;
-  // }
-  // activate 함수로, App에서 만든 Injected란 이름의 connector 인스턴스를 넘겨준다
   activate(Injected);
 
   const chainId = await getChainId();
 
   if (chainId !== SSAFYNETWORK) {
-    try {
-      changeNetwork();
-    } catch {}
+    await changeNetwork();
   }
 };
 

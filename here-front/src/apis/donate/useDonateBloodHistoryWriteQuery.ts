@@ -13,14 +13,7 @@ const fetcher = (payload: DonationBloodHistoryWrite) =>
     .then(({ data }) => data);
 
 const useDonateBloodHistoryWriteQuery = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
-    },
-    onError: () => {
-      console.log("onERROR");
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useDonateBloodHistoryWriteQuery;

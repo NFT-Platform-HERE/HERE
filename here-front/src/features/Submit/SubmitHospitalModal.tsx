@@ -64,8 +64,6 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
       tokenIdList: tokenIdList,
     };
 
-    console.log("payload", payload);
-
     try {
       // 블록체인 네트워크 소유권 이전
       const blockResult = await mutation.mutateAsync(payload);
@@ -78,12 +76,10 @@ export default function SubmitHospitalModal({ onClick }: Iprops) {
       });
     } catch (error) {
       setOpendLoadingModal(false);
-      console.error("error", error);
     }
   };
 
   function handleHospitalListSelect(item: any) {
-    console.log("handleHospitalListSelect", item);
     setHospital(item.agencyId);
     setHospitalWalletAddress(item.agencyWalletAddress);
   }

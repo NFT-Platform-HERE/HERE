@@ -25,11 +25,9 @@ const useAutoSelectQuery = (
     {
       enabled: onClick,
       onSuccess: (data) => {
-        console.log("자동선택!", data);
         dispatch(onClickAutoSelectBtn());
       },
       onError: (err) => {
-        console.log("error!", err);
         dispatch(onClickAutoSelectBtn());
       },
     },

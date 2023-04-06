@@ -75,7 +75,6 @@ export default function BloodMap() {
     markers.map((item, index) =>
       naver.maps.Event.addListener(item, "click", () => {
         setBloodHouse(bloodHouseInfo[index]);
-        console.log(bloodHouse);
       }),
     );
   }, [markers]);

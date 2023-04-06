@@ -23,7 +23,6 @@ const useDonateUpdate = () => {
 
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("Update 성공", data);
       return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
     },
     onError: (error) => {

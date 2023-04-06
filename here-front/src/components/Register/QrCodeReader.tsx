@@ -1,14 +1,33 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 export default function QrCodeReader() {
+  const [openAnimation, setOpenAnimation] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [repeat, setRepeat] = useState(null);
+
+  useEffect(() => {
+    if (openAnimation) {
+      setIsOpen(true);
+    } else {
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 400);
+    }
+  }, [openAnimation]);
+
   return (
     <>
       {isOpen ? (
-        <div className="fixed top-[calc(50%-150px)] left-0 z-10 flex h-300 w-350 overflow-hidden rounded-r-20 border-t-4 border-r-4 border-b-4 border-red-2 bg-white">
+        <div
+          className={
+            (openAnimation
+              ? "visible translate-x-300 opacity-100 transition duration-700 "
+              : "-translate-x-300 opacity-0 transition duration-700 ") +
+            "fixed top-[calc(50%-150px)] -left-300 z-10 flex h-300 w-350 overflow-hidden rounded-r-20 border-t-4 border-r-4 border-b-4 border-red-2 bg-white"
+          }
+        >
           <div
             className="flex h-300 w-50 cursor-pointer items-center justify-center"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setOpenAnimation(false)}
           >
             <img src="/icons/left-red-vector.svg" className="h-30 w-30"></img>
           </div>
@@ -25,7 +44,7 @@ export default function QrCodeReader() {
       ) : (
         <div
           className="group fixed top-[calc(50%-150px)] left-0 z-10 flex h-250 w-53 cursor-pointer items-center justify-center  rounded-r-40 border-t-4 border-r-4 border-b-4 border-red-2 bg-white"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setOpenAnimation(true)}
         >
           <div className="w-25 text-center text-18 font-semibold text-red-2">
             N F T 등록하기

@@ -15,14 +15,7 @@ const fetcher = (info: SubmitOrganizationNFT) =>
     .then(({ data }) => data);
 
 const useOrganizationNFTSubmit = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (err, variables) => {
-      console.log(err, variables);
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useOrganizationNFTSubmit;

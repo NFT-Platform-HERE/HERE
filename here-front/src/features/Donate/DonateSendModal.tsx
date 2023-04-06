@@ -33,7 +33,7 @@ export default function DonateSendModal({
   onClick,
   writerId,
   writerInfo,
-  boardId
+  boardId,
 }: Iprops) {
   const [count, setCount] = useState<number>(1);
 
@@ -55,7 +55,6 @@ export default function DonateSendModal({
   const writeMutation = useDonateNftWrite();
 
   const [opendLoadingModal, setOpendLoadingModal] = useState<boolean>(false);
-
 
   function handleCountPlus() {
     if (count < maxCnt.data.cnt) {
@@ -86,32 +85,27 @@ export default function DonateSendModal({
         const payload: DonationNftList = {
           myAccount: myWalletAddress,
           sendAccount: writerInfo.walletAddress,
-          tokenIdList: tokenIdList
+          tokenIdList: tokenIdList,
         };
 
         const writePayload: DonationNft = {
           boardId: boardId,
           receiverId: writerId,
           senderId: senderId,
-          nftTokenList: tokenIdList
-        }
+          nftTokenList: tokenIdList,
+        };
 
         // 블록체인 네트워크 소유권 이전
         const blockResult = await mutation.mutateAsync(payload);
 
-        console.log("blockResult", blockResult);
-
         // 백엔드 소유권 이전
         const result = await writeMutation.mutateAsync(writePayload);
-
-        console.log("backResult", result);
 
         setOpendLoadingModal(false);
         onClick();
         successDonate();
       }
     } catch (error) {
-      console.error("error", error);
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);

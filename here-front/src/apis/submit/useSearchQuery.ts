@@ -14,11 +14,7 @@ const useSearchQuery = (organType: string, query: string) => {
   return useQuery(
     [queryKeys.SUBMIT_SEARCH, query],
     () => fetcher(organType, query),
-    {
-      onSuccess: (data) => {
-        console.log(organType, "이름으로 검색", data);
-      },
-    },
+    {},
   );
 };
 

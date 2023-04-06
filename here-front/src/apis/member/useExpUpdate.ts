@@ -15,14 +15,7 @@ const fetcher = (payload: Payload) =>
     .then(({ data }) => data);
 
 const useExpUpdate = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("경험치 성공", data);
-    },
-    onError: () => {
-      console.log("경험치 실패...ㅜㅜ");
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useExpUpdate;

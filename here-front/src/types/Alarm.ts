@@ -4,4 +4,6 @@ export interface Alarm {
   senderNickname: string;
   status: string;
   content: string;
+  code: string;
+  memberIdList: string[];
 }

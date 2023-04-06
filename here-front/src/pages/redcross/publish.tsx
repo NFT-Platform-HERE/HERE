@@ -35,6 +35,7 @@ interface memberInfo {
 
 export default function RedCrossPublishPage() {
   const router = useRouter();
+  const { organName } = useSelector((state: RootState) => state.member);
   const today = moment(new Date()).format("YYYY-MM-DD");
   const [inputs, setInputs] = useState({
     name: "",
@@ -46,7 +47,7 @@ export default function RedCrossPublishPage() {
     wallet: "",
     birth: today,
     createdDate: today,
-    place: "",
+    place: organName,
   });
 
   const { walletAddress } = useSelector((state: RootState) => state.member);
@@ -165,6 +166,7 @@ export default function RedCrossPublishPage() {
       place: place.trim(),
       tokenId: agencyTokenId,
       nftType: NftType.AGENCY,
+      createdDate: createdDate,
     };
 
     return agencyPayload;
@@ -184,6 +186,7 @@ export default function RedCrossPublishPage() {
       place: place.trim(),
       tokenId: hospitalTokenId,
       nftType: NftType.HOSPITAL,
+      createdDate: createdDate,
     };
 
     return agencyPayload;
@@ -260,7 +263,6 @@ export default function RedCrossPublishPage() {
       setOpendLoadingModal(false);
       successMint();
     } catch (error) {
-      console.error("error", error);
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);
@@ -588,6 +590,7 @@ export default function RedCrossPublishPage() {
       <div className="my-20 mx-auto mb-40 flex w-650 justify-between ">
         <label htmlFor="place">혈액원 명</label>
         <input
+          // disabled
           type="text"
           id="place"
           name="place"
