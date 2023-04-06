@@ -42,7 +42,7 @@ export default function InfoFirst() {
         <img src="info/ssafy.png" className="inline-block w-200" />
       </div>
       <div className="mx-100 flex   items-center justify-center rounded-30 border-5 border-pink-2 py-30">
-        <img src="info/memberInfoInput.png" alt="" />
+        <img src="info/memberInfoInput.PNG" alt="" />
         <div>
           <p className="mb-20">
             최초 1회 <strong>회원정보입력</strong>이 필요해요
