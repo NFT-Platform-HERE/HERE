@@ -11,8 +11,12 @@ import mainArrow from "../../public/lottieJson/main_arrow.json";
 import MainBannerWeb from "@/components/Banner/MainBannerWeb";
 import MainBannerMobile from "@/components/Banner/MainBannerMobile";
 import { IoCaretUpCircle } from "react-icons/io5";
+import { useRouter } from "next/router";
+import { FaQuestion } from "react-icons/fa";
 
 export default function HomePage() {
+  const router = useRouter();
+
   const goToDown = () => {
     const element = document.getElementById(
       "section1",
@@ -33,12 +37,22 @@ export default function HomePage() {
     });
   };
 
+  const goToInfo = () => {
+    router.push("/information");
+  };
+
   return (
     <div>
       <IoCaretUpCircle
         className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1"
         onClick={goToTop}
       />
+      <div onClick={goToInfo}>
+        <button className="fixed top-100 right-0 z-20 -mr-16  h-40 w-130 rounded-30 border-4 border-red-2 bg-red-2 font-semibold text-white ">
+          <FaQuestion className="inline-block text-24" />
+          사용 가이드
+        </button>
+      </div>
       <div className="hidden mobile:block">
         <MainBannerMobile />
       </div>

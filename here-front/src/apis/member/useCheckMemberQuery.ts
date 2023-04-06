@@ -41,6 +41,7 @@ const useCheckMemberQuery = (walletAddress: string) => {
           return;
         }
         if (data.data.role === "REDCROSS") {
+          dispatch(getAgencyId(data.data));
           router.push("/redcross");
         }
         // 멤버ID, 닉네임, 이미지 받아서 저장

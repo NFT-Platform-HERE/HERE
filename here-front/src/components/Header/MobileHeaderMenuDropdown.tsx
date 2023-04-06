@@ -28,6 +28,8 @@ export default function MobileHeaderMenuDropdown() {
       case "/register":
         dispatch(setMobileHeaderName("종이 헌혈증 등록"));
         break;
+      case "/information":
+        dispatch(setMobileHeaderName("사용 가이드"));
       default:
         break;
     }
@@ -55,6 +57,9 @@ export default function MobileHeaderMenuDropdown() {
       </div>
       <div className="text-14" onClick={() => movePage("/register")}>
         종이 헌혈증 등록
+      </div>
+      <div className="text-14" onClick={() => movePage("/information")}>
+        사용 가이드
       </div>
     </div>
   );
