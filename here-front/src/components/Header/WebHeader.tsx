@@ -26,7 +26,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
   const router = useRouter();
 
   const movePage = (path: string) => {
-    if (!memberId) {
+    if (!memberId && path !== "/") {
       window.alert("로그인이 필요한 서비스입니다");
       return;
     }

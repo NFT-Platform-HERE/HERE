@@ -10,9 +10,11 @@ export default function MobileHeaderMenuDropdown() {
   const dispatch = useDispatch();
 
   const movePage = (url: string) => {
-    if (!memberId) {
-      window.alert("로그인이 필요한 서비스입니다");
-      return;
+    if (!memberId && url !== "/") {
+      if (url !== "/information") {
+        window.alert("로그인이 필요한 서비스입니다");
+        return;
+      }
     }
     router.push(url);
     switch (url) {
