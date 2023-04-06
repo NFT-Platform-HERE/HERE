@@ -50,7 +50,7 @@ public class Nft {
     @Column(name = "type", columnDefinition = "char(10)", nullable = false)
     private EnumNftType type;
 
-    @CreatedDate
+//    @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
@@ -63,6 +63,7 @@ public class Nft {
         this.issuerId = saveNftRequestDto.getIssuerId();
         this.imgUrl = saveNftRequestDto.getImgUrl();
         this.type = saveNftRequestDto.getNftType();
+        this.createdDate = saveNftRequestDto.getCreatedDate();
     }
 
     public void updateOwnership(UUID ownerId) {
