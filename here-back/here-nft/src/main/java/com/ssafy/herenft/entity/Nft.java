@@ -65,12 +65,16 @@ public class Nft {
         this.imgUrl = saveNftRequestDto.getImgUrl();
         this.type = saveNftRequestDto.getNftType();
 
-        String str = saveNftRequestDto.getCreatedDate() + " 00:00:00.000";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        if(saveNftRequestDto.getCreatedDate() != null) {
+            String str = saveNftRequestDto.getCreatedDate() + " 00:00:00.000";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
 
-        System.out.println("dateTime = " + dateTime);
-        this.createdDate = dateTime;
+            System.out.println("dateTime = " + dateTime);
+            this.createdDate = dateTime;
+        } else {
+            createdDate = LocalDateTime.now();
+        }
     }
 
     public void updateOwnership(UUID ownerId) {
