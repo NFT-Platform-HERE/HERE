@@ -15,6 +15,7 @@ import submitSelectedOrganizationNFTSlice from "./submit/selectedOrganizationNFT
 import clickAutoSelectBtnSlice from "./submit/clickAutoSelectBtn";
 import saveImgSlice from "./myNFT/saveImg";
 import donateSlice from "./donate/donateEditInformation";
+import alarmSlice from "./alarm/alarm";
 
 const reducers = combineReducers({
   myNFT: myNFTSlice,
@@ -31,6 +32,7 @@ const reducers = combineReducers({
   donate: donateSlice,
   organization: organizationSlice,
   saveImg: saveImgSlice,
+  alarm: alarmSlice,
 });
 
 const persistConfig = {

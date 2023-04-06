@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 export default function MobileAlarmModal() {
   const { mutate } = useAlarmReadUpdate();
   const { memberId } = useSelector((state: RootState) => state.member);
-  const alarmList = useAlarmQuery(memberId);
   const [openCard, setOpenCard] = useState<boolean>(false);
+  const alarmList = useAlarmQuery(memberId, openCard);
 
   const changeStatus = (notificationId: number) => {
     const payload = {

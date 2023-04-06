@@ -4,7 +4,6 @@ import * as timeago from "timeago.js";
 import koLocale from "timeago.js/lib/lang/ko";
 import { useRouter } from "next/navigation";
 import { BoardStatus } from "@/enum/statusType";
-import Image from "next/legacy/image";
 
 interface Iprops {
   boardId: number;
@@ -31,11 +30,11 @@ export default function DonateCard({
   return (
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
-      className={`mx-24 mb-100 flex h-335 w-230 flex-col rounded-30 border border-pen-0 p-16 transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
-        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
+      className={`mx-24 mb-100 flex h-335 w-230 cursor-pointer flex-col rounded-30 border-2 border-pen-0 p-16 shadow-[5px_5px_10px_-5px_rgba(0,0,0,0.15)] transition delay-150 duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${
+        isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-40"
       }`}
     >
-      <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
+      <div className="flex justify-end text-12 font-medium text-pen-2">
         {isCompleted == BoardStatus.ACTIVE ? (
           <TimeAgo datetime={expirationDate} locale="ko" />
         ) : (
@@ -43,11 +42,9 @@ export default function DonateCard({
         )}
       </div>
       <div className="mb-14 flex justify-center">
-        <Image
+        <img
           src={representativeImageUrl}
-          alt={representativeImageUrl}
-          width={160}
-          height={160}
+          className="ml-8 mr-12 mt-10 h-160 w-160 rounded-10 border"
         />
       </div>
       <div className="mb-3 flex min-h-35 justify-start text-14 font-bold leading-18 text-pen-3">
@@ -61,7 +58,7 @@ export default function DonateCard({
           fontSize={16}
           width={200}
           height={30}
-          percent={donatePercent}
+          percent={donatePercent < 100 ? donatePercent : 100}
         />
       </div>
     </div>
@@ -83,7 +80,7 @@ export function DonateCardMobile({
   return (
     <div
       onClick={() => router.push(`/donate/${boardId}`)}
-      className={`m-8 flex h-95 w-310 flex-row rounded-15 border border-pen-0 pt-8 pr-8 ${
+      className={`m-8 flex h-95 w-310 flex-row rounded-15 border-2  border-pen-0 pt-8 pr-8 shadow-[5px_5px_10px_-5px_rgba(0,0,0,0.15)] ${
         isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-30"
       }`}
     >
@@ -111,7 +108,7 @@ export function DonateCardMobile({
             fontSize={6}
             width={225}
             height={18}
-            percent={donatePercent}
+            percent={donatePercent < 100 ? donatePercent : 100}
           />
         </div>
       </div>

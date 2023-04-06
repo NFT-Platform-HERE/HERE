@@ -1,5 +1,5 @@
 package com.ssafy.herenotification.enumeration;
 
 public enum EnumNotificationCode {
-    DONATED, CLOSED, HOSPITAL
+    DONATED, CLOSED, HOSPITAL, AGENCY
 }

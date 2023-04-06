@@ -13,9 +13,6 @@ const useSubmitNFTListQuery = (memberId: string, organType: string) => {
     [queryKeys.SUBMIT_NFT_LIST, memberId, organType],
     () => fetcher(memberId, organType),
     {
-      onSuccess: (data) => {
-        console.log(organType, "NFT 정보", data);
-      },
       refetchOnWindowFocus: false,
     },
   );

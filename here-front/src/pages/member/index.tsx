@@ -55,7 +55,6 @@ export default function SignUpPage() {
     nickname: newNickname,
     setNicknameMessage,
   });
-  console.log(isValidEmail.status, isValidNickname);
 
   const finishUserInfo = () => {
     setNewEmail(email);

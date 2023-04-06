@@ -36,8 +36,10 @@ export default function MyNFTPage() {
   const dispatch = useDispatch();
 
   const saveImg = () => {
-    saveNFTImage(capture, dispatch);
-    dispatch(loading());
+    if (myNFTList?.data.length !== 0) {
+      saveNFTImage(capture, dispatch);
+      dispatch(loading());
+    }
   };
 
   useEffect(() => {

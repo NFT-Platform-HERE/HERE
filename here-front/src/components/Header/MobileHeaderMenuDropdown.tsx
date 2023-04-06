@@ -1,13 +1,21 @@
 import { closeMobileHeaderMenuDropdown } from "@/stores/header/mobileHeaderMenuDropdown";
 import { setMobileHeaderName } from "@/stores/header/mobileHeaderName";
+import { RootState } from "@/stores/store";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function MobileHeaderMenuDropdown() {
+  const { memberId } = useSelector((state: RootState) => state.member);
   const router = useRouter();
   const dispatch = useDispatch();
 
   const movePage = (url: string) => {
+    if (!memberId && url !== "/") {
+      if (url !== "/information") {
+        window.alert("로그인이 필요한 서비스입니다");
+        return;
+      }
+    }
     router.push(url);
     switch (url) {
       case "/":
@@ -28,6 +36,8 @@ export default function MobileHeaderMenuDropdown() {
       case "/register":
         dispatch(setMobileHeaderName("종이 헌혈증 등록"));
         break;
+      case "/information":
+        dispatch(setMobileHeaderName("사용 가이드"));
       default:
         break;
     }
@@ -55,6 +65,9 @@ export default function MobileHeaderMenuDropdown() {
       </div>
       <div className="text-14" onClick={() => movePage("/register")}>
         종이 헌혈증 등록
+      </div>
+      <div className="text-14" onClick={() => movePage("/information")}>
+        사용 가이드
       </div>
     </div>
   );

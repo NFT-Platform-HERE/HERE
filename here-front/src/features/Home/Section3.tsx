@@ -27,7 +27,7 @@ export default function Section3() {
           slidesPerView={1}
           loop={true}
           autoplay={{
-            delay: 5000,
+            delay: 2000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}

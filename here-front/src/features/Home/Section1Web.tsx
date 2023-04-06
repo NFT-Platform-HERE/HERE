@@ -10,7 +10,7 @@ export default function Section1Web() {
   return (
     <div className="mt-80 mb-50 flex flex-wrap justify-center">
       <div
-        data-aos="fade-down"
+        data-aos="fade-up"
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
@@ -31,7 +31,8 @@ export default function Section1Web() {
         <p>사람들에게 온정을 나눠주세요</p>
       </div>
       <div
-        data-aos="fade-right"
+        data-aos="fade-up"
+        data-aos-delay="200"
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
@@ -53,6 +54,7 @@ export default function Section1Web() {
       </div>
       <div
         data-aos="fade-up"
+        data-aos-delay="400"
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >
@@ -73,7 +75,8 @@ export default function Section1Web() {
         <p>간편하게 제출하세요</p>
       </div>
       <div
-        data-aos="fade-right"
+        data-aos="fade-up"
+        data-aos-delay="600"
         data-aos-duration="1500"
         className="relative mx-5 h-350 w-290 rounded-20 border-4 border-pink-0 text-center "
       >

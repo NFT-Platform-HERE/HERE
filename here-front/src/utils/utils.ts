@@ -33,8 +33,6 @@ export function makeJsonMetaData({
     nftType,
   };
 
-  console.log("metadata", metadata);
-
   const jsonData = JSON.stringify(metadata);
 
   return jsonData;

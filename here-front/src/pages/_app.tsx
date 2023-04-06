@@ -2,21 +2,26 @@ import "../index.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Header from "@/components/Header/Header";
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { useEffect, useState } from "react";
-import { Provider, useSelector } from "react-redux";
-import store, { RootState } from "@/stores/store";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import store from "@/stores/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import LiveAlarmModal from "@/features/Alarm/LiveAlarmModal";
+import Background from "@/components/Background/Background";
+import { useDispatch } from "react-redux";
+import { setClose } from "@/stores/alarm/alarm";
+import WebAlarmDetailModal from "@/features/Alarm/WebAlarmDetailModal";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
   const getLibrary = (provider: any) => {
     return new Web3Provider(provider);
   };
+
   return (
     <>
       <Head>
@@ -59,6 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <PersistGate loading={null} persistor={persistStore(store)}>
                 <Header />
                 <LiveAlarmModal />
+                <WebAlarmDetailModal />
                 <Component {...pageProps} />
               </PersistGate>
             </Provider>

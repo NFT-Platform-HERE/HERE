@@ -22,9 +22,7 @@ const useRegisterPaperNftQuery = (memberId: string, serialNumber: string) => {
     {
       refetchOnWindowFocus: false,
       enabled: false,
-      onSuccess: (data) => {
-        console.log("Success");
-      },
+
       onError: (err) => {
         MySwal.fire({
           icon: "error",

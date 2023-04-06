@@ -10,8 +10,6 @@ import {
   closeWebHeaderDropdown,
   openWebHeaderDropdown,
 } from "@/stores/header/webHeaderDropdown";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface Iprops {
   handleConnect: () => void;
@@ -27,9 +25,11 @@ export default function WebHeader({ handleConnect }: Iprops) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
   const movePage = (path: string) => {
+    if (!memberId && path !== "/") {
+      window.alert("로그인이 필요한 서비스입니다");
+      return;
+    }
     router.push(path);
     dispatch(closeWebHeaderDropdown());
   };
@@ -41,21 +41,10 @@ export default function WebHeader({ handleConnect }: Iprops) {
   };
 
   useEffect(() => {
-    AOS.init();
-  }, []);
-
-  useEffect(() => {
     dispatch(closeWebHeaderDropdown());
-    setIsDisabled(
-      !(
-        router.asPath !== "/organization" &&
-        router.asPath !== "/redcross" &&
-        router.asPath !== "/redcross/publish"
-      ),
-    );
   }, []);
 
-  return isDisabled ? null : (
+  return (
     <div className="justify-content flex h-65 w-full  min-w-[1200px] justify-center shadow-sm">
       <div className="relative flex h-65 w-[1200px] justify-between">
         <img
@@ -114,15 +103,15 @@ export default function WebHeader({ handleConnect }: Iprops) {
             <div className="ml-10 w-70 text-15 font-normal">{nickname}</div>
           </div>
         )}
-        {dropDown && (
-          <div
-            className="absolute top-[65px] right-0 z-40"
-            data-aos="fade-down"
-            data-aos-duration="500"
-          >
-            <WebHeaderDropdown />
-          </div>
-        )}
+        <div
+          className={
+            (dropDown
+              ? "visible opacity-100 transition-opacity duration-500 "
+              : "invisible opacity-0 ") + "absolute top-[65px] right-0 z-35"
+          }
+        >
+          <WebHeaderDropdown dropDown={dropDown} />
+        </div>
       </div>
     </div>
   );

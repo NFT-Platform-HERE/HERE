@@ -17,11 +17,7 @@ const useDonateDelete = () => {
   const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log("성공!");
       return queryClient.invalidateQueries(queryKeys.DONATE_DETAIL);
-    },
-    onError: () => {
-      console.log("onERROR");
     },
   });
 };

@@ -17,11 +17,7 @@ const useHospitalNFTSubmit = () => {
   const queryClient = useQueryClient();
   return useMutation(fetcher, {
     onSuccess: (data) => {
-      console.log(data);
       return queryClient.invalidateQueries(queryKeys.SUBMIT_NFT_LIST);
-    },
-    onError: (err, variables) => {
-      console.log(err, variables);
     },
   });
 };

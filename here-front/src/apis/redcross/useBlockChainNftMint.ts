@@ -10,14 +10,7 @@ const fetcher = (payload: BlockChainMint) =>
   ).then((data) => data);
 
 const useBlockChainNftMint = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
-    },
-    onError: () => {
-      console.log("onERROR");
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useBlockChainNftMint;

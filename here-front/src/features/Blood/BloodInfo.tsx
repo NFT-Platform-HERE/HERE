@@ -33,7 +33,7 @@ export default function BloodInfo() {
         className="inline-block h-500 w-400 rounded-30 border-1 text-center mobile:mx-auto mobile:mt-32 mobile:h-400 mobile:w-300"
       >
         <img
-          src={member.data ? member.data.characterImgUrl : ""}
+          src={member?.data?.characterImgUrl}
           alt="characterImgUrl"
           className="mx-auto mt-50 mb-20 h-300 w-300 mobile:mt-30 mobile:h-240 mobile:w-240"
         />
@@ -41,10 +41,10 @@ export default function BloodInfo() {
           <div>
             <span className="mr-10 text-22 font-semibold text-red-3">
               LEVEL.
-              {member.data ? member.data.level : ""}
+              {member?.data?.level}
             </span>
             <span className="text-24 font-semibold">
-              {member.data ? member.data.nickname : ""}
+              {member?.data?.nickname}
             </span>
           </div>
           <button
@@ -70,7 +70,7 @@ export default function BloodInfo() {
             </p>
           </div>
           <p className="mr-20 inline-block text-center text-48 font-bold leading-100 text-pen-1 mobile:mr-0 mobile:w-100 mobile:text-20 mobile:leading-30">
-            {member.data ? member.data.bdCnt : ""}
+            {member?.data?.bdCnt}
           </p>
         </div>
         <div className="mb-10 flex h-160 w-600 flex-wrap justify-between border-b-3 border-pen-0 py-30 px-20 mobile:mx-0 mobile:w-100 mobile:border-0 mobile:px-0">
@@ -85,11 +85,9 @@ export default function BloodInfo() {
             </p>
           </div>
           <p className="mr-20 inline-block text-center text-40 font-bold leading-100 text-pen-1 mobile:mr-0 mobile:w-100 mobile:text-18 mobile:leading-30">
-            {member.data
-              ? member.data.recentBdDate
-                ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
-                : "없음"
-              : ""}
+            {member?.data?.recentBdDate
+              ? member.data.recentBdDate?.slice(2, 10).replaceAll("-", ".")
+              : "없음"}
           </p>
         </div>
         <div className="flex h-160 w-600 flex-wrap justify-between py-30 px-20 mobile:mx-0 mobile:w-100 mobile:border-0 mobile:px-0 ">
@@ -109,7 +107,7 @@ export default function BloodInfo() {
                 전혈
               </span>
               <span className="text-30 font-bold mobile:text-16 mobile:leading-30">
-                {member.data ? member.data.nextWholeBdDays : ""}일
+                {member?.data?.nextWholeBdDays}일
               </span>
             </div>
             <div className="flex justify-center">
@@ -117,7 +115,7 @@ export default function BloodInfo() {
                 혈장/혈소판
               </span>
               <span className="text-30 font-bold mobile:text-16 mobile:leading-30">
-                {member.data ? member.data.nextNotWholeBdDays : ""}일
+                {member?.data?.nextNotWholeBdDays}일
               </span>
             </div>
           </div>

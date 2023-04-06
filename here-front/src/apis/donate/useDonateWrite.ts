@@ -38,7 +38,6 @@ const useDonateWrite = () => {
       ]);
     },
     onError: (error) => {
-      console.log("error", error);
       let message;
       if (error instanceof AxiosError) {
         message = error.message;
@@ -53,7 +52,6 @@ const useDonateWrite = () => {
           },
         });
       } else message = String(error);
-      console.log("message", message);
     },
   });
 };

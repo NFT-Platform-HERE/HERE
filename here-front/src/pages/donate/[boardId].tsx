@@ -102,12 +102,10 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
     try {
       const result = await mutation.mutateAsync(payload);
-      console.log("result", result);
+
       successDelete();
       moveDonateListPage();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const successDelete = () => {
@@ -148,11 +146,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
     try {
       const result = await mutation.mutateAsync(payload);
-      console.log("result", result);
+
       successClose();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const successClose = () => {
@@ -229,7 +225,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   width={816}
                   height={12}
                   fontSize={15}
-                  percent={nowBoard.data.percentage}
+                  percent={
+                    nowBoard.data.percentage < 100
+                      ? nowBoard.data.percentage
+                      : 100
+                  }
                 />
               </div>
               <div className="mx-auto hidden mobile:block">
@@ -237,7 +237,11 @@ export default function DonateDetailPage({ boardId }: Iprops) {
                   width={300}
                   height={8}
                   fontSize={11}
-                  percent={nowBoard.data.percentage}
+                  percent={
+                    nowBoard.data.percentage < 100
+                      ? nowBoard.data.percentage
+                      : 100
+                  }
                 />
               </div>
             </div>

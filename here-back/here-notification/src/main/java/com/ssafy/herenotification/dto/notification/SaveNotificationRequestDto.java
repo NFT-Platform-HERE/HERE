@@ -27,4 +27,6 @@ public class SaveNotificationRequestDto {
 
     @NotNull(message = "code는 필수 값입니다.")
     private EnumNotificationCode code;
+
+    private Long nftId;
 }

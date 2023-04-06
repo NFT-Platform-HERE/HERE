@@ -22,7 +22,6 @@ const useDonateListQuery = () => {
       getNextPageParam: (lastPage, pages) => {
         return lastPage.last ? undefined : lastPage.number + 1;
       },
-      suspense: true,
     },
   );
 };
