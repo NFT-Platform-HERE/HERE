@@ -166,7 +166,7 @@ export default function RedCrossPublishPage() {
       place: place.trim(),
       tokenId: agencyTokenId,
       nftType: NftType.AGENCY,
-      // createdDate,
+      createdDate: createdDate,
     };
 
     return agencyPayload;
@@ -186,7 +186,7 @@ export default function RedCrossPublishPage() {
       place: place.trim(),
       tokenId: hospitalTokenId,
       nftType: NftType.HOSPITAL,
-      // createdDate,
+      createdDate: createdDate,
     };
 
     return agencyPayload;

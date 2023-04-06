@@ -48,9 +48,10 @@ export default function HomePage() {
         onClick={goToTop}
       />
       <div onClick={goToInfo}>
-        <button className="fixed top-100 right-0 z-10 -mr-16  h-40 w-130 rounded-30 border-4 border-red-2 bg-red-2 font-semibold text-white ">
-          <FaQuestion className="inline-block text-22" />
-          사용 가이드
+        <button className="fixed top-100 right-0 z-10 -mr-40 h-80  w-100 rounded-full border-4 border-red-2 bg-red-2 text-left font-semibold text-white ">
+          {/* <FaQuestion className="inline-block w-50 text-18" /> */}
+          <p className="ml-24 w-40 break-all text-15">사용</p>
+          <p className="ml-10 w-50 break-all text-15">가이드</p>
         </button>
       </div>
       <div className="hidden mobile:block">
@@ -59,7 +60,6 @@ export default function HomePage() {
       <div className="mobile:hidden">
         <MainBannerWeb />
       </div>
-      {/* <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div> */}
       <div className="flex h-[calc(100vh-(100vw/3)-65px)] max-h-250 w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
         <button
           onClick={goToDown}
