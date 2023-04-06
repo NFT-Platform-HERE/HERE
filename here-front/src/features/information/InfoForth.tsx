@@ -32,12 +32,13 @@ export default function InfoForth() {
         }}
         className="mx-auto"
       />
-      <div className="flex h-650 w-1200 rounded-20 border-4 border-pink-2 px-100 pt-50">
+      <div className="mx-auto flex h-620 w-1000 rounded-20 border-4 border-pink-2 px-50 pt-50">
         <div className="flex w-400 flex-col items-center">
-          <img src="info/qrCode.png" className="w-300 rounded-20 pt-50" />
-          <p className="mt-30">
-            <strong>QR 코드</strong>를 통해 바코드 등록 페이지로 이동하세요
+          <img src="info/qrCode.png" className="w-300 rounded-20 pt-80" />
+          <p className="mt-70">
+            <strong>QR 코드</strong>를 통해
           </p>
+          <p>바코드 등록 페이지로 이동하세요</p>
         </div>
         <Lottie
           loop
@@ -53,8 +54,9 @@ export default function InfoForth() {
         />
         <div>
           <img src="info/barcode.png" className="w-400 rounded-20  p-2" />
-          <p className="mt-20">
-            바코드를 인식하여 기존 헌혈증서를 <strong>NFT</strong>로 만들어요
+          <p className="mt-20">바코드를 인식하여 기존 헌혈증서를</p>
+          <p>
+            <strong>NFT</strong>로 만들어요
           </p>
         </div>
       </div>
