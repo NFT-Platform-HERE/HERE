@@ -9,7 +9,11 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-export default function WebHeaderDropdown() {
+interface Iprops {
+  dropDown: boolean;
+}
+
+export default function WebHeaderDropdown({ dropDown }: Iprops) {
   const dispatch = useDispatch();
   const { nickname, characterImgUrl, memberId } = useSelector(
     (state: RootState) => state.member,
@@ -26,7 +30,13 @@ export default function WebHeaderDropdown() {
     setOpenAlarmModal(!openAlarmModal);
   };
 
-  const alarmList = useAlarmQuery(memberId);
+  useEffect(() => {
+    if (!dropDown) {
+      setOpenAlarmModal(false);
+    }
+  }, [dropDown]);
+
+  const alarmList = useAlarmQuery(memberId, openAlarmModal);
 
   return (
     <div className="flex h-250 w-200 flex-col items-center justify-center rounded-b-10 bg-white shadow-md">
@@ -39,7 +49,7 @@ export default function WebHeaderDropdown() {
       <div className="mt-10 text-15">{nickname}</div>
       <div className="relative mt-10 cursor-pointer" onClick={openAlarm}>
         <img src="/icons/alarm.svg" />
-        {alarmList?.data?.length !== 0 && (
+        {alarmList?.data && alarmList?.data?.length !== 0 && (
           <div className="absolute top-0 right-0 h-10 w-10 animate-pulse rounded-50 bg-red-2"></div>
         )}
       </div>
