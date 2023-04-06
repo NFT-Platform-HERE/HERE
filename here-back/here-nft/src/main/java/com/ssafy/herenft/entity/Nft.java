@@ -63,6 +63,7 @@ public class Nft {
         this.issuerId = saveNftRequestDto.getIssuerId();
         this.imgUrl = saveNftRequestDto.getImgUrl();
         this.type = saveNftRequestDto.getNftType();
+//        this.createdDate = saveNftRequestDto.getCreatedDate().atTime();
     }
 
     public void updateOwnership(UUID ownerId) {
