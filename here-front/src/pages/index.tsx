@@ -48,8 +48,8 @@ export default function HomePage() {
         onClick={goToTop}
       />
       <div onClick={goToInfo}>
-        <button className="fixed top-100 right-0 z-20 -mr-16  h-40 w-130 rounded-30 border-4 border-red-2 bg-red-2 font-semibold text-white ">
-          <FaQuestion className="inline-block text-24" />
+        <button className="fixed top-100 right-0 z-10 -mr-16  h-40 w-130 rounded-30 border-4 border-red-2 bg-red-2 font-semibold text-white ">
+          <FaQuestion className="inline-block text-22" />
           사용 가이드
         </button>
       </div>

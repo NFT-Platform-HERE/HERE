@@ -1,7 +1,7 @@
 import Lottie from "react-lottie-player";
-import arrow from "../../../public/lottieJson/arrow.json";
+import mainArrow from "../../../public/lottieJson/main_arrow.json";
 
-export default function InfoSecond() {
+export default function InfoForthMobile() {
   return (
     <>
       <div className="relative mx-auto h-0 w-200">
@@ -10,23 +10,9 @@ export default function InfoSecond() {
       <div className="relative z-10 mb-20">
         <span className="text-20 font-semibold ">기부하기</span>
       </div>
-      <div className="flex w-1200 items-center justify-center px-100">
-        <img src="info/give_modal2.png" className="inline-block w-600" />
-
-        <Lottie
-          loop
-          animationData={arrow}
-          play
-          style={{
-            width: 100,
-            height: 100,
-            display: "inline-block",
-            transform: "rotate(-45deg)",
-          }}
-          className="mx-auto"
-        />
-
-        <div className="inline-block w-250">
+      <div className="w-full px-10">
+        <img src="info/give_modal2.png" className="inline-block w-full" />
+        <div className="inline-block w-300">
           <p>게시글의 기부하기 버튼을 눌렀을 때</p>
           <p>나타나는 모달창이에요</p>
           <p className="mt-30">
@@ -35,8 +21,22 @@ export default function InfoSecond() {
           </p>
         </div>
       </div>
-      <div className="mt-30 flex w-1200 items-center justify-center px-100">
-        <div className="inline-block w-400">
+      <Lottie
+        loop
+        animationData={mainArrow}
+        play
+        style={{
+          width: 100,
+          height: 100,
+          display: "inline-block",
+        }}
+      />
+      <div className="mt-30 w-full px-10">
+        <img
+          src="info/send.png"
+          className="w-full rounded-20 border-4 border-pink-2"
+        />
+        <div className="mt-10 mb-50 inline-block w-full">
           <p>기부했던 헌혈증서가 병원에 제출되면</p>
           <p>
             <strong>원소유자</strong>에게도 알림이 갑니다
@@ -45,10 +45,6 @@ export default function InfoSecond() {
             내 헌혈증서의 이동 경로를 <strong>투명하게</strong> 알 수 있어요🤗
           </p>
         </div>
-        <img
-          src="info/send.png"
-          className="w-600 rounded-20 border-4 border-pink-2"
-        />
       </div>
     </>
   );

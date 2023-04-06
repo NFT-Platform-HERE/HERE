@@ -9,4 +9,5 @@ export interface Mint {
   place: string;
   tokenId: number;
   nftType: NftType;
+  createdDate: string;
 }

@@ -1,6 +1,6 @@
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
-export default function InfoThird() {
+export default function InfoThirdMobile() {
   return (
     <>
       <div className="relative mx-auto h-0 w-200">
@@ -9,10 +9,10 @@ export default function InfoThird() {
       <div className="relative z-10 mb-20">
         <span className="text-20 font-semibold ">제출하기</span>
       </div>
-      <div className="mx-auto mt-30 flex w-1200 justify-center px-100">
+      <div className="mx-auto mt-60 flex w-full flex-col justify-center px-10">
         <div>
-          <div className="relative mx-5 h-350 w-400 rounded-20 border-5 border-pink-2 p-30 pt-50 text-center ">
-            <p className="absolute -top-20 left-165 inline-block w-70 bg-white text-20 font-bold text-red-3">
+          <div className="relative mx-auto h-350 w-350 rounded-20 border-5 border-pink-2 p-30 pt-50 text-center ">
+            <p className="absolute -top-20 left-135 inline-block w-70 bg-white text-20 font-bold text-red-3">
               기관
             </p>
             <div>
@@ -37,10 +37,13 @@ export default function InfoThird() {
           </div>
         </div>
 
-        <img src="info/competition.png" className="mx-10 mt-120 h-100 w-100" />
+        <img
+          src="info/competition.png"
+          className="mx-auto my-30 h-100 w-100 rotate-[90deg]"
+        />
 
-        <div className="relative mx-5 h-350 w-400 rounded-20 border-5 border-pink-2 p-30 pt-50 text-center ">
-          <p className="absolute -top-20 left-165 inline-block w-70 bg-white text-20 font-bold text-red-3">
+        <div className="relative mx-auto mb-50 h-350 w-350 rounded-20 border-5 border-pink-2 p-30 pt-50 text-center ">
+          <p className="absolute left-135 -top-20 inline-block w-70 bg-white text-20 font-bold text-red-3">
             병원
           </p>
           <div>
