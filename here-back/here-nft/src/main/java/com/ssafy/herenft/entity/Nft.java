@@ -51,7 +51,7 @@ public class Nft {
     @Column(name = "type", columnDefinition = "char(10)", nullable = false)
     private EnumNftType type;
 
-    @CreatedDate
+//    @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
@@ -68,6 +68,8 @@ public class Nft {
         String str = saveNftRequestDto.getCreatedDate() + " 00:00:00.000";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+
+        System.out.println("dateTime = " + dateTime);
         this.createdDate = dateTime;
     }
 
