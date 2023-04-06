@@ -15,9 +15,6 @@ const useAlarmQuery = (memberId: string, openAlarmModal: boolean) => {
     {
       enabled: !!memberId && !!openAlarmModal,
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log("알람 리스트 성공", data);
-      },
     },
   );
 };

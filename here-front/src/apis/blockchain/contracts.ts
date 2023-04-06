@@ -24,15 +24,17 @@ export const createAndTransfer = async (
   from: string,
   to: string,
   agencyTokenUrl: string,
-  hospitalTokenUrl: string
-  ) => {
+  hospitalTokenUrl: string,
+) => {
   const web3 = new Web3(window.ethereum);
   const hereContract = new web3.eth.Contract(HERE_ERC_721_ABI, HERE_ERC_721_CA);
 
   if (!hereContract || !from || !to) return;
-  const result = await hereContract.methods.createAndTransfer(from, to, agencyTokenUrl, hospitalTokenUrl).send({ from: from });
+  const result = await hereContract.methods
+    .createAndTransfer(from, to, agencyTokenUrl, hospitalTokenUrl)
+    .send({ from: from });
   return result;
-}
+};
 
 // 해당 NFT의 소유주를 알려주는 함수
 export const ownerOf = async (tokenId: string) => {
@@ -42,8 +44,6 @@ export const ownerOf = async (tokenId: string) => {
   if (!hereContract) return;
 
   const result = await hereContract.methods.ownerOf(tokenId).call();
-
-  console.log("ownerOf result", result);
 
   return result;
 };
@@ -76,7 +76,6 @@ export const donateNFTList = async (
     .donateNFTList(myAccount, sendAccount, tokenIdList, timestamp)
     .send({ from: myAccount });
 
-  console.log("donateNFTList result", result);
   return result;
 };
 
@@ -88,8 +87,6 @@ export const getTransactionLogs = async (tokenId: string) => {
   if (!hereContract) return;
 
   const result = await hereContract.methods.getTransactionLogs(tokenId).call();
-
-  console.log("getTransactionLogs result", result);
 };
 
 // TokenID로 Hash값 확인하는 메소드
@@ -112,8 +109,6 @@ export const verifyNFT = async (tokenId: number, hash: string) => {
   if (!hereContract) return;
 
   const result = await hereContract.methods.verifyNFT(tokenId, hash).call();
-
-  console.log("verifyNFT result", result);
 };
 
 export const verifyNFTList = async (hashValueList: HashValueList[]) => {
@@ -124,14 +119,11 @@ export const verifyNFTList = async (hashValueList: HashValueList[]) => {
 
   const hashes = hashValueList.map((item) => item.hashValue);
   const tokenIds = hashValueList.map((item) => item.tokenId);
-  console.log("hashes", hashes);
-  console.log("tokenIds", tokenIds);
 
   const result = await hereContract.methods
     .verifyNFTList(tokenIds, hashes)
     .call();
 
-  console.log("verifyNFTList result", result);
   return result;
 };
 
@@ -143,6 +135,4 @@ export const getAllNFTs = async () => {
   if (!hereContract) return;
 
   const getAllNFTs = await hereContract.methods.getAllNFTs().call();
-
-  console.log("getAllNFTs", getAllNFTs);
 };

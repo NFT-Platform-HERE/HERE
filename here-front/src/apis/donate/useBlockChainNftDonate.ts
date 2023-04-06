@@ -10,14 +10,7 @@ const fetcher = (payload: DonationNftList) =>
   ).then((data) => data);
 
 const useBlockChainNftDonate = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
-    },
-    onError: () => {
-      console.log("onERROR");
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useBlockChainNftDonate;

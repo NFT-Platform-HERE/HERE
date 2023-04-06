@@ -15,12 +15,6 @@ const useDonateTokenIdListQuery = (memberId: string, count: number) => {
     {
       refetchOnWindowFocus: false,
       enabled: false,
-      onSuccess: (data) => {
-        console.log("Success");
-      },
-      onError: (err) => {
-        console.log("error!", err);
-      },
     },
   );
 };

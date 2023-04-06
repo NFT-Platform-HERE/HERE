@@ -18,9 +18,6 @@ const useHospitalAccept = () => {
     onSuccess: (data) => {
       return queryClient.invalidateQueries(queryKeys.ORGANIZATION_NFT_LIST);
     },
-    onError: (err) => {
-      console.log(err);
-    },
   });
 };
 

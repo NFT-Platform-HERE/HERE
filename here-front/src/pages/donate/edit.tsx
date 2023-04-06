@@ -42,9 +42,6 @@ export default function DonateEditPage() {
   function makeFormData() {
     const formData = new FormData();
 
-    console.log("memberId", donateInfo.memberId);
-    console.log("boardId", donateInfo.boardId);
-
     if (donateInfo.curQuantity > 0) {
       const editData = {
         title: title.trim(),
@@ -121,11 +118,9 @@ export default function DonateEditPage() {
 
     try {
       const donateEditeResult = await mutation.mutateAsync(formData);
-      console.log(donateEditeResult);
+
       goToDetailPage();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const handleRemoveClick = (index: number) => () => {
@@ -211,7 +206,6 @@ export default function DonateEditPage() {
   const handleTitleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log("event.target.value", event.target.value);
     setTitle(event.target.value);
   };
 

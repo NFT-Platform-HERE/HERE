@@ -263,7 +263,6 @@ export default function RedCrossPublishPage() {
       setOpendLoadingModal(false);
       successMint();
     } catch (error) {
-      console.error("error", error);
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);

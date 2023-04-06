@@ -136,11 +136,9 @@ export default function DonateWritePage() {
 
     try {
       const donateWriteResult = await mutation.mutateAsync(formData);
-      console.log(donateWriteResult);
+
       goToWritePage();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const handleTitleInputChange = (

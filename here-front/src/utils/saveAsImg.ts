@@ -27,8 +27,7 @@ export const saveNFTImage = (id: string, dispatch: any) => {
           link.download = "blood_donation.png";
           link.href = dataUrl;
           link.click();
-        })
-        .catch((err) => console.log(err));
+        });
     }
   } else if (id === "back-capture") {
     node = document.getElementById("back-capture");
@@ -46,7 +45,6 @@ export const saveNFTImage = (id: string, dispatch: any) => {
         link.download = "blood_donation.png";
         link.href = dataUrl;
         link.click();
-      })
-      .catch((err) => console.log(err));
+      });
   }
 };

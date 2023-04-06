@@ -29,9 +29,6 @@ const useNftMint = () => {
       };
       mutate(payload);
     },
-    onError: () => {
-      console.log("onERROR");
-    },
   });
 };
 

@@ -25,7 +25,6 @@ const useAgencyNftVerity = () => {
 
   return useMutation(fetcher, {
     onSuccess: (data, variables) => {
-      console.log("성공!");
       MySwal.fire({
         icon: "success",
         title: "진위 여부가 확인되었습니다",
@@ -42,7 +41,6 @@ const useAgencyNftVerity = () => {
       });
     },
     onError: () => {
-      console.log("error");
       MySwal.fire({
         icon: "error",
         title: "진위 여부 확인에 실패하였습니다",

@@ -16,7 +16,6 @@ export default function HospitalNFTModal({ onClick }: Iprops) {
   const { hashValueList } = useSelector(
     (state: RootState) => state.organization,
   );
-  console.log("hashValueList", hashValueList);
 
   const MetaUrl = useMyNFTMetaURLQuery(hashValueList[0].tokenId);
   const NFTDetail = useMyNFTMetaDataQuery(MetaUrl.data);
@@ -24,7 +23,7 @@ export default function HospitalNFTModal({ onClick }: Iprops) {
 
   const checkNFT = () => {
     mutate(hashValueList);
-    console.log("ㅎㅎㅎㅎ");
+
     onClick(0);
   };
 

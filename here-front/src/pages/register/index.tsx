@@ -141,8 +141,6 @@ export default function RegisterPage() {
   const registerPaper = async () => {
     const value = await refetch();
     const { data } = value;
-    // console.log("value", value);
-    console.log("data", data);
 
     //if(openModal)
     // router.push("/my-nft");
@@ -204,7 +202,6 @@ export default function RegisterPage() {
       setOpendLoadingModal(false);
       successMint();
     } catch (error) {
-      console.error("error", error);
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);

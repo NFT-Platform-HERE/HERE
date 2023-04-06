@@ -23,7 +23,6 @@ const useCheckMemberNicknameQuery = ({
     {
       enabled: !!nickname,
       onSuccess: (data) => {
-        console.log(data);
         if (data.status === "HERE_DUPLICATED_NICKNAME") {
           // 중복인 경우
           setNicknameMessage("중복된 닉네임입니다");

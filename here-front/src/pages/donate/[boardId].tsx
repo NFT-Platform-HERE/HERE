@@ -102,12 +102,10 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
     try {
       const result = await mutation.mutateAsync(payload);
-      console.log("result", result);
+
       successDelete();
       moveDonateListPage();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const successDelete = () => {
@@ -148,11 +146,9 @@ export default function DonateDetailPage({ boardId }: Iprops) {
 
     try {
       const result = await mutation.mutateAsync(payload);
-      console.log("result", result);
+
       successClose();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const successClose = () => {

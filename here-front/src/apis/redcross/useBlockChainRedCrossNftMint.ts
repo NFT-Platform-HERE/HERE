@@ -3,7 +3,7 @@ import { createAndTransfer } from "../blockchain/contracts";
 import { BlockChainRedCrossNftMint } from "@/types/BlockChainRedCrossNftMint";
 
 const fetcher = (payload: BlockChainRedCrossNftMint) =>
-    createAndTransfer(
+  createAndTransfer(
     payload.from,
     payload.to,
     payload.agencyTokenUrl,
@@ -11,14 +11,7 @@ const fetcher = (payload: BlockChainRedCrossNftMint) =>
   ).then((data) => data);
 
 const useBlockChainRedCrossNftMint = () => {
-  return useMutation(fetcher, {
-    onSuccess: (data) => {
-      console.log("성공!");
-    },
-    onError: () => {
-      console.log("onERROR");
-    },
-  });
+  return useMutation(fetcher, {});
 };
 
 export default useBlockChainRedCrossNftMint;
