@@ -35,6 +35,7 @@ public class NftService {
 
     private final ResponseUtil responseUtil;
     private final NftRepository nftRepository;
+    private final NftHistoryRepository nftHistoryRepository;
     private final BdHistoryRepository bdHistoryRepository;
     private final MemberRepository memberRepository;
     private final CertHistoryRepository certHistoryRepository;
@@ -42,7 +43,7 @@ public class NftService {
     private final BoardBdHistoryRepository boardBdHistoryRepository;
     private final BoardRepository boardRepository;
     private final RestTemplate restTemplate;
-    private final String URI = "https://j8b209.p.ssafy.io:9010/api/notification";
+    private final String URI = "https://j8b209.p.ssafy.io:9013/api/notification";
     private final PaperBdCertRepository paperBdCertRepository;
 
     /* NFT 생성 */
@@ -53,6 +54,10 @@ public class NftService {
         Nft nft = new Nft();
         nft.createNft(saveNftRequestDto);
         nftRepository.save(nft);
+
+        NftHistory nftHistory = new NftHistory();
+        nftHistory.createNftHistory(nft.getId(), member.getId());
+        nftHistoryRepository.save(nftHistory);
 
         Boolean isLevelUp = false;
 
@@ -116,6 +121,17 @@ public class NftService {
         Member agency = memberRepository.findById(submitCertAgencyRequestDto.getAgencyId())
                 .orElseThrow(() -> new EntityIsNullException("존재하지 않는 기관 ID입니다."));
 
+        Long tokenId = submitCertAgencyRequestDto.getTokenId();
+        CertHistory byTokenIdAndAgencyId = certHistoryRepository.findByTokenIdAndAgencyId(tokenId, agency.getId());
+
+        if(byTokenIdAndAgencyId != null) {
+            SubmitCertAgencyResponseDto submitCertAgencyResponseDto = SubmitCertAgencyResponseDto.builder()
+                    .message("이 헌혈증서는 해당 기관에 이미 제출되었습니다")
+                    .build();
+            ResponseSuccessDto<SubmitCertAgencyResponseDto> res = responseUtil.successResponse(submitCertAgencyResponseDto, HereStatus.HERE_SUBMIT_DUPLICATED_CERTIFICATION);
+            return res;
+        }
+
         CertHistory certHistory = new CertHistory();
         certHistory.createCertHistoryAgency(member, agency, submitCertAgencyRequestDto);
         certHistoryRepository.save(certHistory);
@@ -149,13 +165,6 @@ public class NftService {
             // 2) 해당 nft를 멤버에서 병원으로 소유권 이전하기
             Nft subjectNft = nftRepository.findByTokenId(nft.getTokenId());
             subjectNft.updateOwnership(submitCertHospitalRequestDto.getAgencyId());
-
-//            // 3) nft 최초 발급자에게 해당 병원에 헌혈증이 제출되었다는 알림 등록
-//            UUID issuerId = subjectNft.getIssuerId();
-//            Member issuer = memberRepository.findById(issuerId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-//            String message = issuer.getNickname() + "님의 헌혈증서가 " + agency.getName() + "에 사용되었습니다.";
-//
-//            postNotification(agency, issuer, message, EnumNotificationCode.HOSPITAL);
         }
 
         SubmitCertHospitalResponseDto submitCertHospitalResponseDto = SubmitCertHospitalResponseDto.builder()
@@ -185,10 +194,14 @@ public class NftService {
         UUID receiverId = donateNftRequestDto.getReceiverId();
         List<Long> nftTokenList = donateNftRequestDto.getNftTokenList();
 
-        // 1) 소유권 이전
+        // 1) 소유권 이전 + NFT 소유권 history
         for (Long nftToken : nftTokenList) {
             Nft nft = nftRepository.findByTokenId(nftToken);
             nft.updateOwnership(receiverId);
+
+            NftHistory nftHistory = new NftHistory();
+            nftHistory.createNftHistory(nft.getId(), receiverId);
+            nftHistoryRepository.save(nftHistory);
         }
 
         // 2) 주인공 boardBdHistory 가져와서 기부 내역 등록
@@ -216,7 +229,6 @@ public class NftService {
 
             // 현재 마감 처리된 board에 기부된 기부리스트 가져오기 (게시글과 기부자 기준으로 distinct)
             List<BoardBdHistory> boardBdHistoryList = boardBdHistoryRepository.findAllByBoardId(boardId);
-            System.out.println(boardBdHistoryList.toString());
 
             for (BoardBdHistory eachBoardBdHistory : boardBdHistoryList) {
                 Member receiver = memberRepository.findById(eachBoardBdHistory.getSenderId())
@@ -226,10 +238,8 @@ public class NftService {
 
                 log.info("receiver : {}", receiver.getNickname());
                 log.info("sender : {}", sender.getNickname());
-                System.out.println("receiver = " + receiver.getNickname());
-                System.out.println("sender = " + sender.getNickname());
 
-                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED);
+                postNotification(sender, receiver, message, EnumNotificationCode.CLOSED, 0L);
             }
 
         }
@@ -239,7 +249,7 @@ public class NftService {
         Member sender = memberRepository.findById(senderId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
         String message = sender.getNickname() + "님께서 " + donateCnt + "개 기부하셨습니다!";
 
-        postNotification(sender, receiver, message, EnumNotificationCode.DONATED);
+        postNotification(sender, receiver, message, EnumNotificationCode.DONATED, 0L);
 
         // Response Dto 생성
         DonateNftResponseDto donateNftResponseDto = DonateNftResponseDto.builder()
@@ -343,19 +353,19 @@ public class NftService {
     }
 
     // 알림 post 메서드
-    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code) {
+    private void postNotification(Member sender, Member receiver, String message, EnumNotificationCode code, Long nftId) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
 
         jsonNodes.put("content", message);
         jsonNodes.put("receiverId", receiver.getId().toString());
         jsonNodes.put("senderId", sender.getId().toString());
         jsonNodes.put("code", code.toString());
+        jsonNodes.put("nftId", nftId);
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
-                "https://j8b209.p.ssafy.io:9013/api/notification",
+                URI,
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -15,9 +16,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CheckNotificationResponseDto {
     private Long notificationId;
+    private String content;
     private UUID senderId;
     private String senderNickname;
+    private List<UUID> memberIdList;
     private EnumNotificationStatus status;
-    private String content;
     private EnumNotificationCode code;
 }

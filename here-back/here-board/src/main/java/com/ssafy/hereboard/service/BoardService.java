@@ -88,6 +88,12 @@ public class BoardService {
     public ResponseSuccessDto<SaveBoardResponseDto> save(SaveBoardRequestDto saveBoardRequestDto, List<String> imgUrlList) {
         Member member = memberRepository.findById(saveBoardRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
+
+        String content = saveBoardRequestDto.getContent();
+        if(content.length() >= 1000) {
+            throw new BadRequestVariableException("게시글을 1000자 이하로 작성해주세요!");
+        }
+
         Board board = new Board();
         board.createBoard(member, saveBoardRequestDto);
         boardRepository.save(board);
@@ -124,8 +130,6 @@ public class BoardService {
         Board board = boardRepository.findById(updateBoardRequestDto.getBoardId())
                 .orElseThrow(() -> new EntityIsNullException("해당 게시글이 없습니다."));
 
-        System.out.println("updateBoardRequestDto = " + updateBoardRequestDto);
-        System.out.println("board.getId() = " + board.getId());
         checkAuthorizationToUpdateBoard(updateBoardRequestDto.getWriterId(), board);
 
         if(imgUrlList.size() > 4) {
@@ -194,7 +198,7 @@ public class BoardService {
             for (BoardBdHistory boardBdHistory : boardBdHistoryList) {
                 Member sender = board.getMember();
                 Member receiver = memberRepository.findById(boardBdHistory.getSenderId()).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-                postNotification(sender, receiver, EnumNotificationCode.CLOSED);
+                postNotification(sender, receiver, EnumNotificationCode.CLOSED, 0L);
             }
 
         } else {
@@ -383,26 +387,24 @@ public class BoardService {
     }
 
     private static void checkAuthorizationToUpdateBoard(UUID writerId, Board board) {
-        System.out.println("writerId = " + writerId);
-        System.out.println("board.getMember().getId() = " + board.getMember().getId());
         if(!board.getMember().getId().equals(writerId)) {
             throw new NotAuthorizedUserException("수정 권한이 없는 회원입니다.");
         }
     }
 
-    private void postNotification(Member sender, Member receiver, EnumNotificationCode code) {
+    private void postNotification(Member sender, Member receiver, EnumNotificationCode code, Long nftId) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
         String message = receiver.getNickname() + "님께서 기부하신 " + sender.getNickname() + "님의 게시글이 마감되었습니다.";
         jsonNodes.put("content", message);
         jsonNodes.put("receiverId", receiver.getId().toString());
         jsonNodes.put("senderId", sender.getId().toString());
         jsonNodes.put("code", code.toString());
+        jsonNodes.put("nftId", nftId);
 
         ResponseEntity<JsonNode> postResult = restTemplate.postForEntity(
                 "https://j8b209.p.ssafy.io:9013/api/notification",
                 jsonNodes,
                 JsonNode.class
         );
-        System.out.println(postResult.toString());
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -55,6 +56,12 @@ public class ServiceExceptionResolver {
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseErrorDto<?> handle(ConstraintViolationException e, HttpServletRequest request) {
         notificationManager.sendNotification(e, request.getRequestURI(), getParams(request));
+        return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = AsyncRequestTimeoutException.class)
+    public ResponseErrorDto<?> handle(AsyncRequestTimeoutException e, HttpServletRequest request) {
         return responseUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getRequestURI());
     }
 

@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -50,7 +51,7 @@ public class Nft {
     @Column(name = "type", columnDefinition = "char(10)", nullable = false)
     private EnumNftType type;
 
-    @CreatedDate
+//    @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
@@ -63,6 +64,15 @@ public class Nft {
         this.issuerId = saveNftRequestDto.getIssuerId();
         this.imgUrl = saveNftRequestDto.getImgUrl();
         this.type = saveNftRequestDto.getNftType();
+
+        if(saveNftRequestDto.getCreatedDate() != null) {
+            String str = saveNftRequestDto.getCreatedDate() + " 00:00:00.000";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+            this.createdDate = dateTime;
+        } else {
+            createdDate = LocalDateTime.now();
+        }
     }
 
     public void updateOwnership(UUID ownerId) {
