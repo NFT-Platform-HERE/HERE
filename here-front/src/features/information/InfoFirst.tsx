@@ -12,16 +12,16 @@ export default function InfoFirst() {
       <div className="mx-100 flex items-center justify-center rounded-30 border-5 border-pink-2 py-20">
         <img src="info/metamask.png" className="mr-40 inline-block w-120" />
         <div className="inline-block text-start">
-          <p className="mb-5">
+          <p className="mb-10">
             <strong>메타마스크</strong> 계정으로 로그인이 가능해요
           </p>
-          <div className="text-14">
+          <div className="text-14 text-red-2">
             <HiOutlineArrowSmRight className="mr-5 inline-block" />
             <a href="https://www.notion.so/MetaMask-3968d4365cb14dba8fd46bee11adaef5">
               지갑 생성하기{" "}
             </a>
           </div>
-          <div className="text-14">
+          <div className="text-14 text-red-2">
             <HiOutlineArrowSmRight className="mr-5 inline-block" />
             <a href="https://amber-romano-e29.notion.site/7e362a7da48c4735ab879e61e587a82f">
               테스트 계정으로 사용하기

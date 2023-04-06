@@ -35,6 +35,21 @@ export default function InfoSecond() {
           </p>
         </div>
       </div>
+      <div className="mt-30 flex w-1200 items-center justify-center px-100">
+        <div className="inline-block w-400">
+          <p>기부했던 헌혈증서가 병원에 제출되면</p>
+          <p>
+            <strong>원소유자</strong>에게도 알림이 갑니다
+          </p>
+          <p className="mt-16">
+            내 헌혈증서의 이동 경로를 <strong>투명하게</strong> 알 수 있어요🤗
+          </p>
+        </div>
+        <img
+          src="info/send.png"
+          className="w-600 rounded-20 border-4 border-pink-2"
+        />
+      </div>
     </>
   );
 }
