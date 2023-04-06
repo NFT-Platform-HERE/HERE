@@ -62,7 +62,7 @@ export default function DonateCard({
           fontSize={16}
           width={200}
           height={30}
-          percent={donatePercent}
+          percent={donatePercent < 100 ? donatePercent : 100}
         />
       </div>
     </div>
@@ -112,7 +112,7 @@ export function DonateCardMobile({
             fontSize={6}
             width={225}
             height={18}
-            percent={donatePercent}
+            percent={donatePercent < 100 ? donatePercent : 100}
           />
         </div>
       </div>

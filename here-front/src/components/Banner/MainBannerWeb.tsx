@@ -1,6 +1,6 @@
 export default function MainBannerWeb() {
   return (
-    <div className="relative flex aspect-[3/1] w-full min-w-[1200px] flex-col flex-wrap bg-[#F6EAEA] pt-50">
+    <div className="relative flex aspect-[3/1] w-full min-w-[1200px] flex-col flex-wrap overflow-hidden bg-[#F6EAEA] pt-50">
       <div className="relative -ml-[4%] -mb-10 inline-block w-[63%]">
         <img src="mainBanner/mainImg.png" className="w-full" />
         <img

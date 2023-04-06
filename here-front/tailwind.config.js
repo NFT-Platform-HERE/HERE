@@ -95,7 +95,7 @@ module.exports = {
       animation: {
         wave: "wave 5s ease-in-out infinite",
         blob: "blob 15s ease-in-out infinite",
-        typing: "typing 3s steps(25) 1",
+        typing: "typing 3s steps(25) infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
       },
     },

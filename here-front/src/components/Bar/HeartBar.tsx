@@ -23,6 +23,7 @@ export default function HeartBar({ width, height, fontSize, percent }: Iprops) {
           {
             width: (width * percent) / 100,
             height: height,
+            // maxWidth: (width * 100) / 100,
           },
         ]}
       ></div>

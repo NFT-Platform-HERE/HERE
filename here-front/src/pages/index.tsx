@@ -9,8 +9,14 @@ import { BsChevronDoubleDown } from "react-icons/bs";
 import Lottie from "react-lottie-player";
 import mainArrow from "../../public/lottieJson/main_arrow.json";
 import MainBannerWeb from "@/components/Banner/MainBannerWeb";
+import MainBannerMobile from "@/components/Banner/MainBannerMobile";
+import { IoCaretUpCircle } from "react-icons/io5";
+import { useRouter } from "next/router";
+import { FaQuestion } from "react-icons/fa";
 
 export default function HomePage() {
+  const router = useRouter();
+
   const goToDown = () => {
     const element = document.getElementById(
       "section1",
@@ -24,10 +30,36 @@ export default function HomePage() {
     }
   };
 
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const goToInfo = () => {
+    router.push("/information");
+  };
+
   return (
     <div>
+      <IoCaretUpCircle
+        className="fixed right-30 bottom-30 z-30 cursor-pointer rounded-full bg-white text-50 text-red-1"
+        onClick={goToTop}
+      />
+      <div onClick={goToInfo}>
+        <button className="fixed top-100 right-0 z-20 -mr-16  h-40 w-130 rounded-30 border-4 border-red-2 bg-red-2 font-semibold text-white ">
+          <FaQuestion className="inline-block text-24" />
+          사용 가이드
+        </button>
+      </div>
+      <div className="hidden mobile:block">
+        <MainBannerMobile />
+      </div>
+      <div className="mobile:hidden">
+        <MainBannerWeb />
+      </div>
       {/* <div className="aspect-[3.2/1] w-full min-w-[1200px] bg-[url('/banners/mainBanner.png')] bg-contain bg-no-repeat mobile:aspect-[1.15/1] mobile:w-full mobile:min-w-[300px] mobile:bg-[url('/banners/mainBannerMobile.png')]"></div> */}
-      <MainBannerWeb />
       <div className="flex h-[calc(100vh-(100vw/3)-65px)] max-h-250 w-full min-w-[1200px] items-end justify-center mobile:hidden mobile:h-[calc(100vh-(100vw/1.15)-65px)] mobile:w-full mobile:min-w-[300px]">
         <button
           onClick={goToDown}
