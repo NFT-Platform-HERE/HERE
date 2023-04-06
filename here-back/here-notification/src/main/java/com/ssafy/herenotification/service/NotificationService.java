@@ -131,6 +131,7 @@ public class NotificationService {
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
             Long nftId = notification.getNftId();
+            System.out.println("nftId = " + nftId);
             List<NftHistory> nftHistoryList = nftId != 0L ? nftHistoryRepository.findAllByNftId(nftId): new ArrayList<>();
             List<UUID> memberIdList = new ArrayList<>();
             for (NftHistory nftHistory : nftHistoryList) {
