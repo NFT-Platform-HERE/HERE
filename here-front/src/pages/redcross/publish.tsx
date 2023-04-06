@@ -576,7 +576,6 @@ export default function RedCrossPublishPage() {
       <div className="my-20 mx-auto flex w-650 justify-between">
         <label htmlFor="date">발행일</label>
         <input
-          disabled
           type="date"
           id="date"
           name="createdDate"
