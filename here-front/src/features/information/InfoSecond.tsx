@@ -10,28 +10,30 @@ export default function InfoSecond() {
       <div className="relative z-10 mb-20">
         <span className="text-20 font-semibold ">기부하기</span>
       </div>
+      <div className="flex w-1200 items-center justify-center px-100">
+        <img src="info/give_modal2.png" className="inline-block w-600" />
 
-      <img src="info/give_modal2.png" className="inline-block w-600" />
+        <Lottie
+          loop
+          animationData={arrow}
+          play
+          style={{
+            width: 100,
+            height: 100,
+            display: "inline-block",
+            transform: "rotate(-45deg)",
+          }}
+          className="mx-auto"
+        />
 
-      <Lottie
-        loop
-        animationData={arrow}
-        play
-        style={{
-          width: 100,
-          height: 100,
-          display: "inline-block",
-          transform: "rotate(-45deg)",
-        }}
-        className="mx-auto"
-      />
-
-      <div className="inline-block w-500">
-        <p>게시글의 기부하기 버튼을 눌렀을 때 나타나는 모달창이에요</p>
-        <p>
-          선택한 수량 만큼의 <strong>병원용 NFT</strong>의 소유권이 작성자에게
-          이전됩니다:)
-        </p>
+        <div className="inline-block w-250">
+          <p>게시글의 기부하기 버튼을 눌렀을 때</p>
+          <p>나타나는 모달창이에요</p>
+          <p className="mt-30">
+            선택한 수량 만큼의 <strong>병원용 NFT</strong>의 소유권이 작성자에게
+            이전됩니다:)
+          </p>
+        </div>
       </div>
     </>
   );
