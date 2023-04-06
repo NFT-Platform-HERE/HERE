@@ -24,6 +24,7 @@ import {
   NftType,
 } from "@/enum/statusType";
 import { Mint } from "@/types/Mint";
+import moment from "moment";
 
 const MySwal = withReactContent(Swal);
 
@@ -47,6 +48,8 @@ export default function RegisterPage() {
     failMint();
     return;
   };
+
+  const today = moment(new Date()).format("YYYY-MM-DD");
 
   function makeMetaDataAgency(data: any, mintImageURL: string) {
     return {
@@ -98,6 +101,7 @@ export default function RegisterPage() {
       place: place,
       tokenId: agencyTokenId,
       nftType: NftType.AGENCY,
+      createdDate: today,
     };
 
     return agencyPayload;
@@ -119,6 +123,7 @@ export default function RegisterPage() {
       place: place,
       tokenId: hospitalTokenId,
       nftType: NftType.HOSPITAL,
+      createdDate: today,
     };
 
     return agencyPayload;

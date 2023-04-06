@@ -26,6 +26,10 @@ export default function WebHeader({ handleConnect }: Iprops) {
   const router = useRouter();
 
   const movePage = (path: string) => {
+    if (!memberId) {
+      window.alert("로그인이 필요한 서비스입니다");
+      return;
+    }
     router.push(path);
     dispatch(closeWebHeaderDropdown());
   };
