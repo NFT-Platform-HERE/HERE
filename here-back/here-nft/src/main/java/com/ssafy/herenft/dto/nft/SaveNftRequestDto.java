@@ -33,6 +33,6 @@ public class SaveNftRequestDto {
     private EnumNftType nftType;
     @NotNull(message = "헌혈 종류는 필수 값입니다.")
     private EnumBdHistoryType bdType;       // NFT 등록하고 나서 헌혈기록도 같이 기록됨
-    @NotNull(message = "헌혈 일자를 입력해주세요.")
-    private LocalDateTime createdDate;
+//    @NotNull(message = "헌혈 일자를 입력해주세요.")
+//    private LocalDateTime createdDate;
 }
