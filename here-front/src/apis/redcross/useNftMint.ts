@@ -15,6 +15,7 @@ const fetcher = (payload: Mint) =>
       place: payload.place,
       tokenId: payload.tokenId,
       nftType: payload.nftType,
+      createdDate: payload.createdDate,
     })
     .then(({ data }) => data);
 
