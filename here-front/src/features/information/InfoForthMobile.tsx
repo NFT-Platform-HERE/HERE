@@ -51,7 +51,7 @@ export default function InfoForthMobile() {
           }}
         />
         <div>
-          <img src="info/barcode.png" className="mx-auto w-300 rounded-20" />
+          <img src="info/barcode.PNG" className="mx-auto w-300 rounded-20" />
           <p className="mt-20">바코드를 인식하여 기존 헌혈증서를</p>
           <p>
             <strong>NFT</strong>로 만들어요

@@ -46,7 +46,7 @@ export default function InfoSecond() {
           </p>
         </div>
         <img
-          src="info/send.png"
+          src="info/send.PNG"
           className="w-600 rounded-20 border-4 border-pink-2"
         />
       </div>

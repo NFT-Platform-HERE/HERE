@@ -33,7 +33,7 @@ export default function InfoForthMobile() {
       />
       <div className="mt-30 w-full px-10">
         <img
-          src="info/send.png"
+          src="info/send.PNG"
           className="w-full rounded-20 border-4 border-pink-2"
         />
         <div className="mt-10 mb-50 inline-block w-full">

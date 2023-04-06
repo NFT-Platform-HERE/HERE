@@ -53,7 +53,7 @@ export default function InfoForth() {
           }}
         />
         <div>
-          <img src="info/barcode.png" className="w-400 rounded-20  p-2" />
+          <img src="info/barcode.PNG" className="w-400 rounded-20  p-2" />
           <p className="mt-20">바코드를 인식하여 기존 헌혈증서를</p>
           <p>
             <strong>NFT</strong>로 만들어요

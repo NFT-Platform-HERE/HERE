@@ -43,7 +43,7 @@ export default function InfoFirstMobile() {
         </div>
       </div>
       <div className="mx-10 mb-50 rounded-30 border-5 border-pink-2 py-30">
-        <img src="info/memberInfoInput.png" className="mb-20 w-full" />
+        <img src="info/memberInfoInput.PNG" className="mb-20 w-full" />
         <div>
           <p className="mb-20">
             최초 1회 <strong>회원정보입력</strong>이 필요해요
