@@ -18,10 +18,10 @@ export default function Information() {
   };
 
   const basicStyle =
-    "inline-block h-220 w-220 cursor-pointer rounded-full shadow-[0_15px_15px_0px_rgba(0,0,0,0.2)]";
+    "transition inline-block h-220 w-220 cursor-pointer rounded-full shadow-[0_15px_15px_0px_rgba(0,0,0,0.2)]";
 
   const selectedStyle =
-    "inline-block h-240 w-240 cursor-pointer rounded-full bg-red-1 shadow-[0_15px_15px_0px_rgba(0,0,0,0.2)]";
+    "transition transform scale-110 inline-block h-230 w-230 cursor-pointer rounded-full bg-red-1 shadow-[0_15px_15px_0px_rgba(0,0,0,0.2)]";
 
   return (
     <div className="mx-auto mt-50 w-1200 text-center">
@@ -59,7 +59,7 @@ export default function Information() {
           <h1>종이 헌혈증 등록</h1>
         </div>
       </div>
-      <div className="mx-auto mt-30 mb-100 w-1200">
+      <div className="mx-auto mt-70 mb-100 w-1200">
         {nowSection === 1 && <InfoFirst />}
         {nowSection === 2 && <InfoSecond />}
         {nowSection === 3 && <InfoThird />}
