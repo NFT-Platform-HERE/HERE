@@ -69,8 +69,6 @@ public class Nft {
             String str = saveNftRequestDto.getCreatedDate() + " 00:00:00.000";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
             LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-
-            System.out.println("dateTime = " + dateTime);
             this.createdDate = dateTime;
         } else {
             createdDate = LocalDateTime.now();
