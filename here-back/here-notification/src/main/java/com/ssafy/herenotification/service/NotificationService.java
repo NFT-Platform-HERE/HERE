@@ -125,17 +125,12 @@ public class NotificationService {
 
     public ResponseSuccessDto<List<CheckNotificationResponseDto>> read(UUID memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityIsNullException("해당 회원이 존재하지 않습니다."));
-        System.out.println(member.getNickname());
-        System.out.println("memberId = " + memberId);
         List<Notification> notificationList = notificationRepository.findAllByReceiverAndStatusOrderByCreatedDateDesc(member, EnumNotificationStatus.INACTIVE);
 //        List<Notification> notificationList = notificationRepository.findAllByReceiverOrderByCreatedDateDesc(member);
 
         List<CheckNotificationResponseDto> checkNotificationResponseDtoList = new ArrayList<>();
         for (Notification notification : notificationList) {
-            System.out.println("notification id = " + notification.getId());
-            System.out.println("notification content = " + notification.getContent());
             Long nftId = notification.getNftId();
-            System.out.println("nftId = " + nftId);
             List<NftHistory> nftHistoryList = nftId != 0L ? nftHistoryRepository.findAllByNftId(nftId): new ArrayList<>();
             List<UUID> memberIdList = new ArrayList<>();
             for (NftHistory nftHistory : nftHistoryList) {
