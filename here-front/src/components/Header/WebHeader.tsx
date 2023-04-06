@@ -106,7 +106,7 @@ export default function WebHeader({ handleConnect }: Iprops) {
               : "invisible opacity-0 ") + "absolute top-[65px] right-0 z-20"
           }
         >
-          <WebHeaderDropdown />
+          <WebHeaderDropdown dropDown={dropDown} />
         </div>
       </div>
     </div>

@@ -8,14 +8,18 @@ const fetcher = (memberId: string) =>
     .get(NOTIFICATION_SERVER_URL + `/notification/${memberId}`)
     .then(({ data }) => data.data);
 
-const useAlarmQuery = (memberId: string) => {
-  return useQuery([queryKeys.ALARM_LIST, memberId], () => fetcher(memberId), {
-    enabled: !!memberId,
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      console.log("알람 리스트 성공", data);
+const useAlarmQuery = (memberId: string, openAlarmModal: boolean) => {
+  return useQuery(
+    [queryKeys.ALARM_LIST, memberId, openAlarmModal],
+    () => fetcher(memberId),
+    {
+      enabled: !!memberId && !!openAlarmModal,
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        console.log("알람 리스트 성공", data);
+      },
     },
-  });
+  );
 };
 
 export default useAlarmQuery;
