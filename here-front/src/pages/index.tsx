@@ -48,7 +48,7 @@ export default function HomePage() {
         onClick={goToTop}
       />
       <div onClick={goToInfo}>
-        <button className="fixed top-100 right-0 z-10 -mr-40 h-80 w-100 rounded-full border-4 border-red-2 bg-red-2 text-left font-semibold text-white ">
+        <button className="fixed top-100 right-0 z-10 -mr-35 h-80 w-100 rounded-full border-4 border-red-2 bg-red-2 text-left font-semibold text-white ">
           {/* <FaQuestion className="inline-block w-50 text-18" /> */}
           <p className="ml-24 w-40 break-all text-15">사용</p>
           <p className="ml-10 w-50 break-all text-15">가이드</p>
