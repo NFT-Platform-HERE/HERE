@@ -591,7 +591,7 @@ export default function RedCrossPublishPage() {
       <div className="my-20 mx-auto mb-40 flex w-650 justify-between ">
         <label htmlFor="place">혈액원 명</label>
         <input
-          disabled
+          // disabled
           type="text"
           id="place"
           name="place"

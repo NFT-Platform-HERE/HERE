@@ -1,7 +1,4 @@
 import useMemberInfoQuery from "@/apis/blood/useMemberInfoQuery";
-import { RootState } from "@/stores/store";
-import { useSelector } from "react-redux";
-import Background from "../Background/Background";
 
 interface Iprops {
   senderId: string;
@@ -11,7 +8,7 @@ export default function MemberCard({ senderId }: Iprops) {
   const info = useMemberInfoQuery(senderId);
   console.log(info);
   return (
-    <div className="fixed top-[50%] left-[50%] z-30 h-325 w-200 translate-y-[-50%] translate-x-[-50%]">
+    <div className="fixed top-[50%] left-[50%] z-50 h-325 w-200 translate-y-[-50%] translate-x-[-50%]">
       <img
         src={info.data && info.data.characterImgUrl}
         alt=""
