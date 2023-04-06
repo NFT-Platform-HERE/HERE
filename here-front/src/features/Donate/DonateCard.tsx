@@ -34,7 +34,7 @@ export default function DonateCard({
         isCompleted == BoardStatus.ACTIVE ? "bg-white" : "opacity-40"
       }`}
     >
-      <div className="mb-16 flex justify-end text-12 font-medium text-pen-2">
+      <div className="flex justify-end text-12 font-medium text-pen-2">
         {isCompleted == BoardStatus.ACTIVE ? (
           <TimeAgo datetime={expirationDate} locale="ko" />
         ) : (
