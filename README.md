@@ -434,3 +434,7 @@ Dependencies
 # 💕 팀 소개
 
 ![Untitled_5](/uploads/7f07dce1896fba41aed1999433905344/Untitled_5.png)
+
+# 💕 소감
+
+![소감](/uploads/c898f132b7bec574f69d62e23c22df41/소감.PNG)
