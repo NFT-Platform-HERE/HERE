@@ -434,5 +434,3 @@ Dependencies
 # 💕 팀 소개
 
 ![Untitled_5](/uploads/7f07dce1896fba41aed1999433905344/Untitled_5.png)
-
-# 💕 서비스 화면
