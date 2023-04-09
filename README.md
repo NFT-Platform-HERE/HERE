@@ -135,14 +135,6 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 - spring Swagger : 2.9.2
 - queryDsl : 5.0.0
 
-Dependencies
-
-- spring web
-- spring security
-- spring data jpa
-- lombok
-- mysql driver
-- validation
 
 ## 🕶 블록체인
 
