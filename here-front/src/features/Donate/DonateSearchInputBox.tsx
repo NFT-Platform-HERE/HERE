@@ -1,16 +1,3 @@
-/**
- * @author JeongOn
- */
-
-{
-  /* 
-  - 사용 예시:
-<DonateSearchInputBox
-    value={inputValue}
-    onChange={handleChange}
-/>
-  */
-}
 
 interface Iprops {
   value: string;
