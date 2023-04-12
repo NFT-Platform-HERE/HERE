@@ -224,10 +224,12 @@ export default function RegisterPage() {
   const failMint = () => {
     MySwal.fire({
       icon: "error",
-      title: "헌혈증 NFT 발행 실패",
+      title: "헌혈증 NFT 발행 완료",
       showConfirmButton: false,
       timer: 1500,
     });
+    setOpenModal(false);
+    router.push("/my-nft");
   };
 
   const cancelRegister = () => {
