@@ -12,6 +12,8 @@ import {
 } from "@/stores/organization/organization";
 import HospitalNFTModal from "@/features/Organization/HospitalNFTModal";
 import { RootState } from "@/stores/store";
+import { BsBuilding } from "react-icons/bs";
+import { MdOutlineLocalHospital } from "react-icons/md"
 
 export default function OrganizationPage() {
   const dispatch = useDispatch();
@@ -63,7 +65,15 @@ export default function OrganizationPage() {
 
   return (
     <div className="mx-auto mt-50 w-1000 text-center">
-      <p className="mb-30 text-24">NFT 헌혈증서 제출 목록 ({organName})</p>
+      <div className="flex justify-center mb-40 leading-50">
+        {isHospital ? (
+          <MdOutlineLocalHospital className="w-50 h-50 " />
+        ) : (
+          <BsBuilding className="w-50 h-50 " />
+        )}
+        <p className="ml-10 text-30">{organName}</p>
+      </div>
+      <p className="mb-30 text-22">NFT 헌혈증서 제출 목록</p>
       <TabBtn
         width={500}
         height={70}
