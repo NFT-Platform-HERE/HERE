@@ -119,7 +119,7 @@ export default function SubmitPage() {
           {isHospitalTab && (
             <div className="absolute top-[400px] right-0 flex items-end mobile:left-20 mobile:top-230 mobile:w-190">
               <input
-                className="h-39 w-46 border-1 border-pen-0"
+                className="h-39 w-46 border-1 border-pen-0 pr-5 text-right"
                 onChange={onhandleChangeCount}
               ></input>
               <div className="ml-5 mr-20 text-16">장</div>
