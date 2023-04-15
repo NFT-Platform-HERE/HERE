@@ -22,9 +22,8 @@
 
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
-var PrivateKeyProvider = require('truffle-privatekey-provider');
-const privateKey =
-  '0f1eb940c016f4cd2e1d88b491ea69452dac7101fa6b64b62068f4ae96229716';
+var PrivateKeyProvider = require("truffle-privatekey-provider");
+const privateKey = "${key}";
 
 module.exports = {
   /**
@@ -43,21 +42,20 @@ module.exports = {
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
-    // e.g., 가나슈 환경 
+    // e.g., 가나슈 환경
     //  development: {
     //   host: "127.0.0.1",     // Localhost (default: none)
     //   port: 8545,            // Standard Ethereum port (default: none)
     //   network_id: "*",       // Any network (default: none)
     //  },
     development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "5777",       // Any network (default: none)
-     },
+      host: "127.0.0.1", // Localhost (default: none)
+      port: 7545, // Standard Ethereum port (default: none)
+      network_id: "5777", // Any network (default: none)
+    },
     ssafynet: {
-      provider: () =>
-        new PrivateKeyProvider(privateKey, 'https://rpc.ssafy-blockchain.com/'),
-      network_id: '*', // Match any network id
+      provider: () => new PrivateKeyProvider(privateKey, "${url}"),
+      network_id: "*", // Match any network id
     },
     // Another network with more advanced options...
     // advanced: {
@@ -94,7 +92,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.10", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -103,7 +101,7 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
 
   // Truffle DB is currently disabled by default; to enable it, change enabled:
@@ -113,17 +111,17 @@ module.exports = {
   // NOTE: It is not possible to migrate your contracts to truffle DB and you should
   // make a backup of your artifacts to a safe location before enabling this feature.
   //
-  // After you backed up your artifacts you can utilize db by running migrate as follows: 
+  // After you backed up your artifacts you can utilize db by running migrate as follows:
   // $ truffle migrate --reset --compile-all
   //
   // db: {
-    // enabled: false,
-    // host: "127.0.0.1",
-    // adapter: {
-    //   name: "sqlite",
-    //   settings: {
-    //     directory: ".db"
-    //   }
-    // }
+  // enabled: false,
+  // host: "127.0.0.1",
+  // adapter: {
+  //   name: "sqlite",
+  //   settings: {
+  //     directory: ".db"
+  //   }
+  // }
   // }
 };
