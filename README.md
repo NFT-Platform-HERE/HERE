@@ -1,12 +1,12 @@
-# 💖![logo_2_1](/uploads/f52c7bbd07f0ab1b279dfcabd9d9d596/logo_2_1.png) NFT 헌혈증서 플랫폼 💖
+# 💖 ![logo_2_1](https://user-images.githubusercontent.com/40704078/233773989-d4e219fd-cfac-43b7-b86e-285da343524e.png) NFT 헌혈증서 플랫폼 💖
 
 ## [💕지금 체험하기!](http:/j8b209.p.ssafy.io)
 
-![mainBanner_1](/uploads/b356740572f527ad29cf1ad3e5a9b239/mainBanner_1.png)
+![mainBanner_1](https://user-images.githubusercontent.com/40704078/233773973-ff338564-2b1b-4e07-a599-e3566c8d004f.png)
 
 # 💕 HERE 소개
 
-![here](/uploads/2c6072fd803e4b4e83a26c0396a799bd/here.PNG)
+![here](https://user-images.githubusercontent.com/40704078/233774020-4804bcf7-8625-4f2f-b435-ac071048a642.PNG)
 
 HERE는 헌혈증서를 블록체인 기술을 이용하여 NFT 형식으로 발행하고 이용하는 플랫폼입니다.
 
@@ -20,12 +20,11 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 
 ## 🎥 [소개 영상 보기 : UCC 링크](https://youtu.be/-KMc-rHhZNU)
 
-# 💕 [실행 (포팅매뉴얼)](https://lab.ssafy.com/s08-blockchain-nft-sub2/S08P22B209/-/blob/master/exec/HERE_%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC.pdf)
+### 💕 [실행 (포팅매뉴얼)](https://github.com/Leeh9/HERE/blob/master/exec/HERE_%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC.pdf)
 
 # 💕 **프로젝트 일정**
 
 ### 📅 **2023-02-20(월) ~ 2023-04-07(금) (7주)**
-
 
 # 💕 HERE 기획배경
 
@@ -33,7 +32,7 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 
 - 혈액원이 헌혈자로부터 헌혈을 받았을 때 발급해주는 카드 형태의 서류
 
-<img src = "/uploads/b730295df19ce6186153e23c1c304b31/blood_donation.png" width="40%" height="40%">
+<img src = "https://user-images.githubusercontent.com/40704078/233775110-23da1327-12f4-449a-a020-2f5f7d145828.png" width="40%" height="40%">
 
 ### 용도
 
@@ -56,7 +55,7 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 
 ### 왜 NFT 헌혈증인가?
 
-![nft](/uploads/2d3031021c8027cebc2f5cf58986ac7c/nft.png)
+![nft](https://user-images.githubusercontent.com/40704078/233774031-a761f8f3-da53-4a39-ba7c-e0a7d6be4a75.png)
 
 - 헌혈증 관리 용이성 증가
     - 종이 헌혈증들을 서류로 관리 ⇒ **한 눈에 확인하고 관리할 수 있는 헌혈 데이터**
@@ -152,37 +151,37 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 
 ### 아키텍처
 
-![아키텍처](/uploads/f92638304d98486dbd71163fe2b04ed5/아키텍처.png)
+![아키텍처](https://user-images.githubusercontent.com/40704078/233774041-e917072c-a753-4e78-b174-dc336e0666cc.png)
 
 ### MSA ⇒ 모놀리틱 방식의 한계점을 보완 및 해결하기 위해 MSA 방식 도입
 
-![msa](/uploads/4971311cfad2c1b631ca9e0cbec65500/msa.PNG)
+![msa](https://user-images.githubusercontent.com/40704078/233774050-17243401-7e27-4e85-a15f-ef1a92edf41d.PNG)
 
 ### SSE
 
-![SSE5](/uploads/8105dcd6c7f42744f209790e611e354d/SSE5.PNG)
+![SSE5](https://user-images.githubusercontent.com/40704078/233774057-38842206-a057-44f7-82ea-15c90b5d3d7c.PNG)
 
 ### Smart Contract ⇒ 블록체인 개발 환경 구축
 
-![스마트](/uploads/6d5f3ddfa5b185930a4feede6fcf2835/스마트.PNG)
+![스마트](https://user-images.githubusercontent.com/40704078/233774068-54c82f6b-5a55-4547-b80c-c73c338391d4.PNG)
 
 ### 자동배포
 
-![_EC_9E_90_EB_8F_99_EB_B0_B0_ED_8F_AC](/uploads/cf89d553260559954b5827ace0cb6196/_EC_9E_90_EB_8F_99_EB_B0_B0_ED_8F_AC.png)
+![cicd](https://user-images.githubusercontent.com/40704078/233774072-3db8a118-9b99-49ba-930e-4808de2ebc32.png)
 
 ### SSR ⇒ 빈 화면 노출을 막아 사용자 경험을 향상시킴 (Next.js)
 
-![ssr](/uploads/0b16c09688877839719de39c8c4db7b9/ssr.png)
+![ssr](https://user-images.githubusercontent.com/40704078/233774077-93edc9fc-149d-4d11-80ca-7356fdcabab8.png)
 
 ### 반응형 웹 디자인 ⇒ 데스크톱에서도 모바일에서도 편안하게 사용 가능
 
-![_EB_B0_98_EC_9D_91_ED_98_95](/uploads/3c5cd46d2aecf69f39a3ac038077d3fa/_EB_B0_98_EC_9D_91_ED_98_95.png)
+![web](https://user-images.githubusercontent.com/40704078/233774081-065b8260-c62f-4cdd-b447-f66912b18160.png)
 
 ### 로그 관리 ⇒ MM에 에러 로그를 기록하여 프론트 ↔ 백 소통 원활화
 
-![_EB_A1_9C_EA_B7_B82](/uploads/3199c0e9f6ea73be76d77430578563d7/_EB_A1_9C_EA_B7_B82.png)
+![log1](https://user-images.githubusercontent.com/40704078/233774103-c06c6e13-8c84-4c5a-9831-fad662804794.png)
+![log2](https://user-images.githubusercontent.com/40704078/233774104-578684e9-3d05-41be-8c08-1cf2e2c672ca.PNG)
 
-![mm1](/uploads/c8c82b355ea3ff46b72d7288564bc881/mm1.PNG)
 
 
 # 💕 산출물
@@ -191,28 +190,28 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
 
 ### Web
 
-![Untitled_1](/uploads/6ea1ad13dc8956b73ee8a619ff5b660c/Untitled_1.png)
+![frame1](https://user-images.githubusercontent.com/40704078/233774129-0a0606c5-2014-4c73-aa41-ec2def971776.png)
 
 ### Mobile
 
-![Untitled_2](/uploads/ed43488f46b765f8b419c975607e96be/Untitled_2.png)
+![framw2](https://user-images.githubusercontent.com/40704078/233774151-3f405603-14ce-4287-b1b5-3fb606ccd09d.png)
 
 ## [ERD](https://www.notion.so/ERD-f40171a08ef54f808608c2e5aa787c4e)
 
-![HE_RE_ERD__5_](/uploads/cb3518a487637a7da0da8f1dc3ec520e/HE_RE_ERD__5_.png)
+![erd](https://user-images.githubusercontent.com/40704078/233774156-4d5c054a-6e63-4a95-b50a-f3e1a1e8e145.png)
 
 - ERD 변경 이력
     
-    ![Untitled_3](/uploads/52f61be99822746be83aa3f359d89baf/Untitled_3.png)
+    ![erd2](https://user-images.githubusercontent.com/40704078/233774163-65c62c06-211f-4996-8287-e6e3fa305185.png)
     
 
 ## [기능명세서](https://www.notion.so/12e506a0e299451190fc32483141f194)
 
-![_EA_B8_B0_EB_8A_A5__EB_AA_85_EC_84_B82](/uploads/275af4613834b5e74ec98c9ac6ae8a03/_EA_B8_B0_EB_8A_A5__EB_AA_85_EC_84_B82.png)
+![action](https://user-images.githubusercontent.com/40704078/233774181-400d29d5-0e26-41b3-9774-98165ec01304.png)
 
 ## [API명세서](https://www.notion.so/API-Docs-287c2bb2a1e04a08bd68386ac4047181)
 
-![API](/uploads/40034d99e184704a1456ae29b3e7982d/API.png)
+![api](https://user-images.githubusercontent.com/40704078/233774191-4af90af4-91cf-4e63-9e29-bfc241b716b4.png)
 
 # 📁 프로젝트 구조
 
@@ -421,12 +420,46 @@ HERE를 통해 헌혈증서의 미래를 경험해보세요.
     - 파트 별 코드 리뷰 진행 (플립 이용)
 - Notion
 
-<img src = "/uploads/1c40944ec21751d9cdf44c5a6c835cb8/Untitled_4.png" width="40%" height="40%">
+<img src = "https://user-images.githubusercontent.com/40704078/233774294-faba08d4-0cd1-4d2b-9b11-17b1cc1caf88.png" width="50%" height="50%">
+
+# 💕 화면 구성
+
+### 메인 페이지
+
+![메인페이지](https://user-images.githubusercontent.com/40704078/233775237-c94a619a-c7ea-44ea-a195-7269df0eeca1.png)
+
+### 나의 NFT
+
+![나의 NFT](https://user-images.githubusercontent.com/40704078/233775314-6be5d995-28e1-4344-9f07-387ac7a385ca.png)
+
+### 헌혈증서
+
+![헌혈증서](https://user-images.githubusercontent.com/40704078/233775319-9529262c-dbdb-4142-adc3-bd54e7c94ec6.png)
+
+### 제출해요
+
+![제출해요](https://user-images.githubusercontent.com/40704078/233775328-711114a9-d8b3-4884-9b4e-c0a2a90e7449.png)
+
+### 병원제출
+
+![병원제출](https://user-images.githubusercontent.com/40704078/233775334-6b69de14-86c1-4da9-96a1-9ca04fb81224.png)
+
+### 알림
+
+![알림](https://user-images.githubusercontent.com/40704078/233775339-5b8ab69d-80dc-4c6f-adc6-123549aaa3d2.png)
+
+### 기부해요
+
+![기부해요](https://user-images.githubusercontent.com/40704078/233775343-e7716a45-d49a-4c9f-8ca6-b3c21d89f3de.png)
+
+### 헌혈해요
+
+![헌혈해요](https://user-images.githubusercontent.com/40704078/233775349-3a8ba439-e2b5-4e6e-b5f3-f6dc1e1d66ed.png)
 
 # 💕 팀 소개
 
-![Untitled_5](/uploads/7f07dce1896fba41aed1999433905344/Untitled_5.png)
+![team](https://user-images.githubusercontent.com/40704078/233774229-a0eaa43c-dc74-40a3-9794-c3f6bd2610c8.png)
 
 # 💕 소감
 
-![소감](/uploads/c898f132b7bec574f69d62e23c22df41/소감.PNG)
+![sogam](https://user-images.githubusercontent.com/40704078/233774284-5019e329-66a5-44fa-89ff-a64cfb326cf6.PNG)
