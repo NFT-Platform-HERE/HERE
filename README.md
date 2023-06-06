@@ -1,5 +1,5 @@
 ### 🏆 SSAFY 특화프로젝트 우수상 
-### 🏆 SSAFY UCC 경진대회 전국 2등
+### 🏆 SSAFY UCC 경진대회 전국 2위
 ### 🏆 2023 미래산업 인재육성 컨퍼런스 VALUE UP 프로젝트 공모전 금상
 ![123123](https://github.com/NFT-Platform-HERE/HERE/assets/40704078/c4b4eef4-0951-4534-8e4d-9333fdc21850)
 ---
